@@ -1,5 +1,5 @@
 SECTION MBR vstart=0x7c00
-  mov ax,c
+  mov ax,cs
   mov ds,ax
   mov es,ax
   mov ss,ax
