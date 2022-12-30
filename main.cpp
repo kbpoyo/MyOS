@@ -8,7 +8,7 @@ int main() {
     std::thread thread_1([](){
         int i = 0;
         while (i++ < 1000) {
-            std::cout << "PID = " << std::this_thread::get_id() <<std::endl;
+            std::cout << "进程PID = " << std::this_thread::get_id() <<std::endl;
             sleep(1);
         }
     });
@@ -24,5 +24,6 @@ int main() {
     });
 
     thread_2.join();
+    
     return 0;
 }
