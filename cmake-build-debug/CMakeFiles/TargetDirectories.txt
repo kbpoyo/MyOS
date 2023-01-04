@@ -1,3 +1,0 @@
-/home/kbpoyo/Documents/code/cpp/MyOS/cmake-build-debug/CMakeFiles/MyOS.dir
-/home/kbpoyo/Documents/code/cpp/MyOS/cmake-build-debug/CMakeFiles/edit_cache.dir
-/home/kbpoyo/Documents/code/cpp/MyOS/cmake-build-debug/CMakeFiles/rebuild_cache.dir

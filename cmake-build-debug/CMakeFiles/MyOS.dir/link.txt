@@ -1,1 +1,0 @@
-/usr/bin/c++ -g CMakeFiles/MyOS.dir/main.cpp.o -o MyOS 
