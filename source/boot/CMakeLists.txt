@@ -1,15 +1,17 @@
-
 project(boot LANGUAGES C)
 
-# 使用自定义的链接器
-set(CMAKE_EXE_LINKER_FLAGS "-m elf_i386  -Ttext=0x7c00  --section-start boot_end=0x7dfe")
+# 使用自定义的链接器,
+# -Ttext=0x7c00  告诉连接器该程序加载到内存的段的地址, 不加也可以，因为bios会自动将第一扇区的内容加载到0x7c00，
+# --section-start=<sectionname>=<org> 以-Ttext(必须有-T参数提前指定标准段的地址-Tbss=org，-Tdata=org，-Ttext=org)
+# 指定的地址为参考，指定程序中boot_end段的相对地址并输出到编译的文件中,
+# 如此处boot_end段表示以0x7c00为起始地址的512字节的最后两个字节
+set(CMAKE_EXE_LINKER_FLAGS "-m elf_i386 -Ttext=0x7c00 --section-start=boot_end=0x7dfe")
 set(CMAKE_C_LINK_EXECUTABLE "${LINKER_TOOL} <OBJECTS> ${CMAKE_EXE_LINKER_FLAGS} -o ${PROJECT_BINARY_DIR}/${PROJECT_NAME}.elf")
 
 # 将所有的汇编、C文件加入工程
 # 注意保证start.asm在最前头，这样对应的程序会放在bin文件开头，从而在加载到0x7c00时能在开头处
 file(GLOB C_LIST "*.c" "*.h")
 add_executable(${PROJECT_NAME} start.S ${C_LIST})
-
 # bin文件生成，写入到image目录下
 add_custom_command(TARGET ${PROJECT_NAME}
                    POST_BUILD

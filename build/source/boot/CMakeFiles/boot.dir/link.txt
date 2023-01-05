@@ -1,0 +1,1 @@
+ld CMakeFiles/boot.dir/start.S.o CMakeFiles/boot.dir/boot.c.o -m elf_i386 -Ttext=0x7c00 --section-start=boot_end=0x7dfe -o /home/kbpoyo/Documents/code/cpp/MyOS/build/source/boot/boot.elf

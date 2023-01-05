@@ -1,0 +1,8 @@
+/home/kbpoyo/Documents/code/cpp/MyOS/build/CMakeFiles/edit_cache.dir
+/home/kbpoyo/Documents/code/cpp/MyOS/build/CMakeFiles/rebuild_cache.dir
+/home/kbpoyo/Documents/code/cpp/MyOS/build/source/boot/CMakeFiles/boot.dir
+/home/kbpoyo/Documents/code/cpp/MyOS/build/source/boot/CMakeFiles/edit_cache.dir
+/home/kbpoyo/Documents/code/cpp/MyOS/build/source/boot/CMakeFiles/rebuild_cache.dir
+/home/kbpoyo/Documents/code/cpp/MyOS/build/source/loader/CMakeFiles/loader.dir
+/home/kbpoyo/Documents/code/cpp/MyOS/build/source/loader/CMakeFiles/edit_cache.dir
+/home/kbpoyo/Documents/code/cpp/MyOS/build/source/loader/CMakeFiles/rebuild_cache.dir

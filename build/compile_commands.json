@@ -1,0 +1,27 @@
+[
+{
+  "directory": "/home/kbpoyo/Documents/code/cpp/MyOS/build/source/boot",
+  "command": "/usr/bin/gcc  -I/home/kbpoyo/Documents/code/cpp/MyOS/source -m32 -g -g -o CMakeFiles/boot.dir/start.S.o -c /home/kbpoyo/Documents/code/cpp/MyOS/source/boot/start.S",
+  "file": "/home/kbpoyo/Documents/code/cpp/MyOS/source/boot/start.S"
+},
+{
+  "directory": "/home/kbpoyo/Documents/code/cpp/MyOS/build/source/boot",
+  "command": "/usr/bin/gcc  -I/home/kbpoyo/Documents/code/cpp/MyOS/source -g -c -O0 -m32 -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -g -o CMakeFiles/boot.dir/boot.c.o -c /home/kbpoyo/Documents/code/cpp/MyOS/source/boot/boot.c",
+  "file": "/home/kbpoyo/Documents/code/cpp/MyOS/source/boot/boot.c"
+},
+{
+  "directory": "/home/kbpoyo/Documents/code/cpp/MyOS/build/source/loader",
+  "command": "/usr/bin/gcc  -I/home/kbpoyo/Documents/code/cpp/MyOS/source -m32 -g -g -o CMakeFiles/loader.dir/start.S.o -c /home/kbpoyo/Documents/code/cpp/MyOS/source/loader/start.S",
+  "file": "/home/kbpoyo/Documents/code/cpp/MyOS/source/loader/start.S"
+},
+{
+  "directory": "/home/kbpoyo/Documents/code/cpp/MyOS/build/source/loader",
+  "command": "/usr/bin/gcc  -I/home/kbpoyo/Documents/code/cpp/MyOS/source -g -c -O0 -m32 -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -g -o CMakeFiles/loader.dir/loader_16.c.o -c /home/kbpoyo/Documents/code/cpp/MyOS/source/loader/loader_16.c",
+  "file": "/home/kbpoyo/Documents/code/cpp/MyOS/source/loader/loader_16.c"
+},
+{
+  "directory": "/home/kbpoyo/Documents/code/cpp/MyOS/build/source/loader",
+  "command": "/usr/bin/gcc  -I/home/kbpoyo/Documents/code/cpp/MyOS/source -g -c -O0 -m32 -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -g -o CMakeFiles/loader.dir/loader_32.c.o -c /home/kbpoyo/Documents/code/cpp/MyOS/source/loader/loader_32.c",
+  "file": "/home/kbpoyo/Documents/code/cpp/MyOS/source/loader/loader_32.c"
+}
+]

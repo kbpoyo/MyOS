@@ -1,0 +1,35 @@
+The system is: Linux - 5.15.0-56-generic - x86_64
+Compiling the C compiler identification source file "CMakeCCompilerId.c" succeeded.
+Compiler: /usr/bin/gcc 
+Build flags: -g;-c;-O0;-m32;-fno-pie;-fno-stack-protector;-fno-asynchronous-unwind-tables
+Id flags:  
+
+The output was:
+0
+
+
+Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "CMakeCCompilerId.o"
+
+The C compiler identification is GNU, found in "/home/kbpoyo/Documents/code/cpp/MyOS/build/CMakeFiles/3.22.1/CompilerIdC/CMakeCCompilerId.o"
+
+Determining if the C compiler works passed with the following output:
+Change Dir: /home/kbpoyo/Documents/code/cpp/MyOS/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_b40da/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_b40da.dir/build.make CMakeFiles/cmTC_b40da.dir/build
+gmake[1]: 进入目录“/home/kbpoyo/Documents/code/cpp/MyOS/build/CMakeFiles/CMakeTmp”
+Building C object CMakeFiles/cmTC_b40da.dir/testCCompiler.c.o
+/usr/bin/gcc   -g -c -O0 -m32 -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables  -o CMakeFiles/cmTC_b40da.dir/testCCompiler.c.o -c /home/kbpoyo/Documents/code/cpp/MyOS/build/CMakeFiles/CMakeTmp/testCCompiler.c
+Linking C executable cmTC_b40da
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_b40da.dir/link.txt --verbose=1
+/usr/bin/gcc -g -c -O0 -m32 -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables  -rdynamic CMakeFiles/cmTC_b40da.dir/testCCompiler.c.o -o cmTC_b40da 
+gcc: warning: CMakeFiles/cmTC_b40da.dir/testCCompiler.c.o: linker input file unused because linking not done
+gmake[1]: 离开目录“/home/kbpoyo/Documents/code/cpp/MyOS/build/CMakeFiles/CMakeTmp”
+
+
+
+Checking whether the ASM compiler is GNU using "--version" matched "(GNU assembler)|(GCC)|(Free Software Foundation)":
+gcc (Ubuntu 11.3.0-1ubuntu1~22.04) 11.3.0
+Copyright (C) 2021 Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
