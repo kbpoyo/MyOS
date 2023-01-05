@@ -83,6 +83,15 @@ static void detect_memory(void) {
 }
 
 
+/**
+ * @brief  进入保护模式
+ * 
+ */
+static void enter_protect_mode(void){
+     //1.关闭中断
+     cli();
+}
+
 void loader_entry(void) {
      show_msg("..........loading.........\r\n");
 

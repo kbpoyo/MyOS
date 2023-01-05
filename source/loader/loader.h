@@ -14,6 +14,7 @@
 
 #include "common/boot_info.h"
 #include "common/types.h"
+#include "common/cpu_instr.h"
 
 typedef struct SMAP_entry {
  
