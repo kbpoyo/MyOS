@@ -41,20 +41,20 @@ static void show_msg(const char* msg) {
  * 检测系统当前可用的内存块的地址和大小
  */
 static void detect_memory(void) {
-     SMAP_entry_t smap_entry;//记录每一次探测的结果
+     show_msg("try to detect memory:\r\n");
 
-     show_msg("try to detect memory:");
+     SMAP_entry_t smap_entry;//记录每一次探测的结果
      
      boot_info.ram_region_count = 0; //将有效内存卡数量初始化为0
 
+     //传入参数
+     SMAP_entry_t *entry = &smap_entry; //记录的信息将回填到结构体中
+
+     //传出参数
+      uint32_t signature = 0, bytes =0, contID = 0; //分别为ax, cx, bx的传出参数
+
      //逐个检测内存块，有效则装入数组中
      for (int i = 0; i < BOOT_RAM_REGION_MAX; ++i) {
-
-          //传入参数
-          SMAP_entry_t *entry = &smap_entry; //记录的信息将回填到结构体中
-
-          //传出参数
-          int signature, bytes, contID;
 
           //调用内联汇编进行一次内存块探测
           __asm__ __volatile__ ("int  $0x15" 
@@ -63,13 +63,13 @@ static void detect_memory(void) {
 
           //判断所探测的内存块是否有效
           if (signature != 0x534d4150) { //无效直接退出
-               show_msg("failed\n");
+               show_msg("failed\r\n");
                return;
           }
 
           if (bytes > 20 && (entry->ACPI & 0x0001) == 0) continue; //ACPI位为0，则内存块无效应当忽略	
 		
-          if (entry->Type == 1) { //Type = 1 当前内存卡有效
+          if (entry->Type == 1) { //Type = 1 当前内存块有效
                boot_info.ram_region_cfg[boot_info.ram_region_count].start = entry->BaseL;  //由于内存寻址空间较小，读取低32位即可
                boot_info.ram_region_cfg[boot_info.ram_region_count].size = entry->LengthL;
                boot_info.ram_region_count++;
@@ -78,14 +78,16 @@ static void detect_memory(void) {
           if (contID == 0) break; //contID为0则探测结束
      } 
 
-     show_msg("detect success\n");
+     show_msg("detect success\r\n");
 
 }
 
 
 void loader_entry(void) {
+     show_msg("..........loading.........\r\n");
 
-     detect_memory();
+     detect_memory(); //检测可用内存块
+     
      for (;;){
      };
 }

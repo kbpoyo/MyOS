@@ -28,6 +28,15 @@ _start:
 	mov $'S', %al 	// al 缓冲区记录显示内容
 	int $0x10 		//进入中断程序
 
+	mov $0xe, %ah 	
+	mov $'\r', %al 	
+	int $0x10 		
+
+	mov $0xe, %ah 	
+	mov $'\n', %al 	
+	int $0x10 		
+
+
 
 
 //int 0x13 软中断调用磁盘驱动读取磁盘

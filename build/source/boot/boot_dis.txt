@@ -9,7 +9,7 @@ EXEC_P, HAS_SYMS, D_PAGED
     LOAD off    0x00000000 vaddr 0x00007000 paddr 0x00006000 align 2**12
          filesz 0x000000b4 memsz 0x000000b4 flags r--
     LOAD off    0x00000c00 vaddr 0x00007c00 paddr 0x00007c00 align 2**12
-         filesz 0x00000045 memsz 0x00000045 flags r-x
+         filesz 0x00000051 memsz 0x00000051 flags r-x
     LOAD off    0x00000dfe vaddr 0x00007dfe paddr 0x00007dfe align 2**12
          filesz 0x00000002 memsz 0x00000002 flags r-x
    STACK off    0x00000000 vaddr 0x00000000 paddr 0x00000000 align 2**4
@@ -17,7 +17,7 @@ EXEC_P, HAS_SYMS, D_PAGED
 
 节：
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .text         00000045  00007c00  00007c00  00000c00  2**0
+  0 .text         00000051  00007c00  00007c00  00000c00  2**0
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
   1 boot_end      00000002  00007dfe  00007dfe  00000dfe  2**0
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
@@ -29,20 +29,20 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING, OCTETS
   5 .debug_abbrev 00000041  00000000  00000000  00000ecd  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
-  6 .debug_line   000000ac  00000000  00000000  00000f0e  2**0
+  6 .debug_line   000000b2  00000000  00000000  00000f0e  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
-  7 .debug_frame  00000034  00000000  00000000  00000fbc  2**2
+  7 .debug_frame  00000034  00000000  00000000  00000fc0  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
-  8 .debug_str    00000117  00000000  00000000  00000ff0  2**0
+  8 .debug_str    00000117  00000000  00000000  00000ff4  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
-  9 .debug_line_str 000000a8  00000000  00000000  00001107  2**0
+  9 .debug_line_str 000000a8  00000000  00000000  0000110b  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
 SYMBOL TABLE:
 00000000 l    df *ABS*	00000000 start.S.o
-00007c19 l       .text	00000000 read_loader
+00007c25 l       .text	00000000 read_loader
 00007dfe l       boot_end	00000000 boot_sig
 00000000 l    df *ABS*	00000000 boot.c
-00007c2e g     F .text	00000017 boot_entry
+00007c3a g     F .text	00000017 boot_entry
 00007c00 g       .text	00000000 _start
 00008000 g       .text	00000000 __bss_start
 00008000 g       .text	00000000 _edata
@@ -81,54 +81,68 @@ _start:
 	int $0x10 		//进入中断程序
     7c17:	cd 10                	int    $0x10
 
-00007c19 <read_loader>:
+	mov $0xe, %ah 	
+    7c19:	b4 0e                	mov    $0xe,%ah
+	mov $'\r', %al 	
+    7c1b:	b0 0d                	mov    $0xd,%al
+	int $0x10 		
+    7c1d:	cd 10                	int    $0x10
+
+	mov $0xe, %ah 	
+    7c1f:	b4 0e                	mov    $0xe,%ah
+	mov $'\n', %al 	
+    7c21:	b0 0a                	mov    $0xa,%al
+	int $0x10 		
+    7c23:	cd 10                	int    $0x10
+
+00007c25 <read_loader>:
 
 
 
 //int 0x13 软中断调用磁盘驱动读取磁盘
 read_loader:
 	mov $0x8000, %bx	// es:bx = 加载到内存中的地址,此时es = 0， 即直接将读取的内容加载到内存0x8000处 
-    7c19:	bb 00 80             	mov    $0x8000,%bx
+    7c25:	bb 00 80             	mov    $0x8000,%bx
 	mov $0x2, %ah 		// ah = 0x2, al = 扇区数, 
-    7c1c:	b4 02                	mov    $0x2,%ah
+    7c28:	b4 02                	mov    $0x2,%ah
 	mov $64, %al		// 读取64个扇区, 即32kb
-    7c1e:	b0 40                	mov    $0x40,%al
+    7c2a:	b0 40                	mov    $0x40,%al
 	mov $0x2, %cx 		// ch = 柱面，cl = 扇区编号， 在0柱面进行读取，bios从1开始为扇区编号，1扇区为mbr引导程序，所以从2扇区读取
-    7c20:	b9 02 00             	mov    $0x2,%cx
+    7c2c:	b9 02 00             	mov    $0x2,%cx
 	mov $0, %dh			// dh = 磁头，即盘面，当前从0盘面开始读取
-    7c23:	b6 00                	mov    $0x0,%dh
+    7c2f:	b6 00                	mov    $0x0,%dh
 	mov $0x80, %dl 		// dl = 驱动器，0x00~0x7f:软盘， 0x80~0xff:硬盘
-    7c25:	b2 80                	mov    $0x80,%dl
+    7c31:	b2 80                	mov    $0x80,%dl
 	int $0x13 //执行中断程序
-    7c27:	cd 13                	int    $0x13
+    7c33:	cd 13                	int    $0x13
 
 	//出口参数, cf = 0表示操作成功否则失败，若成功则ah=0x00,al=传输的扇区数，否则ah=状态代码(参见功能号0x01)
 	// cf为eflags寄存器的0号位，表示carry flag， 在运算过程中若最高位有进位或借位则置1
 	jc read_loader		// jc/jb/jna 跳转条件为 cf = 1,即当前失败时跳转重新读取
-    7c29:	72 ee                	jb     7c19 <read_loader>
+    7c35:	72 ee                	jb     7c25 <read_loader>
 
 
 	//加载完loader后跳转到loader入口程序执行
 	jmp boot_entry
-    7c2b:	e9 00 00             	jmp    7c2e <boot_entry>
+    7c37:	e9 00 00             	jmp    7c3a <boot_entry>
 
-00007c2e <boot_entry>:
+00007c3a <boot_entry>:
 
 /**
  * Boot的C入口函数
  * 只完成一项功能，即从磁盘找到loader文件然后加载到内容中，并跳转过去
  */
 void boot_entry(void) {
-    7c2e:	66 55                	push   %ebp
-    7c30:	66 89 e5             	mov    %esp,%ebp
-    7c33:	66 83 ec 08          	sub    $0x8,%esp
+    7c3a:	66 55                	push   %ebp
+    7c3c:	66 89 e5             	mov    %esp,%ebp
+    7c3f:	66 83 ec 08          	sub    $0x8,%esp
     ((void (*)(void))LOADER_START_ADDR)(); //用函数指针直接调用0x8000处的函数
-    7c37:	66 b8 00 80 00 00    	mov    $0x8000,%eax
-    7c3d:	66 ff d0             	call   *%eax
+    7c43:	66 b8 00 80 00 00    	mov    $0x8000,%eax
+    7c49:	66 ff d0             	call   *%eax
 } 
-    7c40:	90                   	nop
-    7c41:	66 c9                	leavel 
-    7c43:	66 c3                	retl   
+    7c4c:	90                   	nop
+    7c4d:	66 c9                	leavel 
+    7c4f:	66 c3                	retl   
 
 Disassembly of section boot_end:
 
