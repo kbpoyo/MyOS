@@ -10,7 +10,12 @@ source/loader/CMakeFiles/loader.dir/loader_16.c.o: ../source/loader/loader_16.c 
   ../source/common/cpu_instr.h
 
 source/loader/CMakeFiles/loader.dir/loader_32.c.o: ../source/loader/loader_32.c \
-  /usr/include/stdc-predef.h
+  /usr/include/stdc-predef.h \
+  ../source/loader/loader.h \
+  ../source/common/boot_info.h \
+  ../source/common/types.h \
+  ../source/common/types.h \
+  ../source/common/cpu_instr.h
 
 
 ../source/loader/loader_32.c:

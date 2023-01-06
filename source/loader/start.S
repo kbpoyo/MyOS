@@ -21,7 +21,7 @@ _start:
 	.code32 //生成32位模式下的指令
 	.text
 	.global protect_mode_entry
-	.extern loader_kernel //32位loader程序入口
+	.extern load_kernel //32位loader程序入口
 
 //保护模式的入口函数
 protect_mode_entry:
@@ -35,4 +35,4 @@ protect_mode_entry:
 
 	//跳转到32位的loader程序中
 	//TODO: $8, $地址 的传参模式之后会讲解
-	jmp $8, $loader_kernel
+	jmp $8, $load_kernel

@@ -1,7 +1,7 @@
 /**
  * @file cpu_instr.h
  * @author kbpoyo (kbpoyo.com)
- * @brief  对cpu中断指令的封装
+ * @brief  对cpu中断指令的封装, 使用的汇编格式为at&t汇编格式(gcc编译器的格式)
  * @version 0.1
  * @date 2023-01-05
  * @copyright Copyright (c) 2023
@@ -36,9 +36,8 @@ static inline void sti (void) {
  * @return uint8_t 
  */
 static inline uint8_t inb (uint16_t port) {
-    uint8_t rv; //读取的8位数据
+    uint8_t rv;                             //读取的8位数据
 
-    //at&t汇编格式
     __asm__ __volatile__("inb %[p], %[v]"   // in 表示从端口寄存器中读取数据，端口只能用dx表示
                                             // out 表示往端口寄存器中写入数据，端口只能用立即数或dx寄存器表示，
                                             // b表示只读取一个字节(w, l 分别表示2，4字节)
@@ -56,7 +55,7 @@ static inline uint8_t inb (uint16_t port) {
  */
 static inline void outb(uint16_t port, uint8_t data) {
     __asm__ __volatile__("outb %[v], %[p]"
-                            :   //无输出参数
+                            :                               //无输出参数
                             :[p]"d"(port), [v]"a"(data));   //out 指令只能使用dx寄存器或立即数指定端口，
                                                             //只能用ax 或 al来作为数据输入，具体用哪个需要看端口寄存器是几位
 }
@@ -121,6 +120,23 @@ static inline void far_jump(uint32_t selector, uint32_t offset) {
     __asm__ __volatile__("ljmpl *(%[a])"
                             :
                             :[a]"r"(addr));
+}
+
+/**
+ * @brief  从端口(port)寄存器中读取16位数据
+ * 
+ * @param port 
+ * @return uint16_t 
+ */
+static inline uint16_t inw (uint16_t port) {
+    
+    uint16_t rv;                            //读取的16位数据
+
+    __asm__ __volatile__("in %[p], %[v]"    //in默认就是inw, 读取一个字即16位               
+                            :[v]"=a"(rv)        
+                            :[p]"d"(port));    
+
+    return rv;
 }
 
 #endif

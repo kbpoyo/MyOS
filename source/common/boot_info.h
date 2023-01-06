@@ -31,4 +31,8 @@ typedef struct _boot_info_t_ {
 
 }_boot_info_t_;
 
+//磁盘分区默认大小为512字节
+#define SECTOR_SIZE 512
+
+
 #endif

@@ -9,7 +9,7 @@ EXEC_P, HAS_SYMS, D_PAGED
     LOAD off    0x00000000 vaddr 0x00007000 paddr 0x00007000 align 2**12
          filesz 0x000000d4 memsz 0x000000d4 flags r--
     LOAD off    0x00001000 vaddr 0x00008000 paddr 0x00008000 align 2**12
-         filesz 0x0000034b memsz 0x0000034b flags r-x
+         filesz 0x00000433 memsz 0x00000433 flags r-x
     LOAD off    0x00002000 vaddr 0x00009000 paddr 0x00009000 align 2**12
          filesz 0x0000004f memsz 0x0000004f flags r--
     LOAD off    0x00002050 vaddr 0x0000a050 paddr 0x0000a050 align 2**12
@@ -19,7 +19,7 @@ EXEC_P, HAS_SYMS, D_PAGED
 
 节：
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .text         0000034b  00008000  00008000  00001000  2**0
+  0 .text         00000433  00008000  00008000  00001000  2**0
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
   1 .rodata       0000004f  00009000  00009000  00002000  2**0
                   CONTENTS, ALLOC, LOAD, READONLY, DATA
@@ -31,17 +31,17 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY
   5 .debug_aranges 00000060  00000000  00000000  00002098  2**3
                   CONTENTS, READONLY, DEBUGGING, OCTETS
-  6 .debug_info   00000463  00000000  00000000  000020f8  2**0
+  6 .debug_info   0000051b  00000000  00000000  000020f8  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
-  7 .debug_abbrev 000001dd  00000000  00000000  0000255b  2**0
+  7 .debug_abbrev 00000260  00000000  00000000  00002613  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
-  8 .debug_line   0000022b  00000000  00000000  00002738  2**0
+  8 .debug_line   0000027d  00000000  00000000  00002873  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
-  9 .debug_frame  000001a4  00000000  00000000  00002964  2**2
+  9 .debug_frame  000001e4  00000000  00000000  00002af0  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 10 .debug_str    000002b0  00000000  00000000  00002b08  2**0
+ 10 .debug_str    000002cc  00000000  00000000  00002cd4  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 11 .debug_line_str 0000014e  00000000  00000000  00002db8  2**0
+ 11 .debug_line_str 0000014e  00000000  00000000  00002fa0  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
 SYMBOL TABLE:
 00000000 l    df *ABS*	00000000 loader_16.c
@@ -56,13 +56,15 @@ SYMBOL TABLE:
 00008146 l     F .text	0000014b detect_memory
 00008291 l     F .text	00000092 enter_protect_mode
 00000000 l    df *ABS*	00000000 loader_32.c
+00008346 l     F .text	00000021 outb
+00008367 l     F .text	000000c7 read_disk
 00008323 g     F .text	00000023 loader_entry
 0000a050 g     O .data	00000018 gdt_table
+0000842e g     F .text	00000005 load_kernel
 0000a080 g     O .bss	00000054 boot_info
 00008000 g       .text	00000000 _start
 0000a068 g       .bss	00000000 __bss_start
 00008003 g       .text	00000000 protect_mode_entry
-00008346 g     F .text	00000005 loader_kernel
 0000a068 g       .data	00000000 _edata
 0000a0d4 g       .bss	00000000 _end
 
@@ -80,7 +82,7 @@ _start:
     8000:	e9 20 03             	jmp    8323 <loader_entry>
 
 00008003 <protect_mode_entry>:
-	.extern loader_kernel //32位loader程序入口
+	.extern load_kernel //32位loader程序入口
 
 //保护模式的入口函数
 protect_mode_entry:
@@ -98,9 +100,9 @@ protect_mode_entry:
     800f:	8e e8                	mov    %ax,%gs
 
 	//跳转到32位的loader程序中
-	//TODO: $8, $地址 传参模式之后会讲解
-	jmp $8, $loader_kernel
-    8011:	ea 46 83 00 00       	ljmp   $0x0,$0x8346
+	//TODO: $8, $地址 的传参模式之后会讲解
+	jmp $8, $load_kernel
+    8011:	ea 2e 84 00 00       	ljmp   $0x0,$0x842e
     8016:	08 00                	or     %al,(%bx,%si)
 
 00008018 <cli>:
@@ -530,14 +532,138 @@ void loader_entry(void) {
      for (;;){
     8344:	eb fe                	jmp    8344 <loader_entry+0x21>
 
-00008346 <loader_kernel>:
- * 
- * @copyright Copyright (c) 2023
- * 
- */
-
-void loader_kernel() {
+00008346 <outb>:
+static inline void outb(uint16_t port, uint8_t data) {
     8346:	55                   	push   %bp
     8347:	89 e5                	mov    %sp,%bp
+    8349:	83 ec 08             	sub    $0x8,%sp
+    834c:	8b 45 08             	mov    0x8(%di),%ax
+    834f:	8b 55 0c             	mov    0xc(%di),%dx
+    8352:	66 89 45 fc          	mov    %eax,-0x4(%di)
+    8356:	89 d0                	mov    %dx,%ax
+    8358:	88 45 f8             	mov    %al,-0x8(%di)
+    __asm__ __volatile__("outb %[v], %[p]"
+    835b:	0f b7 55 fc          	movzww -0x4(%di),%dx
+    835f:	0f b6 45 f8          	movzbw -0x8(%di),%ax
+    8363:	ee                   	out    %al,(%dx)
+}
+    8364:	90                   	nop
+    8365:	c9                   	leave  
+    8366:	c3                   	ret    
+
+00008367 <read_disk>:
+ * 
+ * @param sector 读取的分区号
+ * @param sector_count 读取的分区数量
+ * @param buf 缓冲区
+ */
+static void read_disk(uint32_t sector, uint16_t sector_count, uint8_t *buf) {
+    8367:	55                   	push   %bp
+    8368:	89 e5                	mov    %sp,%bp
+    836a:	83 ec 04             	sub    $0x4,%sp
+    836d:	8b 45 0c             	mov    0xc(%di),%ax
+    8370:	66 89 45 fc          	mov    %eax,-0x4(%di)
+    
+    //1.设置以LBA模式进行读取，即将磁盘看作一片连续的扇区
+    outb(0x1f6, 0xE0 | (0x0 << 4));  //0xE0 将寄存器第6位置1进入LBA模式，0x0将第4位置0指定驱动器号为主盘
+    8374:	68 e0 00             	push   $0xe0
+    8377:	00 00                	add    %al,(%bx,%si)
+    8379:	68 f6 01             	push   $0x1f6
+    837c:	00 00                	add    %al,(%bx,%si)
+    837e:	e8 c3 ff             	call   8344 <loader_entry+0x21>
+    8381:	ff                   	(bad)  
+    8382:	ff 83 c4 08          	incw   0x8c4(%bp,%di)
+                                    //现在一个通道上只有一个盘，默认当作主盘
+                    
+    //2.初始化各个端口寄存器的高8位
+    outb (0x1F2, (uint8_t)(sector_count >> 8)); //读取扇区数的高8位
+    8386:	0f b7 45 fc          	movzww -0x4(%di),%ax
+    838a:	66 c1 e8 08          	shr    $0x8,%eax
+    838e:	0f b6 c0             	movzbw %al,%ax
+    8391:	50                   	push   %ax
+    8392:	68 f2 01             	push   $0x1f2
+    8395:	00 00                	add    %al,(%bx,%si)
+    8397:	e8 aa ff             	call   8344 <loader_entry+0x21>
+    839a:	ff                   	(bad)  
+    839b:	ff 83 c4 08          	incw   0x8c4(%bp,%di)
+    //6字节LBA值，先初始化第456个字节, 我暂时只用到了4个字节的LBA值, 所以第56个字节置0即可
+    outb (0x1F3, (uint8_t)(sector >> 24));//LBA4 
+    839f:	8b 45 08             	mov    0x8(%di),%ax
+    83a2:	c1 e8 18             	shr    $0x18,%ax
+    83a5:	0f b6 c0             	movzbw %al,%ax
+    83a8:	50                   	push   %ax
+    83a9:	68 f3 01             	push   $0x1f3
+    83ac:	00 00                	add    %al,(%bx,%si)
+    83ae:	e8 93 ff             	call   8344 <loader_entry+0x21>
+    83b1:	ff                   	(bad)  
+    83b2:	ff 83 c4 08          	incw   0x8c4(%bp,%di)
+    outb (0x1F4, 0x00);//LBA5
+    83b6:	6a 00                	push   $0x0
+    83b8:	68 f4 01             	push   $0x1f4
+    83bb:	00 00                	add    %al,(%bx,%si)
+    83bd:	e8 84 ff             	call   8344 <loader_entry+0x21>
+    83c0:	ff                   	(bad)  
+    83c1:	ff 83 c4 08          	incw   0x8c4(%bp,%di)
+    outb (0x1F5, 0x00);//LBA6
+    83c5:	6a 00                	push   $0x0
+    83c7:	68 f5 01             	push   $0x1f5
+    83ca:	00 00                	add    %al,(%bx,%si)
+    83cc:	e8 75 ff             	call   8344 <loader_entry+0x21>
+    83cf:	ff                   	(bad)  
+    83d0:	ff 83 c4 08          	incw   0x8c4(%bp,%di)
+
+    //3.初始化各个端口寄存器的低8位
+    outb (0x1F2, (uint8_t)sector_count); //读取扇区数的低8位
+    83d4:	0f b7 45 fc          	movzww -0x4(%di),%ax
+    83d8:	0f b6 c0             	movzbw %al,%ax
+    83db:	50                   	push   %ax
+    83dc:	68 f2 01             	push   $0x1f2
+    83df:	00 00                	add    %al,(%bx,%si)
+    83e1:	e8 60 ff             	call   8344 <loader_entry+0x21>
+    83e4:	ff                   	(bad)  
+    83e5:	ff 83 c4 08          	incw   0x8c4(%bp,%di)
+    outb (0x1F3, (uint8_t)(sector >> 16));//LBA3
+    83e9:	8b 45 08             	mov    0x8(%di),%ax
+    83ec:	c1 e8 10             	shr    $0x10,%ax
+    83ef:	0f b6 c0             	movzbw %al,%ax
+    83f2:	50                   	push   %ax
+    83f3:	68 f3 01             	push   $0x1f3
+    83f6:	00 00                	add    %al,(%bx,%si)
+    83f8:	e8 49 ff             	call   8344 <loader_entry+0x21>
+    83fb:	ff                   	(bad)  
+    83fc:	ff 83 c4 08          	incw   0x8c4(%bp,%di)
+    outb (0x1F4, (uint8_t)(sector >> 8));//LBA2
+    8400:	8b 45 08             	mov    0x8(%di),%ax
+    8403:	c1 e8 08             	shr    $0x8,%ax
+    8406:	0f b6 c0             	movzbw %al,%ax
+    8409:	50                   	push   %ax
+    840a:	68 f4 01             	push   $0x1f4
+    840d:	00 00                	add    %al,(%bx,%si)
+    840f:	e8 32 ff             	call   8344 <loader_entry+0x21>
+    8412:	ff                   	(bad)  
+    8413:	ff 83 c4 08          	incw   0x8c4(%bp,%di)
+    outb (0x1F5, (uint8_t)sector);//LBA1
+    8417:	8b 45 08             	mov    0x8(%di),%ax
+    841a:	0f b6 c0             	movzbw %al,%ax
+    841d:	50                   	push   %ax
+    841e:	68 f5 01             	push   $0x1f5
+    8421:	00 00                	add    %al,(%bx,%si)
+    8423:	e8 1e ff             	call   8344 <loader_entry+0x21>
+    8426:	ff                   	(bad)  
+    8427:	ff 83 c4 08          	incw   0x8c4(%bp,%di)
+}
+    842b:	90                   	nop
+    842c:	c9                   	leave  
+    842d:	c3                   	ret    
+
+0000842e <load_kernel>:
+
+/**
+ * @brief  32位loader程序的入口函数
+ * 
+ */
+void load_kernel(void) {
+    842e:	55                   	push   %bp
+    842f:	89 e5                	mov    %sp,%bp
     for (;;){};
-    8349:	eb fe                	jmp    8349 <loader_kernel+0x3>
+    8431:	eb fe                	jmp    8431 <load_kernel+0x3>
