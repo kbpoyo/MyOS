@@ -8,3 +8,7 @@
  * @copyright Copyright (c) 2023
  * 
  */
+
+void loader_kernel() {
+    for (;;){};
+}

@@ -9,7 +9,8 @@
  * 
  */
 
-__asm__(".code16gcc"); //生成16位模式下的程序代码
+//生成16位模式下的程序代码
+__asm__(".code16gcc"); 
 
 #include "loader.h"
 
@@ -83,19 +84,42 @@ static void detect_memory(void) {
 }
 
 
+//全局描述符表GDT,里面每一个段描述都是八个字节大小
+uint16_t gdt_table[][4] = {
+     {0, 0, 0, 0}, //第0个段描述符无效，防止未初始化选择子时选中该段描述符
+     {0xffff, 0x0000, 0x9a00, 0x00cf},
+     {0xffff, 0x0000, 0x9200, 0x00cf},
+};
+
+
 /**
  * @brief  进入保护模式
  * 
  */
 static void enter_protect_mode(void){
-     //1.关闭中断
+     //1.关闭中断，设置eflags对应的位
      cli();
+
+     //2.以此打开A20Gate, 读取92端口，并将其第二位设置为1
+     uint8_t v = inb(0x92);
+     outb(0x92, v | 0x2);
+
+     //3.加载全局描述符
+     lgdt((uint32_t)gdt_table, sizeof(gdt_table));
+
+     //4.开启保护模式的使能位，设置cr0寄存器的第0位PE设置为1
+     uint32_t cr0 = read_cr0();
+     write_cr0(cr0 | 0x1);
+
+     //5.远跳转到32位的loader程序，并清空原来的16位指令流水线
+     far_jump(8, (uint32_t)protect_mode_entry);
 }
 
 void loader_entry(void) {
      show_msg("..........loading.........\r\n");
 
-     detect_memory(); //检测可用内存块
+     detect_memory();         //检测可用内存块
+     enter_protect_mode();    //进入保护模式
      
      for (;;){
      };
