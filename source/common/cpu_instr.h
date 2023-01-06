@@ -44,6 +44,12 @@ static inline uint8_t inb (uint16_t port) {
                                             // b表示只读取一个字节(w, l 分别表示2，4字节)
                         :[v]"=a"(rv)        // rv为输出参数用ax 或 al存储， 具体用哪个要看port指定的端口为多少位的寄存器
                         :[p]"d"(port));     // port为输入参数只能用dx寄存器, 
+
+    return rv;
+}
+
+static inline void outb(uint16_t port, uint8_t data) {
+
 }
 
 #endif
