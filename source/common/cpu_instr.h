@@ -54,10 +54,28 @@ static inline uint8_t inb (uint16_t port) {
  * @param data 
  */
 static inline void outb(uint16_t port, uint8_t data) {
+    
     __asm__ __volatile__("outb %[v], %[p]"
                             :                               //无输出参数
                             :[p]"d"(port), [v]"a"(data));   //out 指令只能使用dx寄存器或立即数指定端口，
                                                             //只能用ax 或 al来作为数据输入，具体用哪个需要看端口寄存器是几位
+}
+
+/**
+ * @brief  从端口(port)寄存器中读取16位数据
+ * 
+ * @param port 
+ * @return uint16_t 
+ */
+static inline uint16_t inw (uint16_t port) {
+    
+    uint16_t rv;                            //读取的16位数据
+
+    __asm__ __volatile__("in %[p], %[v]"    //in默认就是inw, 读取一个字即16位               
+                            :[v]"=a"(rv)        
+                            :[p]"d"(port));    
+
+    return rv;
 }
 
 /**
@@ -82,7 +100,6 @@ static inline void lgdt(uint32_t start, uint32_t size) {
                             :[g]"m"(gdt));  //"m"表示指令直接作用于该内存位置
                                             //即此处表示lgdt直接加载gdt所在的内存区域的内容
 }
-
 
 /**
  * @brief  读取cr0寄存器的值
@@ -122,21 +139,6 @@ static inline void far_jump(uint32_t selector, uint32_t offset) {
                             :[a]"r"(addr));
 }
 
-/**
- * @brief  从端口(port)寄存器中读取16位数据
- * 
- * @param port 
- * @return uint16_t 
- */
-static inline uint16_t inw (uint16_t port) {
-    
-    uint16_t rv;                            //读取的16位数据
 
-    __asm__ __volatile__("in %[p], %[v]"    //in默认就是inw, 读取一个字即16位               
-                            :[v]"=a"(rv)        
-                            :[p]"d"(port));    
-
-    return rv;
-}
 
 #endif

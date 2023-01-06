@@ -35,4 +35,5 @@ typedef struct SMAP_entry {
  */
 void protect_mode_entry(void);
 
+
 #endif

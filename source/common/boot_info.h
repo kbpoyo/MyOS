@@ -34,5 +34,7 @@ typedef struct _boot_info_t_ {
 //磁盘分区默认大小为512字节
 #define SECTOR_SIZE 512
 
+//kernel加载到内存的位置,因为已经进入保护模式，所以可以访问到1M以上的区域
+#define SYS_KERNEL_LOAD_ADDR (1024 * 1024)
 
 #endif

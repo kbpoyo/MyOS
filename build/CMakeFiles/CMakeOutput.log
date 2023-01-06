@@ -15,14 +15,14 @@ The C compiler identification is GNU, found in "/home/kbpoyo/Documents/code/cpp/
 Determining if the C compiler works passed with the following output:
 Change Dir: /home/kbpoyo/Documents/code/cpp/MyOS/build/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_b40da/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_b40da.dir/build.make CMakeFiles/cmTC_b40da.dir/build
+Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_6ceec/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_6ceec.dir/build.make CMakeFiles/cmTC_6ceec.dir/build
 gmake[1]: 进入目录“/home/kbpoyo/Documents/code/cpp/MyOS/build/CMakeFiles/CMakeTmp”
-Building C object CMakeFiles/cmTC_b40da.dir/testCCompiler.c.o
-/usr/bin/gcc   -g -c -O0 -m32 -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables  -o CMakeFiles/cmTC_b40da.dir/testCCompiler.c.o -c /home/kbpoyo/Documents/code/cpp/MyOS/build/CMakeFiles/CMakeTmp/testCCompiler.c
-Linking C executable cmTC_b40da
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_b40da.dir/link.txt --verbose=1
-/usr/bin/gcc -g -c -O0 -m32 -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables  -rdynamic CMakeFiles/cmTC_b40da.dir/testCCompiler.c.o -o cmTC_b40da 
-gcc: warning: CMakeFiles/cmTC_b40da.dir/testCCompiler.c.o: linker input file unused because linking not done
+Building C object CMakeFiles/cmTC_6ceec.dir/testCCompiler.c.o
+/usr/bin/gcc   -g -c -O0 -m32 -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables  -o CMakeFiles/cmTC_6ceec.dir/testCCompiler.c.o -c /home/kbpoyo/Documents/code/cpp/MyOS/build/CMakeFiles/CMakeTmp/testCCompiler.c
+Linking C executable cmTC_6ceec
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_6ceec.dir/link.txt --verbose=1
+/usr/bin/gcc -g -c -O0 -m32 -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables  -rdynamic CMakeFiles/cmTC_6ceec.dir/testCCompiler.c.o -o cmTC_6ceec 
+gcc: warning: CMakeFiles/cmTC_6ceec.dir/testCCompiler.c.o: linker input file unused because linking not done
 gmake[1]: 离开目录“/home/kbpoyo/Documents/code/cpp/MyOS/build/CMakeFiles/CMakeTmp”
 
 

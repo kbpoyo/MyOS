@@ -218,6 +218,15 @@ boot_IS_TOP_LEVEL:STATIC=OFF
 boot_SOURCE_DIR:STATIC=/home/kbpoyo/Documents/code/cpp/MyOS/source/boot
 
 //Value Computed by CMake
+kernel_BINARY_DIR:STATIC=/home/kbpoyo/Documents/code/cpp/MyOS/build/source/kernel
+
+//Value Computed by CMake
+kernel_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+kernel_SOURCE_DIR:STATIC=/home/kbpoyo/Documents/code/cpp/MyOS/source/kernel
+
+//Value Computed by CMake
 loader_BINARY_DIR:STATIC=/home/kbpoyo/Documents/code/cpp/MyOS/build/source/loader
 
 //Value Computed by CMake
@@ -337,7 +346,7 @@ CMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_NM
 CMAKE_NM-ADVANCED:INTERNAL=1
 //number of local generators
-CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=3
+CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=4
 //ADVANCED property for variable: CMAKE_OBJCOPY
 CMAKE_OBJCOPY-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_OBJDUMP

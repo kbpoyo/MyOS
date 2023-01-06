@@ -1,0 +1,1 @@
+ld CMakeFiles/kernel.dir/init/start.S.o CMakeFiles/kernel.dir/init/init.c.o -m elf_i386 -Ttext=0x100000 -o /home/kbpoyo/Documents/code/cpp/MyOS/build/source/kernel/kernel.elf

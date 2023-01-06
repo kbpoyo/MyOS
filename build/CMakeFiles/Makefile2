@@ -68,16 +68,19 @@ CMAKE_BINARY_DIR = /home/kbpoyo/Documents/code/cpp/MyOS/build
 # The main recursive "all" target.
 all: source/boot/all
 all: source/loader/all
+all: source/kernel/all
 .PHONY : all
 
 # The main recursive "preinstall" target.
 preinstall: source/boot/preinstall
 preinstall: source/loader/preinstall
+preinstall: source/kernel/preinstall
 .PHONY : preinstall
 
 # The main recursive "clean" target.
 clean: source/boot/clean
 clean: source/loader/clean
+clean: source/kernel/clean
 .PHONY : clean
 
 #=============================================================================
@@ -94,6 +97,21 @@ source/boot/preinstall:
 # Recursive "clean" directory target.
 source/boot/clean: source/boot/CMakeFiles/boot.dir/clean
 .PHONY : source/boot/clean
+
+#=============================================================================
+# Directory level rules for directory source/kernel
+
+# Recursive "all" directory target.
+source/kernel/all: source/kernel/CMakeFiles/kernel.dir/all
+.PHONY : source/kernel/all
+
+# Recursive "preinstall" directory target.
+source/kernel/preinstall:
+.PHONY : source/kernel/preinstall
+
+# Recursive "clean" directory target.
+source/kernel/clean: source/kernel/CMakeFiles/kernel.dir/clean
+.PHONY : source/kernel/clean
 
 #=============================================================================
 # Directory level rules for directory source/loader
@@ -143,7 +161,7 @@ source/boot/CMakeFiles/boot.dir/clean:
 source/loader/CMakeFiles/loader.dir/all:
 	$(MAKE) $(MAKESILENT) -f source/loader/CMakeFiles/loader.dir/build.make source/loader/CMakeFiles/loader.dir/depend
 	$(MAKE) $(MAKESILENT) -f source/loader/CMakeFiles/loader.dir/build.make source/loader/CMakeFiles/loader.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/kbpoyo/Documents/code/cpp/MyOS/build/CMakeFiles --progress-num=4,5,6,7 "Built target loader"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/kbpoyo/Documents/code/cpp/MyOS/build/CMakeFiles --progress-num=7,8,9,10 "Built target loader"
 .PHONY : source/loader/CMakeFiles/loader.dir/all
 
 # Build rule for subdir invocation for target.
@@ -161,6 +179,32 @@ loader: source/loader/CMakeFiles/loader.dir/rule
 source/loader/CMakeFiles/loader.dir/clean:
 	$(MAKE) $(MAKESILENT) -f source/loader/CMakeFiles/loader.dir/build.make source/loader/CMakeFiles/loader.dir/clean
 .PHONY : source/loader/CMakeFiles/loader.dir/clean
+
+#=============================================================================
+# Target rules for target source/kernel/CMakeFiles/kernel.dir
+
+# All Build rule for target.
+source/kernel/CMakeFiles/kernel.dir/all:
+	$(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/depend
+	$(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/kbpoyo/Documents/code/cpp/MyOS/build/CMakeFiles --progress-num=4,5,6 "Built target kernel"
+.PHONY : source/kernel/CMakeFiles/kernel.dir/all
+
+# Build rule for subdir invocation for target.
+source/kernel/CMakeFiles/kernel.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/kbpoyo/Documents/code/cpp/MyOS/build/CMakeFiles 3
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 source/kernel/CMakeFiles/kernel.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/kbpoyo/Documents/code/cpp/MyOS/build/CMakeFiles 0
+.PHONY : source/kernel/CMakeFiles/kernel.dir/rule
+
+# Convenience name for target.
+kernel: source/kernel/CMakeFiles/kernel.dir/rule
+.PHONY : kernel
+
+# clean rule for target.
+source/kernel/CMakeFiles/kernel.dir/clean:
+	$(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/clean
+.PHONY : source/kernel/CMakeFiles/kernel.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.

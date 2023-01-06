@@ -9,7 +9,7 @@
 
   	.code16				//16位代码，务必加上
  	.text
-	.global _start
+	.global _start		//链接的时候作为程序的入口地址
 	.extern boot_entry 	//告诉编译器boot_entry函数在其他文件中
 
 // bios自动将磁盘0磁头0柱面1扇区加载到0x7c00，而此处的代码段将放在最前面，即_start加载后为0x7c00
