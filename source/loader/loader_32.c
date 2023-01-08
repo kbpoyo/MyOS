@@ -125,11 +125,13 @@ void load_kernel(void) {
 
     //2.解析内存中地址为SYS_KERNEL_LOAD_ADDR处的elf文件头     
     uint32_t kernel_entry = reload_elf_file((uint8_t*)SYS_KERNEL_LOAD_ADDR); 
-    if (kernel_entry == 0) { //函数执行失败，返回的入口地址为0，进行错误处理
+    
+    //3.若函数执行失败，返回的入口地址为0，进行错误处理
+    if (kernel_entry == 0) { 
         die(-1);
     }               
 
-    //3.将boot_info记录的信息传递给已拷贝到确定内存中的内核初始化函数
+    //4.将boot_info记录的信息传递给已拷贝到确定内存中的内核初始化函数
     ((void(*)(_boot_info_t_*))kernel_entry)(&boot_info);    
     for (;;){};
 }
