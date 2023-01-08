@@ -10,6 +10,7 @@
  */
 
 #include "loader.h"
+#include "common/elf.h"
 
 /**
  * @brief  以LBA模式读取磁盘(有48位PIO与28位PIO, 此处使用48位PIO)
@@ -21,8 +22,8 @@
 static void read_disk(uint32_t sector, uint16_t sector_count, uint8_t *buf) {
     
     //1.设置以LBA模式进行读取，即将磁盘看作一片连续的扇区
-    outb(0x1F6, 0xE0 | (0x0 << 4));             //0xE0 将寄存器第6位置1进入LBA模式，0x0将第4位置0指定驱动器号为主盘
-                                                //现在一个通道上只有一个盘，默认当作主盘
+    outb(0x1F6, 0xE0 | (0x0 << 4));              //0xE0 将寄存器第6位置1进入LBA模式，0x0将第4位置0指定驱动器号为主盘
+                                                            //现在一个通道上只有一个盘，默认当作主盘
                     
     //2.初始化各个端口寄存器的高8位
     outb(0x1F2, (uint8_t)(sector_count >> 8));  //读取扇区数的高8位
@@ -56,12 +57,79 @@ static void read_disk(uint32_t sector, uint16_t sector_count, uint8_t *buf) {
     
 }
 
+
+/**
+ * @brief   解析内存中地址为 file_buffer 处的elf文件头，并将.text,.rodata,.data,.bss段
+ *          拷贝到内存中的目的地址，elf文件会将(.text, .rodata)，(.data, .bss)各放在一个段
+ * 
+ * @param file_start_addr 已加载到内存中的elf文件的起始地址
+ * @return uint32_t   返回所拷贝的程序段的入口地址
+ */
+static uint32_t reload_elf_file(uint8_t *file_start_addr ) {
+    //1.强转为Elf32_Ehdr, 使该结构体可以访问到之后的52字节, 即elf header所包含的内容
+    Elf32_Ehdr *elf_hdr = (Elf32_Ehdr*)file_start_addr; 
+
+    //2.判断为访问的内存区域是否为elf文件,若不是则直接返回0
+    if (elf_hdr->e_ident[0] != 0x7f 
+        || elf_hdr->e_ident[1] != 'E' 
+        || elf_hdr->e_ident[2] != 'L' 
+        || elf_hdr->e_ident[3] != 'F') return 0;
+
+    //3.解析program hear即段的头信息数组
+    for (int i = 0; i < elf_hdr->e_phnum; ++i) {
+        //4.以 Elf32_Phdr 内存大小为单位，逐个读取段的头信息，e_phoff 为其起始地址相对于elf文件的偏移量
+        Elf32_Phdr *phdr = (Elf32_Phdr*)(file_start_addr + elf_hdr->e_phoff) + i;
+
+        //5.判断是否为可加载的程序段, 不是则直接忽略
+        if (phdr->p_type != PT_LOAD) continue;
+
+        //6.找到可加载程序段在内存中的位置, p_offset为其起始地址相对于elf文件的偏移量
+        uint8_t *src = file_start_addr + phdr->p_offset;
+
+        //7.加载到内存中的目的地址
+        uint8_t *dest = (uint8_t*)phdr->p_vaddr;
+
+        //8.逐个字节拷贝到对应位置
+        for (int i = 0; i < phdr->p_filesz; ++i) {
+            *(dest++) = *(src++);
+        }
+
+        //9.若加载的是.data段和.bss段，则.bss段因为未初始化，所以在elf文件中并为为其预留空间
+        //但在内存中需要为其分配空间，还需要分配空间大小为 (p_memsz - p_filesz),置0即可
+        for (int i = 0; i < phdr->p_memsz - phdr->p_filesz; ++i) {
+            *(dest++) = 0;
+        }
+    }
+
+    //10.返回解析的程序段的入口地址
+    return elf_hdr->e_entry;
+}
+
+/**
+ * @brief  读取错误代码进行异常处理
+ * 
+ * @param err_code 
+ */
+static void die(uint8_t err_code) {
+    //TODO:暂时什么都不做，直接卡死电脑
+    for(;;){}
+}
+
 /**
  * @brief  32位loader程序的入口函数
  * 
  */
 void load_kernel(void) {
-    read_disk(100, 500, (uint8_t*)SYS_KERNEL_LOAD_ADDR);            //从磁盘100号分区读取内核，一共读取250kb，到内存
-    ((void(*)(_boot_info_t_*))SYS_KERNEL_LOAD_ADDR)(&boot_info);    //将boot_info记录的信息传递给内核初始化函数
+    //1.从磁盘100号分区读取内核，一共读取250kb，到内存中地址为SYS_KERNEL_LOAD_ADDR的地方
+    read_disk(100, 500, (uint8_t*)SYS_KERNEL_LOAD_ADDR);            
+
+    //2.解析内存中地址为SYS_KERNEL_LOAD_ADDR处的elf文件头     
+    uint32_t kernel_entry = reload_elf_file((uint8_t*)SYS_KERNEL_LOAD_ADDR); 
+    if (kernel_entry == 0) { //函数执行失败，返回的入口地址为0，进行错误处理
+        die(-1);
+    }               
+
+    //3.将boot_info记录的信息传递给已拷贝到确定内存中的内核初始化函数
+    ((void(*)(_boot_info_t_*))kernel_entry)(&boot_info);    
     for (;;){};
 }

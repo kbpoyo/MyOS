@@ -61,7 +61,9 @@
                 },
                 {
                     "description": "加载内核符号文件",
-                    "text": "add-symbol-file ./build/source/kernel/kernel.elf 0x100000",
+                    //虽然kernel.elf被加载到了0x100000处，但可执行的部分,被加载到了0x10000处，
+                    //所以程序起始地址为0x10000，以此为段基址计算符号表中符号的目的地址，用于gdb调试
+                    "text": "add-symbol-file ./build/source/kernel/kernel.elf 0x10000", 
                     "ignoreFailures": false
                 },
                 // {

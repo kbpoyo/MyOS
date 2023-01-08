@@ -15,7 +15,8 @@ source/loader/CMakeFiles/loader.dir/loader_32.c.o: ../source/loader/loader_32.c 
   ../source/common/boot_info.h \
   ../source/common/types.h \
   ../source/common/types.h \
-  ../source/common/cpu_instr.h
+  ../source/common/cpu_instr.h \
+  ../source/common/elf.h
 
 
 ../source/loader/loader_32.c:
@@ -25,6 +26,8 @@ source/loader/CMakeFiles/loader.dir/loader_32.c.o: ../source/loader/loader_32.c 
 ../source/common/types.h:
 
 ../source/common/boot_info.h:
+
+../source/common/elf.h:
 
 ../source/loader/loader.h:
 
