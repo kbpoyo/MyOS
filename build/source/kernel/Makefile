@@ -31,9 +31,6 @@ default_target: all
 
 .SUFFIXES: .hpux_make_needs_suffix_list
 
-# Produce verbose output by default.
-VERBOSE = 1
-
 # Command-line flag to silence nested $(MAKE).
 $(VERBOSE)MAKESILENT = -s
 
@@ -60,10 +57,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/kbpoyo/Documents/code/cpp/MyOS
+CMAKE_SOURCE_DIR = /home/kbpoyo/code/cpp/MyOs
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/kbpoyo/Documents/code/cpp/MyOS/build
+CMAKE_BINARY_DIR = /home/kbpoyo/code/cpp/MyOs/build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -90,14 +87,14 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	cd /home/kbpoyo/Documents/code/cpp/MyOS/build && $(CMAKE_COMMAND) -E cmake_progress_start /home/kbpoyo/Documents/code/cpp/MyOS/build/CMakeFiles /home/kbpoyo/Documents/code/cpp/MyOS/build/source/kernel//CMakeFiles/progress.marks
-	cd /home/kbpoyo/Documents/code/cpp/MyOS/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 source/kernel/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/kbpoyo/Documents/code/cpp/MyOS/build/CMakeFiles 0
+	cd /home/kbpoyo/code/cpp/MyOs/build && $(CMAKE_COMMAND) -E cmake_progress_start /home/kbpoyo/code/cpp/MyOs/build/CMakeFiles /home/kbpoyo/code/cpp/MyOs/build/source/kernel//CMakeFiles/progress.marks
+	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 source/kernel/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/kbpoyo/code/cpp/MyOs/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
 clean:
-	cd /home/kbpoyo/Documents/code/cpp/MyOS/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 source/kernel/clean
+	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 source/kernel/clean
 .PHONY : clean
 
 # The main clean target
@@ -106,22 +103,22 @@ clean/fast: clean
 
 # Prepare targets for installation.
 preinstall: all
-	cd /home/kbpoyo/Documents/code/cpp/MyOS/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 source/kernel/preinstall
+	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 source/kernel/preinstall
 .PHONY : preinstall
 
 # Prepare targets for installation.
 preinstall/fast:
-	cd /home/kbpoyo/Documents/code/cpp/MyOS/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 source/kernel/preinstall
+	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 source/kernel/preinstall
 .PHONY : preinstall/fast
 
 # clear depends
 depend:
-	cd /home/kbpoyo/Documents/code/cpp/MyOS/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
+	cd /home/kbpoyo/code/cpp/MyOs/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
 
 # Convenience name for target.
 source/kernel/CMakeFiles/kernel.dir/rule:
-	cd /home/kbpoyo/Documents/code/cpp/MyOS/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 source/kernel/CMakeFiles/kernel.dir/rule
+	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 source/kernel/CMakeFiles/kernel.dir/rule
 .PHONY : source/kernel/CMakeFiles/kernel.dir/rule
 
 # Convenience name for target.
@@ -130,7 +127,7 @@ kernel: source/kernel/CMakeFiles/kernel.dir/rule
 
 # fast build rule for target.
 kernel/fast:
-	cd /home/kbpoyo/Documents/code/cpp/MyOS/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/build
+	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/build
 .PHONY : kernel/fast
 
 init/init.o: init/init.c.o
@@ -138,7 +135,7 @@ init/init.o: init/init.c.o
 
 # target to build an object file
 init/init.c.o:
-	cd /home/kbpoyo/Documents/code/cpp/MyOS/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/init/init.c.o
+	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/init/init.c.o
 .PHONY : init/init.c.o
 
 init/init.i: init/init.c.i
@@ -146,7 +143,7 @@ init/init.i: init/init.c.i
 
 # target to preprocess a source file
 init/init.c.i:
-	cd /home/kbpoyo/Documents/code/cpp/MyOS/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/init/init.c.i
+	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/init/init.c.i
 .PHONY : init/init.c.i
 
 init/init.s: init/init.c.s
@@ -154,7 +151,7 @@ init/init.s: init/init.c.s
 
 # target to generate assembly for a file
 init/init.c.s:
-	cd /home/kbpoyo/Documents/code/cpp/MyOS/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/init/init.c.s
+	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/init/init.c.s
 .PHONY : init/init.c.s
 
 init/start.o: init/start.S.o
@@ -162,7 +159,7 @@ init/start.o: init/start.S.o
 
 # target to build an object file
 init/start.S.o:
-	cd /home/kbpoyo/Documents/code/cpp/MyOS/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/init/start.S.o
+	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/init/start.S.o
 .PHONY : init/start.S.o
 
 # Help Target
@@ -189,6 +186,6 @@ help:
 # No rule that depends on this can have commands that come from listfiles
 # because they might be regenerated.
 cmake_check_build_system:
-	cd /home/kbpoyo/Documents/code/cpp/MyOS/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
+	cd /home/kbpoyo/code/cpp/MyOs/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
 .PHONY : cmake_check_build_system
 

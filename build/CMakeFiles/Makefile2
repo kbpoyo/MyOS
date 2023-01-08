@@ -28,9 +28,6 @@ default_target: all
 
 .SUFFIXES: .hpux_make_needs_suffix_list
 
-# Produce verbose output by default.
-VERBOSE = 1
-
 # Command-line flag to silence nested $(MAKE).
 $(VERBOSE)MAKESILENT = -s
 
@@ -57,10 +54,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/kbpoyo/Documents/code/cpp/MyOS
+CMAKE_SOURCE_DIR = /home/kbpoyo/code/cpp/MyOs
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/kbpoyo/Documents/code/cpp/MyOS/build
+CMAKE_BINARY_DIR = /home/kbpoyo/code/cpp/MyOs/build
 
 #=============================================================================
 # Directory level rules for the build root directory
@@ -135,14 +132,14 @@ source/loader/clean: source/loader/CMakeFiles/loader.dir/clean
 source/boot/CMakeFiles/boot.dir/all:
 	$(MAKE) $(MAKESILENT) -f source/boot/CMakeFiles/boot.dir/build.make source/boot/CMakeFiles/boot.dir/depend
 	$(MAKE) $(MAKESILENT) -f source/boot/CMakeFiles/boot.dir/build.make source/boot/CMakeFiles/boot.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/kbpoyo/Documents/code/cpp/MyOS/build/CMakeFiles --progress-num=1,2,3 "Built target boot"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/kbpoyo/code/cpp/MyOs/build/CMakeFiles --progress-num=1,2,3 "Built target boot"
 .PHONY : source/boot/CMakeFiles/boot.dir/all
 
 # Build rule for subdir invocation for target.
 source/boot/CMakeFiles/boot.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/kbpoyo/Documents/code/cpp/MyOS/build/CMakeFiles 3
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/kbpoyo/code/cpp/MyOs/build/CMakeFiles 3
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 source/boot/CMakeFiles/boot.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/kbpoyo/Documents/code/cpp/MyOS/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/kbpoyo/code/cpp/MyOs/build/CMakeFiles 0
 .PHONY : source/boot/CMakeFiles/boot.dir/rule
 
 # Convenience name for target.
@@ -161,14 +158,14 @@ source/boot/CMakeFiles/boot.dir/clean:
 source/loader/CMakeFiles/loader.dir/all:
 	$(MAKE) $(MAKESILENT) -f source/loader/CMakeFiles/loader.dir/build.make source/loader/CMakeFiles/loader.dir/depend
 	$(MAKE) $(MAKESILENT) -f source/loader/CMakeFiles/loader.dir/build.make source/loader/CMakeFiles/loader.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/kbpoyo/Documents/code/cpp/MyOS/build/CMakeFiles --progress-num=7,8,9,10 "Built target loader"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/kbpoyo/code/cpp/MyOs/build/CMakeFiles --progress-num=7,8,9,10 "Built target loader"
 .PHONY : source/loader/CMakeFiles/loader.dir/all
 
 # Build rule for subdir invocation for target.
 source/loader/CMakeFiles/loader.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/kbpoyo/Documents/code/cpp/MyOS/build/CMakeFiles 4
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/kbpoyo/code/cpp/MyOs/build/CMakeFiles 4
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 source/loader/CMakeFiles/loader.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/kbpoyo/Documents/code/cpp/MyOS/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/kbpoyo/code/cpp/MyOs/build/CMakeFiles 0
 .PHONY : source/loader/CMakeFiles/loader.dir/rule
 
 # Convenience name for target.
@@ -187,14 +184,14 @@ source/loader/CMakeFiles/loader.dir/clean:
 source/kernel/CMakeFiles/kernel.dir/all:
 	$(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/depend
 	$(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/kbpoyo/Documents/code/cpp/MyOS/build/CMakeFiles --progress-num=4,5,6 "Built target kernel"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/kbpoyo/code/cpp/MyOs/build/CMakeFiles --progress-num=4,5,6 "Built target kernel"
 .PHONY : source/kernel/CMakeFiles/kernel.dir/all
 
 # Build rule for subdir invocation for target.
 source/kernel/CMakeFiles/kernel.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/kbpoyo/Documents/code/cpp/MyOS/build/CMakeFiles 3
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/kbpoyo/code/cpp/MyOs/build/CMakeFiles 3
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 source/kernel/CMakeFiles/kernel.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/kbpoyo/Documents/code/cpp/MyOS/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/kbpoyo/code/cpp/MyOs/build/CMakeFiles 0
 .PHONY : source/kernel/CMakeFiles/kernel.dir/rule
 
 # Convenience name for target.

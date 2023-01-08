@@ -27,9 +27,6 @@
 
 .SUFFIXES: .hpux_make_needs_suffix_list
 
-# Produce verbose output by default.
-VERBOSE = 1
-
 # Command-line flag to silence nested $(MAKE).
 $(VERBOSE)MAKESILENT = -s
 
@@ -56,10 +53,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/kbpoyo/Documents/code/cpp/MyOS
+CMAKE_SOURCE_DIR = /home/kbpoyo/code/cpp/MyOs
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/kbpoyo/Documents/code/cpp/MyOS/build
+CMAKE_BINARY_DIR = /home/kbpoyo/code/cpp/MyOs/build
 
 # Include any dependencies generated for this target.
 include source/loader/CMakeFiles/loader.dir/depend.make
@@ -74,44 +71,44 @@ include source/loader/CMakeFiles/loader.dir/flags.make
 
 source/loader/CMakeFiles/loader.dir/start.S.o: source/loader/CMakeFiles/loader.dir/flags.make
 source/loader/CMakeFiles/loader.dir/start.S.o: ../source/loader/start.S
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/kbpoyo/Documents/code/cpp/MyOS/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building ASM object source/loader/CMakeFiles/loader.dir/start.S.o"
-	cd /home/kbpoyo/Documents/code/cpp/MyOS/build/source/loader && /usr/bin/gcc $(ASM_DEFINES) $(ASM_INCLUDES) $(ASM_FLAGS) -o CMakeFiles/loader.dir/start.S.o -c /home/kbpoyo/Documents/code/cpp/MyOS/source/loader/start.S
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/kbpoyo/code/cpp/MyOs/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building ASM object source/loader/CMakeFiles/loader.dir/start.S.o"
+	cd /home/kbpoyo/code/cpp/MyOs/build/source/loader && /usr/bin/gcc $(ASM_DEFINES) $(ASM_INCLUDES) $(ASM_FLAGS) -o CMakeFiles/loader.dir/start.S.o -c /home/kbpoyo/code/cpp/MyOs/source/loader/start.S
 
 source/loader/CMakeFiles/loader.dir/start.S.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing ASM source to CMakeFiles/loader.dir/start.S.i"
-	cd /home/kbpoyo/Documents/code/cpp/MyOS/build/source/loader && /usr/bin/gcc $(ASM_DEFINES) $(ASM_INCLUDES) $(ASM_FLAGS) -E /home/kbpoyo/Documents/code/cpp/MyOS/source/loader/start.S > CMakeFiles/loader.dir/start.S.i
+	cd /home/kbpoyo/code/cpp/MyOs/build/source/loader && /usr/bin/gcc $(ASM_DEFINES) $(ASM_INCLUDES) $(ASM_FLAGS) -E /home/kbpoyo/code/cpp/MyOs/source/loader/start.S > CMakeFiles/loader.dir/start.S.i
 
 source/loader/CMakeFiles/loader.dir/start.S.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling ASM source to assembly CMakeFiles/loader.dir/start.S.s"
-	cd /home/kbpoyo/Documents/code/cpp/MyOS/build/source/loader && /usr/bin/gcc $(ASM_DEFINES) $(ASM_INCLUDES) $(ASM_FLAGS) -S /home/kbpoyo/Documents/code/cpp/MyOS/source/loader/start.S -o CMakeFiles/loader.dir/start.S.s
+	cd /home/kbpoyo/code/cpp/MyOs/build/source/loader && /usr/bin/gcc $(ASM_DEFINES) $(ASM_INCLUDES) $(ASM_FLAGS) -S /home/kbpoyo/code/cpp/MyOs/source/loader/start.S -o CMakeFiles/loader.dir/start.S.s
 
 source/loader/CMakeFiles/loader.dir/loader_16.c.o: source/loader/CMakeFiles/loader.dir/flags.make
 source/loader/CMakeFiles/loader.dir/loader_16.c.o: ../source/loader/loader_16.c
 source/loader/CMakeFiles/loader.dir/loader_16.c.o: source/loader/CMakeFiles/loader.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/kbpoyo/Documents/code/cpp/MyOS/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object source/loader/CMakeFiles/loader.dir/loader_16.c.o"
-	cd /home/kbpoyo/Documents/code/cpp/MyOS/build/source/loader && /usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT source/loader/CMakeFiles/loader.dir/loader_16.c.o -MF CMakeFiles/loader.dir/loader_16.c.o.d -o CMakeFiles/loader.dir/loader_16.c.o -c /home/kbpoyo/Documents/code/cpp/MyOS/source/loader/loader_16.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/kbpoyo/code/cpp/MyOs/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object source/loader/CMakeFiles/loader.dir/loader_16.c.o"
+	cd /home/kbpoyo/code/cpp/MyOs/build/source/loader && /usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT source/loader/CMakeFiles/loader.dir/loader_16.c.o -MF CMakeFiles/loader.dir/loader_16.c.o.d -o CMakeFiles/loader.dir/loader_16.c.o -c /home/kbpoyo/code/cpp/MyOs/source/loader/loader_16.c
 
 source/loader/CMakeFiles/loader.dir/loader_16.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/loader.dir/loader_16.c.i"
-	cd /home/kbpoyo/Documents/code/cpp/MyOS/build/source/loader && /usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/kbpoyo/Documents/code/cpp/MyOS/source/loader/loader_16.c > CMakeFiles/loader.dir/loader_16.c.i
+	cd /home/kbpoyo/code/cpp/MyOs/build/source/loader && /usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/kbpoyo/code/cpp/MyOs/source/loader/loader_16.c > CMakeFiles/loader.dir/loader_16.c.i
 
 source/loader/CMakeFiles/loader.dir/loader_16.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/loader.dir/loader_16.c.s"
-	cd /home/kbpoyo/Documents/code/cpp/MyOS/build/source/loader && /usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/kbpoyo/Documents/code/cpp/MyOS/source/loader/loader_16.c -o CMakeFiles/loader.dir/loader_16.c.s
+	cd /home/kbpoyo/code/cpp/MyOs/build/source/loader && /usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/kbpoyo/code/cpp/MyOs/source/loader/loader_16.c -o CMakeFiles/loader.dir/loader_16.c.s
 
 source/loader/CMakeFiles/loader.dir/loader_32.c.o: source/loader/CMakeFiles/loader.dir/flags.make
 source/loader/CMakeFiles/loader.dir/loader_32.c.o: ../source/loader/loader_32.c
 source/loader/CMakeFiles/loader.dir/loader_32.c.o: source/loader/CMakeFiles/loader.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/kbpoyo/Documents/code/cpp/MyOS/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building C object source/loader/CMakeFiles/loader.dir/loader_32.c.o"
-	cd /home/kbpoyo/Documents/code/cpp/MyOS/build/source/loader && /usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT source/loader/CMakeFiles/loader.dir/loader_32.c.o -MF CMakeFiles/loader.dir/loader_32.c.o.d -o CMakeFiles/loader.dir/loader_32.c.o -c /home/kbpoyo/Documents/code/cpp/MyOS/source/loader/loader_32.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/kbpoyo/code/cpp/MyOs/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building C object source/loader/CMakeFiles/loader.dir/loader_32.c.o"
+	cd /home/kbpoyo/code/cpp/MyOs/build/source/loader && /usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT source/loader/CMakeFiles/loader.dir/loader_32.c.o -MF CMakeFiles/loader.dir/loader_32.c.o.d -o CMakeFiles/loader.dir/loader_32.c.o -c /home/kbpoyo/code/cpp/MyOs/source/loader/loader_32.c
 
 source/loader/CMakeFiles/loader.dir/loader_32.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/loader.dir/loader_32.c.i"
-	cd /home/kbpoyo/Documents/code/cpp/MyOS/build/source/loader && /usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/kbpoyo/Documents/code/cpp/MyOS/source/loader/loader_32.c > CMakeFiles/loader.dir/loader_32.c.i
+	cd /home/kbpoyo/code/cpp/MyOs/build/source/loader && /usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/kbpoyo/code/cpp/MyOs/source/loader/loader_32.c > CMakeFiles/loader.dir/loader_32.c.i
 
 source/loader/CMakeFiles/loader.dir/loader_32.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/loader.dir/loader_32.c.s"
-	cd /home/kbpoyo/Documents/code/cpp/MyOS/build/source/loader && /usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/kbpoyo/Documents/code/cpp/MyOS/source/loader/loader_32.c -o CMakeFiles/loader.dir/loader_32.c.s
+	cd /home/kbpoyo/code/cpp/MyOs/build/source/loader && /usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/kbpoyo/code/cpp/MyOs/source/loader/loader_32.c -o CMakeFiles/loader.dir/loader_32.c.s
 
 # Object files for target loader
 loader_OBJECTS = \
@@ -127,21 +124,21 @@ source/loader/loader: source/loader/CMakeFiles/loader.dir/loader_16.c.o
 source/loader/loader: source/loader/CMakeFiles/loader.dir/loader_32.c.o
 source/loader/loader: source/loader/CMakeFiles/loader.dir/build.make
 source/loader/loader: source/loader/CMakeFiles/loader.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/kbpoyo/Documents/code/cpp/MyOS/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking C executable loader"
-	cd /home/kbpoyo/Documents/code/cpp/MyOS/build/source/loader && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/loader.dir/link.txt --verbose=$(VERBOSE)
-	cd /home/kbpoyo/Documents/code/cpp/MyOS/build/source/loader && objcopy -O binary loader.elf /home/kbpoyo/Documents/code/cpp/MyOS/image/loader.bin
-	cd /home/kbpoyo/Documents/code/cpp/MyOS/build/source/loader && objdump -x -d -S -m i8086 /home/kbpoyo/Documents/code/cpp/MyOS/build/source/loader/loader.elf > loader_dis.txt
-	cd /home/kbpoyo/Documents/code/cpp/MyOS/build/source/loader && readelf -a /home/kbpoyo/Documents/code/cpp/MyOS/build/source/loader/loader.elf > loader_elf.txt
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/kbpoyo/code/cpp/MyOs/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking C executable loader"
+	cd /home/kbpoyo/code/cpp/MyOs/build/source/loader && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/loader.dir/link.txt --verbose=$(VERBOSE)
+	cd /home/kbpoyo/code/cpp/MyOs/build/source/loader && objcopy -O binary loader.elf /home/kbpoyo/code/cpp/MyOs/image/loader.bin
+	cd /home/kbpoyo/code/cpp/MyOs/build/source/loader && objdump -x -d -S -m i8086 /home/kbpoyo/code/cpp/MyOs/build/source/loader/loader.elf > loader_dis.txt
+	cd /home/kbpoyo/code/cpp/MyOs/build/source/loader && readelf -a /home/kbpoyo/code/cpp/MyOs/build/source/loader/loader.elf > loader_elf.txt
 
 # Rule to build all files generated by this target.
 source/loader/CMakeFiles/loader.dir/build: source/loader/loader
 .PHONY : source/loader/CMakeFiles/loader.dir/build
 
 source/loader/CMakeFiles/loader.dir/clean:
-	cd /home/kbpoyo/Documents/code/cpp/MyOS/build/source/loader && $(CMAKE_COMMAND) -P CMakeFiles/loader.dir/cmake_clean.cmake
+	cd /home/kbpoyo/code/cpp/MyOs/build/source/loader && $(CMAKE_COMMAND) -P CMakeFiles/loader.dir/cmake_clean.cmake
 .PHONY : source/loader/CMakeFiles/loader.dir/clean
 
 source/loader/CMakeFiles/loader.dir/depend:
-	cd /home/kbpoyo/Documents/code/cpp/MyOS/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/kbpoyo/Documents/code/cpp/MyOS /home/kbpoyo/Documents/code/cpp/MyOS/source/loader /home/kbpoyo/Documents/code/cpp/MyOS/build /home/kbpoyo/Documents/code/cpp/MyOS/build/source/loader /home/kbpoyo/Documents/code/cpp/MyOS/build/source/loader/CMakeFiles/loader.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/kbpoyo/code/cpp/MyOs/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/kbpoyo/code/cpp/MyOs /home/kbpoyo/code/cpp/MyOs/source/loader /home/kbpoyo/code/cpp/MyOs/build /home/kbpoyo/code/cpp/MyOs/build/source/loader /home/kbpoyo/code/cpp/MyOs/build/source/loader/CMakeFiles/loader.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : source/loader/CMakeFiles/loader.dir/depend
 

@@ -8,7 +8,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_ASM
-  "/home/kbpoyo/Documents/code/cpp/MyOS/source/kernel/init/start.S" "/home/kbpoyo/Documents/code/cpp/MyOS/build/source/kernel/CMakeFiles/kernel.dir/init/start.S.o"
+  "/home/kbpoyo/code/cpp/MyOs/source/kernel/init/start.S" "/home/kbpoyo/code/cpp/MyOs/build/source/kernel/CMakeFiles/kernel.dir/init/start.S.o"
   )
 set(CMAKE_ASM_COMPILER_ID "GNU")
 
@@ -19,7 +19,7 @@ set(CMAKE_ASM_TARGET_INCLUDE_PATH
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/home/kbpoyo/Documents/code/cpp/MyOS/source/kernel/init/init.c" "source/kernel/CMakeFiles/kernel.dir/init/init.c.o" "gcc" "source/kernel/CMakeFiles/kernel.dir/init/init.c.o.d"
+  "/home/kbpoyo/code/cpp/MyOs/source/kernel/init/init.c" "source/kernel/CMakeFiles/kernel.dir/init/init.c.o" "gcc" "source/kernel/CMakeFiles/kernel.dir/init/init.c.o.d"
   )
 
 # Targets to which this target links.

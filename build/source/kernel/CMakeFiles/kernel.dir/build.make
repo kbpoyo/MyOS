@@ -27,9 +27,6 @@
 
 .SUFFIXES: .hpux_make_needs_suffix_list
 
-# Produce verbose output by default.
-VERBOSE = 1
-
 # Command-line flag to silence nested $(MAKE).
 $(VERBOSE)MAKESILENT = -s
 
@@ -56,10 +53,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/kbpoyo/Documents/code/cpp/MyOS
+CMAKE_SOURCE_DIR = /home/kbpoyo/code/cpp/MyOs
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/kbpoyo/Documents/code/cpp/MyOS/build
+CMAKE_BINARY_DIR = /home/kbpoyo/code/cpp/MyOs/build
 
 # Include any dependencies generated for this target.
 include source/kernel/CMakeFiles/kernel.dir/depend.make
@@ -74,30 +71,30 @@ include source/kernel/CMakeFiles/kernel.dir/flags.make
 
 source/kernel/CMakeFiles/kernel.dir/init/start.S.o: source/kernel/CMakeFiles/kernel.dir/flags.make
 source/kernel/CMakeFiles/kernel.dir/init/start.S.o: ../source/kernel/init/start.S
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/kbpoyo/Documents/code/cpp/MyOS/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building ASM object source/kernel/CMakeFiles/kernel.dir/init/start.S.o"
-	cd /home/kbpoyo/Documents/code/cpp/MyOS/build/source/kernel && /usr/bin/gcc $(ASM_DEFINES) $(ASM_INCLUDES) $(ASM_FLAGS) -o CMakeFiles/kernel.dir/init/start.S.o -c /home/kbpoyo/Documents/code/cpp/MyOS/source/kernel/init/start.S
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/kbpoyo/code/cpp/MyOs/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building ASM object source/kernel/CMakeFiles/kernel.dir/init/start.S.o"
+	cd /home/kbpoyo/code/cpp/MyOs/build/source/kernel && /usr/bin/gcc $(ASM_DEFINES) $(ASM_INCLUDES) $(ASM_FLAGS) -o CMakeFiles/kernel.dir/init/start.S.o -c /home/kbpoyo/code/cpp/MyOs/source/kernel/init/start.S
 
 source/kernel/CMakeFiles/kernel.dir/init/start.S.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing ASM source to CMakeFiles/kernel.dir/init/start.S.i"
-	cd /home/kbpoyo/Documents/code/cpp/MyOS/build/source/kernel && /usr/bin/gcc $(ASM_DEFINES) $(ASM_INCLUDES) $(ASM_FLAGS) -E /home/kbpoyo/Documents/code/cpp/MyOS/source/kernel/init/start.S > CMakeFiles/kernel.dir/init/start.S.i
+	cd /home/kbpoyo/code/cpp/MyOs/build/source/kernel && /usr/bin/gcc $(ASM_DEFINES) $(ASM_INCLUDES) $(ASM_FLAGS) -E /home/kbpoyo/code/cpp/MyOs/source/kernel/init/start.S > CMakeFiles/kernel.dir/init/start.S.i
 
 source/kernel/CMakeFiles/kernel.dir/init/start.S.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling ASM source to assembly CMakeFiles/kernel.dir/init/start.S.s"
-	cd /home/kbpoyo/Documents/code/cpp/MyOS/build/source/kernel && /usr/bin/gcc $(ASM_DEFINES) $(ASM_INCLUDES) $(ASM_FLAGS) -S /home/kbpoyo/Documents/code/cpp/MyOS/source/kernel/init/start.S -o CMakeFiles/kernel.dir/init/start.S.s
+	cd /home/kbpoyo/code/cpp/MyOs/build/source/kernel && /usr/bin/gcc $(ASM_DEFINES) $(ASM_INCLUDES) $(ASM_FLAGS) -S /home/kbpoyo/code/cpp/MyOs/source/kernel/init/start.S -o CMakeFiles/kernel.dir/init/start.S.s
 
 source/kernel/CMakeFiles/kernel.dir/init/init.c.o: source/kernel/CMakeFiles/kernel.dir/flags.make
 source/kernel/CMakeFiles/kernel.dir/init/init.c.o: ../source/kernel/init/init.c
 source/kernel/CMakeFiles/kernel.dir/init/init.c.o: source/kernel/CMakeFiles/kernel.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/kbpoyo/Documents/code/cpp/MyOS/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object source/kernel/CMakeFiles/kernel.dir/init/init.c.o"
-	cd /home/kbpoyo/Documents/code/cpp/MyOS/build/source/kernel && /usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT source/kernel/CMakeFiles/kernel.dir/init/init.c.o -MF CMakeFiles/kernel.dir/init/init.c.o.d -o CMakeFiles/kernel.dir/init/init.c.o -c /home/kbpoyo/Documents/code/cpp/MyOS/source/kernel/init/init.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/kbpoyo/code/cpp/MyOs/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object source/kernel/CMakeFiles/kernel.dir/init/init.c.o"
+	cd /home/kbpoyo/code/cpp/MyOs/build/source/kernel && /usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT source/kernel/CMakeFiles/kernel.dir/init/init.c.o -MF CMakeFiles/kernel.dir/init/init.c.o.d -o CMakeFiles/kernel.dir/init/init.c.o -c /home/kbpoyo/code/cpp/MyOs/source/kernel/init/init.c
 
 source/kernel/CMakeFiles/kernel.dir/init/init.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/kernel.dir/init/init.c.i"
-	cd /home/kbpoyo/Documents/code/cpp/MyOS/build/source/kernel && /usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/kbpoyo/Documents/code/cpp/MyOS/source/kernel/init/init.c > CMakeFiles/kernel.dir/init/init.c.i
+	cd /home/kbpoyo/code/cpp/MyOs/build/source/kernel && /usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/kbpoyo/code/cpp/MyOs/source/kernel/init/init.c > CMakeFiles/kernel.dir/init/init.c.i
 
 source/kernel/CMakeFiles/kernel.dir/init/init.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/kernel.dir/init/init.c.s"
-	cd /home/kbpoyo/Documents/code/cpp/MyOS/build/source/kernel && /usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/kbpoyo/Documents/code/cpp/MyOS/source/kernel/init/init.c -o CMakeFiles/kernel.dir/init/init.c.s
+	cd /home/kbpoyo/code/cpp/MyOs/build/source/kernel && /usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/kbpoyo/code/cpp/MyOs/source/kernel/init/init.c -o CMakeFiles/kernel.dir/init/init.c.s
 
 # Object files for target kernel
 kernel_OBJECTS = \
@@ -111,21 +108,21 @@ source/kernel/kernel: source/kernel/CMakeFiles/kernel.dir/init/start.S.o
 source/kernel/kernel: source/kernel/CMakeFiles/kernel.dir/init/init.c.o
 source/kernel/kernel: source/kernel/CMakeFiles/kernel.dir/build.make
 source/kernel/kernel: source/kernel/CMakeFiles/kernel.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/kbpoyo/Documents/code/cpp/MyOS/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking C executable kernel"
-	cd /home/kbpoyo/Documents/code/cpp/MyOS/build/source/kernel && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/kernel.dir/link.txt --verbose=$(VERBOSE)
-	cd /home/kbpoyo/Documents/code/cpp/MyOS/build/source/kernel && objcopy -O binary kernel.elf /home/kbpoyo/Documents/code/cpp/MyOS/image/kernel.elf
-	cd /home/kbpoyo/Documents/code/cpp/MyOS/build/source/kernel && objdump -x -d -S -m i386 /home/kbpoyo/Documents/code/cpp/MyOS/build/source/kernel/kernel.elf > kernel_dis.txt
-	cd /home/kbpoyo/Documents/code/cpp/MyOS/build/source/kernel && readelf -a /home/kbpoyo/Documents/code/cpp/MyOS/build/source/kernel/kernel.elf > kernel_elf.txt
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/kbpoyo/code/cpp/MyOs/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking C executable kernel"
+	cd /home/kbpoyo/code/cpp/MyOs/build/source/kernel && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/kernel.dir/link.txt --verbose=$(VERBOSE)
+	cd /home/kbpoyo/code/cpp/MyOs/build/source/kernel && objcopy -O binary kernel.elf /home/kbpoyo/code/cpp/MyOs/image/kernel.elf
+	cd /home/kbpoyo/code/cpp/MyOs/build/source/kernel && objdump -x -d -S -m i386 /home/kbpoyo/code/cpp/MyOs/build/source/kernel/kernel.elf > kernel_dis.txt
+	cd /home/kbpoyo/code/cpp/MyOs/build/source/kernel && readelf -a /home/kbpoyo/code/cpp/MyOs/build/source/kernel/kernel.elf > kernel_elf.txt
 
 # Rule to build all files generated by this target.
 source/kernel/CMakeFiles/kernel.dir/build: source/kernel/kernel
 .PHONY : source/kernel/CMakeFiles/kernel.dir/build
 
 source/kernel/CMakeFiles/kernel.dir/clean:
-	cd /home/kbpoyo/Documents/code/cpp/MyOS/build/source/kernel && $(CMAKE_COMMAND) -P CMakeFiles/kernel.dir/cmake_clean.cmake
+	cd /home/kbpoyo/code/cpp/MyOs/build/source/kernel && $(CMAKE_COMMAND) -P CMakeFiles/kernel.dir/cmake_clean.cmake
 .PHONY : source/kernel/CMakeFiles/kernel.dir/clean
 
 source/kernel/CMakeFiles/kernel.dir/depend:
-	cd /home/kbpoyo/Documents/code/cpp/MyOS/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/kbpoyo/Documents/code/cpp/MyOS /home/kbpoyo/Documents/code/cpp/MyOS/source/kernel /home/kbpoyo/Documents/code/cpp/MyOS/build /home/kbpoyo/Documents/code/cpp/MyOS/build/source/kernel /home/kbpoyo/Documents/code/cpp/MyOS/build/source/kernel/CMakeFiles/kernel.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/kbpoyo/code/cpp/MyOs/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/kbpoyo/code/cpp/MyOs /home/kbpoyo/code/cpp/MyOs/source/kernel /home/kbpoyo/code/cpp/MyOs/build /home/kbpoyo/code/cpp/MyOs/build/source/kernel /home/kbpoyo/code/cpp/MyOs/build/source/kernel/CMakeFiles/kernel.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : source/kernel/CMakeFiles/kernel.dir/depend
 

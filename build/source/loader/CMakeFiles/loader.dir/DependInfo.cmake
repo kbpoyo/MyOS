@@ -8,7 +8,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_ASM
-  "/home/kbpoyo/Documents/code/cpp/MyOS/source/loader/start.S" "/home/kbpoyo/Documents/code/cpp/MyOS/build/source/loader/CMakeFiles/loader.dir/start.S.o"
+  "/home/kbpoyo/code/cpp/MyOs/source/loader/start.S" "/home/kbpoyo/code/cpp/MyOs/build/source/loader/CMakeFiles/loader.dir/start.S.o"
   )
 set(CMAKE_ASM_COMPILER_ID "GNU")
 
@@ -19,8 +19,8 @@ set(CMAKE_ASM_TARGET_INCLUDE_PATH
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/home/kbpoyo/Documents/code/cpp/MyOS/source/loader/loader_16.c" "source/loader/CMakeFiles/loader.dir/loader_16.c.o" "gcc" "source/loader/CMakeFiles/loader.dir/loader_16.c.o.d"
-  "/home/kbpoyo/Documents/code/cpp/MyOS/source/loader/loader_32.c" "source/loader/CMakeFiles/loader.dir/loader_32.c.o" "gcc" "source/loader/CMakeFiles/loader.dir/loader_32.c.o.d"
+  "/home/kbpoyo/code/cpp/MyOs/source/loader/loader_16.c" "source/loader/CMakeFiles/loader.dir/loader_16.c.o" "gcc" "source/loader/CMakeFiles/loader.dir/loader_16.c.o.d"
+  "/home/kbpoyo/code/cpp/MyOs/source/loader/loader_32.c" "source/loader/CMakeFiles/loader.dir/loader_32.c.o" "gcc" "source/loader/CMakeFiles/loader.dir/loader_32.c.o.d"
   )
 
 # Targets to which this target links.

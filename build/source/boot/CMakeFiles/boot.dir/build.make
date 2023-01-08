@@ -27,9 +27,6 @@
 
 .SUFFIXES: .hpux_make_needs_suffix_list
 
-# Produce verbose output by default.
-VERBOSE = 1
-
 # Command-line flag to silence nested $(MAKE).
 $(VERBOSE)MAKESILENT = -s
 
@@ -56,10 +53,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/kbpoyo/Documents/code/cpp/MyOS
+CMAKE_SOURCE_DIR = /home/kbpoyo/code/cpp/MyOs
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/kbpoyo/Documents/code/cpp/MyOS/build
+CMAKE_BINARY_DIR = /home/kbpoyo/code/cpp/MyOs/build
 
 # Include any dependencies generated for this target.
 include source/boot/CMakeFiles/boot.dir/depend.make
@@ -74,30 +71,30 @@ include source/boot/CMakeFiles/boot.dir/flags.make
 
 source/boot/CMakeFiles/boot.dir/start.S.o: source/boot/CMakeFiles/boot.dir/flags.make
 source/boot/CMakeFiles/boot.dir/start.S.o: ../source/boot/start.S
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/kbpoyo/Documents/code/cpp/MyOS/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building ASM object source/boot/CMakeFiles/boot.dir/start.S.o"
-	cd /home/kbpoyo/Documents/code/cpp/MyOS/build/source/boot && /usr/bin/gcc $(ASM_DEFINES) $(ASM_INCLUDES) $(ASM_FLAGS) -o CMakeFiles/boot.dir/start.S.o -c /home/kbpoyo/Documents/code/cpp/MyOS/source/boot/start.S
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/kbpoyo/code/cpp/MyOs/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building ASM object source/boot/CMakeFiles/boot.dir/start.S.o"
+	cd /home/kbpoyo/code/cpp/MyOs/build/source/boot && /usr/bin/gcc $(ASM_DEFINES) $(ASM_INCLUDES) $(ASM_FLAGS) -o CMakeFiles/boot.dir/start.S.o -c /home/kbpoyo/code/cpp/MyOs/source/boot/start.S
 
 source/boot/CMakeFiles/boot.dir/start.S.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing ASM source to CMakeFiles/boot.dir/start.S.i"
-	cd /home/kbpoyo/Documents/code/cpp/MyOS/build/source/boot && /usr/bin/gcc $(ASM_DEFINES) $(ASM_INCLUDES) $(ASM_FLAGS) -E /home/kbpoyo/Documents/code/cpp/MyOS/source/boot/start.S > CMakeFiles/boot.dir/start.S.i
+	cd /home/kbpoyo/code/cpp/MyOs/build/source/boot && /usr/bin/gcc $(ASM_DEFINES) $(ASM_INCLUDES) $(ASM_FLAGS) -E /home/kbpoyo/code/cpp/MyOs/source/boot/start.S > CMakeFiles/boot.dir/start.S.i
 
 source/boot/CMakeFiles/boot.dir/start.S.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling ASM source to assembly CMakeFiles/boot.dir/start.S.s"
-	cd /home/kbpoyo/Documents/code/cpp/MyOS/build/source/boot && /usr/bin/gcc $(ASM_DEFINES) $(ASM_INCLUDES) $(ASM_FLAGS) -S /home/kbpoyo/Documents/code/cpp/MyOS/source/boot/start.S -o CMakeFiles/boot.dir/start.S.s
+	cd /home/kbpoyo/code/cpp/MyOs/build/source/boot && /usr/bin/gcc $(ASM_DEFINES) $(ASM_INCLUDES) $(ASM_FLAGS) -S /home/kbpoyo/code/cpp/MyOs/source/boot/start.S -o CMakeFiles/boot.dir/start.S.s
 
 source/boot/CMakeFiles/boot.dir/boot.c.o: source/boot/CMakeFiles/boot.dir/flags.make
 source/boot/CMakeFiles/boot.dir/boot.c.o: ../source/boot/boot.c
 source/boot/CMakeFiles/boot.dir/boot.c.o: source/boot/CMakeFiles/boot.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/kbpoyo/Documents/code/cpp/MyOS/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object source/boot/CMakeFiles/boot.dir/boot.c.o"
-	cd /home/kbpoyo/Documents/code/cpp/MyOS/build/source/boot && /usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT source/boot/CMakeFiles/boot.dir/boot.c.o -MF CMakeFiles/boot.dir/boot.c.o.d -o CMakeFiles/boot.dir/boot.c.o -c /home/kbpoyo/Documents/code/cpp/MyOS/source/boot/boot.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/kbpoyo/code/cpp/MyOs/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object source/boot/CMakeFiles/boot.dir/boot.c.o"
+	cd /home/kbpoyo/code/cpp/MyOs/build/source/boot && /usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT source/boot/CMakeFiles/boot.dir/boot.c.o -MF CMakeFiles/boot.dir/boot.c.o.d -o CMakeFiles/boot.dir/boot.c.o -c /home/kbpoyo/code/cpp/MyOs/source/boot/boot.c
 
 source/boot/CMakeFiles/boot.dir/boot.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/boot.dir/boot.c.i"
-	cd /home/kbpoyo/Documents/code/cpp/MyOS/build/source/boot && /usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/kbpoyo/Documents/code/cpp/MyOS/source/boot/boot.c > CMakeFiles/boot.dir/boot.c.i
+	cd /home/kbpoyo/code/cpp/MyOs/build/source/boot && /usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/kbpoyo/code/cpp/MyOs/source/boot/boot.c > CMakeFiles/boot.dir/boot.c.i
 
 source/boot/CMakeFiles/boot.dir/boot.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/boot.dir/boot.c.s"
-	cd /home/kbpoyo/Documents/code/cpp/MyOS/build/source/boot && /usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/kbpoyo/Documents/code/cpp/MyOS/source/boot/boot.c -o CMakeFiles/boot.dir/boot.c.s
+	cd /home/kbpoyo/code/cpp/MyOs/build/source/boot && /usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/kbpoyo/code/cpp/MyOs/source/boot/boot.c -o CMakeFiles/boot.dir/boot.c.s
 
 # Object files for target boot
 boot_OBJECTS = \
@@ -111,21 +108,21 @@ source/boot/boot: source/boot/CMakeFiles/boot.dir/start.S.o
 source/boot/boot: source/boot/CMakeFiles/boot.dir/boot.c.o
 source/boot/boot: source/boot/CMakeFiles/boot.dir/build.make
 source/boot/boot: source/boot/CMakeFiles/boot.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/kbpoyo/Documents/code/cpp/MyOS/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking C executable boot"
-	cd /home/kbpoyo/Documents/code/cpp/MyOS/build/source/boot && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/boot.dir/link.txt --verbose=$(VERBOSE)
-	cd /home/kbpoyo/Documents/code/cpp/MyOS/build/source/boot && objcopy -O binary boot.elf /home/kbpoyo/Documents/code/cpp/MyOS/image/boot.bin
-	cd /home/kbpoyo/Documents/code/cpp/MyOS/build/source/boot && objdump -x -d -S -m i8086 /home/kbpoyo/Documents/code/cpp/MyOS/build/source/boot/boot.elf > boot_dis.txt
-	cd /home/kbpoyo/Documents/code/cpp/MyOS/build/source/boot && readelf -a /home/kbpoyo/Documents/code/cpp/MyOS/build/source/boot/boot.elf > boot_elf.txt
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/kbpoyo/code/cpp/MyOs/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking C executable boot"
+	cd /home/kbpoyo/code/cpp/MyOs/build/source/boot && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/boot.dir/link.txt --verbose=$(VERBOSE)
+	cd /home/kbpoyo/code/cpp/MyOs/build/source/boot && objcopy -O binary boot.elf /home/kbpoyo/code/cpp/MyOs/image/boot.bin
+	cd /home/kbpoyo/code/cpp/MyOs/build/source/boot && objdump -x -d -S -m i8086 /home/kbpoyo/code/cpp/MyOs/build/source/boot/boot.elf > boot_dis.txt
+	cd /home/kbpoyo/code/cpp/MyOs/build/source/boot && readelf -a /home/kbpoyo/code/cpp/MyOs/build/source/boot/boot.elf > boot_elf.txt
 
 # Rule to build all files generated by this target.
 source/boot/CMakeFiles/boot.dir/build: source/boot/boot
 .PHONY : source/boot/CMakeFiles/boot.dir/build
 
 source/boot/CMakeFiles/boot.dir/clean:
-	cd /home/kbpoyo/Documents/code/cpp/MyOS/build/source/boot && $(CMAKE_COMMAND) -P CMakeFiles/boot.dir/cmake_clean.cmake
+	cd /home/kbpoyo/code/cpp/MyOs/build/source/boot && $(CMAKE_COMMAND) -P CMakeFiles/boot.dir/cmake_clean.cmake
 .PHONY : source/boot/CMakeFiles/boot.dir/clean
 
 source/boot/CMakeFiles/boot.dir/depend:
-	cd /home/kbpoyo/Documents/code/cpp/MyOS/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/kbpoyo/Documents/code/cpp/MyOS /home/kbpoyo/Documents/code/cpp/MyOS/source/boot /home/kbpoyo/Documents/code/cpp/MyOS/build /home/kbpoyo/Documents/code/cpp/MyOS/build/source/boot /home/kbpoyo/Documents/code/cpp/MyOS/build/source/boot/CMakeFiles/boot.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/kbpoyo/code/cpp/MyOs/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/kbpoyo/code/cpp/MyOs /home/kbpoyo/code/cpp/MyOs/source/boot /home/kbpoyo/code/cpp/MyOs/build /home/kbpoyo/code/cpp/MyOs/build/source/boot /home/kbpoyo/code/cpp/MyOs/build/source/boot/CMakeFiles/boot.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : source/boot/CMakeFiles/boot.dir/depend
 

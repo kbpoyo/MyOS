@@ -1,1 +1,1 @@
-ld CMakeFiles/loader.dir/start.S.o CMakeFiles/loader.dir/loader_16.c.o CMakeFiles/loader.dir/loader_32.c.o -m elf_i386  -Ttext=0x8000 -o /home/kbpoyo/Documents/code/cpp/MyOS/build/source/loader/loader.elf
+ld CMakeFiles/loader.dir/start.S.o CMakeFiles/loader.dir/loader_16.c.o CMakeFiles/loader.dir/loader_32.c.o -m elf_i386  -Ttext=0x8000 -o /home/kbpoyo/code/cpp/MyOs/build/source/loader/loader.elf

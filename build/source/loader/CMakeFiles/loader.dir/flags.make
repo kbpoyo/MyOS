@@ -5,13 +5,13 @@
 # compile C with /usr/bin/gcc
 ASM_DEFINES = 
 
-ASM_INCLUDES = -I/home/kbpoyo/Documents/code/cpp/MyOS/source
+ASM_INCLUDES = -I/home/kbpoyo/code/cpp/MyOs/source
 
-ASM_FLAGS = -m32 -g -g
+ASM_FLAGS = -m32 -g
 
 C_DEFINES = 
 
-C_INCLUDES = -I/home/kbpoyo/Documents/code/cpp/MyOS/source
+C_INCLUDES = -I/home/kbpoyo/code/cpp/MyOs/source
 
-C_FLAGS = -g -c -O0 -m32 -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -g
+C_FLAGS = -g -c -O0 -m32 -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables
 

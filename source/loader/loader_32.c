@@ -44,12 +44,12 @@ static void read_disk(uint32_t sector, uint16_t sector_count, uint8_t *buf) {
     //5.读取状态端口寄存器，判断是否可读取,若可以则读取，否则阻塞等待
     uint16_t *data_buf = (uint16_t*) buf;       //数据缓冲区，以后每次会读取16位数据
     while (sector_count--) {
-        while ((inb(0x1F7) & 0x88) != 0x8) {}; //取出状态寄存器3位和7位
+        while ((inb(0x1F7) & 0x88) != 0x8) {};  //取出状态寄存器3位和7位
                                                 //若!=0x8即DRQ位(3位)为0，即非就绪状态
                                                 //或者BSY(7位)为1，即忙碌状态，都不可读取
-        
+
         for (int i = 0; i < SECTOR_SIZE / 2; ++i) {
-            *(data_buf++) = inw(0x1F0);           //从数据端口寄存器中读取16位数据，即2个字节
+            *(data_buf++) = inw(0x1F0);          //从数据端口寄存器中读取16位数据，即2个字节
         }
         
     }
@@ -61,7 +61,7 @@ static void read_disk(uint32_t sector, uint16_t sector_count, uint8_t *buf) {
  * 
  */
 void load_kernel(void) {
-    read_disk(100, 500, (uint8_t*)SYS_KERNEL_LOAD_ADDR); //从磁盘100号分区读取内核，一共读取250kb，到
-    ((void(*)(void))SYS_KERNEL_LOAD_ADDR)();
+    read_disk(100, 500, (uint8_t*)SYS_KERNEL_LOAD_ADDR);            //从磁盘100号分区读取内核，一共读取250kb，到内存
+    ((void(*)(_boot_info_t_*))SYS_KERNEL_LOAD_ADDR)(&boot_info);    //将boot_info记录的信息传递给内核初始化函数
     for (;;){};
 }

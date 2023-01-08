@@ -1,4 +1,4 @@
-# Install script for directory: /home/kbpoyo/Documents/code/cpp/MyOS
+# Install script for directory: /home/kbpoyo/code/cpp/MyOs
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -12,7 +12,7 @@ if(NOT DEFINED CMAKE_INSTALL_CONFIG_NAME)
     string(REGEX REPLACE "^[^A-Za-z0-9_]+" ""
            CMAKE_INSTALL_CONFIG_NAME "${BUILD_TYPE}")
   else()
-    set(CMAKE_INSTALL_CONFIG_NAME "Debug")
+    set(CMAKE_INSTALL_CONFIG_NAME "")
   endif()
   message(STATUS "Install configuration: \"${CMAKE_INSTALL_CONFIG_NAME}\"")
 endif()
@@ -44,9 +44,9 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
-  include("/home/kbpoyo/Documents/code/cpp/MyOS/build/source/boot/cmake_install.cmake")
-  include("/home/kbpoyo/Documents/code/cpp/MyOS/build/source/loader/cmake_install.cmake")
-  include("/home/kbpoyo/Documents/code/cpp/MyOS/build/source/kernel/cmake_install.cmake")
+  include("/home/kbpoyo/code/cpp/MyOs/build/source/boot/cmake_install.cmake")
+  include("/home/kbpoyo/code/cpp/MyOs/build/source/loader/cmake_install.cmake")
+  include("/home/kbpoyo/code/cpp/MyOs/build/source/kernel/cmake_install.cmake")
 
 endif()
 
@@ -58,5 +58,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/home/kbpoyo/Documents/code/cpp/MyOS/build/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/home/kbpoyo/code/cpp/MyOs/build/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

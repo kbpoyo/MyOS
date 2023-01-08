@@ -9,10 +9,13 @@
  * 
  */
 
+#include "init.h"
+#include "common/boot_info.h"
+
 /**
  * @brief  对内核进行初始化操作
  * 
  */
-void kernel_init(void) {
+void kernel_init(_boot_info_t_* boot_info) {
     for (;;){}
 }
