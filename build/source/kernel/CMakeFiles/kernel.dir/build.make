@@ -110,7 +110,7 @@ source/kernel/kernel: source/kernel/CMakeFiles/kernel.dir/build.make
 source/kernel/kernel: source/kernel/CMakeFiles/kernel.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/kbpoyo/code/cpp/MyOs/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking C executable kernel"
 	cd /home/kbpoyo/code/cpp/MyOs/build/source/kernel && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/kernel.dir/link.txt --verbose=$(VERBOSE)
-	cd /home/kbpoyo/code/cpp/MyOs/build/source/kernel && objcopy -O binary kernel.elf /home/kbpoyo/code/cpp/MyOs/image/kernel.elf
+	cd /home/kbpoyo/code/cpp/MyOs/build/source/kernel && objcopy -S kernel.elf /home/kbpoyo/code/cpp/MyOs/image/kernel.elf
 	cd /home/kbpoyo/code/cpp/MyOs/build/source/kernel && objdump -x -d -S -m i386 /home/kbpoyo/code/cpp/MyOs/build/source/kernel/kernel.elf > kernel_dis.txt
 	cd /home/kbpoyo/code/cpp/MyOs/build/source/kernel && readelf -a /home/kbpoyo/code/cpp/MyOs/build/source/kernel/kernel.elf > kernel_elf.txt
 

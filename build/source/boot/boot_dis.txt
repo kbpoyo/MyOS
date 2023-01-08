@@ -53,9 +53,9 @@ SYMBOL TABLE:
 Disassembly of section .text:
 
 00007c00 <_start>:
-	.extern boot_entry 	//告诉编译器boot_entry函数在其他文件中
 
 // bios自动将磁盘0磁头0柱面1扇区加载到0x7c00，而此处的代码段将放在最前面，即_start加载后为0x7c00
+//链接器在链接时需要用-e(或--entry)指明程序的入口地址或符号(函数或段名),若没有指明则默认为_start
 _start:
 	//初始化段寄存器
 	mov $0, %ax
