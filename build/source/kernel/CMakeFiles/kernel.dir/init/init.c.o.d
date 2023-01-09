@@ -3,4 +3,6 @@ source/kernel/CMakeFiles/kernel.dir/init/init.c.o: \
  /usr/include/stdc-predef.h \
  /home/kbpoyo/code/cpp/MyOs/source/kernel/init/init.h \
  /home/kbpoyo/code/cpp/MyOs/source/common/boot_info.h \
+ /home/kbpoyo/code/cpp/MyOs/source/common/types.h \
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/include/cpu/cpu.h \
  /home/kbpoyo/code/cpp/MyOs/source/common/types.h

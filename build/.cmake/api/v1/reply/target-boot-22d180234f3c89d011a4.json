@@ -54,6 +54,10 @@
 				{
 					"backtrace" : 3,
 					"path" : "/home/kbpoyo/code/cpp/MyOs/source"
+				},
+				{
+					"backtrace" : 3,
+					"path" : "/home/kbpoyo/code/cpp/MyOs/source/kernel/include"
 				}
 			],
 			"language" : "ASM",
@@ -74,6 +78,10 @@
 				{
 					"backtrace" : 3,
 					"path" : "/home/kbpoyo/code/cpp/MyOs/source"
+				},
+				{
+					"backtrace" : 3,
+					"path" : "/home/kbpoyo/code/cpp/MyOs/source/kernel/include"
 				}
 			],
 			"language" : "C",

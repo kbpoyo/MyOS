@@ -15,10 +15,12 @@ set(CMAKE_ASM_COMPILER_ID "GNU")
 # The include file search paths:
 set(CMAKE_ASM_TARGET_INCLUDE_PATH
   "../source"
+  "../source/kernel/include"
   )
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
+  "/home/kbpoyo/code/cpp/MyOs/source/kernel/cpu/cpu.c" "source/kernel/CMakeFiles/kernel.dir/cpu/cpu.c.o" "gcc" "source/kernel/CMakeFiles/kernel.dir/cpu/cpu.c.o.d"
   "/home/kbpoyo/code/cpp/MyOs/source/kernel/init/init.c" "source/kernel/CMakeFiles/kernel.dir/init/init.c.o" "gcc" "source/kernel/CMakeFiles/kernel.dir/init/init.c.o.d"
   )
 

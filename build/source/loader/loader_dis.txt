@@ -412,7 +412,8 @@ static void detect_memory(void) {
     8210:	67 66 8b 40 10       	mov    0x10(%eax),%eax
     8215:	66 83 f8 01          	cmp    $0x1,%eax
     8219:	75 39                	jne    8254 <detect_memory+0x10e>
-               boot_info.ram_region_cfg[boot_info.ram_region_count].start = entry->BaseL;  //由于内存寻址空间较小，读取低32位即可
+               //由于内存寻址空间较小，读取低32位即可
+               boot_info.ram_region_cfg[boot_info.ram_region_count].start = entry->BaseL;  
     821b:	66 a1 d0 a0          	mov    0xa0d0,%eax
     821f:	67 66 8b 55 e8       	mov    -0x18(%ebp),%edx
     8224:	67 66 8b 12          	mov    (%edx),%edx
@@ -950,7 +951,9 @@ void load_kernel(void) {
     8615:	ff                   	(bad)  
     8616:	ff 83 c4 04          	incw   0x4c4(%bp,%di)
     861a:	89 45 f4             	mov    %ax,-0xc(%di)
-    if (kernel_entry == 0) { //函数执行失败，返回的入口地址为0，进行错误处理
+    
+    //3.若函数执行失败，返回的入口地址为0，进行错误处理
+    if (kernel_entry == 0) { 
     861d:	83 7d f4 00          	cmpw   $0x0,-0xc(%di)
     8621:	75 0d                	jne    8630 <load_kernel+0x3d>
         die(-1);
@@ -961,7 +964,7 @@ void load_kernel(void) {
     862c:	ff 83 c4 04          	incw   0x4c4(%bp,%di)
     }               
 
-    //3.将boot_info记录的信息传递给已拷贝到确定内存中的内核初始化函数
+    //4.将boot_info记录的信息传递给已拷贝到确定内存中的内核初始化函数
     ((void(*)(_boot_info_t_*))kernel_entry)(&boot_info);    
     8630:	8b 45 f4             	mov    -0xc(%di),%ax
     8633:	83 ec 0c             	sub    $0xc,%sp

@@ -71,7 +71,8 @@ static void detect_memory(void) {
           if (bytes > 20 && (entry->ACPI & 0x0001) == 0) continue; //ACPI位为0，则内存块无效应当忽略	
 		
           if (entry->Type == 1) { //Type = 1 当前内存块有效
-               boot_info.ram_region_cfg[boot_info.ram_region_count].start = entry->BaseL;  //由于内存寻址空间较小，读取低32位即可
+               //由于内存寻址空间较小，读取低32位即可
+               boot_info.ram_region_cfg[boot_info.ram_region_count].start = entry->BaseL;  
                boot_info.ram_region_cfg[boot_info.ram_region_count].size = entry->LengthL;
                boot_info.ram_region_count++;
           }

@@ -130,6 +130,30 @@ kernel/fast:
 	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/build
 .PHONY : kernel/fast
 
+cpu/cpu.o: cpu/cpu.c.o
+.PHONY : cpu/cpu.o
+
+# target to build an object file
+cpu/cpu.c.o:
+	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/cpu/cpu.c.o
+.PHONY : cpu/cpu.c.o
+
+cpu/cpu.i: cpu/cpu.c.i
+.PHONY : cpu/cpu.i
+
+# target to preprocess a source file
+cpu/cpu.c.i:
+	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/cpu/cpu.c.i
+.PHONY : cpu/cpu.c.i
+
+cpu/cpu.s: cpu/cpu.c.s
+.PHONY : cpu/cpu.s
+
+# target to generate assembly for a file
+cpu/cpu.c.s:
+	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/cpu/cpu.c.s
+.PHONY : cpu/cpu.c.s
+
 init/init.o: init/init.c.o
 .PHONY : init/init.o
 
@@ -171,6 +195,9 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... kernel"
+	@echo "... cpu/cpu.o"
+	@echo "... cpu/cpu.i"
+	@echo "... cpu/cpu.s"
 	@echo "... init/init.o"
 	@echo "... init/init.i"
 	@echo "... init/init.s"

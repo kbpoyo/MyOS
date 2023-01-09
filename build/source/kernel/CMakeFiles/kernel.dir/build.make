@@ -82,10 +82,24 @@ source/kernel/CMakeFiles/kernel.dir/init/start.S.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling ASM source to assembly CMakeFiles/kernel.dir/init/start.S.s"
 	cd /home/kbpoyo/code/cpp/MyOs/build/source/kernel && /usr/bin/gcc $(ASM_DEFINES) $(ASM_INCLUDES) $(ASM_FLAGS) -S /home/kbpoyo/code/cpp/MyOs/source/kernel/init/start.S -o CMakeFiles/kernel.dir/init/start.S.s
 
+source/kernel/CMakeFiles/kernel.dir/cpu/cpu.c.o: source/kernel/CMakeFiles/kernel.dir/flags.make
+source/kernel/CMakeFiles/kernel.dir/cpu/cpu.c.o: ../source/kernel/cpu/cpu.c
+source/kernel/CMakeFiles/kernel.dir/cpu/cpu.c.o: source/kernel/CMakeFiles/kernel.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/kbpoyo/code/cpp/MyOs/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object source/kernel/CMakeFiles/kernel.dir/cpu/cpu.c.o"
+	cd /home/kbpoyo/code/cpp/MyOs/build/source/kernel && /usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT source/kernel/CMakeFiles/kernel.dir/cpu/cpu.c.o -MF CMakeFiles/kernel.dir/cpu/cpu.c.o.d -o CMakeFiles/kernel.dir/cpu/cpu.c.o -c /home/kbpoyo/code/cpp/MyOs/source/kernel/cpu/cpu.c
+
+source/kernel/CMakeFiles/kernel.dir/cpu/cpu.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/kernel.dir/cpu/cpu.c.i"
+	cd /home/kbpoyo/code/cpp/MyOs/build/source/kernel && /usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/kbpoyo/code/cpp/MyOs/source/kernel/cpu/cpu.c > CMakeFiles/kernel.dir/cpu/cpu.c.i
+
+source/kernel/CMakeFiles/kernel.dir/cpu/cpu.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/kernel.dir/cpu/cpu.c.s"
+	cd /home/kbpoyo/code/cpp/MyOs/build/source/kernel && /usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/kbpoyo/code/cpp/MyOs/source/kernel/cpu/cpu.c -o CMakeFiles/kernel.dir/cpu/cpu.c.s
+
 source/kernel/CMakeFiles/kernel.dir/init/init.c.o: source/kernel/CMakeFiles/kernel.dir/flags.make
 source/kernel/CMakeFiles/kernel.dir/init/init.c.o: ../source/kernel/init/init.c
 source/kernel/CMakeFiles/kernel.dir/init/init.c.o: source/kernel/CMakeFiles/kernel.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/kbpoyo/code/cpp/MyOs/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object source/kernel/CMakeFiles/kernel.dir/init/init.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/kbpoyo/code/cpp/MyOs/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building C object source/kernel/CMakeFiles/kernel.dir/init/init.c.o"
 	cd /home/kbpoyo/code/cpp/MyOs/build/source/kernel && /usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT source/kernel/CMakeFiles/kernel.dir/init/init.c.o -MF CMakeFiles/kernel.dir/init/init.c.o.d -o CMakeFiles/kernel.dir/init/init.c.o -c /home/kbpoyo/code/cpp/MyOs/source/kernel/init/init.c
 
 source/kernel/CMakeFiles/kernel.dir/init/init.c.i: cmake_force
@@ -99,16 +113,18 @@ source/kernel/CMakeFiles/kernel.dir/init/init.c.s: cmake_force
 # Object files for target kernel
 kernel_OBJECTS = \
 "CMakeFiles/kernel.dir/init/start.S.o" \
+"CMakeFiles/kernel.dir/cpu/cpu.c.o" \
 "CMakeFiles/kernel.dir/init/init.c.o"
 
 # External object files for target kernel
 kernel_EXTERNAL_OBJECTS =
 
 source/kernel/kernel: source/kernel/CMakeFiles/kernel.dir/init/start.S.o
+source/kernel/kernel: source/kernel/CMakeFiles/kernel.dir/cpu/cpu.c.o
 source/kernel/kernel: source/kernel/CMakeFiles/kernel.dir/init/init.c.o
 source/kernel/kernel: source/kernel/CMakeFiles/kernel.dir/build.make
 source/kernel/kernel: source/kernel/CMakeFiles/kernel.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/kbpoyo/code/cpp/MyOs/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking C executable kernel"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/kbpoyo/code/cpp/MyOs/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking C executable kernel"
 	cd /home/kbpoyo/code/cpp/MyOs/build/source/kernel && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/kernel.dir/link.txt --verbose=$(VERBOSE)
 	cd /home/kbpoyo/code/cpp/MyOs/build/source/kernel && objcopy -S kernel.elf /home/kbpoyo/code/cpp/MyOs/image/kernel.elf
 	cd /home/kbpoyo/code/cpp/MyOs/build/source/kernel && objdump -x -d -S -m i386 /home/kbpoyo/code/cpp/MyOs/build/source/kernel/kernel.elf > kernel_dis.txt

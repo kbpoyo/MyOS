@@ -1,4 +1,6 @@
 file(REMOVE_RECURSE
+  "CMakeFiles/kernel.dir/cpu/cpu.c.o"
+  "CMakeFiles/kernel.dir/cpu/cpu.c.o.d"
   "CMakeFiles/kernel.dir/init/init.c.o"
   "CMakeFiles/kernel.dir/init/init.c.o.d"
   "CMakeFiles/kernel.dir/init/start.S.o"
