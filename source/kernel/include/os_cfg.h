@@ -22,7 +22,10 @@
  */
 #define GDT_TABLE_SIZE 8192
 
+//内核代码段的选择子,gdt_table[1]
+#define KERNEL_SELECTOR_CS ((uint16_t)(0x0001 << 3))
 
-
+//内核数据段的选择子,gdt_table[2]
+#define KERNEL_SELECTOR_DS ((uint16_t)(0x0002 << 3))
 
 #endif

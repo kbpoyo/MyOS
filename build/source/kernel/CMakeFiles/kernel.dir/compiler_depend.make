@@ -11,6 +11,8 @@ source/kernel/CMakeFiles/kernel.dir/init/init.c.o: ../source/kernel/init/init.c 
   /usr/include/stdc-predef.h \
   ../source/kernel/init/init.h \
   ../source/common/boot_info.h \
+  ../source/common/types.h \
+  ../source/kernel/include/cpu/cpu.h \
   ../source/common/types.h
 
 

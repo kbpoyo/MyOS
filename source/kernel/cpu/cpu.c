@@ -9,6 +9,7 @@
  */
 
 #include "cpu/cpu.h"
+#include "common/cpu_instr.h"
 #include "os_cfg.h"
 
 //定义全局描述符GDT
@@ -34,6 +35,14 @@ void segment_desc_set(uint16_t selector,  uint32_t base, uint32_t limit, uint16_
     desc->base31_24 = (uint8_t)(base >> 24);
 
     //3. 设置段界限
+    if (limit > 0xfffff) { //limit大于了20位能表示的最大值
+        //将limit的粒度设置为 4kb，即将属性位G置1
+        desc->attr |= 0x8000;
+
+        //将limit改成以 4kb 为单位
+        limit /= (4 * 1024);
+
+    }
     desc->limit15_0 = (uint16_t)limit;
     desc->attr |= ((uint16_t)(limit >> 8) & 0x0f00); //将limit高4位赋值到attr的8~11位(段界限的高4位)
 
@@ -52,6 +61,14 @@ static void gdt_init(void) {
     for (int i = 0; i < GDT_TABLE_SIZE; ++i) {
         segment_desc_set(i << 3, 0, 0, 0);
     }
+
+    //使用平坦模型，即所有段基址都为0, 段界限直接用最大值，界限粒度为4kb，即段大小为4GB
+    segment_desc_set(KERNEL_SELECTOR_CS, 0, 0xfffff, );
+    segment_desc_set(KERNEL_SELECTOR_DS, 0, 0xfffff, );
+
+    //加载新的GDT表
+    lgdt(gdt_table, sizeof(gdt_table));
+
 }
 
 /**
