@@ -62,7 +62,7 @@ static void gdt_init(void) {
         segment_desc_set(i << 3, 0, 0, 0);
     }
 
-    //使用平坦模型，即所有段基址都为0, 段界限直接用最大值，界限粒度为4kb，即段大小为4GB
+    //使用平坦模型，即段基址为0, 段界限直接用最大值，界限粒度为4kb，即段大小为4GB
     segment_desc_set(KERNEL_SELECTOR_CS, 0, 0xfffff, );
     segment_desc_set(KERNEL_SELECTOR_DS, 0, 0xfffff, );
 
@@ -72,7 +72,7 @@ static void gdt_init(void) {
 }
 
 /**
- * @brief  初始化cpu相关属性
+ * @brief  完成cpu需要执行的相关初始化工作
  * 
  */
 void cpu_init(void) {
