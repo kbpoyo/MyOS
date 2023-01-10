@@ -63,8 +63,15 @@ static void gdt_init(void) {
     }
 
     //使用平坦模型，即段基址为0, 段界限直接用最大值，界限粒度为4kb，即段大小为4GB
-    segment_desc_set(KERNEL_SELECTOR_CS, 0, 0xfffff, );
-    segment_desc_set(KERNEL_SELECTOR_DS, 0, 0xfffff, );
+    //设置内核的数据段
+    segment_desc_set(KERNEL_SELECTOR_DS, 0, 0xffffffff,
+                    SEG_ATTR_P | SEG_ATTR_DPL_0 | SEG_ATTR_S_NORMAL | 
+                    SEG_ATTR_TYPE_DATA | SEG_ATTR_TYPE_RW | SEG_ATTR_D_OR_B);
+
+    //设置内核的代码段
+    segment_desc_set(KERNEL_SELECTOR_CS, 0, 0xffffffff,
+                    SEG_ATTR_P | SEG_ATTR_DPL_0 | SEG_ATTR_S_NORMAL |
+                    SEG_ATTR_TYPE_CODE | SEG_ATTR_TYPE_RW | SEG_ATTR_D_OR_B);
 
     //加载新的GDT表
     lgdt(gdt_table, sizeof(gdt_table));

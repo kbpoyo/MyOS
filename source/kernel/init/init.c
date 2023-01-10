@@ -18,8 +18,11 @@
  * 
  */
 void kernel_init(_boot_info_t_* boot_info) {
-    //1.对cpu相关属性进行初始化
+    //1.完成cpu相关的初始化，初始化并重新加载GDT表
     cpu_init();
+
+    //2.重新加载GDT表之后再初始化一遍cpu各个寄存器
+    
 
     
     for (;;){}

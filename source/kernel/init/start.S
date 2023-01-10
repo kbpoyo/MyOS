@@ -11,6 +11,8 @@
 
     .text
     .extern kernel_init
+    .extern KERNEL_SELECTOR_CS
+    .extern KERNEL_SELECTOR_DS
     .global _start
 
 /**
@@ -38,4 +40,16 @@ _start:
 
     push %eax           //外部函数将参数压入栈中，再进行函数调用
     call kernel_init    //调用内核初始化函数
+
+    //初始化完内核后再将cpu各个寄存器重置到刚进入保护模式的状态
+    jmp $KERNEL_SELECTOR_CS, $gdt_reload
+
+gdt_reload:
+    mov $KERNEL_SELECTOR_DS, %ax
+	mov %ax, %ds
+	mov %ax, %ss
+	mov %ax, %es
+	mov %ax, %fs
+	mov %ax, %gs
+
     jmp .
