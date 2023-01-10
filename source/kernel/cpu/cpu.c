@@ -74,9 +74,7 @@ static void gdt_init(void) {
                     SEG_ATTR_TYPE_CODE | SEG_ATTR_TYPE_RW | SEG_ATTR_D_OR_B);
 
     //加载新的GDT表
-    lgdt(gdt_table, sizeof(gdt_table));
-
-    
+    lgdt((uint32_t)gdt_table, sizeof(gdt_table));
 }
 
 
@@ -85,8 +83,7 @@ static void gdt_init(void) {
  * 
  */
 void cpu_init(void) {
+    //1.初始化GDT中的内核代码段与数据段
     gdt_init();
-
-
 }
 

@@ -33,9 +33,9 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING, OCTETS
   7 .debug_frame  00000034  00000000  00000000  00000fc0  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
-  8 .debug_str    00000100  00000000  00000000  00000ff4  2**0
+  8 .debug_str    00000103  00000000  00000000  00000ff4  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
-  9 .debug_line_str 0000008a  00000000  00000000  000010f4  2**0
+  9 .debug_line_str 0000008a  00000000  00000000  000010f7  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
 SYMBOL TABLE:
 00000000 l    df *ABS*	00000000 start.S.o
@@ -57,7 +57,7 @@ Disassembly of section .text:
 // bios自动将磁盘0磁头0柱面1扇区加载到0x7c00，而此处的代码段将放在最前面，即_start加载后为0x7c00
 //链接器在链接时需要用-e(或--entry)指明程序的入口地址或符号(函数或段名),若没有指明则默认为_start
 _start:
-	//初始化段寄存器
+	//初始化段寄存器为0,采用平坦模型访问内存，cs寄存器默认为0，其他其实也是默认为0
 	mov $0, %ax
     7c00:	b8 00 00             	mov    $0x0,%ax
 	mov %ax, %ds
