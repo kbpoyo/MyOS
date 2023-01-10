@@ -76,7 +76,9 @@ static void gdt_init(void) {
     //加载新的GDT表
     lgdt(gdt_table, sizeof(gdt_table));
 
+    
 }
+
 
 /**
  * @brief  完成cpu需要执行的相关初始化工作
@@ -84,6 +86,7 @@ static void gdt_init(void) {
  */
 void cpu_init(void) {
     gdt_init();
+
 
 }
 
