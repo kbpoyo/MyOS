@@ -60,6 +60,7 @@ gdt_reload:
     mov $(stack + KERNEL_STACK_SIZE), %esp
 
     //继续初始化内核
+    //TODO:后序再来说明该函数的作用
     jmp init_main 
 
 //定义bss段，未初始化的数据段，不占据编译后的文件空间，只指定运行时的内存空间
@@ -67,3 +68,31 @@ gdt_reload:
 //comm命令支持其他程序访问该空间，lcommo不支持
 //指定stack标号在运行时的内存空间大小为KERNEL_STACK_SIZE
 .comm stack, KERNEL_STACK_SIZE 
+
+
+//定义中断处理程序的实现
+    .text
+    .extern do_handler_unknown
+    .global exception_handler_unknown
+exception_handler_unknown:
+    //调用c处理函数前先保存现场
+    //1.中断发生前cpu会自动在栈中压入 EFLAGS，IP， CS 寄存器，以及错误代码
+    //2.用 pusha 指令压入8个通用寄存器
+    pusha
+    //3.压入其他段寄存器
+    push %ds
+    push %es
+    push %fs
+    push %gs
+
+    //4.调用c处理函数，会自动压入返回地址
+    call do_handler_unknown
+
+    //5.恢复现场
+    pop %gs
+    pop %fs
+    pop %es
+    pop %ds
+    popa
+    
+    iret //中断处理程序必须要用iret进行返回，所以必须用汇编来实现

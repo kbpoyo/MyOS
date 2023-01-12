@@ -42,10 +42,8 @@ typedef struct _segment_desc_t {
 //定义全局描述符GDT
 static segment_desc_t gdt_table[GDT_TABLE_SIZE];
 
-/**
- * @brief  由高位到低位定义段标识符的属性标志位
- * 
- */
+
+//由高位到低位定义段标识符的属性标志位
 //15位：G标志位, 0:段界限粒度为 1 字节  1:粒度为 4kb 的 
 #define SEG_ATTR_G ((uint16_t)(1 << 15))
 //14位：若为代码段则为D标志位，若为栈段则为B标志位，0:cpu以16位模式处理该段，1:cpu以32位模式处理该段
