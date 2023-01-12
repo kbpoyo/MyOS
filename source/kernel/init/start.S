@@ -76,7 +76,7 @@ gdt_reload:
     .global exception_handler_unknown
 exception_handler_unknown:
     //调用c处理函数前先保存现场
-    //1.中断发生前cpu会自动在栈中压入 EFLAGS，IP， CS 寄存器，以及错误代码
+    //1.中断发生前cpu会自动在栈中压入 EFLAGS，EIP， CS 寄存器，以及错误代码
     //2.用 pusha 指令压入8个通用寄存器
     pusha
     //3.压入其他段寄存器
@@ -85,14 +85,21 @@ exception_handler_unknown:
     push %fs
     push %gs
 
-    //4.调用c处理函数，会自动压入返回地址
+    //4.将此时的esp的值(此时栈中 gs 的地址)压入栈中作为c处理函数的参数，即exception_frame_t结构体的起始地址指向 ->[gs]
+    //使该结构体可以访问到之前保留现场所压入的所有信息，这些信息可以看作一个栈帧
+    push %esp
+
+    //5.调用c处理函数，会自动压入返回地址
     call do_handler_unknown
 
-    //5.恢复现场
+    //6.将 esp 重新指向 ->[gs]
+    pop %esp
+
+    //7.恢复现场
     pop %gs
     pop %fs
     pop %es
     pop %ds
     popa
-    
+
     iret //中断处理程序必须要用iret进行返回，所以必须用汇编来实现

@@ -12,4 +12,8 @@
 #ifndef INIT_H
 #define INIT_H
 
+#include "common/boot_info.h"
+#include "cpu/gdt.h"
+#include "cpu/idt.h"
+
 #endif

@@ -1,5 +1,5 @@
 /**
- * @file cpu.c
+ * @file gdt.c
  * @author kbpoyo (kbpoyo.com)
  * @brief   定义段描述的数据结构以及相关属性位的宏，以及全局描述符表
  * @version 0.1
@@ -9,7 +9,6 @@
  */
 
 #include "cpu/gdt.h"
-#include "common/cpu_instr.h"
 
 
 /**

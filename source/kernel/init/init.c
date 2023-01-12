@@ -10,9 +10,7 @@
  */
 
 #include "init.h"
-#include "common/boot_info.h"
-#include "cpu/gdt.h"
-#include "cpu/idt.h"
+
 
 /**
  * @brief  对内核进行初始化操作

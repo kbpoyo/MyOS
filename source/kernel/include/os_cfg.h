@@ -12,7 +12,6 @@
 #ifndef OS_CFG_H
 #define OS_CFG_H
 
-
 //内核代码段的选择子,gdt_table[1]
 #define KERNEL_SELECTOR_CS (0x0001 << 3)
 
@@ -21,5 +20,6 @@
 
 //内核栈空间的大小为8kb
 #define KERNEL_STACK_SIZE (8 * 1024)
+
 
 #endif

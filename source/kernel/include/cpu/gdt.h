@@ -12,6 +12,7 @@
 #define CPU_H
 
 #include "common/types.h"
+#include "common/cpu_instr.h"
 #include "os_cfg.h"
 
 //指定编译器按一字节对齐，防止结构体中元素在内存空间中不连续

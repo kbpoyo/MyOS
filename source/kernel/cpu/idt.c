@@ -1,5 +1,5 @@
 /**
- * @file irq.c
+ * @file idt.c
  * @author kbpoyo (kbpoyo.com)
  * @brief  定义中断门的数据结构和相关的属性宏，以及中断描述符表
  * @version 0.1
@@ -11,7 +11,6 @@
 
 #include "cpu/idt.h"
 
-#include "common/cpu_instr.h"
 
 /**
  * @brief  设置中断门描述符
@@ -46,17 +45,18 @@ void exception_handler_unknown(void);
  * @brief  默认的异常处理函数
  * 
  * @param message 异常信息
+ * @param fram  异常发生后压入的寄存器信息以及错误代码所组成的栈帧 
  */
-void do_default_handler(const char *message) {
+void do_default_handler(const exception_frame_t *fram, const char *message) {
   for (;;) {}
 }
 
 /**
- * @brief  对没有针对性处理程序的异常进行处理
- * 
+ * @brief   对没有针对性处理程序的异常进行处理
+ * @param frame 异常发生后压入的寄存器信息以及错误代码所组成的栈帧
  */
-void do_handler_unknown(void) {
-  do_default_handler("unknown exception");
+void do_handler_unknown(const exception_frame_t *frame) {
+  do_default_handler(frame, "unknown exception");
 
 }
 void idt_init(void) {

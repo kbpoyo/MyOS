@@ -13,6 +13,8 @@
 #define IRQ_H
 
 #include "common/types.h"
+#include "common/exc_frame.h"
+#include "common/cpu_instr.h"
 #include "os_cfg.h"
 
 #pragma pack(1)
