@@ -20,7 +20,8 @@ set(CMAKE_ASM_TARGET_INCLUDE_PATH
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/home/kbpoyo/code/cpp/MyOs/source/kernel/cpu/cpu.c" "source/kernel/CMakeFiles/kernel.dir/cpu/cpu.c.o" "gcc" "source/kernel/CMakeFiles/kernel.dir/cpu/cpu.c.o.d"
+  "/home/kbpoyo/code/cpp/MyOs/source/kernel/cpu/gdt.c" "source/kernel/CMakeFiles/kernel.dir/cpu/gdt.c.o" "gcc" "source/kernel/CMakeFiles/kernel.dir/cpu/gdt.c.o.d"
+  "/home/kbpoyo/code/cpp/MyOs/source/kernel/cpu/idt.c" "source/kernel/CMakeFiles/kernel.dir/cpu/idt.c.o" "gcc" "source/kernel/CMakeFiles/kernel.dir/cpu/idt.c.o.d"
   "/home/kbpoyo/code/cpp/MyOs/source/kernel/init/init.c" "source/kernel/CMakeFiles/kernel.dir/init/init.c.o" "gcc" "source/kernel/CMakeFiles/kernel.dir/init/init.c.o.d"
   )
 

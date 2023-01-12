@@ -39,4 +39,4 @@ protect_mode_entry:
 	mov %ax, %gs
 
 	//跳转到32位的loader程序中，jmp指令可以清空流水线
-	jmp $8, $load_kernel //直接跳转 cs:8， ip:load_kernel, 8为1000b, 即选择此时GDT中的第2个段描述符(代码段)
+	jmp $8, $load_kernel //直接跳转 cs:8， ip:load_kernel, 8为1000(b), 即选择此时GDT中的第2个段描述符(代码段)

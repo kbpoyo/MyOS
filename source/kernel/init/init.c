@@ -11,15 +11,19 @@
 
 #include "init.h"
 #include "common/boot_info.h"
-#include "cpu/cpu.h"
+#include "cpu/gdt.h"
+#include "cpu/idt.h"
 
 /**
  * @brief  对内核进行初始化操作
  * 
  */
 void kernel_init(_boot_info_t_* boot_info) {
-    //1.完成cpu相关的初始化，初始化并重新加载GDT表
-    cpu_init();
+    //1.初始化并重新加载GDT表
+    gdt_init();
+
+    //2.初始化并加载中断描述符表IDT
+    idt_init();
 
 }
 

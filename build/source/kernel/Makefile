@@ -130,29 +130,53 @@ kernel/fast:
 	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/build
 .PHONY : kernel/fast
 
-cpu/cpu.o: cpu/cpu.c.o
-.PHONY : cpu/cpu.o
+cpu/gdt.o: cpu/gdt.c.o
+.PHONY : cpu/gdt.o
 
 # target to build an object file
-cpu/cpu.c.o:
-	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/cpu/cpu.c.o
-.PHONY : cpu/cpu.c.o
+cpu/gdt.c.o:
+	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/cpu/gdt.c.o
+.PHONY : cpu/gdt.c.o
 
-cpu/cpu.i: cpu/cpu.c.i
-.PHONY : cpu/cpu.i
+cpu/gdt.i: cpu/gdt.c.i
+.PHONY : cpu/gdt.i
 
 # target to preprocess a source file
-cpu/cpu.c.i:
-	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/cpu/cpu.c.i
-.PHONY : cpu/cpu.c.i
+cpu/gdt.c.i:
+	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/cpu/gdt.c.i
+.PHONY : cpu/gdt.c.i
 
-cpu/cpu.s: cpu/cpu.c.s
-.PHONY : cpu/cpu.s
+cpu/gdt.s: cpu/gdt.c.s
+.PHONY : cpu/gdt.s
 
 # target to generate assembly for a file
-cpu/cpu.c.s:
-	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/cpu/cpu.c.s
-.PHONY : cpu/cpu.c.s
+cpu/gdt.c.s:
+	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/cpu/gdt.c.s
+.PHONY : cpu/gdt.c.s
+
+cpu/idt.o: cpu/idt.c.o
+.PHONY : cpu/idt.o
+
+# target to build an object file
+cpu/idt.c.o:
+	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/cpu/idt.c.o
+.PHONY : cpu/idt.c.o
+
+cpu/idt.i: cpu/idt.c.i
+.PHONY : cpu/idt.i
+
+# target to preprocess a source file
+cpu/idt.c.i:
+	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/cpu/idt.c.i
+.PHONY : cpu/idt.c.i
+
+cpu/idt.s: cpu/idt.c.s
+.PHONY : cpu/idt.s
+
+# target to generate assembly for a file
+cpu/idt.c.s:
+	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/cpu/idt.c.s
+.PHONY : cpu/idt.c.s
 
 init/init.o: init/init.c.o
 .PHONY : init/init.o
@@ -195,9 +219,12 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... kernel"
-	@echo "... cpu/cpu.o"
-	@echo "... cpu/cpu.i"
-	@echo "... cpu/cpu.s"
+	@echo "... cpu/gdt.o"
+	@echo "... cpu/gdt.i"
+	@echo "... cpu/gdt.s"
+	@echo "... cpu/idt.o"
+	@echo "... cpu/idt.i"
+	@echo "... cpu/idt.s"
 	@echo "... init/init.o"
 	@echo "... init/init.i"
 	@echo "... init/init.s"

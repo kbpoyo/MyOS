@@ -59,7 +59,7 @@ static void read_disk(uint32_t sector, uint16_t sector_count, uint8_t *buf) {
 
 
 /**
- * @brief   解析内存中地址为 file_buffer 处的elf文件头，并将.text,.rodata,.data,.bss段
+ * @brief   解析内存中地址为 file_start_addr 处的elf文件头，并将.text,.rodata,.data,.bss段
  *          拷贝到内存中的目的地址，elf文件会将(.text, .rodata)，(.data, .bss)各放在一个段
  * 
  * @param file_start_addr 已加载到内存中的elf文件的起始地址

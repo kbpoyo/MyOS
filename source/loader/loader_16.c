@@ -36,7 +36,6 @@ static void show_msg(const char* msg) {
      
 }
 
-
 /**
  * @brief  
  * 检测系统当前可用的内存块的地址和大小
@@ -116,11 +115,18 @@ static void enter_protect_mode(void){
      far_jump(8, (uint32_t)protect_mode_entry);
 }
 
+/**
+ * @brief 完成实模式下为进入保护模式的初始化工作 
+ * 
+ */
 void loader_entry(void) {
      show_msg("..........loading.........\r\n");
 
-     detect_memory();         //检测可用内存块
-     enter_protect_mode();    //进入保护模式
+     //1.检测可用内存块
+     detect_memory();         
+     
+     //2.进入保护模式
+     enter_protect_mode();    
      
      for (;;){
      };

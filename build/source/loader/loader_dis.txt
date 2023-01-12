@@ -31,17 +31,17 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY
   5 .debug_aranges 00000060  00000000  00000000  00002098  2**3
                   CONTENTS, READONLY, DEBUGGING, OCTETS
-  6 .debug_info   000008b8  00000000  00000000  000020f8  2**0
+  6 .debug_info   000008ba  00000000  00000000  000020f8  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
-  7 .debug_abbrev 0000037a  00000000  00000000  000029b0  2**0
+  7 .debug_abbrev 00000379  00000000  00000000  000029b2  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
-  8 .debug_line   000003e6  00000000  00000000  00002d2a  2**0
+  8 .debug_line   000003ee  00000000  00000000  00002d2b  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
-  9 .debug_frame  00000260  00000000  00000000  00003110  2**2
+  9 .debug_frame  00000260  00000000  00000000  0000311c  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 10 .debug_str    000003f1  00000000  00000000  00003370  2**0
+ 10 .debug_str    000003f1  00000000  00000000  0000337c  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 11 .debug_line_str 00000122  00000000  00000000  00003761  2**0
+ 11 .debug_line_str 00000122  00000000  00000000  0000376d  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
 SYMBOL TABLE:
 00000000 l    df *ABS*	00000000 loader_16.c
@@ -104,7 +104,7 @@ _start:
     800f:	8e e8                	mov    %ax,%gs
 
 	//跳转到32位的loader程序中，jmp指令可以清空流水线
-	jmp $8, $load_kernel //直接跳转 cs:8， ip:load_kernel, 8为1000b, 即选择此时GDT中的第2个段描述符(代码段)
+	jmp $8, $load_kernel //直接跳转 cs:8， ip:load_kernel, 8为1000(b), 即选择此时GDT中的第2个段描述符(代码段)
     8011:	ea f3 85 00 00       	ljmp   $0x0,$0x85f3
     8016:	08 00                	or     %al,(%bx,%si)
 
@@ -112,43 +112,41 @@ _start:
 
 /**
  * @brief  关闭中断
- * 
+ *
  */
-static inline void cli (void) {
+static inline void cli(void) { __asm__ __volatile__("cli"); }
     8018:	66 55                	push   %ebp
     801a:	66 89 e5             	mov    %esp,%ebp
-    __asm__ __volatile__("cli");
     801d:	fa                   	cli    
-}
     801e:	90                   	nop
     801f:	66 5d                	pop    %ebp
     8021:	66 c3                	retl   
 
 00008023 <inb>:
  * @brief  从设备IO端口寄存器(端口号为port)中读取8位数据
- * 
- * @param port 
- * @return uint8_t 
+ *
+ * @param port
+ * @return uint8_t
  */
-static inline uint8_t inb (uint16_t port) {
+static inline uint8_t inb(uint16_t port) {
     8023:	66 55                	push   %ebp
     8025:	66 89 e5             	mov    %esp,%ebp
     8028:	66 83 ec 14          	sub    $0x14,%esp
     802c:	67 66 8b 45 08       	mov    0x8(%ebp),%eax
     8031:	67 89 45 ec          	mov    %ax,-0x14(%ebp)
-    uint8_t rv;                             //读取的8位数据
+  uint8_t rv;  // 读取的8位数据
 
-    __asm__ __volatile__("inb %[p], %[v]"   // in 表示从端口寄存器中读取数据，端口只能用dx表示
+  __asm__ __volatile__(
     8035:	67 66 0f b7 45 ec    	movzwl -0x14(%ebp),%eax
     803b:	66 89 c2             	mov    %eax,%edx
     803e:	ec                   	in     (%dx),%al
     803f:	67 88 45 ff          	mov    %al,-0x1(%ebp)
-                                            // out 表示往端口寄存器中写入数据，端口只能用立即数或dx寄存器表示，
-                                            // b表示只读取一个字节(w, l 分别表示2，4字节)
-                        :[v]"=a"(rv)        // rv为输出参数用ax 或 al存储， 具体用哪个要看port指定的端口为多少位的寄存器
-                        :[p]"d"(port));     // port为输入参数只能用dx寄存器, 
+                        // b表示只读取一个字节(w, l 分别表示2，4字节)
+      : [v] "=a"(rv)  // rv为输出参数用ax 或 al存储，
+                      // 具体用哪个要看port指定的端口为多少位的寄存器
+      : [p] "d"(port));  // port为输入参数只能用dx寄存器,
 
-    return rv;
+  return rv;
     8043:	67 66 0f b6 45 ff    	movzbl -0x1(%ebp),%eax
 }
     8049:	66 c9                	leavel 
@@ -156,9 +154,9 @@ static inline uint8_t inb (uint16_t port) {
 
 0000804d <outb>:
  * @brief  往IO端口寄存器port中写入八位数据data
- * 
- * @param port 
- * @param data 
+ *
+ * @param port
+ * @param data
  */
 static inline void outb(uint16_t port, uint8_t data) {
     804d:	66 55                	push   %ebp
@@ -169,14 +167,15 @@ static inline void outb(uint16_t port, uint8_t data) {
     8060:	67 89 45 fc          	mov    %ax,-0x4(%ebp)
     8064:	66 89 d0             	mov    %edx,%eax
     8067:	67 88 45 f8          	mov    %al,-0x8(%ebp)
-    
-    __asm__ __volatile__("outb %[v], %[p]"
+  __asm__ __volatile__(
     806b:	67 66 0f b7 55 fc    	movzwl -0x4(%ebp),%edx
     8071:	67 66 0f b6 45 f8    	movzbl -0x8(%ebp),%eax
     8077:	ee                   	out    %al,(%dx)
-                            :                               //无输出参数
-                            :[p]"d"(port), [v]"a"(data));   //out 指令只能使用dx寄存器或立即数指定端口，
-                                                            //只能用ax 或 al来作为数据输入，具体用哪个需要看端口寄存器是几位
+      :  // 无输出参数
+      : [p] "d"(port),
+        [v] "a"(data));  // out 指令只能使用dx寄存器或立即数指定端口，
+                         // 只能用ax 或
+                         // al来作为数据输入，具体用哪个需要看端口寄存器是几位
 }
     8078:	90                   	nop
     8079:	66 c9                	leavel 
@@ -184,7 +183,7 @@ static inline void outb(uint16_t port, uint8_t data) {
 
 0000807d <lgdt>:
  * @brief  加载全局描述符表
- * 
+ *
  * @param start 加载到内存中的位置
  * @param size 所占内存空间
  */
@@ -192,28 +191,32 @@ static inline void lgdt(uint32_t start, uint32_t size) {
     807d:	66 55                	push   %ebp
     807f:	66 89 e5             	mov    %esp,%ebp
     8082:	66 83 ec 10          	sub    $0x10,%esp
-        uint16_t limit;         //GDT的在内存中的逻辑边界
-        uint16_t start15_0;     //GDT地址的低16位
-        uint16_t start31_16;    //GDT地址的高16位
-    }gdt;
+    uint16_t limit;       // GDT的在内存中的逻辑边界
+    uint16_t start15_0;   // GDT地址的低16位
+    uint16_t start31_16;  // GDT地址的高16位
+  } gdt;
 
-    gdt.start31_16 = start >> 16;   //初始化GDT地址的高16位
+  gdt.start31_16 = (start >> 16) & 0xffff;    // 初始化GDT地址的高16位
     8086:	67 66 8b 45 08       	mov    0x8(%ebp),%eax
     808b:	66 c1 e8 10          	shr    $0x10,%eax
     808f:	67 89 45 fe          	mov    %ax,-0x2(%ebp)
-    gdt.start15_0 = start & 0xffff; //初始化GDT地址的低16位
+  gdt.start15_0 = start & 0xffff;  // 初始化GDT地址的低16位
     8093:	67 66 8b 45 08       	mov    0x8(%ebp),%eax
     8098:	67 89 45 fc          	mov    %ax,-0x4(%ebp)
-    gdt.limit = size - 1;           //初始化GDT的在内存中的逻辑边界，根据首地址进行偏移所以是size - 1
+  gdt.limit =
+      size -
     809c:	67 66 8b 45 0c       	mov    0xc(%ebp),%eax
     80a1:	66 83 e8 01          	sub    $0x1,%eax
+  gdt.limit =
     80a5:	67 89 45 fa          	mov    %ax,-0x6(%ebp)
-    
-     __asm__ __volatile__("lgdt %[g]"
+      1;  // 初始化GDT的在内存中的逻辑边界，根据首地址进行偏移所以是size - 1
+
+  __asm__ __volatile__(
     80a9:	67 0f 01 55 fa       	lgdtw  -0x6(%ebp)
-                            :
-                            :[g]"m"(gdt));  //"m"表示指令直接作用于该内存位置
-                                            //即此处表示lgdt直接加载gdt所在的内存区域的内容
+      "lgdt %[g]"
+      :
+      : [g] "m"(gdt));  //"m"表示指令直接作用于该内存位置
+                        // 即此处表示lgdt直接加载gdt所在的内存区域的内容
 }
     80ae:	90                   	nop
     80af:	66 c9                	leavel 
@@ -222,19 +225,18 @@ static inline void lgdt(uint32_t start, uint32_t size) {
 000080b3 <read_cr0>:
 /**
  * @brief  读取cr0寄存器的值
- * 
- * @return uint16_t 
+ *
+ * @return uint16_t
  */
 static inline uint32_t read_cr0(void) {
     80b3:	66 55                	push   %ebp
     80b5:	66 89 e5             	mov    %esp,%ebp
     80b8:	66 83 ec 10          	sub    $0x10,%esp
-    uint32_t cr0;
-    __asm__ __volatile__("mov %%cr0, %[v]"
+  uint32_t cr0;
+  __asm__ __volatile__("mov %%cr0, %[v]" : [v] "=r"(cr0));
     80bc:	0f 20 c0             	mov    %cr0,%eax
     80bf:	67 66 89 45 fc       	mov    %eax,-0x4(%ebp)
-                            :[v]"=r"(cr0));
-    return cr0;
+  return cr0;
     80c4:	67 66 8b 45 fc       	mov    -0x4(%ebp),%eax
 }
     80c9:	66 c9                	leavel 
@@ -243,44 +245,39 @@ static inline uint32_t read_cr0(void) {
 000080cd <write_cr0>:
 /**
  * @brief  向cr0寄存器写入数据
- * 
- * @param data 
+ *
+ * @param data
  */
 static inline void write_cr0(uint32_t data) {
     80cd:	66 55                	push   %ebp
     80cf:	66 89 e5             	mov    %esp,%ebp
-    __asm__ __volatile__("mov %[v], %%cr0"
+  __asm__ __volatile__("mov %[v], %%cr0" : : [v] "r"(data));
     80d2:	67 66 8b 45 08       	mov    0x8(%ebp),%eax
     80d7:	0f 22 c0             	mov    %eax,%cr0
-                            :
-                            :[v]"r"(data));
 }
     80da:	90                   	nop
     80db:	66 5d                	pop    %ebp
     80dd:	66 c3                	retl   
 
 000080df <far_jump>:
- * @brief  进入保护模式后进行远跳转到32位模式下运行的程序
- * 
+ *
  * @param selector 选择子
- * @param offset 跳转的偏移量，也就是某个函数的地址，函数访问是通过(函数地址 = 当前地址 + 偏移地址 + 当前地址的长度)来实现的
+ * @param offset 跳转的偏移量，也就是某个函数的地址，函数访问是通过(函数地址 =
+ * 当前地址 + 偏移地址 + 当前地址的长度)来实现的
  */
 static inline void far_jump(uint32_t selector, uint32_t offset) {
     80df:	66 55                	push   %ebp
     80e1:	66 89 e5             	mov    %esp,%ebp
     80e4:	66 83 ec 10          	sub    $0x10,%esp
-    
-    uint32_t addr[] = {offset, selector}; //传入远跳转需要的参数
+  uint32_t addr[] = {offset, selector};  // 传入远跳转需要的参数
     80e8:	67 66 8b 45 0c       	mov    0xc(%ebp),%eax
     80ed:	67 66 89 45 f8       	mov    %eax,-0x8(%ebp)
     80f2:	67 66 8b 45 08       	mov    0x8(%ebp),%eax
     80f7:	67 66 89 45 fc       	mov    %eax,-0x4(%ebp)
 
-    __asm__ __volatile__("ljmpl *(%[a])"
+  __asm__ __volatile__("ljmpl *(%[a])" : : [a] "r"(addr));
     80fc:	67 66 8d 45 f8       	lea    -0x8(%ebp),%eax
     8101:	67 66 ff 28          	ljmpl  *(%eax)
-                            :
-                            :[a]"r"(addr));
 }
     8105:	90                   	nop
     8106:	66 c9                	leavel 
@@ -520,6 +517,10 @@ static void enter_protect_mode(void){
 
 00008323 <loader_entry>:
 
+/**
+ * @brief 完成实模式下为进入保护模式的初始化工作 
+ * 
+ */
 void loader_entry(void) {
     8323:	66 55                	push   %ebp
     8325:	66 89 e5             	mov    %esp,%ebp
@@ -528,27 +529,30 @@ void loader_entry(void) {
     832e:	66 e8 d6 fd ff ff    	calll  810a <show_msg>
     8334:	66 83 c4 04          	add    $0x4,%esp
 
-     detect_memory();         //检测可用内存块
+     //1.检测可用内存块
+     detect_memory();         
     8338:	66 e8 08 fe ff ff    	calll  8146 <detect_memory>
-     enter_protect_mode();    //进入保护模式
+     
+     //2.进入保护模式
+     enter_protect_mode();    
     833e:	66 e8 4d ff ff ff    	calll  8291 <enter_protect_mode>
      
      for (;;){
     8344:	eb fe                	jmp    8344 <loader_entry+0x21>
 
 00008346 <inb>:
-static inline uint8_t inb (uint16_t port) {
+static inline uint8_t inb(uint16_t port) {
     8346:	55                   	push   %bp
     8347:	89 e5                	mov    %sp,%bp
     8349:	83 ec 14             	sub    $0x14,%sp
     834c:	8b 45 08             	mov    0x8(%di),%ax
     834f:	66 89 45 ec          	mov    %eax,-0x14(%di)
-    __asm__ __volatile__("inb %[p], %[v]"   // in 表示从端口寄存器中读取数据，端口只能用dx表示
+  __asm__ __volatile__(
     8353:	0f b7 45 ec          	movzww -0x14(%di),%ax
     8357:	89 c2                	mov    %ax,%dx
     8359:	ec                   	in     (%dx),%al
     835a:	88 45 ff             	mov    %al,-0x1(%di)
-    return rv;
+  return rv;
     835d:	0f b6 45 ff          	movzbw -0x1(%di),%ax
 }
     8361:	c9                   	leave  
@@ -564,7 +568,7 @@ static inline void outb(uint16_t port, uint8_t data) {
     836f:	66 89 45 fc          	mov    %eax,-0x4(%di)
     8373:	89 d0                	mov    %dx,%ax
     8375:	88 45 f8             	mov    %al,-0x8(%di)
-    __asm__ __volatile__("outb %[v], %[p]"
+  __asm__ __volatile__(
     8378:	0f b7 55 fc          	movzww -0x4(%di),%dx
     837c:	0f b6 45 f8          	movzbw -0x8(%di),%ax
     8380:	ee                   	out    %al,(%dx)
@@ -574,18 +578,18 @@ static inline void outb(uint16_t port, uint8_t data) {
     8383:	c3                   	ret    
 
 00008384 <inw>:
-static inline uint16_t inw (uint16_t port) {
+static inline uint16_t inw(uint16_t port) {
     8384:	55                   	push   %bp
     8385:	89 e5                	mov    %sp,%bp
     8387:	83 ec 14             	sub    $0x14,%sp
     838a:	8b 45 08             	mov    0x8(%di),%ax
     838d:	66 89 45 ec          	mov    %eax,-0x14(%di)
-    __asm__ __volatile__("in %[p], %[v]"    //in默认就是inw, 读取一个字即16位               
+  __asm__ __volatile__("in %[p], %[v]"  // in默认就是inw, 读取一个字即16位
     8391:	0f b7 45 ec          	movzww -0x14(%di),%ax
     8395:	89 c2                	mov    %ax,%dx
     8397:	66 ed                	in     (%dx),%eax
     8399:	66 89 45 fe          	mov    %eax,-0x2(%di)
-    return rv;
+  return rv;
     839d:	0f b7 45 fe          	movzww -0x2(%di),%ax
 }
     83a1:	c9                   	leave  
