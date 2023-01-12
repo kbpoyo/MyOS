@@ -9,10 +9,11 @@
  * 
  */
 
+    #include "os_cfg.h"    //gcc可以处理在汇编语言中包含c语言头文件(头文件中应该只能有宏定义)
+
     .text
     .extern kernel_init
-    .extern KERNEL_SELECTOR_CS
-    .extern KERNEL_SELECTOR_DS
+    .extern init_main
     .global _start
 
 /**
@@ -41,12 +42,12 @@ _start:
     push %eax           //外部函数将参数压入栈中，再进行函数调用
     call kernel_init    //调用内核初始化函数
 
-    //完成内核初始化后，进行直接跳转，以初始化cs寄存器为内核代码段选择子
+    //完成内核初始化后，进行直接跳转，以替换cs寄存器中临时的内核代码段的选择子为此时内存中真正的内核代码段选择子
     //cs:KERNEL_SELECTOR_CS, ip:gdt_reload
     jmp $KERNEL_SELECTOR_CS, $gdt_reload    
 
 gdt_reload:
-    //初始化其他段寄存器为内核数据段的选择子
+    //替换其他段寄存器中临时的内核数据段的选择子为此时内存中真正的内核数据段的选择子
     mov $KERNEL_SELECTOR_DS, %ax
 	mov %ax, %ds
 	mov %ax, %ss
@@ -54,4 +55,15 @@ gdt_reload:
 	mov %ax, %fs
 	mov %ax, %gs
 
-    jmp .
+    //重新指定栈空间位置，不再使用0~0x7c00这部分空间
+    //stack段已在下面预留了KERNEL_STACK_SIZE的空间大小，直接将最高地址赋值给esp，esp便可使用这片空间
+    mov $(stack + KERNEL_STACK_SIZE), %esp
+
+    //继续初始化内核
+    jmp init_main 
+
+//定义bss段，未初始化的数据段，不占据编译后的文件空间，只指定运行时的内存空间
+    .bss
+//comm命令支持其他程序访问该空间，lcommo不支持
+//指定stack标号在运行时的内存空间大小为KERNEL_STACK_SIZE
+.comm stack, KERNEL_STACK_SIZE 

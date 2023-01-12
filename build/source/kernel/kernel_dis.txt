@@ -1,0 +1,350 @@
+
+/home/kbpoyo/code/cpp/MyOs/build/source/kernel/kernel.elf:     file format elf32-i386
+/home/kbpoyo/code/cpp/MyOs/build/source/kernel/kernel.elf
+architecture: i386, flags 0x00000112:
+EXEC_P, HAS_SYMS, D_PAGED
+start address 0x00010000
+
+Program Header:
+    LOAD off    0x00001000 vaddr 0x00010000 paddr 0x00010000 align 2**12
+         filesz 0x000001b2 memsz 0x000121c0 flags rwx
+   STACK off    0x00000000 vaddr 0x00000000 paddr 0x00000000 align 2**4
+         filesz 0x00000000 memsz 0x00000000 flags rwx
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         000001b2  00010000  00010000  00001000  2**0
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .bss          00012000  000101c0  000101c0  000011b2  2**5
+                  ALLOC
+  2 .debug_line   000001cc  00000000  00000000  000011b2  2**0
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+  3 .debug_line_str 0000017e  00000000  00000000  0000137e  2**0
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+  4 .debug_info   0000032b  00000000  00000000  000014fc  2**0
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+  5 .debug_abbrev 0000022b  00000000  00000000  00001827  2**0
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+  6 .debug_aranges 00000060  00000000  00000000  00001a58  2**3
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+  7 .debug_str    00000231  00000000  00000000  00001ab8  2**0
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+  8 .comment      0000002b  00000000  00000000  00001ce9  2**0
+                  CONTENTS, READONLY
+  9 .debug_frame  000000e0  00000000  00000000  00001d14  2**2
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+SYMBOL TABLE:
+00000000 l    df *ABS*	00000000 start.S.o
+00010012 l       .text	00000000 gdt_reload
+00000000 l    df *ABS*	00000000 cpu.c
+0001002a l     F .text	00000028 lgdt
+000101c0 l     O .bss	00010000 gdt_table
+00010111 l     F .text	00000070 gdt_init
+00000000 l    df *ABS*	00000000 init.c
+00010181 g     F .text	0000000b cpu_init
+0001019a g     F .text	00000018 init_main
+000201c0 g     O .bss	00002000 stack
+0001018c g     F .text	0000000e kernel_init
+00010000 g       .text	00000000 _start
+00010052 g     F .text	000000bf segment_desc_set
+
+
+
+Disassembly of section .text:
+
+00010000 <_start>:
+*            [&boot_info]
+*    esp ->  [返回地址]
+*   所以要想访问到&boot_info，则只需从当前esp的位置偏移+4字节即可
+*/
+_start:
+    mov %esp, %ebp      //栈空间最好只用ebp来进行偏移访问
+   10000:	89 e5                	mov    %esp,%ebp
+    mov 0x4(%ebp), %eax //将&boot_info的值存入eax中
+   10002:	8b 45 04             	mov    0x4(%ebp),%eax
+
+    push %eax           //外部函数将参数压入栈中，再进行函数调用
+   10005:	50                   	push   %eax
+    call kernel_init    //调用内核初始化函数
+   10006:	e8 81 01 00 00       	call   1018c <kernel_init>
+
+    //完成内核初始化后，进行直接跳转，以替换cs寄存器中临时的内核代码段的选择子为此时内存中真正的内核代码段选择子
+    //cs:KERNEL_SELECTOR_CS, ip:gdt_reload
+    jmp $KERNEL_SELECTOR_CS, $gdt_reload    
+   1000b:	ea 12 00 01 00 08 00 	ljmp   $0x8,$0x10012
+
+00010012 <gdt_reload>:
+
+gdt_reload:
+    //替换其他段寄存器中临时的内核数据段的选择子为此时内存中真正的内核数据段的选择子
+    mov $KERNEL_SELECTOR_DS, %ax
+   10012:	66 b8 10 00          	mov    $0x10,%ax
+	mov %ax, %ds
+   10016:	8e d8                	mov    %eax,%ds
+	mov %ax, %ss
+   10018:	8e d0                	mov    %eax,%ss
+	mov %ax, %es
+   1001a:	8e c0                	mov    %eax,%es
+	mov %ax, %fs
+   1001c:	8e e0                	mov    %eax,%fs
+	mov %ax, %gs
+   1001e:	8e e8                	mov    %eax,%gs
+
+    //重新指定栈空间位置，不再使用0~0x7c00这部分空间
+    //stack段已在下面预留了KERNEL_STACK_SIZE的空间大小，直接将最高地址赋值给esp，esp便可使用这片空间
+    mov $(stack + KERNEL_STACK_SIZE), %esp
+   10020:	bc c0 21 02 00       	mov    $0x221c0,%esp
+
+    //继续初始化内核
+    jmp init_main 
+   10025:	e9 70 01 00 00       	jmp    1019a <init_main>
+
+0001002a <lgdt>:
+ * @brief  加载全局描述符表
+ * 
+ * @param start 加载到内存中的位置
+ * @param size 所占内存空间
+ */
+static inline void lgdt(uint32_t start, uint32_t size) {
+   1002a:	55                   	push   %ebp
+   1002b:	89 e5                	mov    %esp,%ebp
+   1002d:	83 ec 10             	sub    $0x10,%esp
+        uint16_t limit;         //GDT的在内存中的逻辑边界
+        uint16_t start15_0;     //GDT地址的低16位
+        uint16_t start31_16;    //GDT地址的高16位
+    }gdt;
+
+    gdt.start31_16 = start >> 16;   //初始化GDT地址的高16位
+   10030:	8b 45 08             	mov    0x8(%ebp),%eax
+   10033:	c1 e8 10             	shr    $0x10,%eax
+   10036:	66 89 45 fe          	mov    %ax,-0x2(%ebp)
+    gdt.start15_0 = start & 0xffff; //初始化GDT地址的低16位
+   1003a:	8b 45 08             	mov    0x8(%ebp),%eax
+   1003d:	66 89 45 fc          	mov    %ax,-0x4(%ebp)
+    gdt.limit = size - 1;           //初始化GDT的在内存中的逻辑边界，根据首地址进行偏移所以是size - 1
+   10041:	8b 45 0c             	mov    0xc(%ebp),%eax
+   10044:	83 e8 01             	sub    $0x1,%eax
+   10047:	66 89 45 fa          	mov    %ax,-0x6(%ebp)
+    
+     __asm__ __volatile__("lgdt %[g]"
+   1004b:	0f 01 55 fa          	lgdtl  -0x6(%ebp)
+                            :
+                            :[g]"m"(gdt));  //"m"表示指令直接作用于该内存位置
+                                            //即此处表示lgdt直接加载gdt所在的内存区域的内容
+}
+   1004f:	90                   	nop
+   10050:	c9                   	leave  
+   10051:	c3                   	ret    
+
+00010052 <segment_desc_set>:
+ *                 即2的13次方个段，也就是8192
+ * @param base 该段在内存中的真实段基址
+ * @param limit 该段的段界限，是一个偏移量，表示段中最大的偏移界限
+ * @param attr 该段的属性位
+ */
+void segment_desc_set(uint16_t selector,  uint32_t base, uint32_t limit, uint16_t attr) {
+   10052:	55                   	push   %ebp
+   10053:	89 e5                	mov    %esp,%ebp
+   10055:	83 ec 18             	sub    $0x18,%esp
+   10058:	8b 55 08             	mov    0x8(%ebp),%edx
+   1005b:	8b 45 14             	mov    0x14(%ebp),%eax
+   1005e:	66 89 55 ec          	mov    %dx,-0x14(%ebp)
+   10062:	66 89 45 e8          	mov    %ax,-0x18(%ebp)
+    //1. 获取该段描述符在内存中的起始地址，selector >> 3 取出3~15位才是其在全局描述符中的下标
+    segment_desc_t *desc = gdt_table + (selector >> 3);
+   10066:	0f b7 45 ec          	movzwl -0x14(%ebp),%eax
+   1006a:	66 c1 e8 03          	shr    $0x3,%ax
+   1006e:	0f b7 c0             	movzwl %ax,%eax
+   10071:	c1 e0 03             	shl    $0x3,%eax
+   10074:	05 c0 01 01 00       	add    $0x101c0,%eax
+   10079:	89 45 fc             	mov    %eax,-0x4(%ebp)
+
+    //2. 设置段基地址
+    desc->base15_0 = (uint16_t)base;
+   1007c:	8b 45 0c             	mov    0xc(%ebp),%eax
+   1007f:	89 c2                	mov    %eax,%edx
+   10081:	8b 45 fc             	mov    -0x4(%ebp),%eax
+   10084:	66 89 50 02          	mov    %dx,0x2(%eax)
+    desc->base23_16 = (uint8_t)(base >> 16);
+   10088:	8b 45 0c             	mov    0xc(%ebp),%eax
+   1008b:	c1 e8 10             	shr    $0x10,%eax
+   1008e:	89 c2                	mov    %eax,%edx
+   10090:	8b 45 fc             	mov    -0x4(%ebp),%eax
+   10093:	88 50 04             	mov    %dl,0x4(%eax)
+    desc->base31_24 = (uint8_t)(base >> 24);
+   10096:	8b 45 0c             	mov    0xc(%ebp),%eax
+   10099:	c1 e8 18             	shr    $0x18,%eax
+   1009c:	89 c2                	mov    %eax,%edx
+   1009e:	8b 45 fc             	mov    -0x4(%ebp),%eax
+   100a1:	88 50 07             	mov    %dl,0x7(%eax)
+
+    //3. 设置段界限
+    if (limit > 0xfffff) { //limit大于了20位能表示的最大值
+   100a4:	81 7d 10 ff ff 0f 00 	cmpl   $0xfffff,0x10(%ebp)
+   100ab:	76 1d                	jbe    100ca <segment_desc_set+0x78>
+        //将limit的粒度设置为 4kb，即将属性位G置1
+        desc->attr |= 0x8000;
+   100ad:	8b 45 fc             	mov    -0x4(%ebp),%eax
+   100b0:	0f b7 40 05          	movzwl 0x5(%eax),%eax
+   100b4:	66 0d 00 80          	or     $0x8000,%ax
+   100b8:	89 c2                	mov    %eax,%edx
+   100ba:	8b 45 fc             	mov    -0x4(%ebp),%eax
+   100bd:	66 89 50 05          	mov    %dx,0x5(%eax)
+
+        //将limit改成以 4kb 为单位
+        limit /= (4 * 1024);
+   100c1:	8b 45 10             	mov    0x10(%ebp),%eax
+   100c4:	c1 e8 0c             	shr    $0xc,%eax
+   100c7:	89 45 10             	mov    %eax,0x10(%ebp)
+
+    }
+    desc->limit15_0 = (uint16_t)limit;
+   100ca:	8b 45 10             	mov    0x10(%ebp),%eax
+   100cd:	89 c2                	mov    %eax,%edx
+   100cf:	8b 45 fc             	mov    -0x4(%ebp),%eax
+   100d2:	66 89 10             	mov    %dx,(%eax)
+    desc->attr |= ((uint16_t)(limit >> 8) & 0x0f00); //将limit高4位赋值到attr的8~11位(段界限的高4位)
+   100d5:	8b 45 fc             	mov    -0x4(%ebp),%eax
+   100d8:	0f b7 40 05          	movzwl 0x5(%eax),%eax
+   100dc:	89 c2                	mov    %eax,%edx
+   100de:	8b 45 10             	mov    0x10(%ebp),%eax
+   100e1:	c1 e8 08             	shr    $0x8,%eax
+   100e4:	66 25 00 0f          	and    $0xf00,%ax
+   100e8:	09 d0                	or     %edx,%eax
+   100ea:	89 c2                	mov    %eax,%edx
+   100ec:	8b 45 fc             	mov    -0x4(%ebp),%eax
+   100ef:	66 89 50 05          	mov    %dx,0x5(%eax)
+
+    //4.设置属性位
+    desc->attr |= attr & 0xf0ff;
+   100f3:	8b 45 fc             	mov    -0x4(%ebp),%eax
+   100f6:	0f b7 40 05          	movzwl 0x5(%eax),%eax
+   100fa:	89 c2                	mov    %eax,%edx
+   100fc:	0f b7 45 e8          	movzwl -0x18(%ebp),%eax
+   10100:	80 e4 f0             	and    $0xf0,%ah
+   10103:	09 d0                	or     %edx,%eax
+   10105:	89 c2                	mov    %eax,%edx
+   10107:	8b 45 fc             	mov    -0x4(%ebp),%eax
+   1010a:	66 89 50 05          	mov    %dx,0x5(%eax)
+
+
+}
+   1010e:	90                   	nop
+   1010f:	c9                   	leave  
+   10110:	c3                   	ret    
+
+00010111 <gdt_init>:
+
+/**
+ * @brief  初始化GDT
+ * 
+ */
+static void gdt_init(void) {
+   10111:	55                   	push   %ebp
+   10112:	89 e5                	mov    %esp,%ebp
+   10114:	83 ec 10             	sub    $0x10,%esp
+    //TODO:暂时将所有段都初始化为0
+    for (int i = 0; i < GDT_TABLE_SIZE; ++i) {
+   10117:	c7 45 fc 00 00 00 00 	movl   $0x0,-0x4(%ebp)
+   1011e:	eb 1c                	jmp    1013c <gdt_init+0x2b>
+        segment_desc_set(i << 3, 0, 0, 0);
+   10120:	8b 45 fc             	mov    -0x4(%ebp),%eax
+   10123:	c1 e0 03             	shl    $0x3,%eax
+   10126:	0f b7 c0             	movzwl %ax,%eax
+   10129:	6a 00                	push   $0x0
+   1012b:	6a 00                	push   $0x0
+   1012d:	6a 00                	push   $0x0
+   1012f:	50                   	push   %eax
+   10130:	e8 1d ff ff ff       	call   10052 <segment_desc_set>
+   10135:	83 c4 10             	add    $0x10,%esp
+    for (int i = 0; i < GDT_TABLE_SIZE; ++i) {
+   10138:	83 45 fc 01          	addl   $0x1,-0x4(%ebp)
+   1013c:	81 7d fc ff 1f 00 00 	cmpl   $0x1fff,-0x4(%ebp)
+   10143:	7e db                	jle    10120 <gdt_init+0xf>
+    }
+
+    //使用平坦模型，即段基址为0, 段界限直接用最大值，界限粒度为4kb，即段大小为4GB
+    //设置内核的数据段
+    segment_desc_set(KERNEL_SELECTOR_DS, 0, 0xffffffff,
+   10145:	68 92 40 00 00       	push   $0x4092
+   1014a:	6a ff                	push   $0xffffffff
+   1014c:	6a 00                	push   $0x0
+   1014e:	6a 10                	push   $0x10
+   10150:	e8 fd fe ff ff       	call   10052 <segment_desc_set>
+   10155:	83 c4 10             	add    $0x10,%esp
+                    SEG_ATTR_P | SEG_ATTR_DPL_0 | SEG_ATTR_S_NORMAL | 
+                    SEG_ATTR_TYPE_DATA | SEG_ATTR_TYPE_RW | SEG_ATTR_D_OR_B);
+
+    //设置内核的代码段
+    segment_desc_set(KERNEL_SELECTOR_CS, 0, 0xffffffff,
+   10158:	68 9a 40 00 00       	push   $0x409a
+   1015d:	6a ff                	push   $0xffffffff
+   1015f:	6a 00                	push   $0x0
+   10161:	6a 08                	push   $0x8
+   10163:	e8 ea fe ff ff       	call   10052 <segment_desc_set>
+   10168:	83 c4 10             	add    $0x10,%esp
+                    SEG_ATTR_P | SEG_ATTR_DPL_0 | SEG_ATTR_S_NORMAL |
+                    SEG_ATTR_TYPE_CODE | SEG_ATTR_TYPE_RW | SEG_ATTR_D_OR_B);
+
+    //加载新的GDT表
+    lgdt((uint32_t)gdt_table, sizeof(gdt_table));
+   1016b:	b8 c0 01 01 00       	mov    $0x101c0,%eax
+   10170:	68 00 00 01 00       	push   $0x10000
+   10175:	50                   	push   %eax
+   10176:	e8 af fe ff ff       	call   1002a <lgdt>
+   1017b:	83 c4 08             	add    $0x8,%esp
+}
+   1017e:	90                   	nop
+   1017f:	c9                   	leave  
+   10180:	c3                   	ret    
+
+00010181 <cpu_init>:
+
+/**
+ * @brief  完成cpu需要执行的相关初始化工作
+ * 
+ */
+void cpu_init(void) {
+   10181:	55                   	push   %ebp
+   10182:	89 e5                	mov    %esp,%ebp
+    //1.初始化GDT中的内核代码段与数据段
+    gdt_init();
+   10184:	e8 88 ff ff ff       	call   10111 <gdt_init>
+}
+   10189:	90                   	nop
+   1018a:	5d                   	pop    %ebp
+   1018b:	c3                   	ret    
+
+0001018c <kernel_init>:
+
+/**
+ * @brief  对内核进行初始化操作
+ * 
+ */
+void kernel_init(_boot_info_t_* boot_info) {
+   1018c:	55                   	push   %ebp
+   1018d:	89 e5                	mov    %esp,%ebp
+   1018f:	83 ec 08             	sub    $0x8,%esp
+    //1.完成cpu相关的初始化，初始化并重新加载GDT表
+    cpu_init();
+   10192:	e8 ea ff ff ff       	call   10181 <cpu_init>
+
+}
+   10197:	90                   	nop
+   10198:	c9                   	leave  
+   10199:	c3                   	ret    
+
+0001019a <init_main>:
+
+void init_main(void) {
+   1019a:	55                   	push   %ebp
+   1019b:	89 e5                	mov    %esp,%ebp
+   1019d:	83 ec 10             	sub    $0x10,%esp
+    int a = 3 / 0;
+   101a0:	b8 03 00 00 00       	mov    $0x3,%eax
+   101a5:	b9 00 00 00 00       	mov    $0x0,%ecx
+   101aa:	99                   	cltd   
+   101ab:	f7 f9                	idiv   %ecx
+   101ad:	89 45 fc             	mov    %eax,-0x4(%ebp)
+    for (;;){}
+   101b0:	eb fe                	jmp    101b0 <init_main+0x16>
