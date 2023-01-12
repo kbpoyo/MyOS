@@ -21,7 +21,7 @@
 /**
  * @brief  mbr记录系统信息
  */
-typedef struct _boot_info_t_ {
+typedef struct _boot_info_t {
     struct {
         uint32_t start; //内存块起始地址
         uint32_t size;  //内存块大小
@@ -29,7 +29,7 @@ typedef struct _boot_info_t_ {
     
     int ram_region_count;//记录有效内存卡数组的实际大小
 
-}_boot_info_t_;
+}boot_info_t;
 
 //磁盘分区默认大小为512字节
 #define SECTOR_SIZE 512

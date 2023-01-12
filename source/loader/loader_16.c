@@ -15,7 +15,7 @@ __asm__(".code16gcc");
 #include "loader.h"
 
 //实例化记录系统信息的结构体
-_boot_info_t_ boot_info;
+boot_info_t boot_info;
 
 /**
  * @brief  

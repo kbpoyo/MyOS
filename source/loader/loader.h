@@ -36,6 +36,6 @@ typedef struct SMAP_entry {
 void protect_mode_entry(void);
 
 //声明boot_info，供内核初始化函数使用
-extern _boot_info_t_ boot_info;
+extern boot_info_t boot_info;
 
 #endif

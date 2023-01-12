@@ -131,6 +131,6 @@ void load_kernel(void) {
     }               
 
     //4.将boot_info记录的信息传递给已拷贝到确定内存中的内核初始化函数
-    ((void(*)(_boot_info_t_*))kernel_entry)(&boot_info);    
+    ((void(*)(boot_info_t*))kernel_entry)(&boot_info);    
     for (;;){};
 }

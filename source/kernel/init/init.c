@@ -16,7 +16,7 @@
  * @brief  对内核进行初始化操作
  * 
  */
-void kernel_init(_boot_info_t_* boot_info) {
+void kernel_init(boot_info_t* boot_info) {
     //1.初始化并重新加载GDT表
     gdt_init();
 

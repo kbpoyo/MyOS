@@ -39,9 +39,9 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING, OCTETS
   9 .debug_frame  00000260  00000000  00000000  0000311c  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 10 .debug_str    000003f1  00000000  00000000  0000337c  2**0
+ 10 .debug_str    000003f0  00000000  00000000  0000337c  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 11 .debug_line_str 00000122  00000000  00000000  0000376d  2**0
+ 11 .debug_line_str 00000122  00000000  00000000  0000376c  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
 SYMBOL TABLE:
 00000000 l    df *ABS*	00000000 loader_16.c
@@ -968,7 +968,7 @@ void load_kernel(void) {
     }               
 
     //4.将boot_info记录的信息传递给已拷贝到确定内存中的内核初始化函数
-    ((void(*)(_boot_info_t_*))kernel_entry)(&boot_info);    
+    ((void(*)(boot_info_t*))kernel_entry)(&boot_info);    
     8630:	8b 45 f4             	mov    -0xc(%di),%ax
     8633:	83 ec 0c             	sub    $0xc,%sp
     8636:	68 80 a0             	push   $0xa080

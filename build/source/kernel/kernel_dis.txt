@@ -29,11 +29,11 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING, OCTETS
   7 .debug_aranges 00000080  00000000  00000000  000021c8  2**3
                   CONTENTS, READONLY, DEBUGGING, OCTETS
-  8 .debug_str    000002e6  00000000  00000000  00002248  2**0
+  8 .debug_str    000002e5  00000000  00000000  00002248  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
-  9 .comment      0000002b  00000000  00000000  0000252e  2**0
+  9 .comment      0000002b  00000000  00000000  0000252d  2**0
                   CONTENTS, READONLY
- 10 .debug_frame  0000016c  00000000  00000000  0000255c  2**2
+ 10 .debug_frame  0000016c  00000000  00000000  00002558  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
 SYMBOL TABLE:
 00000000 l    df *ABS*	00000000 start.S.o
@@ -518,7 +518,7 @@ void idt_init(void) {
  * @brief  对内核进行初始化操作
  * 
  */
-void kernel_init(_boot_info_t_* boot_info) {
+void kernel_init(boot_info_t* boot_info) {
    10274:	55                   	push   %ebp
    10275:	89 e5                	mov    %esp,%ebp
    10277:	83 ec 08             	sub    $0x8,%esp
