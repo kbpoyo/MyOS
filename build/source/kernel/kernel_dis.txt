@@ -25,15 +25,15 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING, OCTETS
   5 .debug_info   00000728  00000000  00000000  0000172e  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
-  6 .debug_abbrev 0000036e  00000000  00000000  00001e56  2**0
+  6 .debug_abbrev 0000036a  00000000  00000000  00001e56  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
-  7 .debug_aranges 00000080  00000000  00000000  000021c8  2**3
+  7 .debug_aranges 00000080  00000000  00000000  000021c0  2**3
                   CONTENTS, READONLY, DEBUGGING, OCTETS
-  8 .debug_str    000002e5  00000000  00000000  00002248  2**0
+  8 .debug_str    000002e5  00000000  00000000  00002240  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
-  9 .comment      0000002b  00000000  00000000  0000252d  2**0
+  9 .comment      0000002b  00000000  00000000  00002525  2**0
                   CONTENTS, READONLY
- 10 .debug_frame  0000016c  00000000  00000000  00002558  2**2
+ 10 .debug_frame  0000016c  00000000  00000000  00002550  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
 SYMBOL TABLE:
 00000000 l    df *ABS*	00000000 start.S.o
@@ -41,23 +41,23 @@ SYMBOL TABLE:
 00000000 l    df *ABS*	00000000 gdt.c
 00010040 l     F .text	00000028 lgdt
 000102c0 l     O .bss	00010000 gdt_table
+00010068 l     F .text	000000bf segment_desc_set
 00000000 l    df *ABS*	00000000 idt.c
 00010197 l     F .text	00000028 lidt
 000202c0 l     O .bss	00000800 idt_table
+000101bf l     F .text	00000005 do_default_handler
+000101da l     F .text	00000047 gate_desc_set
 00000000 l    df *ABS*	00000000 init.c
 00020ac0 l     O .bss	00010000 gdt_table
 00030ac0 l     O .bss	00000800 idt_table
 00010287 g     F .text	00000018 init_main
 0001002a g       .text	00000000 exception_handler_unknown
 00010127 g     F .text	00000070 gdt_init
-00010206 g     F .text	00000005 do_default_handler
 000312c0 g     O .bss	00002000 stack
 00010221 g     F .text	00000053 idt_init
 00010274 g     F .text	00000013 kernel_init
 00010000 g       .text	00000000 _start
-0001020b g     F .text	00000016 do_handler_unknown
-00010068 g     F .text	000000bf segment_desc_set
-000101bf g     F .text	00000047 gate_desc_set
+000101c4 g     F .text	00000016 do_handler_unknown
 
 
 
@@ -136,7 +136,7 @@ exception_handler_unknown:
 
     //5.调用c处理函数，会自动压入返回地址
     call do_handler_unknown
-   10032:	e8 d4 01 00 00       	call   1020b <do_handler_unknown>
+   10032:	e8 8d 01 00 00       	call   101c4 <do_handler_unknown>
 
     //6.将 esp 重新指向 ->[gs]
     pop %esp
@@ -203,7 +203,7 @@ static inline void lgdt(uint32_t start, uint32_t size) {
  * @param limit 该段的段界限，是一个偏移量，表示段中最大的偏移界限
  * @param attr 该段的属性位
  */
-void segment_desc_set(uint16_t selector,  uint32_t base, uint32_t limit, uint16_t attr) {
+static void segment_desc_set(uint16_t selector,  uint32_t base, uint32_t limit, uint16_t attr) {
    10068:	55                   	push   %ebp
    10069:	89 e5                	mov    %esp,%ebp
    1006b:	83 ec 18             	sub    $0x18,%esp
@@ -397,82 +397,87 @@ static inline void lidt(uint32_t start, uint32_t size) {
    101bd:	c9                   	leave  
    101be:	c3                   	ret    
 
-000101bf <gate_desc_set>:
- * @param selector 中断门对应的处理程序所在的段的选择子
- * @param offset 中段门对应的处理程序相对于所在段的偏移量
- * @param attr 中段门的属性
- */
-void gate_desc_set(gate_desc_t *desc, uint16_t selector, uint32_t offset,
-                   uint16_t attr) {
-   101bf:	55                   	push   %ebp
-   101c0:	89 e5                	mov    %esp,%ebp
-   101c2:	83 ec 08             	sub    $0x8,%esp
-   101c5:	8b 55 0c             	mov    0xc(%ebp),%edx
-   101c8:	8b 45 14             	mov    0x14(%ebp),%eax
-   101cb:	66 89 55 fc          	mov    %dx,-0x4(%ebp)
-   101cf:	66 89 45 f8          	mov    %ax,-0x8(%ebp)
-  // 1.初始化偏移量
-  desc->offset15_0 = offset & 0xffff;
-   101d3:	8b 45 10             	mov    0x10(%ebp),%eax
-   101d6:	89 c2                	mov    %eax,%edx
-   101d8:	8b 45 08             	mov    0x8(%ebp),%eax
-   101db:	66 89 10             	mov    %dx,(%eax)
-  desc->offset31_16 = (offset >> 16) & 0xffff;
-   101de:	8b 45 10             	mov    0x10(%ebp),%eax
-   101e1:	c1 e8 10             	shr    $0x10,%eax
-   101e4:	89 c2                	mov    %eax,%edx
-   101e6:	8b 45 08             	mov    0x8(%ebp),%eax
-   101e9:	66 89 50 06          	mov    %dx,0x6(%eax)
-
-  // 2.初始化选择子
-  desc->selector = selector;
-   101ed:	8b 45 08             	mov    0x8(%ebp),%eax
-   101f0:	0f b7 55 fc          	movzwl -0x4(%ebp),%edx
-   101f4:	66 89 50 02          	mov    %dx,0x2(%eax)
-
-  // 3.初始化属性位
-  desc->attr = attr;
-   101f8:	8b 45 08             	mov    0x8(%ebp),%eax
-   101fb:	0f b7 55 f8          	movzwl -0x8(%ebp),%edx
-   101ff:	66 89 50 04          	mov    %dx,0x4(%eax)
-}
-   10203:	90                   	nop
-   10204:	c9                   	leave  
-   10205:	c3                   	ret    
-
-00010206 <do_default_handler>:
+000101bf <do_default_handler>:
  * @brief  默认的异常处理函数
  * 
  * @param message 异常信息
  * @param fram  异常发生后压入的寄存器信息以及错误代码所组成的栈帧 
  */
-void do_default_handler(const exception_frame_t *fram, const char *message) {
-   10206:	55                   	push   %ebp
-   10207:	89 e5                	mov    %esp,%ebp
+static void do_default_handler(const exception_frame_t *fram, const char *message) {
+   101bf:	55                   	push   %ebp
+   101c0:	89 e5                	mov    %esp,%ebp
   for (;;) {}
-   10209:	eb fe                	jmp    10209 <do_default_handler+0x3>
+   101c2:	eb fe                	jmp    101c2 <do_default_handler+0x3>
 
-0001020b <do_handler_unknown>:
+000101c4 <do_handler_unknown>:
 
 /**
  * @brief   对没有针对性处理程序的异常进行处理
  * @param frame 异常发生后压入的寄存器信息以及错误代码所组成的栈帧
  */
 void do_handler_unknown(const exception_frame_t *frame) {
-   1020b:	55                   	push   %ebp
-   1020c:	89 e5                	mov    %esp,%ebp
+   101c4:	55                   	push   %ebp
+   101c5:	89 e5                	mov    %esp,%ebp
   do_default_handler(frame, "unknown exception");
-   1020e:	68 9f 02 01 00       	push   $0x1029f
-   10213:	ff 75 08             	push   0x8(%ebp)
-   10216:	e8 eb ff ff ff       	call   10206 <do_default_handler>
-   1021b:	83 c4 08             	add    $0x8,%esp
+   101c7:	68 9f 02 01 00       	push   $0x1029f
+   101cc:	ff 75 08             	push   0x8(%ebp)
+   101cf:	e8 eb ff ff ff       	call   101bf <do_default_handler>
+   101d4:	83 c4 08             	add    $0x8,%esp
 
+}
+   101d7:	90                   	nop
+   101d8:	c9                   	leave  
+   101d9:	c3                   	ret    
+
+000101da <gate_desc_set>:
+ * @param selector 中断门对应的处理程序所在的段的选择子
+ * @param offset 中段门对应的处理程序相对于所在段的偏移量
+ * @param attr 中段门的属性
+ */
+static void gate_desc_set(gate_desc_t *desc, uint16_t selector, uint32_t offset,
+                   uint16_t attr) {
+   101da:	55                   	push   %ebp
+   101db:	89 e5                	mov    %esp,%ebp
+   101dd:	83 ec 08             	sub    $0x8,%esp
+   101e0:	8b 55 0c             	mov    0xc(%ebp),%edx
+   101e3:	8b 45 14             	mov    0x14(%ebp),%eax
+   101e6:	66 89 55 fc          	mov    %dx,-0x4(%ebp)
+   101ea:	66 89 45 f8          	mov    %ax,-0x8(%ebp)
+  // 1.初始化偏移量
+  desc->offset15_0 = offset & 0xffff;
+   101ee:	8b 45 10             	mov    0x10(%ebp),%eax
+   101f1:	89 c2                	mov    %eax,%edx
+   101f3:	8b 45 08             	mov    0x8(%ebp),%eax
+   101f6:	66 89 10             	mov    %dx,(%eax)
+  desc->offset31_16 = (offset >> 16) & 0xffff;
+   101f9:	8b 45 10             	mov    0x10(%ebp),%eax
+   101fc:	c1 e8 10             	shr    $0x10,%eax
+   101ff:	89 c2                	mov    %eax,%edx
+   10201:	8b 45 08             	mov    0x8(%ebp),%eax
+   10204:	66 89 50 06          	mov    %dx,0x6(%eax)
+
+  // 2.初始化选择子
+  desc->selector = selector;
+   10208:	8b 45 08             	mov    0x8(%ebp),%eax
+   1020b:	0f b7 55 fc          	movzwl -0x4(%ebp),%edx
+   1020f:	66 89 50 02          	mov    %dx,0x2(%eax)
+
+  // 3.初始化属性位
+  desc->attr = attr;
+   10213:	8b 45 08             	mov    0x8(%ebp),%eax
+   10216:	0f b7 55 f8          	movzwl -0x8(%ebp),%edx
+   1021a:	66 89 50 04          	mov    %dx,0x4(%eax)
 }
    1021e:	90                   	nop
    1021f:	c9                   	leave  
    10220:	c3                   	ret    
 
 00010221 <idt_init>:
+
+/**
+ * @brief  初始化中断向量表
+ * 
+ */
 void idt_init(void) {
    10221:	55                   	push   %ebp
    10222:	89 e5                	mov    %esp,%ebp
@@ -490,7 +495,7 @@ void idt_init(void) {
    10245:	52                   	push   %edx
    10246:	6a 08                	push   $0x8
    10248:	50                   	push   %eax
-   10249:	e8 71 ff ff ff       	call   101bf <gate_desc_set>
+   10249:	e8 8c ff ff ff       	call   101da <gate_desc_set>
    1024e:	83 c4 10             	add    $0x10,%esp
   for (int i = 0; i < IDT_TABLE_SIZE; ++i) {
    10251:	83 45 fc 01          	addl   $0x1,-0x4(%ebp)
@@ -536,6 +541,7 @@ void kernel_init(boot_info_t* boot_info) {
    10286:	c3                   	ret    
 
 00010287 <init_main>:
+
 
 void init_main(void) {
    10287:	55                   	push   %ebp

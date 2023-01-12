@@ -48,9 +48,6 @@ static gate_desc_t idt_table[IDT_TABLE_SIZE];
 #define GATE_TYPE_INT ((uint16_t)(0xe << 8))    //因为11~8位已经确定所以将11~8位一起初始化
 
 
-
-void gate_desc_set(gate_desc_t *desc, uint16_t selector, uint32_t offset, uint16_t attr);
-
 void idt_init(void);
 
 #endif

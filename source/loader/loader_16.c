@@ -128,7 +128,5 @@ void loader_entry(void) {
      //2.进入保护模式
      enter_protect_mode();    
      
-     for (;;){
-     };
 }
 
