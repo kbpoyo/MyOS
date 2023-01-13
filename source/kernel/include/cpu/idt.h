@@ -76,24 +76,56 @@ void idt_init(void);
 #define IDT21_CP    21
 
 
-//定义8259初始化需要的宏 绑定各个端口寄存器
-#define PIC0_ICW1   0x20
-#define PIC0_ICW2   0x21
-#define PIC0_ICW3   0x21
-#define PIC0_ICW4   0x21
-#define PIC0_IMR    0x21  //中断屏蔽端口寄存器
+//定义8259A初始化需要的宏 绑定各个端口寄存器 书p311，p315
+//PIC: 可编程控制器，即8259A
+//ICW：初始化命令字，每一个8259A里有4个，ICW1~ICW4
+//OCW：操作命令字，每一个8259A里有3个，OCW1~OCW3
+//初始化8259A，即初始 ICW 和 OCW 这两组寄存器
+#define PIC0_ICW1   0x20    //初始化IC4位，ICW1的标志位为 1
+#define PIC0_ICW2   0x21    //初始化IRQ接口道中断向量表下标的映射，指定IRQ0对应的下标即可
+#define PIC0_ICW3   0x21    //初始化主片哪个端口用作级联
+#define PIC0_ICW4   0x21    //初始化处理器类型以及EOI模式(End Of Interrupt)(0：手动结束中断，1：自动结束)
 
-#define PIC1_ICW1   0x20
-#define PIC1_ICW2   0x21
-#define PIC1_ICW3   0x21
-#define PIC1_ICW4   0x21
-#define PIC1_IMR    0x21
+//中断屏蔽端口寄存器，(Interrupt Mask Register), 位宽为8位
+#define PIC0_IMR    0x21  
 
-#define IDT_PIC_START 0x20  //外部中断的第一个处理程序在IDT中的下标，IDT[0x20~0x2f] 为处理外部中断的中断门 
+#define PIC1_ICW1   0xa0    
+#define PIC1_ICW2   0xa1    
+#define PIC1_ICW3   0xa1    
+#define PIC1_ICW4   0xa1    
+#define PIC1_IMR    0xa1
 
+
+
+//p315
+//ICW1的第0位为IC4标志位，1：需要初始化ICW4,0：不需要，但x86必须初始化ICW4,即IC4为1
+#define PIC_ICW1_IC4        ((uint8_t)(1 << 0))
+
+//ICW1的标志位，置1即可
 #define PIC_ICW1_ALWAYS_1   ((uint8_t)(1 << 4))
-#define PIC_ICW1_ICW4       ((uint8_t)(1 << 0))
+
+//外部中断的第一个处理程序在IDT中的下标(由自己确定)，IDT[0x20 ~ 0x2e] 为处理外部中断的中断门,共15个中断
+#define PIC_ICW2_IDT_START    0x20
+
+//初始化ICW3, 告诉主片，主片的哪个IRQ接口用作级联，此处用IRQ2(0000 0100), 即第2位 
+#define PIC_ICW3_MASTER_CASCADE ((uint8_t)(1 << 2))
+
+//初始化ICW3,告诉从片，主片的哪个IRQ接口用作级联,此处用 IRQ2(0000 0010)，与主片不同，从片用IRQ对应的标号即可
+#define PIC_ICW3_SLAVE_CASCADE    0x02
+
+//初始化ICW4的 upm 位， 1：x86处理器， 0：8080或8085处理器
 #define PIC_ICW4_8086       ((uint8_t)(1 << 0))
+
+/**
+ *  对于EOI模式的理解：
+ *    EOI位置1，表示自动结束中断调用，即当cpu第一次发送INTA信号时，8259A将ISR对应位置1，IRR对应位置0
+ *    但若此时有优先级更高的中断请求，ISR与IRR都将撤销之前的操作以响应更高优先级的中断， 但若在cpu第二次
+ *    发送的INTA信号，即等待中断向量号，被响应之后，有更高优先级的中断请求进入则可能扰乱正在服务的程序
+ * 
+ *    EOI位置0，表示在当前中断程序结束时手动写入操作命令字OCW2,向8259A发送中断结束命令，8259A将自动清除当前
+ *    ISR中最高优先级的位，而保存在ISR中的最高优先级的位一定就是对应此时正在运行的中断程序，所以不会有问题
+ * 
+ */
 
 
 

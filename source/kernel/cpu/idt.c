@@ -143,25 +143,24 @@ static int idt_install(const int idt_num, const idt_handler_t handler) {
 }
 
 static void init_pic(void) {
-  //1.对第一块8259芯片进行初始化
-  outb(PIC0_ICW1, PIC_ICW1_ALWAYS_1 | PIC_ICW1_ICW4);
-  outb(PIC0_ICW2, IDT_PIC_START);
-  outb(PIC0_ICW3, 1 << 2);
-  outb(PIC0_ICW4, PIC_ICW4_8086);
+  //1.对主片(8259A芯片)进行初始化, 写入时必须按照ICW1~4的顺序写入
+  outb(PIC0_ICW1, PIC_ICW1_ALWAYS_1 | PIC_ICW1_IC4);  //ICW1:边缘触发，级联模式，需要ICW4
+  outb(PIC0_ICW2, PIC_ICW2_IDT_START);                //ICW2:起始中断向量号为0x20
+  outb(PIC0_ICW3, PIC_ICW3_MASTER_CASCADE);           //ICW3:主片用IR2级联从片
+  outb(PIC0_ICW4, PIC_ICW4_8086);                     //ICW4:8086模式，正常EOI
 
-  //2.对第二块8259芯片进行初始化
-  outb(PIC1_ICW1, PIC_ICW1_ALWAYS_1 | PIC_ICW1_ICW4);
-  outb(PIC1_ICW2, IDT_PIC_START + 8); //第一块芯片占用了8个中断，所以第二块芯片从第8个中断的下一个开始
-  outb(PIC1_ICW3, 2);
+  //2.对从片(8259A芯片)进行初始化
+  outb(PIC1_ICW1, PIC_ICW1_ALWAYS_1 | PIC_ICW1_IC4);
+  outb(PIC1_ICW2, PIC_ICW2_IDT_START + 8); //第一块芯片占用了8个中断，所以第二块芯片从第8个中断的下一个开始
+  outb(PIC1_ICW3, PIC_ICW3_SLAVE_CASCADE);
   outb(PIC1_ICW4, PIC_ICW4_8086);
-  
+
 
   //3.初始化完两块8259芯片后，还需要为每一个中断设置处理程序
-  //才可以去接收中断，所以现在要屏蔽中断
-  outb(PIC0_IMR, 0xff & ~(1 << 2)); //屏蔽第一块芯片除 irq2 位以为的位传来的中断，irq2位用来连接两块芯片
-  outb(PIC0_IMR, 0xff); //屏蔽第二块芯片的所有中断
-  
-  
+  //才可以去接收中断，所以现在要屏蔽中断，IMR位置1则屏蔽该中断请求，0则不屏蔽
+  outb(PIC0_IMR, 0xfb); //屏蔽主片除 irq2(第3位) 以外的位传来的中断，(1111 1011)
+  outb(PIC0_IMR, 0xff); //屏蔽从片的所有中断
+
 
 }
 

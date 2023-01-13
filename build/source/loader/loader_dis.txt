@@ -465,7 +465,7 @@ static void enter_protect_mode(void){
     8291:	66 55                	push   %ebp
     8293:	66 89 e5             	mov    %esp,%ebp
     8296:	66 83 ec 10          	sub    $0x10,%esp
-     //1.关闭中断，设置eflags对应的位
+     //1.关闭中断，设置eflags对应的位即可，在进入保护模式时不接收中断调用
      cli();
     829a:	66 e8 78 fd ff ff    	calll  8018 <cli>
 

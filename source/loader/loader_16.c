@@ -97,7 +97,7 @@ uint16_t gdt_table[][4] = {
  * 
  */
 static void enter_protect_mode(void){
-     //1.关闭中断，设置eflags对应的位
+     //1.关闭中断，设置eflags对应的位即可，在进入保护模式时不接收中断调用
      cli();
 
      //2.以此打开A20Gate, 读取92端口，并将其第二位设置为1
