@@ -20,10 +20,11 @@ typedef struct _exception_frame_t {
     
     uint32_t gs, fs, es, ds;    //手动压入的段寄存器
     uint32_t edi, esi, ebp, esp, ebx, edx, ecx, eax; //pusha指令压入的通用寄存器
-    //TODO:错误码不是每一个异常都会有，所以暂时先不加错误码，之后再处理
+    uint32_t num, error_code;   //手动压入的错误码和中断向量表的下标
     uint32_t eip, cs, eflags;  //异常中断发生后，cpu自动压入的寄存器以及错误代码
     
 }exception_frame_t;
+
 
 #endif
 

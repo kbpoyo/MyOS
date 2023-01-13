@@ -11,21 +11,15 @@
 
 #include "cpu/idt.h"
 
-/**
- * @brief   对没有针对性处理程序的异常进行处理
- *          中断调用要用iret指令返回，所以要进入汇编
- *          这个函数定义在汇编中，在该函数内再调用真正的c处理函数
- *
- */
-void exception_handler_unknown(void);
 
+//==============================真正进行异常处理的c程序==================================
 /**
  * @brief  默认的异常处理函数
  * 
  * @param message 异常信息
  * @param fram  异常发生后压入的寄存器信息以及错误代码所组成的栈帧 
  */
-static void do_default_handler(const exception_frame_t *fram, const char *message) {
+static void do_default_handler(const exception_frame_t *frame, const char *message) {
   for (;;) {}
 }
 
@@ -37,6 +31,26 @@ void do_handler_unknown(const exception_frame_t *frame) {
   do_default_handler(frame, "unknown exception");
 
 }
+
+
+/**
+ * @brief  除0异常
+ * 
+ * @param frame 异常栈帧
+ */
+void do_handler_divider (exception_frame_t *frame) {
+  do_default_handler(frame, "divider exception");
+}
+
+//==============================真正进行异常处理的c程序==================================
+
+
+
+
+
+
+
+
 
 
 /**
@@ -63,17 +77,39 @@ static void gate_desc_set(gate_desc_t *desc, uint16_t selector, uint32_t offset,
 
 
 /**
+ * @brief  将异常的下标与异常处理程序绑定
+ * 
+ * @param idt_num 异常的下标
+ * @param handler 异常处理程序的偏移地址
+ * @return int 成功返回 0 失败放回 -1
+ */
+static int idt_install(int idt_num, idt_handler_t handler) {
+  //1.判断IDT下标是否越界
+  if (idt_num >= IDT_TABLE_SIZE) return -1;
+
+  //2.在IDT表中设置下标为 idt_num 的中断门
+  gate_desc_set(idt_table + idt_num, KERNEL_SELECTOR_CS, (uint32_t)handler,
+                GATE_TYPE_INT | GATE_ATTR_P | GATE_ATTR_DPL_0);
+
+  return 0;
+
+}
+
+
+
+/**
  * @brief  初始化中断向量表
  * 
  */
 void idt_init(void) {
-  // 1.初始化IDT中的各个中断门
+  // 1.初始化IDT中的各个中断门(未知异常类型)
   for (int i = 0; i < IDT_TABLE_SIZE; ++i) {
-    gate_desc_set(idt_table + i, KERNEL_SELECTOR_CS,
-                  (uint32_t)exception_handler_unknown,
-                  GATE_TYPE_INT | GATE_ATTR_P | GATE_ATTR_DPL_0);
+   idt_install(i, (idt_handler_t)exception_handler_unknown);
   }
 
-  // 2.加载IDT
+  //2.绑定异常中断向量表中对应下标的中断门的处理函数
+  idt_install(IDT0_DE, (idt_handler_t)exception_handler_divider);
+
+  //3.加载IDT
   lidt((uint32_t)idt_table, sizeof(idt_table));
 }

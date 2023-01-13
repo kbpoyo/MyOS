@@ -70,15 +70,27 @@ gdt_reload:
 .comm stack, KERNEL_STACK_SIZE 
 
 
+//汇编中定义宏的指令, name为异常函数名，num为中断向量表的下标，with_err_code标志是否压入了错误码
+//使用 \宏 来指定预处理时宏替换的位置
+.macro exception_handler name num with_err_code
+
 //定义中断处理程序的实现
     .text
-    .extern do_handler_unknown
-    .global exception_handler_unknown
-exception_handler_unknown:
-    //调用c处理函数前先保存现场
-    //1.中断发生前cpu会自动在栈中压入 EFLAGS，EIP， CS 寄存器，以及错误代码
+    .extern do_handler_\name
+    .global exception_handler_\name
+
+exception_handler_\name:
+    //调用c处理函数前先保存现场,中断发生前cpu会自动在栈中压入 EFLAGS，CS， EIP 寄存器，以及错误代码
+    
+    //1.判断是否有错误代码被压入，如果没有则压入0来占位，并压入中断在向量表中的下标
+    .if \with_err_code == 0
+        push $0
+    .endif
+    push $\num
+
     //2.用 pusha 指令压入8个通用寄存器
     pusha
+
     //3.压入其他段寄存器
     push %ds
     push %es
@@ -90,7 +102,7 @@ exception_handler_unknown:
     push %esp
 
     //5.调用c处理函数，会自动压入返回地址
-    call do_handler_unknown
+    call do_handler_\name
 
     //6.将 esp 重新指向 ->[gs]
     pop %esp
@@ -101,5 +113,32 @@ exception_handler_unknown:
     pop %es
     pop %ds
     popa
+    add $(2*4), %esp //弹出num 和 err_code,cpu恢复现场时自己压入的错误码不会自己弹出，而是直接pop给EIP，所以要手动弹出
 
     iret //中断处理程序必须要用iret进行返回，所以必须用汇编来实现
+
+//宏结束标志
+.endm
+
+//使用定义的异常宏
+exception_handler unknown,              -1, 0    //未知异常
+exception_handler divider,              0,  0    //除0异常
+exception_handler debug,                1,  0    //debug异常
+exception_handler NMI,                  2,  0
+exception_handler breakpoint,           3,  0
+exception_handler overflow,             4,  0
+exception_handler bound_range,          5,  0
+exception_handler invalid_opcode,       6,  0
+exception_handler device_unavailable,   7,  0
+exception_handler double_fault,         8,  1
+exception_handler invalid_tss,          10, 1
+exception_handler segment_not_present,  11, 1
+exception_handler stack_segment_fault,  12, 1
+exception_handler general_protection,   13, 1
+exception_handler page_fault,           14, 1
+exception_handler fpu_error,            16, 0
+exception_handler alignment_check,      17, 1
+exception_handler machine_check,        18, 0
+exception_handler smd_exception,        19, 0
+exception_handler virtual_exception,    20, 0
+exception_handler control_exception,    21, 1
