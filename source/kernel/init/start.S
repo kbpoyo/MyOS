@@ -124,7 +124,7 @@ exception_handler_\name:
 exception_handler unknown,              -1, 0    //未知异常
 exception_handler divider,              0,  0    //除0异常
 exception_handler debug,                1,  0    //debug异常
-exception_handler NMI,                  2,  0
+exception_handler nmi,                  2,  0
 exception_handler breakpoint,           3,  0
 exception_handler overflow,             4,  0
 exception_handler bound_range,          5,  0

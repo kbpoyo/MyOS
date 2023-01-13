@@ -75,29 +75,52 @@ void idt_init(void);
 #define IDT20_VE    20
 #define IDT21_CP    21
 
+
+//定义8259初始化需要的宏 绑定各个端口寄存器
+#define PIC0_ICW1   0x20
+#define PIC0_ICW2   0x21
+#define PIC0_ICW3   0x21
+#define PIC0_ICW4   0x21
+#define PIC0_IMR    0x21  //中断屏蔽端口寄存器
+
+#define PIC1_ICW1   0x20
+#define PIC1_ICW2   0x21
+#define PIC1_ICW3   0x21
+#define PIC1_ICW4   0x21
+#define PIC1_IMR    0x21
+
+#define IDT_PIC_START 0x20  //外部中断的第一个处理程序在IDT中的下标，IDT[0x20~0x2f] 为处理外部中断的中断门 
+
+#define PIC_ICW1_ALWAYS_1   ((uint8_t)(1 << 4))
+#define PIC_ICW1_ICW4       ((uint8_t)(1 << 0))
+#define PIC_ICW4_8086       ((uint8_t)(1 << 0))
+
+
+
+
 //因为中断调用需要使用 iret 指令进行返回，所以要进入汇编后再调用实际进行处理的c函数
 //以下为异常处理的汇编入口函数声明
-void exception_handler_unknown (void);
-void exception_handler_divider (void);
-void exception_handler_Debug (void);
-void exception_handler_NMI (void);
-void exception_handler_breakpoint (void);
-void exception_handler_overflow (void);
-void exception_handler_bound_range (void);
-void exception_handler_invalid_opcode (void);
-void exception_handler_device_unavailable (void);
-void exception_handler_double_fault (void);
-void exception_handler_invalid_tss (void);
-void exception_handler_segment_not_present (void);
-void exception_handler_stack_segment_fault (void);
-void exception_handler_general_protection (void);
-void exception_handler_page_fault (void);
-void exception_handler_fpu_error (void);
-void exception_handler_alignment_check (void);
-void exception_handler_machine_check (void);
-void exception_handler_smd_exception (void);
-void exception_handler_virtual_exception (void);
-void exception_handler_control_exception (void);
+void exception_handler_unknown (void);              //unknown
+void exception_handler_divider (void);              //IDT0
+void exception_handler_debug (void);                //IDT1
+void exception_handler_nmi (void);                  //IDT2
+void exception_handler_breakpoint (void);           //IDT3
+void exception_handler_overflow (void);             //IDT4
+void exception_handler_bound_range (void);          //IDT5
+void exception_handler_invalid_opcode (void);       //IDT6
+void exception_handler_device_unavailable (void);   //IDT7
+void exception_handler_double_fault (void);         //IDT8
+void exception_handler_invalid_tss (void);          //IDT10
+void exception_handler_segment_not_present (void);  //IDT11
+void exception_handler_stack_segment_fault (void);  //IDT12
+void exception_handler_general_protection (void);   //IDT13
+void exception_handler_page_fault (void);           //IDT14
+void exception_handler_fpu_error (void);            //IDT16
+void exception_handler_alignment_check (void);      //IDT17
+void exception_handler_machine_check (void);        //IDT18
+void exception_handler_smd_exception (void);        //IDT19
+void exception_handler_virtual_exception (void);    //IDT20
+void exception_handler_control_exception (void);    //IDT21
 
 
 #endif

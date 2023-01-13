@@ -25,6 +25,12 @@ static inline void cli(void) { __asm__ __volatile__("cli"); }
 static inline void sti(void) { __asm__ __volatile__("sti"); }
 
 /**
+ * @brief  暂停cpu的运行
+ *
+ */
+static inline void hlt(void) { __asm__ __volatile__("hlt"); }
+
+/**
  * @brief  从设备IO端口寄存器(端口号为port)中读取8位数据
  *
  * @param port
@@ -90,8 +96,8 @@ static inline void lgdt(uint32_t start, uint32_t size) {
     uint16_t start31_16;  // GDT地址的高16位
   } gdt;
 
-  gdt.start31_16 = (start >> 16) & 0xffff;    // 初始化GDT地址的高16位
-  gdt.start15_0 = start & 0xffff;  // 初始化GDT地址的低16位
+  gdt.start31_16 = (start >> 16) & 0xffff;  // 初始化GDT地址的高16位
+  gdt.start15_0 = start & 0xffff;           // 初始化GDT地址的低16位
   gdt.limit =
       size -
       1;  // 初始化GDT的在内存中的逻辑边界，根据首地址进行偏移所以是size - 1
@@ -110,16 +116,17 @@ static inline void lgdt(uint32_t start, uint32_t size) {
  * @param size 所占内存空间
  */
 static inline void lidt(uint32_t start, uint32_t size) {
-
   struct {
-    uint16_t limit;     // IDT的在内存中的逻辑边界
-    uint16_t start15_0; // IDT地址的低16位
-    uint16_t start31_16;// IDT地址的高16位
+    uint16_t limit;       // IDT的在内存中的逻辑边界
+    uint16_t start15_0;   // IDT地址的低16位
+    uint16_t start31_16;  // IDT地址的高16位
   } idt;
 
   idt.start31_16 = (start >> 16) & 0xffff;  // 初始化IDT地址的高16位
   idt.start15_0 = start & 0xffff;           // 初始化IDT地址的低16位
-  idt.limit = size - 1;                     // 初始化IDT的在内存中的逻辑边界，根据首地址进行偏移所以是size - 1
+  idt.limit =
+      size -
+      1;  // 初始化IDT的在内存中的逻辑边界，根据首地址进行偏移所以是size - 1
 
   __asm__ __volatile__(
       "lidt %[g]"
