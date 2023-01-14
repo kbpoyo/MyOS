@@ -23,10 +23,19 @@ void kernel_init(boot_info_t* boot_info) {
     //2.初始化并加载中断描述符表IDT
     idt_init();
 
+    //3.初始化定时器的中断处理
+    time_init();
+
+
+
+
+
+    //初始化完成后将在汇编里重新加载内核代码段与数据段的选择子，并为内核程序分配栈空间
+
 }
 
 
 void init_main(void) {
-    int a = 3 / 0;
+    idt_enable_global(); 
     for (;;){}
 }

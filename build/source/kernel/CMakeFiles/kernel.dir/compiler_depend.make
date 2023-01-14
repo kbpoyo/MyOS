@@ -18,6 +18,16 @@ source/kernel/CMakeFiles/kernel.dir/cpu/idt.c.o: ../source/kernel/cpu/idt.c \
   ../source/common/cpu_instr.h \
   ../source/kernel/include/os_cfg.h
 
+source/kernel/CMakeFiles/kernel.dir/dev/time.c.o: ../source/kernel/dev/time.c \
+  /usr/include/stdc-predef.h \
+  ../source/kernel/include/dev/time.h \
+  ../source/common/types.h \
+  ../source/common/cpu_instr.h \
+  ../source/common/types.h \
+  ../source/kernel/include/os_cfg.h \
+  ../source/kernel/include/cpu/idt.h \
+  ../source/common/exc_frame.h
+
 source/kernel/CMakeFiles/kernel.dir/init/init.c.o: ../source/kernel/init/init.c \
   /usr/include/stdc-predef.h \
   ../source/kernel/init/init.h \
@@ -28,29 +38,34 @@ source/kernel/CMakeFiles/kernel.dir/init/init.c.o: ../source/kernel/init/init.c 
   ../source/common/cpu_instr.h \
   ../source/kernel/include/os_cfg.h \
   ../source/kernel/include/cpu/idt.h \
-  ../source/common/exc_frame.h
+  ../source/common/exc_frame.h \
+  ../source/kernel/include/dev/time.h
 
 
 ../source/common/boot_info.h:
 
-../source/kernel/init/init.h:
-
-../source/kernel/cpu/idt.c:
-
-../source/common/exc_frame.h:
-
-../source/kernel/include/cpu/idt.h:
-
-../source/kernel/include/os_cfg.h:
-
-../source/common/cpu_instr.h:
-
-../source/kernel/init/init.c:
-
-../source/common/types.h:
+/usr/include/stdc-predef.h:
 
 ../source/kernel/include/cpu/gdt.h:
 
-/usr/include/stdc-predef.h:
-
 ../source/kernel/cpu/gdt.c:
+
+../source/common/types.h:
+
+../source/kernel/init/init.c:
+
+../source/common/cpu_instr.h:
+
+../source/kernel/include/dev/time.h:
+
+../source/kernel/include/os_cfg.h:
+
+../source/kernel/include/cpu/idt.h:
+
+../source/common/exc_frame.h:
+
+../source/kernel/dev/time.c:
+
+../source/kernel/cpu/idt.c:
+
+../source/kernel/init/init.h:

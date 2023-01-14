@@ -131,9 +131,9 @@ static void gate_desc_set(gate_desc_t *desc, const uint16_t selector, const uint
  * @param handler 异常处理程序的偏移地址
  * @return int 成功返回 0 失败放回 -1
  */
-static int idt_install(const int idt_num, const idt_handler_t handler) {
+int idt_install(const int idt_num, const idt_handler_t handler) {
   // 1.判断IDT下标是否越界
-  if (idt_num >= IDT_TABLE_SIZE) return -1;
+  if (idt_num >= IDT_TABLE_SIZE || idt_num < 0) return -1;
 
   // 2.在IDT表中设置下标为 idt_num 的中断门
   gate_desc_set(idt_table + idt_num, KERNEL_SELECTOR_CS, (uint32_t)handler,
@@ -142,6 +142,10 @@ static int idt_install(const int idt_num, const idt_handler_t handler) {
   return 0;
 }
 
+/**
+ * @brief  初始化主从8259芯片
+ * 
+ */
 static void init_pic(void) {
   //1.对主片(8259A芯片)进行初始化, 写入时必须按照ICW1~4的顺序写入
   outb(PIC0_ICW1, PIC_ICW1_ALWAYS_1 | PIC_ICW1_IC4);  //ICW1:边缘触发，级联模式，需要ICW4
@@ -159,7 +163,7 @@ static void init_pic(void) {
   //3.初始化完两块8259芯片后，还需要为每一个中断设置处理程序
   //才可以去接收中断，所以现在要屏蔽中断，IMR位置1则屏蔽该中断请求，0则不屏蔽
   outb(PIC0_IMR, 0xfb); //屏蔽主片除 irq2(第3位) 以外的位传来的中断，(1111 1011)
-  outb(PIC0_IMR, 0xff); //屏蔽从片的所有中断
+  outb(PIC1_IMR, 0xff); //屏蔽从片的所有中断
 
 
 }
@@ -201,4 +205,88 @@ void idt_init(void) {
 
   //4.初始化8259设备中断芯片
   init_pic();
+}
+
+/**
+ * @brief  开启外部设备的中断
+ * 
+ * @param irq_num 外部设备对应的中断向量号,即IDT中的下标
+ */
+void idt_enable(uint8_t irq_num) {
+  //1.判断中断请求向量号是否越界
+  if (irq_num < PIC_ICW2_IDT_START || irq_num > PIC_ICW2_IDT_START + 14)   return;
+
+  //2.获取到向量号对应的8259A的IRQ标号 主片为0~7 ，从片为 8~15
+  irq_num -= PIC_ICW2_IDT_START;
+
+  //3.若在主片上则将主片的IMR寄存器对应位置0，即不屏蔽该中断, 若在从片上也同理
+  if (irq_num < 8) {
+    uint8_t mask = inb(PIC0_IMR) & ~(1 << irq_num);
+    outb(PIC0_IMR, mask);
+  } else {
+    uint8_t mask = inb(PIC1_IMR) & ~(1 << (irq_num - 8));
+    outb(PIC1_IMR, mask);
+  }
+  
+}
+
+/**
+ * @brief  关闭外部设备的中断
+ * 
+ * @param irq_num 外部设备对应的中断向量号，即IDT中的下标
+ */
+void idt_disable(uint8_t irq_num) {
+  //1.判断中断请求向量号是否越界
+  if (irq_num < PIC_ICW2_IDT_START || irq_num > PIC_ICW2_IDT_START + 14)   return;
+
+  //2.获取到向量号对应的8259A的IRQ标号 主片为0~7 ，从片为 8~15
+  irq_num -= PIC_ICW2_IDT_START;
+
+  //3.若在主片上则将主片的IMR寄存器对应位置1，即屏蔽该中断, 若在从片上也同理
+  if (irq_num < 8) {
+    uint8_t mask = inb(PIC0_IMR) | (1 << irq_num);
+    outb(PIC0_IMR, mask);
+  } else {
+    uint8_t mask = inb(PIC1_IMR) | (1 << (irq_num - 8));
+    outb(PIC1_IMR, mask);
+  }
+  
+}
+
+/**
+ * @brief  关闭全局中断
+ * 
+ */
+void idt_disable_global(void) {
+  cli();
+}
+
+/**
+ * @brief  开启全局中断
+ * 
+ */
+void idt_enable_global(void) {
+  sti();
+}
+
+/**
+ * @brief  将OCW2寄存器的7~5位置为 001，用普通的EOI结束方式
+ *         向8259A发送EOI命令，8259A会将ISR中优先级最高的位置0
+ *
+ * @param irq_num 中断向量号，即IDT下标
+ */
+void pic_send_eoi(int irq_num) {
+  //1.获取该中断对应的IRQ标号
+  irq_num -= PIC_ICW2_IDT_START;
+  //2.判断标号是否越界,若不越界则交给对应芯片处理
+  if (irq_num < 0 || irq_num > 15) return;
+
+  //3.若中断来自主片则只需向主片发送EOI
+  outb(PIC0_OCW2, PIC_OCW2_EOI);
+
+  //4.若中断来自从片则还需向从片发送EOI
+  if (irq_num >= 8) { 
+    outb(PIC1_OCW2, PIC_OCW2_EOI);
+  }
+
 }

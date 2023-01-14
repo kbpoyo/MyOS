@@ -15,5 +15,6 @@
 #include "common/boot_info.h"
 #include "cpu/gdt.h"
 #include "cpu/idt.h"
+#include "dev/time.h"
 
 #endif

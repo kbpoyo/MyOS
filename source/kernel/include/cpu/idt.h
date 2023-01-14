@@ -47,13 +47,9 @@ static gate_desc_t idt_table[IDT_TABLE_SIZE];
 #define GATE_TYPE_INT ((uint16_t)(0xe << 8))    //因为11~8位已经确定所以将11~8位一起初始化
 
 
-//定义中断异常处理的函数指针
-typedef void (*idt_handler_t)(exception_frame_t *frame);
 
 
-void idt_init(void);
-
-//定义中断类型与中断向量表的下标绑定, 这是在 Intel 手册里面指定的
+//定义中断类型与中断向量表的下标绑定, 这是在 Intel 手册里面指定的，是CPU已经预定的异常
 #define IDT0_DE     0   //除0异常
 #define IDT1_DB     1
 #define IDT2_NMI    2
@@ -75,6 +71,9 @@ void idt_init(void);
 #define IDT20_VE    20
 #define IDT21_CP    21
 
+//定义外部中断请求对应的处理程序在IDT中的下标
+#define IRQ0_TIMER 0x20 //定时器中断请求向量号
+
 
 //定义8259A初始化需要的宏 绑定各个端口寄存器 书p311，p315
 //PIC: 可编程控制器，即8259A
@@ -85,14 +84,15 @@ void idt_init(void);
 #define PIC0_ICW2   0x21    //初始化IRQ接口道中断向量表下标的映射，指定IRQ0对应的下标即可
 #define PIC0_ICW3   0x21    //初始化主片哪个端口用作级联
 #define PIC0_ICW4   0x21    //初始化处理器类型以及EOI模式(End Of Interrupt)(0：手动结束中断，1：自动结束)
+#define PIC0_OCW2   0x20    //主片的OCW2端口寄存器
+#define PIC0_IMR    0x21    //主片中断屏蔽端口寄存器，(Interrupt Mask Register), 位宽为8位
 
-//中断屏蔽端口寄存器，(Interrupt Mask Register), 位宽为8位
-#define PIC0_IMR    0x21  
 
 #define PIC1_ICW1   0xa0    
 #define PIC1_ICW2   0xa1    
 #define PIC1_ICW3   0xa1    
 #define PIC1_ICW4   0xa1    
+#define PIC1_OCW2   0xa0
 #define PIC1_IMR    0xa1
 
 
@@ -116,20 +116,20 @@ void idt_init(void);
 //初始化ICW4的 upm 位， 1：x86处理器， 0：8080或8085处理器
 #define PIC_ICW4_8086       ((uint8_t)(1 << 0))
 
+//设置OCW2的7~5位为 001，将EOI模式置为普通EOI结束模式,书p318
+#define PIC_OCW2_EOI        ((uint8_t)(1 << 5))
+
 /**
  *  对于EOI模式的理解：
  *    EOI位置1，表示自动结束中断调用，即当cpu第一次发送INTA信号时，8259A将ISR对应位置1，IRR对应位置0
- *    但若此时有优先级更高的中断请求，ISR与IRR都将撤销之前的操作以响应更高优先级的中断， 但若在cpu第二次
- *    发送的INTA信号，即等待中断向量号，被响应之后，有更高优先级的中断请求进入则可能扰乱正在服务的程序
+ *    但若此时有优先级更高的中断请求，ISR与IRR都将撤销之前的操作以响应更高优先级的中断， 若没有则在cpu第二次
+ *    发送的INTA信号，即等待中断向量号时，ISR中的对应位便会被置0，标志中断处理完毕，但此时中断向量号还未发送给cpu
+ *    所以当此时有更高优先级的中断进来时，将发送更高优先级的向量号，即当前中断将会被跳过
  * 
- *    EOI位置0，表示在当前中断程序结束时手动写入操作命令字OCW2,向8259A发送中断结束命令，8259A将自动清除当前
+ *    EOI位置0，表示在当前中断程序结束时手动写入操作命令字OCW2,向8259A发送中断结束命令，8259A才会自动清除当前
  *    ISR中最高优先级的位，而保存在ISR中的最高优先级的位一定就是对应此时正在运行的中断程序，所以不会有问题
  * 
  */
-
-
-
-
 //因为中断调用需要使用 iret 指令进行返回，所以要进入汇编后再调用实际进行处理的c函数
 //以下为异常处理的汇编入口函数声明
 void exception_handler_unknown (void);              //unknown
@@ -154,5 +154,16 @@ void exception_handler_smd_exception (void);        //IDT19
 void exception_handler_virtual_exception (void);    //IDT20
 void exception_handler_control_exception (void);    //IDT21
 
+
+//定义中断异常处理的函数指针
+typedef void (*idt_handler_t)(void);
+
+void idt_init(void);
+void idt_enable(uint8_t irq_num);
+void idt_disable(uint8_t irq_num);
+void idt_enable_global(void);
+void idt_disable_global(void);
+int idt_install(const int idt_num, const idt_handler_t handler);
+void pic_send_eoi(int irq_num);
 
 #endif

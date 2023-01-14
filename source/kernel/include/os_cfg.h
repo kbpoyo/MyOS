@@ -21,5 +21,9 @@
 //内核栈空间的大小为8kb
 #define KERNEL_STACK_SIZE (8 * 1024)
 
+//确定定时器多长时间发出一次中断,单位为ms
+#define OS_TICKS_MS 10
+
+
 
 #endif

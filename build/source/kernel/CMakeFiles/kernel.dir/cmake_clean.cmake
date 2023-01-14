@@ -3,6 +3,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/kernel.dir/cpu/gdt.c.o.d"
   "CMakeFiles/kernel.dir/cpu/idt.c.o"
   "CMakeFiles/kernel.dir/cpu/idt.c.o.d"
+  "CMakeFiles/kernel.dir/dev/time.c.o"
+  "CMakeFiles/kernel.dir/dev/time.c.o.d"
   "CMakeFiles/kernel.dir/init/init.c.o"
   "CMakeFiles/kernel.dir/init/init.c.o.d"
   "CMakeFiles/kernel.dir/init/start.S.o"

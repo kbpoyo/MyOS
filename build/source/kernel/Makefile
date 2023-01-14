@@ -178,6 +178,30 @@ cpu/idt.c.s:
 	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/cpu/idt.c.s
 .PHONY : cpu/idt.c.s
 
+dev/time.o: dev/time.c.o
+.PHONY : dev/time.o
+
+# target to build an object file
+dev/time.c.o:
+	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/dev/time.c.o
+.PHONY : dev/time.c.o
+
+dev/time.i: dev/time.c.i
+.PHONY : dev/time.i
+
+# target to preprocess a source file
+dev/time.c.i:
+	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/dev/time.c.i
+.PHONY : dev/time.c.i
+
+dev/time.s: dev/time.c.s
+.PHONY : dev/time.s
+
+# target to generate assembly for a file
+dev/time.c.s:
+	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/dev/time.c.s
+.PHONY : dev/time.c.s
+
 init/init.o: init/init.c.o
 .PHONY : init/init.o
 
@@ -225,6 +249,9 @@ help:
 	@echo "... cpu/idt.o"
 	@echo "... cpu/idt.i"
 	@echo "... cpu/idt.s"
+	@echo "... dev/time.o"
+	@echo "... dev/time.i"
+	@echo "... dev/time.s"
 	@echo "... init/init.o"
 	@echo "... init/init.i"
 	@echo "... init/init.s"

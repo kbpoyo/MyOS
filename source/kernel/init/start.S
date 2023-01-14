@@ -120,7 +120,8 @@ exception_handler_\name:
 //宏结束标志
 .endm
 
-//使用定义的异常宏
+//使用定义的异常宏 
+//                |异常类型|       |IDT索引| |错误码|
 exception_handler unknown,              -1, 0    //未知异常
 exception_handler divider,              0,  0    //除0异常
 exception_handler debug,                1,  0    //debug异常
@@ -142,3 +143,6 @@ exception_handler machine_check,        18, 0
 exception_handler smd_exception,        19, 0
 exception_handler virtual_exception,    20, 0
 exception_handler control_exception,    21, 1
+
+//定时器的中断处理函数
+exception_handler time,                 0x20, 0 
