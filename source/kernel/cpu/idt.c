@@ -237,7 +237,7 @@ void idt_enable(uint8_t irq_num) {
  */
 void idt_disable(uint8_t irq_num) {
   //1.判断中断请求向量号是否越界
-  if (irq_num < PIC_ICW2_IDT_START || irq_num > PIC_ICW2_IDT_START + 14)   return;
+  if (irq_num < PIC_ICW2_IDT_START || irq_num > PIC_ICW2_IDT_START + 15)   return;
 
   //2.获取到向量号对应的8259A的IRQ标号 主片为0~7 ，从片为 8~15
   irq_num -= PIC_ICW2_IDT_START;

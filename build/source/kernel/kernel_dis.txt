@@ -29,9 +29,9 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING, OCTETS
   7 .debug_aranges 000000a0  00000000  00000000  000039c0  2**3
                   CONTENTS, READONLY, DEBUGGING, OCTETS
-  8 .debug_str    00000829  00000000  00000000  00003a60  2**0
+  8 .debug_str    00000826  00000000  00000000  00003a60  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
-  9 .comment      0000002b  00000000  00000000  00004289  2**0
+  9 .comment      0000002b  00000000  00000000  00004286  2**0
                   CONTENTS, READONLY
  10 .debug_frame  00000608  00000000  00000000  000042b4  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
@@ -1627,10 +1627,10 @@ void idt_disable(uint8_t irq_num) {
    1096e:	8b 45 08             	mov    0x8(%ebp),%eax
    10971:	88 45 e8             	mov    %al,-0x18(%ebp)
   //1.判断中断请求向量号是否越界
-  if (irq_num < PIC_ICW2_IDT_START || irq_num > PIC_ICW2_IDT_START + 14)   return;
+  if (irq_num < PIC_ICW2_IDT_START || irq_num > PIC_ICW2_IDT_START + 15)   return;
    10974:	80 7d e8 1f          	cmpb   $0x1f,-0x18(%ebp)
    10978:	76 7b                	jbe    109f5 <idt_disable+0x8e>
-   1097a:	80 7d e8 2e          	cmpb   $0x2e,-0x18(%ebp)
+   1097a:	80 7d e8 2f          	cmpb   $0x2f,-0x18(%ebp)
    1097e:	77 75                	ja     109f5 <idt_disable+0x8e>
 
   //2.获取到向量号对应的8259A的IRQ标号 主片为0~7 ，从片为 8~15
@@ -1681,7 +1681,7 @@ void idt_disable(uint8_t irq_num) {
    109eb:	e8 31 fa ff ff       	call   10421 <outb>
    109f0:	83 c4 08             	add    $0x8,%esp
    109f3:	eb 01                	jmp    109f6 <idt_disable+0x8f>
-  if (irq_num < PIC_ICW2_IDT_START || irq_num > PIC_ICW2_IDT_START + 14)   return;
+  if (irq_num < PIC_ICW2_IDT_START || irq_num > PIC_ICW2_IDT_START + 15)   return;
    109f5:	90                   	nop
   }
   
