@@ -24,6 +24,7 @@
 //确定定时器多长时间发出一次中断,单位为ms
 #define OS_TICKS_MS 10
 
-
+//定义操作系统版本
+#define OS_VERSION "1.0.0"
 
 #endif

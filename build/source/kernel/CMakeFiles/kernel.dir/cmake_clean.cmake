@@ -8,6 +8,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/kernel.dir/init/init.c.o"
   "CMakeFiles/kernel.dir/init/init.c.o.d"
   "CMakeFiles/kernel.dir/init/start.S.o"
+  "CMakeFiles/kernel.dir/tools/log.c.o"
+  "CMakeFiles/kernel.dir/tools/log.c.o.d"
   "kernel"
   "kernel.pdb"
 )

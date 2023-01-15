@@ -1,10 +1,10 @@
 Detecting C compiler ABI info failed to compile with the following output:
 Change Dir: /home/kbpoyo/code/cpp/MyOs/build/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_239ea/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_239ea.dir/build.make CMakeFiles/cmTC_239ea.dir/build
+Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_134b3/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_134b3.dir/build.make CMakeFiles/cmTC_134b3.dir/build
 gmake[1]: Entering directory '/home/kbpoyo/code/cpp/MyOs/build/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_239ea.dir/CMakeCCompilerABI.c.o
-/usr/bin/gcc   -g -c -O0 -m32 -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables    -v -o CMakeFiles/cmTC_239ea.dir/CMakeCCompilerABI.c.o -c /usr/share/cmake-3.22/Modules/CMakeCCompilerABI.c
+Building C object CMakeFiles/cmTC_134b3.dir/CMakeCCompilerABI.c.o
+/usr/bin/gcc   -g -c -O0 -m32 -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables    -v -o CMakeFiles/cmTC_134b3.dir/CMakeCCompilerABI.c.o -c /usr/share/cmake-3.22/Modules/CMakeCCompilerABI.c
 Using built-in specs.
 COLLECT_GCC=/usr/bin/gcc
 OFFLOAD_TARGET_NAMES=nvptx-none:amdgcn-amdhsa
@@ -14,8 +14,8 @@ Configured with: ../src/configure -v --with-pkgversion='Ubuntu 11.3.0-1ubuntu1~2
 Thread model: posix
 Supported LTO compression algorithms: zlib zstd
 gcc version 11.3.0 (Ubuntu 11.3.0-1ubuntu1~22.04) 
-COLLECT_GCC_OPTIONS='-g' '-c' '-O0' '-m32' '-fno-pie' '-fno-stack-protector' '-fno-asynchronous-unwind-tables' '-v' '-o' 'CMakeFiles/cmTC_239ea.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=i686' '-dumpdir' 'CMakeFiles/cmTC_239ea.dir/'
- /usr/lib/gcc/x86_64-linux-gnu/11/cc1 -quiet -v -imultilib 32 -imultiarch i386-linux-gnu /usr/share/cmake-3.22/Modules/CMakeCCompilerABI.c -quiet -dumpdir CMakeFiles/cmTC_239ea.dir/ -dumpbase CMakeCCompilerABI.c.c -dumpbase-ext .c -m32 -mtune=generic -march=i686 -g -O0 -version -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -Wformat -Wformat-security -fstack-clash-protection -o /tmp/ccwnEIDE.s
+COLLECT_GCC_OPTIONS='-g' '-c' '-O0' '-m32' '-fno-pie' '-fno-stack-protector' '-fno-asynchronous-unwind-tables' '-v' '-o' 'CMakeFiles/cmTC_134b3.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=i686' '-dumpdir' 'CMakeFiles/cmTC_134b3.dir/'
+ /usr/lib/gcc/x86_64-linux-gnu/11/cc1 -quiet -v -imultilib 32 -imultiarch i386-linux-gnu /usr/share/cmake-3.22/Modules/CMakeCCompilerABI.c -quiet -dumpdir CMakeFiles/cmTC_134b3.dir/ -dumpbase CMakeCCompilerABI.c.c -dumpbase-ext .c -m32 -mtune=generic -march=i686 -g -O0 -version -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -Wformat -Wformat-security -fstack-clash-protection -o /tmp/ccZaNUob.s
 GNU C17 (Ubuntu 11.3.0-1ubuntu1~22.04) version 11.3.0 (x86_64-linux-gnu)
 	compiled by GNU C version 11.3.0, GMP version 6.2.1, MPFR version 4.1.0, MPC version 1.2.1, isl version isl-0.24-GMP
 
@@ -35,15 +35,15 @@ GNU C17 (Ubuntu 11.3.0-1ubuntu1~22.04) version 11.3.0 (x86_64-linux-gnu)
 
 GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
 Compiler executable checksum: 3f6cb05d963ad324b8f9442822c95179
-COLLECT_GCC_OPTIONS='-g' '-c' '-O0' '-m32' '-fno-pie' '-fno-stack-protector' '-fno-asynchronous-unwind-tables' '-v' '-o' 'CMakeFiles/cmTC_239ea.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=i686' '-dumpdir' 'CMakeFiles/cmTC_239ea.dir/'
- as -v --gdwarf-5 --32 -o CMakeFiles/cmTC_239ea.dir/CMakeCCompilerABI.c.o /tmp/ccwnEIDE.s
+COLLECT_GCC_OPTIONS='-g' '-c' '-O0' '-m32' '-fno-pie' '-fno-stack-protector' '-fno-asynchronous-unwind-tables' '-v' '-o' 'CMakeFiles/cmTC_134b3.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=i686' '-dumpdir' 'CMakeFiles/cmTC_134b3.dir/'
+ as -v --gdwarf-5 --32 -o CMakeFiles/cmTC_134b3.dir/CMakeCCompilerABI.c.o /tmp/ccZaNUob.s
 GNU assembler version 2.38 (x86_64-linux-gnu) using BFD version (GNU Binutils for Ubuntu) 2.38
 COMPILER_PATH=/usr/lib/gcc/x86_64-linux-gnu/11/:/usr/lib/gcc/x86_64-linux-gnu/11/:/usr/lib/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/11/:/usr/lib/gcc/x86_64-linux-gnu/
 LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/11/../../../../lib32/:/lib/../lib32/:/usr/lib/../lib32/:/usr/lib/gcc/x86_64-linux-gnu/11/:/usr/lib/gcc/x86_64-linux-gnu/11/../../../:/lib/:/usr/lib/
-COLLECT_GCC_OPTIONS='-g' '-c' '-O0' '-m32' '-fno-pie' '-fno-stack-protector' '-fno-asynchronous-unwind-tables' '-v' '-o' 'CMakeFiles/cmTC_239ea.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=i686' '-dumpdir' 'CMakeFiles/cmTC_239ea.dir/CMakeCCompilerABI.c.'
-Linking C executable cmTC_239ea
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_239ea.dir/link.txt --verbose=1
-/usr/bin/gcc -g -c -O0 -m32 -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables   -v -rdynamic CMakeFiles/cmTC_239ea.dir/CMakeCCompilerABI.c.o -o cmTC_239ea 
+COLLECT_GCC_OPTIONS='-g' '-c' '-O0' '-m32' '-fno-pie' '-fno-stack-protector' '-fno-asynchronous-unwind-tables' '-v' '-o' 'CMakeFiles/cmTC_134b3.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=i686' '-dumpdir' 'CMakeFiles/cmTC_134b3.dir/CMakeCCompilerABI.c.'
+Linking C executable cmTC_134b3
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_134b3.dir/link.txt --verbose=1
+/usr/bin/gcc -g -c -O0 -m32 -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables   -v -rdynamic CMakeFiles/cmTC_134b3.dir/CMakeCCompilerABI.c.o -o cmTC_134b3 
 Using built-in specs.
 COLLECT_GCC=/usr/bin/gcc
 OFFLOAD_TARGET_NAMES=nvptx-none:amdgcn-amdhsa
@@ -55,8 +55,8 @@ Supported LTO compression algorithms: zlib zstd
 gcc version 11.3.0 (Ubuntu 11.3.0-1ubuntu1~22.04) 
 COMPILER_PATH=/usr/lib/gcc/x86_64-linux-gnu/11/:/usr/lib/gcc/x86_64-linux-gnu/11/:/usr/lib/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/11/:/usr/lib/gcc/x86_64-linux-gnu/
 LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/11/../../../../lib32/:/lib/../lib32/:/usr/lib/../lib32/:/usr/lib/gcc/x86_64-linux-gnu/11/:/usr/lib/gcc/x86_64-linux-gnu/11/../../../:/lib/:/usr/lib/
-COLLECT_GCC_OPTIONS='-g' '-c' '-O0' '-m32' '-fno-pie' '-fno-stack-protector' '-fno-asynchronous-unwind-tables' '-v' '-rdynamic' '-o' 'cmTC_239ea' '-mtune=generic' '-march=i686' '-dumpdir' 'cmTC_239ea.'
-gcc: warning: CMakeFiles/cmTC_239ea.dir/CMakeCCompilerABI.c.o: linker input file unused because linking not done
+COLLECT_GCC_OPTIONS='-g' '-c' '-O0' '-m32' '-fno-pie' '-fno-stack-protector' '-fno-asynchronous-unwind-tables' '-v' '-rdynamic' '-o' 'cmTC_134b3' '-mtune=generic' '-march=i686' '-dumpdir' 'cmTC_134b3.'
+gcc: warning: CMakeFiles/cmTC_134b3.dir/CMakeCCompilerABI.c.o: linker input file unused because linking not done
 gmake[1]: Leaving directory '/home/kbpoyo/code/cpp/MyOs/build/CMakeFiles/CMakeTmp'
 
 
@@ -65,8 +65,8 @@ Cannot copy output executable
 to destination specified by COPY_FILE:
   '/home/kbpoyo/code/cpp/MyOs/build/CMakeFiles/3.22.1/CMakeDetermineCompilerABI_C.bin'
 Unable to find the executable at any of:
-  /home/kbpoyo/code/cpp/MyOs/build/CMakeFiles/CMakeTmp/cmTC_239ea
-  /home/kbpoyo/code/cpp/MyOs/build/CMakeFiles/CMakeTmp/Debug/cmTC_239ea
-  /home/kbpoyo/code/cpp/MyOs/build/CMakeFiles/CMakeTmp/Development/cmTC_239ea
+  /home/kbpoyo/code/cpp/MyOs/build/CMakeFiles/CMakeTmp/cmTC_134b3
+  /home/kbpoyo/code/cpp/MyOs/build/CMakeFiles/CMakeTmp/Debug/cmTC_134b3
+  /home/kbpoyo/code/cpp/MyOs/build/CMakeFiles/CMakeTmp/Development/cmTC_134b3
 
 

@@ -39,8 +39,18 @@ source/kernel/CMakeFiles/kernel.dir/init/init.c.o: ../source/kernel/init/init.c 
   ../source/kernel/include/os_cfg.h \
   ../source/kernel/include/cpu/idt.h \
   ../source/common/exc_frame.h \
-  ../source/kernel/include/dev/time.h
+  ../source/kernel/include/dev/time.h \
+  ../source/kernel/include/tools/log.h
 
+source/kernel/CMakeFiles/kernel.dir/tools/log.c.o: ../source/kernel/tools/log.c \
+  /usr/include/stdc-predef.h \
+  ../source/kernel/include/tools/log.h \
+  ../source/common/types.h \
+  ../source/common/cpu_instr.h \
+  ../source/common/types.h
+
+
+../source/kernel/include/tools/log.h:
 
 ../source/common/boot_info.h:
 
@@ -65,6 +75,8 @@ source/kernel/CMakeFiles/kernel.dir/init/init.c.o: ../source/kernel/init/init.c 
 ../source/common/exc_frame.h:
 
 ../source/kernel/dev/time.c:
+
+../source/kernel/tools/log.c:
 
 ../source/kernel/cpu/idt.c:
 

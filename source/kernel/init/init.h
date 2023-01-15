@@ -16,5 +16,6 @@
 #include "cpu/gdt.h"
 #include "cpu/idt.h"
 #include "dev/time.h"
+#include "tools/log.h"
 
 #endif

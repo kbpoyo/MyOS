@@ -20,10 +20,13 @@ void kernel_init(boot_info_t* boot_info) {
     //1.初始化并重新加载GDT表
     gdt_init();
 
-    //2.初始化并加载中断描述符表IDT
+    //2.初始化日志程序,便于后期调用
+    log_init();
+
+    //3.初始化并加载中断描述符表IDT
     idt_init();
 
-    //3.初始化定时器的中断处理
+    //4.初始化定时器的中断处理
     time_init();
 
 
@@ -36,6 +39,9 @@ void kernel_init(boot_info_t* boot_info) {
 
 
 void init_main(void) {
+
+    log_printf("Kernel is running......");
+    log_printf("Version: %s", OS_VERSION);
     idt_enable_global(); 
     for (;;){}
 }

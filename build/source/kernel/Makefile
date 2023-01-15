@@ -234,6 +234,30 @@ init/start.S.o:
 	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/init/start.S.o
 .PHONY : init/start.S.o
 
+tools/log.o: tools/log.c.o
+.PHONY : tools/log.o
+
+# target to build an object file
+tools/log.c.o:
+	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/tools/log.c.o
+.PHONY : tools/log.c.o
+
+tools/log.i: tools/log.c.i
+.PHONY : tools/log.i
+
+# target to preprocess a source file
+tools/log.c.i:
+	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/tools/log.c.i
+.PHONY : tools/log.c.i
+
+tools/log.s: tools/log.c.s
+.PHONY : tools/log.s
+
+# target to generate assembly for a file
+tools/log.c.s:
+	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/tools/log.c.s
+.PHONY : tools/log.c.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -256,6 +280,9 @@ help:
 	@echo "... init/init.i"
 	@echo "... init/init.s"
 	@echo "... init/start.o"
+	@echo "... tools/log.o"
+	@echo "... tools/log.i"
+	@echo "... tools/log.s"
 .PHONY : help
 
 

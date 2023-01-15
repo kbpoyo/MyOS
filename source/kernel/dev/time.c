@@ -27,6 +27,10 @@ void do_handler_time(const exception_frame_t *frame) {
 }
 
 
+/**
+ * @brief  初始化可编程定时器
+ * 
+ */
 static void init_pit(void) {
     //1.选择定时器的计算器，读取与加载初始值模式，以及工作模式
     outb(PIT_COMMAND_MODE_PORT, PIT_SELECT_COUNTER | PIT_READ_LOAD | PIT_MODE);
