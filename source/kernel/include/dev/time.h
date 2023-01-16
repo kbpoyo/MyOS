@@ -14,9 +14,6 @@
 #define TIME_H
 
 #include "common/types.h"
-#include "common/cpu_instr.h"
-#include "os_cfg.h"
-#include "cpu/idt.h"
 
 //书p350
 //定时器晶体振荡器的频率，即晶体振荡1193182次的时间为1s，PIT:可编程定时器

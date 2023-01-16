@@ -16,7 +16,10 @@ source/kernel/CMakeFiles/kernel.dir/cpu/idt.c.o: ../source/kernel/cpu/idt.c \
   ../source/common/exc_frame.h \
   ../source/common/types.h \
   ../source/common/cpu_instr.h \
-  ../source/kernel/include/os_cfg.h
+  ../source/kernel/include/os_cfg.h \
+  ../source/kernel/include/tools/log.h \
+  ../source/kernel/include/tools/klib.h \
+  /usr/lib/gcc/x86_64-linux-gnu/11/include/stdarg.h
 
 source/kernel/CMakeFiles/kernel.dir/dev/time.c.o: ../source/kernel/dev/time.c \
   /usr/include/stdc-predef.h \
@@ -24,9 +27,9 @@ source/kernel/CMakeFiles/kernel.dir/dev/time.c.o: ../source/kernel/dev/time.c \
   ../source/common/types.h \
   ../source/common/cpu_instr.h \
   ../source/common/types.h \
+  ../source/common/exc_frame.h \
   ../source/kernel/include/os_cfg.h \
-  ../source/kernel/include/cpu/idt.h \
-  ../source/common/exc_frame.h
+  ../source/kernel/include/cpu/idt.h
 
 source/kernel/CMakeFiles/kernel.dir/init/init.c.o: ../source/kernel/init/init.c \
   /usr/include/stdc-predef.h \
@@ -35,47 +38,57 @@ source/kernel/CMakeFiles/kernel.dir/init/init.c.o: ../source/kernel/init/init.c 
   ../source/common/types.h \
   ../source/kernel/include/cpu/gdt.h \
   ../source/common/types.h \
-  ../source/common/cpu_instr.h \
-  ../source/kernel/include/os_cfg.h \
   ../source/kernel/include/cpu/idt.h \
-  ../source/common/exc_frame.h \
   ../source/kernel/include/dev/time.h \
-  ../source/kernel/include/tools/log.h
+  ../source/kernel/include/tools/log.h \
+  ../source/kernel/include/tools/klib.h \
+  /usr/lib/gcc/x86_64-linux-gnu/11/include/stdarg.h \
+  ../source/kernel/include/os_cfg.h \
+  ../source/kernel/include/tools/assert.h
+
+source/kernel/CMakeFiles/kernel.dir/tools/assert.c.o: ../source/kernel/tools/assert.c \
+  /usr/include/stdc-predef.h \
+  ../source/kernel/include/tools/assert.h \
+  ../source/common/cpu_instr.h \
+  ../source/common/types.h \
+  ../source/kernel/include/tools/log.h \
+  ../source/kernel/include/tools/klib.h \
+  /usr/lib/gcc/x86_64-linux-gnu/11/include/stdarg.h \
+  ../source/common/types.h
 
 source/kernel/CMakeFiles/kernel.dir/tools/klib.c.o: ../source/kernel/tools/klib.c \
   /usr/include/stdc-predef.h \
   ../source/kernel/include/tools/klib.h \
+  /usr/lib/gcc/x86_64-linux-gnu/11/include/stdarg.h \
   ../source/common/types.h
 
 source/kernel/CMakeFiles/kernel.dir/tools/log.c.o: ../source/kernel/tools/log.c \
   /usr/include/stdc-predef.h \
   ../source/kernel/include/tools/log.h \
+  ../source/kernel/include/tools/klib.h \
+  /usr/lib/gcc/x86_64-linux-gnu/11/include/stdarg.h \
   ../source/common/types.h \
   ../source/common/cpu_instr.h \
   ../source/common/types.h
 
 
-../source/kernel/include/tools/log.h:
+../source/kernel/tools/assert.c:
+
+../source/kernel/include/tools/assert.h:
 
 ../source/common/boot_info.h:
+
+../source/kernel/init/init.h:
+
+../source/kernel/init/init.c:
+
+../source/kernel/include/dev/time.h:
 
 /usr/include/stdc-predef.h:
 
 ../source/kernel/include/cpu/gdt.h:
 
-../source/kernel/include/tools/klib.h:
-
-../source/kernel/cpu/gdt.c:
-
-../source/common/types.h:
-
-../source/kernel/init/init.c:
-
-../source/kernel/tools/klib.c:
-
-../source/common/cpu_instr.h:
-
-../source/kernel/include/dev/time.h:
+../source/kernel/include/tools/log.h:
 
 ../source/kernel/include/os_cfg.h:
 
@@ -83,10 +96,20 @@ source/kernel/CMakeFiles/kernel.dir/tools/log.c.o: ../source/kernel/tools/log.c 
 
 ../source/common/exc_frame.h:
 
+../source/kernel/cpu/gdt.c:
+
+../source/common/types.h:
+
+../source/kernel/include/tools/klib.h:
+
 ../source/kernel/dev/time.c:
 
 ../source/kernel/tools/log.c:
 
 ../source/kernel/cpu/idt.c:
 
-../source/kernel/init/init.h:
+../source/kernel/tools/klib.c:
+
+../source/common/cpu_instr.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/11/include/stdarg.h:

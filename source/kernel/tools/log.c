@@ -10,6 +10,9 @@
  */
 
 #include "tools/log.h"
+#include <stdarg.h> //包含一些处理可变参数的宏
+#include "common/types.h"
+#include "common/cpu_instr.h"
 
 /**
  * @brief  初始化串行端口寄存器COM1
@@ -25,18 +28,31 @@ void log_init(void) {
     outb(COM1_PORT + 4, 0x0f);
 }
 
-void log_printf(const char *formate, ...) {
-    const char *p = formate;
 
-    //1.将字符串输出到串口
+void log_printf(const char *formate, ...) {
+    //1.设置字符缓冲区
+    char str_buf[128];
+    kernel_memset(str_buf, '\0', sizeof(str_buf));
+    
+    //2.获取可变参数并将其格式化到缓冲区中
+    va_list args;
+    va_start(args, formate);
+    kernel_vsprintf(str_buf, formate, args);
+    va_end(args);
+
+    const char *p = str_buf;
+
+    //3.将字符串输出到串口
     while (*p != '\0') {
-        //2.判断串口是否正在忙碌，是则阻塞等待
+        //4.判断串口是否正在忙碌，是则阻塞等待
         while ((inb(COM1_PORT + 5) & (1 << 6)) == 0);
+
+        if (*p == '\n') outb(COM1_PORT, '\r');
         
         outb(COM1_PORT, *(p++));
     }
     
-    //3.换行
+    //5.换行
     outb(COM1_PORT, '\r');
     outb(COM1_PORT, '\n');
 }

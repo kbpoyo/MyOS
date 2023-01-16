@@ -11,6 +11,7 @@
 
 #include "loader.h"
 #include "common/elf.h"
+extern boot_info_t boot_info;
 
 /**
  * @brief  以LBA模式读取磁盘(有48位PIO与28位PIO, 此处使用48位PIO)

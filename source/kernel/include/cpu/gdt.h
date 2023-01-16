@@ -12,8 +12,7 @@
 #define CPU_H
 
 #include "common/types.h"
-#include "common/cpu_instr.h"
-#include "os_cfg.h"
+
 
 //指定编译器按一字节对齐，防止结构体中元素在内存空间中不连续
 #pragma pack(1)
@@ -39,9 +38,6 @@ typedef struct _segment_desc_t {
  * 
  */
 #define GDT_TABLE_SIZE 8192
-
-//定义全局描述符GDT
-static segment_desc_t gdt_table[GDT_TABLE_SIZE];
 
 
 //由高位到低位定义段标识符的属性标志位

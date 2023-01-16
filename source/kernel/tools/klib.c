@@ -152,3 +152,106 @@ int kernel_memcmp(const void *dest1, const void *dest2, int size) {
     else return 0;
 
 }
+
+
+
+void kernel_sprintf(char *buf, const char *formate, ...) {
+    //获取可变参数并将其格式化到缓冲区中
+    va_list args;
+    va_start(args, formate);
+    kernel_vsprintf(buf, formate, args);
+    va_end(args);
+}
+
+/**
+ * @brief  格式化字符串
+ * 
+ * @param buf 
+ * @param formate 
+ * @param args 
+ */
+void kernel_vsprintf(char *buf, const char *formate, va_list args) {
+    //定义状态机，包含两种状态
+    enum {NORMAL, READ_FMT} state = NORMAL;
+    
+    char *curr = buf;
+
+    char ch;
+
+    while ((ch = *(formate++)) != '\0') {
+        switch (state) {
+        case NORMAL: 
+            if (ch == '%') state = READ_FMT;
+            else *(curr++) = ch;
+            break;
+        case READ_FMT:
+            if (ch == 's') {
+                const char * str = va_arg(args, char *);
+                int len = kernel_strlen(str);
+                while (len--) {
+                    *(curr++) = *(str++);
+                }
+            } else if (ch == 'd') {
+                const int num = va_arg(args, int);
+                kernel_itoa(curr, num, 10);
+                curr += kernel_strlen(curr);   
+            } else if (ch == 'x' || ch == 'X') {
+                const int num = va_arg(args, int);
+                kernel_itoa(curr, num, 16);
+                curr += kernel_strlen(curr); 
+            } else if (ch == 'b') {
+                 const int num = va_arg(args, int);
+                kernel_itoa(curr, num, 2);
+                curr += kernel_strlen(curr); 
+            } else if (ch == 'c') {
+                char c = va_arg(args, int);
+                *(curr++) = c;
+            }
+            state = NORMAL;
+            break;
+        default:
+            break;
+        }
+    }
+    
+
+}
+
+/**
+ * @brief  将整数num转换为字符串放入缓冲区buf中
+ * 
+ * @param buf 缓冲区
+ * @param num 整数
+ * @param base 转换的进制规则
+ */
+void kernel_itoa(char *buf, int num, int base) {
+    char * p = buf;
+
+    if (base != 2 && base != 8 && base != 10 && base != 16) {
+        *buf = '\0';
+        return;
+    }
+
+    if(num < 0)  {
+        *(p++) = '-';
+        num = -num;
+    } else if (num == 0) {
+        *(p++) = '0';
+        *p = '\0';
+        return;
+    }
+    
+
+    static const char *num_to_char = {"0123456789abcdef"};
+    char arr[128];
+    int len = 0;
+    while (num > 0) {
+        arr[len++] = num_to_char[num % base];
+        num /= base;
+    }
+
+    for (int i = len - 1; i >= 0; --i) {
+            *(p++) = arr[i];
+    }
+    *p = '\0';
+}

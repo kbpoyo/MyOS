@@ -234,6 +234,30 @@ init/start.S.o:
 	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/init/start.S.o
 .PHONY : init/start.S.o
 
+tools/assert.o: tools/assert.c.o
+.PHONY : tools/assert.o
+
+# target to build an object file
+tools/assert.c.o:
+	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/tools/assert.c.o
+.PHONY : tools/assert.c.o
+
+tools/assert.i: tools/assert.c.i
+.PHONY : tools/assert.i
+
+# target to preprocess a source file
+tools/assert.c.i:
+	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/tools/assert.c.i
+.PHONY : tools/assert.c.i
+
+tools/assert.s: tools/assert.c.s
+.PHONY : tools/assert.s
+
+# target to generate assembly for a file
+tools/assert.c.s:
+	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/tools/assert.c.s
+.PHONY : tools/assert.c.s
+
 tools/klib.o: tools/klib.c.o
 .PHONY : tools/klib.o
 
@@ -304,6 +328,9 @@ help:
 	@echo "... init/init.i"
 	@echo "... init/init.s"
 	@echo "... init/start.o"
+	@echo "... tools/assert.o"
+	@echo "... tools/assert.i"
+	@echo "... tools/assert.s"
 	@echo "... tools/klib.o"
 	@echo "... tools/klib.i"
 	@echo "... tools/klib.s"

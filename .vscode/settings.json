@@ -10,7 +10,8 @@
         "types.h": "c",
         "fcntl.h": "c",
         "_default_fcntl.h": "c",
-        "loader.h": "c"
+        "loader.h": "c",
+        "log.h": "c"
     },
     "todo-tree.tree.scanMode": "workspace only",
 }

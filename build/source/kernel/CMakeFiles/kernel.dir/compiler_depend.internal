@@ -19,6 +19,9 @@ source/kernel/CMakeFiles/kernel.dir/cpu/idt.c.o
  /home/kbpoyo/code/cpp/MyOs/source/common/types.h
  /home/kbpoyo/code/cpp/MyOs/source/common/cpu_instr.h
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/os_cfg.h
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/include/tools/log.h
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/include/tools/klib.h
+ /usr/lib/gcc/x86_64-linux-gnu/11/include/stdarg.h
 
 source/kernel/CMakeFiles/kernel.dir/dev/time.c.o
  /home/kbpoyo/code/cpp/MyOs/source/kernel/dev/time.c
@@ -27,9 +30,9 @@ source/kernel/CMakeFiles/kernel.dir/dev/time.c.o
  /home/kbpoyo/code/cpp/MyOs/source/common/types.h
  /home/kbpoyo/code/cpp/MyOs/source/common/cpu_instr.h
  /home/kbpoyo/code/cpp/MyOs/source/common/types.h
+ /home/kbpoyo/code/cpp/MyOs/source/common/exc_frame.h
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/os_cfg.h
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/cpu/idt.h
- /home/kbpoyo/code/cpp/MyOs/source/common/exc_frame.h
 
 source/kernel/CMakeFiles/kernel.dir/init/init.c.o
  /home/kbpoyo/code/cpp/MyOs/source/kernel/init/init.c
@@ -39,23 +42,38 @@ source/kernel/CMakeFiles/kernel.dir/init/init.c.o
  /home/kbpoyo/code/cpp/MyOs/source/common/types.h
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/cpu/gdt.h
  /home/kbpoyo/code/cpp/MyOs/source/common/types.h
- /home/kbpoyo/code/cpp/MyOs/source/common/cpu_instr.h
- /home/kbpoyo/code/cpp/MyOs/source/kernel/include/os_cfg.h
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/cpu/idt.h
- /home/kbpoyo/code/cpp/MyOs/source/common/exc_frame.h
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/dev/time.h
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/tools/log.h
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/include/tools/klib.h
+ /usr/lib/gcc/x86_64-linux-gnu/11/include/stdarg.h
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/include/os_cfg.h
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/include/tools/assert.h
+
+source/kernel/CMakeFiles/kernel.dir/tools/assert.c.o
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/tools/assert.c
+ /usr/include/stdc-predef.h
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/include/tools/assert.h
+ /home/kbpoyo/code/cpp/MyOs/source/common/cpu_instr.h
+ /home/kbpoyo/code/cpp/MyOs/source/common/types.h
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/include/tools/log.h
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/include/tools/klib.h
+ /usr/lib/gcc/x86_64-linux-gnu/11/include/stdarg.h
+ /home/kbpoyo/code/cpp/MyOs/source/common/types.h
 
 source/kernel/CMakeFiles/kernel.dir/tools/klib.c.o
  /home/kbpoyo/code/cpp/MyOs/source/kernel/tools/klib.c
  /usr/include/stdc-predef.h
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/tools/klib.h
+ /usr/lib/gcc/x86_64-linux-gnu/11/include/stdarg.h
  /home/kbpoyo/code/cpp/MyOs/source/common/types.h
 
 source/kernel/CMakeFiles/kernel.dir/tools/log.c.o
  /home/kbpoyo/code/cpp/MyOs/source/kernel/tools/log.c
  /usr/include/stdc-predef.h
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/tools/log.h
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/include/tools/klib.h
+ /usr/lib/gcc/x86_64-linux-gnu/11/include/stdarg.h
  /home/kbpoyo/code/cpp/MyOs/source/common/types.h
  /home/kbpoyo/code/cpp/MyOs/source/common/cpu_instr.h
  /home/kbpoyo/code/cpp/MyOs/source/common/types.h

@@ -13,8 +13,8 @@
 #define LOADER_H
 
 #include "common/boot_info.h"
-#include "common/types.h"
 #include "common/cpu_instr.h"
+#include "common/types.h"
 
 
 //用于检测有效内存块的结构体
@@ -34,8 +34,5 @@ typedef struct SMAP_entry {
  * 
  */
 void protect_mode_entry(void);
-
-//声明boot_info，供内核初始化函数使用
-extern boot_info_t boot_info;
 
 #endif

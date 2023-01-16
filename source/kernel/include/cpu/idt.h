@@ -13,9 +13,7 @@
 #define IRQ_H
 
 #include "common/types.h"
-#include "common/exc_frame.h"
-#include "common/cpu_instr.h"
-#include "os_cfg.h"
+
 
 #pragma pack(1)
 
@@ -32,8 +30,7 @@ typedef struct _gate_desc_t {
 //定义中断描述符表的大小
 #define IDT_TABLE_SIZE 256
 
-//定义中断描述符表
-static gate_desc_t idt_table[IDT_TABLE_SIZE];
+
 
 
 //定义中断门的属性位

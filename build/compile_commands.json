@@ -48,5 +48,20 @@
   "directory": "/home/kbpoyo/code/cpp/MyOs/build/source/kernel",
   "command": "/usr/bin/gcc  -I/home/kbpoyo/code/cpp/MyOs/source -I/home/kbpoyo/code/cpp/MyOs/source/kernel/include -g -c -O0 -m32 -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -g -o CMakeFiles/kernel.dir/init/init.c.o -c /home/kbpoyo/code/cpp/MyOs/source/kernel/init/init.c",
   "file": "/home/kbpoyo/code/cpp/MyOs/source/kernel/init/init.c"
+},
+{
+  "directory": "/home/kbpoyo/code/cpp/MyOs/build/source/kernel",
+  "command": "/usr/bin/gcc  -I/home/kbpoyo/code/cpp/MyOs/source -I/home/kbpoyo/code/cpp/MyOs/source/kernel/include -g -c -O0 -m32 -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -g -o CMakeFiles/kernel.dir/tools/assert.c.o -c /home/kbpoyo/code/cpp/MyOs/source/kernel/tools/assert.c",
+  "file": "/home/kbpoyo/code/cpp/MyOs/source/kernel/tools/assert.c"
+},
+{
+  "directory": "/home/kbpoyo/code/cpp/MyOs/build/source/kernel",
+  "command": "/usr/bin/gcc  -I/home/kbpoyo/code/cpp/MyOs/source -I/home/kbpoyo/code/cpp/MyOs/source/kernel/include -g -c -O0 -m32 -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -g -o CMakeFiles/kernel.dir/tools/klib.c.o -c /home/kbpoyo/code/cpp/MyOs/source/kernel/tools/klib.c",
+  "file": "/home/kbpoyo/code/cpp/MyOs/source/kernel/tools/klib.c"
+},
+{
+  "directory": "/home/kbpoyo/code/cpp/MyOs/build/source/kernel",
+  "command": "/usr/bin/gcc  -I/home/kbpoyo/code/cpp/MyOs/source -I/home/kbpoyo/code/cpp/MyOs/source/kernel/include -g -c -O0 -m32 -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -g -o CMakeFiles/kernel.dir/tools/log.c.o -c /home/kbpoyo/code/cpp/MyOs/source/kernel/tools/log.c",
+  "file": "/home/kbpoyo/code/cpp/MyOs/source/kernel/tools/log.c"
 }
 ]

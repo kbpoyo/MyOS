@@ -9,6 +9,11 @@
  */
 
 #include "cpu/gdt.h"
+#include "common/cpu_instr.h"
+#include "os_cfg.h"
+
+//定义全局描述符GDT
+static segment_desc_t gdt_table[GDT_TABLE_SIZE];
 
 
 /**

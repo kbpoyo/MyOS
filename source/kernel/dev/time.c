@@ -10,7 +10,10 @@
  */
 
 #include "dev/time.h"
-
+#include "common/cpu_instr.h"
+#include "common/exc_frame.h"
+#include "os_cfg.h"
+#include "cpu/idt.h"
 
 static uint32_t sys_tick = 0;
 

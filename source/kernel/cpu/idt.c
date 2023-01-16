@@ -10,6 +10,44 @@
  */
 
 #include "cpu/idt.h"
+#include "common/exc_frame.h"
+#include "common/cpu_instr.h"
+#include "os_cfg.h"
+#include "tools/log.h"
+
+//定义中断描述符表
+static gate_desc_t idt_table[IDT_TABLE_SIZE];
+
+/**
+ * @brief  打印异常栈帧信息
+ * 
+ * @param frame 栈帧
+ */
+static void print_exception_fram(const exception_frame_t *frame) {
+
+  log_printf("------------------------stack frame info---------------------");
+  log_printf("IRQ:\t\t%d\nerror code:\t%d", frame->num, frame->error_code);
+  log_printf("CS:\t\t%d\nDS:\t\t%d\nSS:\t\t%d\nES:\t\t%d\nFS:\t\t%d\nGS:\t\t%d", 
+    //TODO:SS暂时没法获取，先用ds替代，之后再进行获取
+    frame->cs, frame->ds, frame->ds, frame->es, frame->fs, frame->gs
+  );
+
+  log_printf( 
+              "EAX:\t\t0x%x\n"
+              "EBX:\t\t0x%x\n"
+              "ECX:\t\t0x%x\n"
+              "EDX:\t\t0x%x\n"
+              "ESI:\t\t0x%x\n"
+              "EDI:\t\t0x%x\n"
+              "EBP:\t\t0x%x\n"
+              "ESP:\t\t0x%x", 
+              frame->eax, frame->ebx, frame->ecx, frame->edx,
+              frame->esi, frame->edi, frame->ebp, frame->esp 
+              );
+
+  log_printf("EIP:\t\t0x%x\nEFLAGS:\t\t0x%x", frame->eip, frame->eflags);
+}
+
 
 /**
  * @brief  默认的异常处理函数
@@ -19,6 +57,12 @@
  */
 static void do_default_handler(const exception_frame_t *frame,
                                const char *message) {
+
+  log_printf("----------------------------------");
+  log_printf("IRQ/Exception happend: %s", message);
+  print_exception_fram(frame);
+                              
+  
   for (;;) {
     hlt();
   }
