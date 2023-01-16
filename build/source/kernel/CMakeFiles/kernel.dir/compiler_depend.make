@@ -42,6 +42,11 @@ source/kernel/CMakeFiles/kernel.dir/init/init.c.o: ../source/kernel/init/init.c 
   ../source/kernel/include/dev/time.h \
   ../source/kernel/include/tools/log.h
 
+source/kernel/CMakeFiles/kernel.dir/tools/klib.c.o: ../source/kernel/tools/klib.c \
+  /usr/include/stdc-predef.h \
+  ../source/kernel/include/tools/klib.h \
+  ../source/common/types.h
+
 source/kernel/CMakeFiles/kernel.dir/tools/log.c.o: ../source/kernel/tools/log.c \
   /usr/include/stdc-predef.h \
   ../source/kernel/include/tools/log.h \
@@ -58,11 +63,15 @@ source/kernel/CMakeFiles/kernel.dir/tools/log.c.o: ../source/kernel/tools/log.c 
 
 ../source/kernel/include/cpu/gdt.h:
 
+../source/kernel/include/tools/klib.h:
+
 ../source/kernel/cpu/gdt.c:
 
 ../source/common/types.h:
 
 ../source/kernel/init/init.c:
+
+../source/kernel/tools/klib.c:
 
 ../source/common/cpu_instr.h:
 

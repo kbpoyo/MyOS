@@ -24,6 +24,7 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/home/kbpoyo/code/cpp/MyOs/source/kernel/cpu/idt.c" "source/kernel/CMakeFiles/kernel.dir/cpu/idt.c.o" "gcc" "source/kernel/CMakeFiles/kernel.dir/cpu/idt.c.o.d"
   "/home/kbpoyo/code/cpp/MyOs/source/kernel/dev/time.c" "source/kernel/CMakeFiles/kernel.dir/dev/time.c.o" "gcc" "source/kernel/CMakeFiles/kernel.dir/dev/time.c.o.d"
   "/home/kbpoyo/code/cpp/MyOs/source/kernel/init/init.c" "source/kernel/CMakeFiles/kernel.dir/init/init.c.o" "gcc" "source/kernel/CMakeFiles/kernel.dir/init/init.c.o.d"
+  "/home/kbpoyo/code/cpp/MyOs/source/kernel/tools/klib.c" "source/kernel/CMakeFiles/kernel.dir/tools/klib.c.o" "gcc" "source/kernel/CMakeFiles/kernel.dir/tools/klib.c.o.d"
   "/home/kbpoyo/code/cpp/MyOs/source/kernel/tools/log.c" "source/kernel/CMakeFiles/kernel.dir/tools/log.c.o" "gcc" "source/kernel/CMakeFiles/kernel.dir/tools/log.c.o.d"
   )
 

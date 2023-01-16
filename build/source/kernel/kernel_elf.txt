@@ -10,7 +10,7 @@ ELF Header:
   Version:                           0x1
   Entry point address:               0x10000
   Start of program headers:          52 (bytes into file)
-  Start of section headers:          23232 (bytes into file)
+  Start of section headers:          25868 (bytes into file)
   Flags:                             0x0
   Size of this header:               52 (bytes)
   Size of program headers:           32 (bytes)
@@ -22,20 +22,20 @@ ELF Header:
 Section Headers:
   [Nr] Name              Type            Addr     Off    Size   ES Flg Lk Inf Al
   [ 0]                   NULL            00000000 000000 000000 00      0   0  0
-  [ 1] .text             PROGBITS        00010000 001000 000c78 00  AX  0   0  1
-  [ 2] .rodata           PROGBITS        00010c78 001c78 000211 00   A  0   0  1
-  [ 3] .bss              NOBITS          00010ea0 001e89 023820 00  WA  0   0 32
-  [ 4] .debug_line       PROGBITS        00000000 001e89 00062d 00      0   0  1
-  [ 5] .debug_line_str   PROGBITS        00000000 0024b6 000301 01  MS  0   0  1
-  [ 6] .debug_info       PROGBITS        00000000 0027b7 0010a3 00      0   0  1
-  [ 7] .debug_abbrev     PROGBITS        00000000 00385a 000675 00      0   0  1
-  [ 8] .debug_aranges    PROGBITS        00000000 003ed0 0000c0 00      0   0  8
-  [ 9] .debug_str        PROGBITS        00000000 003f90 000842 01  MS  0   0  1
-  [10] .comment          PROGBITS        00000000 0047d2 00002b 01  MS  0   0  1
-  [11] .debug_frame      PROGBITS        00000000 004800 00069c 00      0   0  4
-  [12] .symtab           SYMTAB          00000000 004e9c 000580 10     13  29  4
-  [13] .strtab           STRTAB          00000000 00541c 000610 00      0   0  1
-  [14] .shstrtab         STRTAB          00000000 005a2c 000094 00      0   0  1
+  [ 1] .text             PROGBITS        00010000 001000 000ec3 00  AX  0   0  1
+  [ 2] .rodata           PROGBITS        00010ec3 001ec3 000211 00   A  0   0  1
+  [ 3] .bss              NOBITS          000110e0 0020d4 023820 00  WA  0   0 32
+  [ 4] .debug_line       PROGBITS        00000000 0020d4 00084b 00      0   0  1
+  [ 5] .debug_line_str   PROGBITS        00000000 00291f 000337 01  MS  0   0  1
+  [ 6] .debug_info       PROGBITS        00000000 002c56 0012f6 00      0   0  1
+  [ 7] .debug_abbrev     PROGBITS        00000000 003f4c 000756 00      0   0  1
+  [ 8] .debug_aranges    PROGBITS        00000000 0046a8 0000e0 00      0   0  8
+  [ 9] .debug_str        PROGBITS        00000000 004788 0008b7 01  MS  0   0  1
+  [10] .comment          PROGBITS        00000000 00503f 00002b 01  MS  0   0  1
+  [11] .debug_frame      PROGBITS        00000000 00506c 000790 00      0   0  4
+  [12] .symtab           SYMTAB          00000000 0057fc 000600 10     13  30  4
+  [13] .strtab           STRTAB          00000000 005dfc 00067b 00      0   0  1
+  [14] .shstrtab         STRTAB          00000000 006477 000094 00      0   0  1
 Key to Flags:
   W (write), A (alloc), X (execute), M (merge), S (strings), I (info),
   L (link order), O (extra OS processing required), G (group), T (TLS),
@@ -46,7 +46,7 @@ There are no section groups in this file.
 
 Program Headers:
   Type           Offset   VirtAddr   PhysAddr   FileSiz MemSiz  Flg Align
-  LOAD           0x001000 0x00010000 0x00010000 0x00e89 0x246c0 RWE 0x1000
+  LOAD           0x001000 0x00010000 0x00010000 0x010d4 0x24900 RWE 0x1000
   GNU_STACK      0x000000 0x00000000 0x00000000 0x00000 0x00000 RWE 0x10
 
  Section to Segment mapping:
@@ -59,14 +59,14 @@ There is no dynamic section in this file.
 There are no relocations in this file.
 No processor specific unwind information to decode
 
-Symbol table '.symtab' contains 88 entries:
+Symbol table '.symtab' contains 96 entries:
    Num:    Value  Size Type    Bind   Vis      Ndx Name
      0: 00000000     0 NOTYPE  LOCAL  DEFAULT  UND 
      1: 00000000     0 FILE    LOCAL  DEFAULT  ABS start.S.o
      2: 00010012     0 NOTYPE  LOCAL  DEFAULT    1 gdt_reload
      3: 00000000     0 FILE    LOCAL  DEFAULT  ABS gdt.c
      4: 00010298    40 FUNC    LOCAL  DEFAULT    1 lgdt
-     5: 00010ea0 65536 OBJECT  LOCAL  DEFAULT    3 gdt_table
+     5: 000110e0 65536 OBJECT  LOCAL  DEFAULT    3 gdt_table
      6: 000102c0   191 FUNC    LOCAL  DEFAULT    1 segment_desc_set
      7: 00000000     0 FILE    LOCAL  DEFAULT  ABS idt.c
      8: 000103ef     7 FUNC    LOCAL  DEFAULT    1 cli
@@ -75,79 +75,87 @@ Symbol table '.symtab' contains 88 entries:
     11: 00010404    29 FUNC    LOCAL  DEFAULT    1 inb
     12: 00010421    33 FUNC    LOCAL  DEFAULT    1 outb
     13: 00010442    40 FUNC    LOCAL  DEFAULT    1 lidt
-    14: 00020ea0  2048 OBJECT  LOCAL  DEFAULT    3 idt_table
+    14: 000210e0  2048 OBJECT  LOCAL  DEFAULT    3 idt_table
     15: 0001046a    10 FUNC    LOCAL  DEFAULT    1 do_default_handler
     16: 00010642    71 FUNC    LOCAL  DEFAULT    1 gate_desc_set
     17: 000106c9   147 FUNC    LOCAL  DEFAULT    1 init_pic
     18: 00000000     0 FILE    LOCAL  DEFAULT  ABS time.c
     19: 00010a4a    33 FUNC    LOCAL  DEFAULT    1 outb
-    20: 000216a0  2048 OBJECT  LOCAL  DEFAULT    3 idt_table
-    21: 00021ea0     4 OBJECT  LOCAL  DEFAULT    3 sys_tick
+    20: 000218e0  2048 OBJECT  LOCAL  DEFAULT    3 idt_table
+    21: 000220e0     4 OBJECT  LOCAL  DEFAULT    3 sys_tick
     22: 00010a8e    98 FUNC    LOCAL  DEFAULT    1 init_pit
     23: 00000000     0 FILE    LOCAL  DEFAULT  ABS init.c
-    24: 00021ec0 65536 OBJECT  LOCAL  DEFAULT    3 gdt_table
-    25: 00031ec0  2048 OBJECT  LOCAL  DEFAULT    3 idt_table
-    26: 00000000     0 FILE    LOCAL  DEFAULT  ABS log.c
-    27: 00010b57    29 FUNC    LOCAL  DEFAULT    1 inb
-    28: 00010b74    33 FUNC    LOCAL  DEFAULT    1 outb
-    29: 000108cf   152 FUNC    GLOBAL DEFAULT    1 idt_enable
-    30: 00010566    22 FUNC    GLOBAL DEFAULT    1 do_handler_segme[...]
-    31: 00010a06    11 FUNC    GLOBAL DEFAULT    1 idt_enable_global
-    32: 00010081     0 NOTYPE  GLOBAL DEFAULT    1 exception_handler_nmi
-    33: 00010243     0 NOTYPE  GLOBAL DEFAULT    1 exception_handle[...]
-    34: 00010b95   117 FUNC    GLOBAL DEFAULT    1 log_init
-    35: 00010b25    50 FUNC    GLOBAL DEFAULT    1 init_main
-    36: 000101ee     0 NOTYPE  GLOBAL DEFAULT    1 exception_handle[...]
-    37: 000109fb    11 FUNC    GLOBAL DEFAULT    1 idt_disable_global
-    38: 00010689    64 FUNC    GLOBAL DEFAULT    1 idt_install
-    39: 0001002a     0 NOTYPE  GLOBAL DEFAULT    1 exception_handle[...]
-    40: 0001009e     0 NOTYPE  GLOBAL DEFAULT    1 exception_handle[...]
-    41: 000104e2    22 FUNC    GLOBAL DEFAULT    1 do_handler_overflow
-    42: 000105d4    22 FUNC    GLOBAL DEFAULT    1 do_handler_align[...]
-    43: 0001019b     0 NOTYPE  GLOBAL DEFAULT    1 exception_handle[...]
-    44: 00010592    22 FUNC    GLOBAL DEFAULT    1 do_handler_gener[...]
-    45: 0001062c    22 FUNC    GLOBAL DEFAULT    1 do_handler_contr[...]
-    46: 0001048a    22 FUNC    GLOBAL DEFAULT    1 do_handler_divider
-    47: 0001053a    22 FUNC    GLOBAL DEFAULT    1 do_handler_doubl[...]
-    48: 000105a8    22 FUNC    GLOBAL DEFAULT    1 do_handler_page_fault
-    49: 0001012f     0 NOTYPE  GLOBAL DEFAULT    1 exception_handle[...]
-    50: 00010a11    57 FUNC    GLOBAL DEFAULT    1 pic_send_eoi
-    51: 00010180     0 NOTYPE  GLOBAL DEFAULT    1 exception_handle[...]
-    52: 0001037f   112 FUNC    GLOBAL DEFAULT    1 gdt_init
-    53: 00010616    22 FUNC    GLOBAL DEFAULT    1 do_handler_virtu[...]
-    54: 000100bb     0 NOTYPE  GLOBAL DEFAULT    1 exception_handle[...]
-    55: 0001027b     0 NOTYPE  GLOBAL DEFAULT    1 exception_handle[...]
-    56: 000104a0    22 FUNC    GLOBAL DEFAULT    1 do_handler_debug
-    57: 000326c0  8192 OBJECT  GLOBAL DEFAULT    3 stack
-    58: 00010260     0 NOTYPE  GLOBAL DEFAULT    1 exception_handle[...]
-    59: 000100d8     0 NOTYPE  GLOBAL DEFAULT    1 exception_handle[...]
-    60: 0001075c   371 FUNC    GLOBAL DEFAULT    1 idt_init
-    61: 0001050e    22 FUNC    GLOBAL DEFAULT    1 do_handler_inval[...]
-    62: 0001014a     0 NOTYPE  GLOBAL DEFAULT    1 exception_handle[...]
-    63: 000105be    22 FUNC    GLOBAL DEFAULT    1 do_handler_fpu_error
-    64: 000105ea    22 FUNC    GLOBAL DEFAULT    1 do_handler_machi[...]
-    65: 00010047     0 NOTYPE  GLOBAL DEFAULT    1 exception_handle[...]
-    66: 00010b08    29 FUNC    GLOBAL DEFAULT    1 kernel_init
-    67: 00010000     0 NOTYPE  GLOBAL DEFAULT    1 _start
-    68: 00010112     0 NOTYPE  GLOBAL DEFAULT    1 exception_handle[...]
-    69: 000100f5     0 NOTYPE  GLOBAL DEFAULT    1 exception_handle[...]
-    70: 00010209     0 NOTYPE  GLOBAL DEFAULT    1 exception_handle[...]
-    71: 00010550    22 FUNC    GLOBAL DEFAULT    1 do_handler_inval[...]
-    72: 00010967   148 FUNC    GLOBAL DEFAULT    1 idt_disable
-    73: 000104b6    22 FUNC    GLOBAL DEFAULT    1 do_handler_nmi
-    74: 00010226     0 NOTYPE  GLOBAL DEFAULT    1 exception_handle[...]
-    75: 00010524    22 FUNC    GLOBAL DEFAULT    1 do_handler_devic[...]
-    76: 00010600    22 FUNC    GLOBAL DEFAULT    1 do_handler_smd_e[...]
-    77: 000101b6     0 NOTYPE  GLOBAL DEFAULT    1 exception_handle[...]
-    78: 00010474    22 FUNC    GLOBAL DEFAULT    1 do_handler_unknown
-    79: 000101d1     0 NOTYPE  GLOBAL DEFAULT    1 exception_handle[...]
-    80: 00010064     0 NOTYPE  GLOBAL DEFAULT    1 exception_handle[...]
-    81: 000104f8    22 FUNC    GLOBAL DEFAULT    1 do_handler_bound[...]
-    82: 00010165     0 NOTYPE  GLOBAL DEFAULT    1 exception_handle[...]
-    83: 0001057c    22 FUNC    GLOBAL DEFAULT    1 do_handler_stack[...]
-    84: 000104cc    22 FUNC    GLOBAL DEFAULT    1 do_handler_breakpoint
-    85: 00010c0a   110 FUNC    GLOBAL DEFAULT    1 log_printf
-    86: 00010a6b    35 FUNC    GLOBAL DEFAULT    1 do_handler_time
-    87: 00010af0    24 FUNC    GLOBAL DEFAULT    1 time_init
+    24: 00022100 65536 OBJECT  LOCAL  DEFAULT    3 gdt_table
+    25: 00032100  2048 OBJECT  LOCAL  DEFAULT    3 idt_table
+    26: 00000000     0 FILE    LOCAL  DEFAULT  ABS klib.c
+    27: 00000000     0 FILE    LOCAL  DEFAULT  ABS log.c
+    28: 00010da2    29 FUNC    LOCAL  DEFAULT    1 inb
+    29: 00010dbf    33 FUNC    LOCAL  DEFAULT    1 outb
+    30: 00010c8e    79 FUNC    GLOBAL DEFAULT    1 kernel_memcpy
+    31: 000108cf   152 FUNC    GLOBAL DEFAULT    1 idt_enable
+    32: 00010566    22 FUNC    GLOBAL DEFAULT    1 do_handler_segme[...]
+    33: 00010a06    11 FUNC    GLOBAL DEFAULT    1 idt_enable_global
+    34: 00010cdd    65 FUNC    GLOBAL DEFAULT    1 kernel_memset
+    35: 00010081     0 NOTYPE  GLOBAL DEFAULT    1 exception_handler_nmi
+    36: 00010243     0 NOTYPE  GLOBAL DEFAULT    1 exception_handle[...]
+    37: 00010de0   117 FUNC    GLOBAL DEFAULT    1 log_init
+    38: 00010b25    50 FUNC    GLOBAL DEFAULT    1 init_main
+    39: 000101ee     0 NOTYPE  GLOBAL DEFAULT    1 exception_handle[...]
+    40: 00010b57    71 FUNC    GLOBAL DEFAULT    1 kernel_strcpy
+    41: 000109fb    11 FUNC    GLOBAL DEFAULT    1 idt_disable_global
+    42: 00010689    64 FUNC    GLOBAL DEFAULT    1 idt_install
+    43: 0001002a     0 NOTYPE  GLOBAL DEFAULT    1 exception_handle[...]
+    44: 0001009e     0 NOTYPE  GLOBAL DEFAULT    1 exception_handle[...]
+    45: 000104e2    22 FUNC    GLOBAL DEFAULT    1 do_handler_overflow
+    46: 000105d4    22 FUNC    GLOBAL DEFAULT    1 do_handler_align[...]
+    47: 0001019b     0 NOTYPE  GLOBAL DEFAULT    1 exception_handle[...]
+    48: 00010592    22 FUNC    GLOBAL DEFAULT    1 do_handler_gener[...]
+    49: 0001062c    22 FUNC    GLOBAL DEFAULT    1 do_handler_contr[...]
+    50: 0001048a    22 FUNC    GLOBAL DEFAULT    1 do_handler_divider
+    51: 0001053a    22 FUNC    GLOBAL DEFAULT    1 do_handler_doubl[...]
+    52: 000105a8    22 FUNC    GLOBAL DEFAULT    1 do_handler_page_fault
+    53: 0001012f     0 NOTYPE  GLOBAL DEFAULT    1 exception_handle[...]
+    54: 00010a11    57 FUNC    GLOBAL DEFAULT    1 pic_send_eoi
+    55: 00010180     0 NOTYPE  GLOBAL DEFAULT    1 exception_handle[...]
+    56: 0001037f   112 FUNC    GLOBAL DEFAULT    1 gdt_init
+    57: 00010616    22 FUNC    GLOBAL DEFAULT    1 do_handler_virtu[...]
+    58: 000100bb     0 NOTYPE  GLOBAL DEFAULT    1 exception_handle[...]
+    59: 0001027b     0 NOTYPE  GLOBAL DEFAULT    1 exception_handle[...]
+    60: 000104a0    22 FUNC    GLOBAL DEFAULT    1 do_handler_debug
+    61: 00032900  8192 OBJECT  GLOBAL DEFAULT    3 stack
+    62: 00010260     0 NOTYPE  GLOBAL DEFAULT    1 exception_handle[...]
+    63: 000100d8     0 NOTYPE  GLOBAL DEFAULT    1 exception_handle[...]
+    64: 0001075c   371 FUNC    GLOBAL DEFAULT    1 idt_init
+    65: 0001050e    22 FUNC    GLOBAL DEFAULT    1 do_handler_inval[...]
+    66: 0001014a     0 NOTYPE  GLOBAL DEFAULT    1 exception_handle[...]
+    67: 000105be    22 FUNC    GLOBAL DEFAULT    1 do_handler_fpu_error
+    68: 000105ea    22 FUNC    GLOBAL DEFAULT    1 do_handler_machi[...]
+    69: 00010047     0 NOTYPE  GLOBAL DEFAULT    1 exception_handle[...]
+    70: 00010b9e    81 FUNC    GLOBAL DEFAULT    1 kernel_strncpy
+    71: 00010b08    29 FUNC    GLOBAL DEFAULT    1 kernel_init
+    72: 00010000     0 NOTYPE  GLOBAL DEFAULT    1 _start
+    73: 00010112     0 NOTYPE  GLOBAL DEFAULT    1 exception_handle[...]
+    74: 000100f5     0 NOTYPE  GLOBAL DEFAULT    1 exception_handle[...]
+    75: 00010209     0 NOTYPE  GLOBAL DEFAULT    1 exception_handle[...]
+    76: 00010550    22 FUNC    GLOBAL DEFAULT    1 do_handler_inval[...]
+    77: 00010967   148 FUNC    GLOBAL DEFAULT    1 idt_disable
+    78: 000104b6    22 FUNC    GLOBAL DEFAULT    1 do_handler_nmi
+    79: 00010226     0 NOTYPE  GLOBAL DEFAULT    1 exception_handle[...]
+    80: 00010524    22 FUNC    GLOBAL DEFAULT    1 do_handler_devic[...]
+    81: 00010d1e   132 FUNC    GLOBAL DEFAULT    1 kernel_memcmp
+    82: 00010600    22 FUNC    GLOBAL DEFAULT    1 do_handler_smd_e[...]
+    83: 000101b6     0 NOTYPE  GLOBAL DEFAULT    1 exception_handle[...]
+    84: 00010474    22 FUNC    GLOBAL DEFAULT    1 do_handler_unknown
+    85: 000101d1     0 NOTYPE  GLOBAL DEFAULT    1 exception_handle[...]
+    86: 00010c59    53 FUNC    GLOBAL DEFAULT    1 kernel_strlen
+    87: 00010064     0 NOTYPE  GLOBAL DEFAULT    1 exception_handle[...]
+    88: 000104f8    22 FUNC    GLOBAL DEFAULT    1 do_handler_bound[...]
+    89: 00010bef   106 FUNC    GLOBAL DEFAULT    1 kernel_strncmp
+    90: 00010165     0 NOTYPE  GLOBAL DEFAULT    1 exception_handle[...]
+    91: 0001057c    22 FUNC    GLOBAL DEFAULT    1 do_handler_stack[...]
+    92: 000104cc    22 FUNC    GLOBAL DEFAULT    1 do_handler_breakpoint
+    93: 00010e55   110 FUNC    GLOBAL DEFAULT    1 log_printf
+    94: 00010a6b    35 FUNC    GLOBAL DEFAULT    1 do_handler_time
+    95: 00010af0    24 FUNC    GLOBAL DEFAULT    1 time_init
 
 No version information found in this file.

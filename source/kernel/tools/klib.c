@@ -11,6 +11,12 @@
 
 #include "tools/klib.h"
 
+/**
+ * @brief  拷贝字符串
+ * 
+ * @param dest 目标字符串
+ * @param src  源字符串
+ */
 void kernel_strcpy(char *dest, const char *src) {
     //1.判断是否为NULL
     if (!dest || !src) return;
@@ -26,6 +32,13 @@ void kernel_strcpy(char *dest, const char *src) {
     
 }
 
+/**
+ * @brief  按大小拷贝字符串
+ * 
+ * @param dest 目的字符串
+ * @param src 源字符串
+ * @param size 拷贝字符串的长度，包含'\0'
+ */
 void kernel_strncpy(char* dest, const char *src, int size) {
     //1.判断是否需要拷贝
     if (!dest || !src || !size) return;
@@ -39,8 +52,103 @@ void kernel_strncpy(char* dest, const char *src, int size) {
     *dest = '\0';
 }
 
-void kernel_strncmp(const char *s1, const char *s2, int size);
+/**
+ * @brief  比较字符串
+ * 
+ * @param s1 字符串1
+ * @param s2 字符串2
+ * @param size 比较前比较的子串长度，从下标0开始到(size - 1)
+ * 
+ * @return int ==: 0, > : 1, < : -1
+ */
+int kernel_strncmp(const char *s1, const char *s2, int size) {
+    if (!s1 || !s2) return - 1;
 
-void kernel_memcpy(void *dest, void *src, int size);
-void kernel_memset(void *dest, uint8_t v, int size);
-int kernel_memcmp(void *d1, void *d2, int size);
+    while (*s1 && *s2 && --size && *s1 == *s2 ) {
+        ++s1;
+        ++s2;        
+    }
+
+    if (*s1 > *s2) return 1;
+    else if (*s1 < *s1) return -1;
+    else return 0;
+    
+}
+
+/**
+ * @brief  获取字符串str的长度
+ * 
+ * @param str 
+ * @return int 
+ */
+int kernel_strlen(const char *str) {
+    if (!str) return 0;
+
+    int len = 0;
+    while (*(str++)) len++;
+
+    return len;
+    
+}
+
+/**
+ * @brief  内存复制
+ * 
+ * @param dest 目的内存的起始地址
+ * @param src 原内存的起始地址
+ * @param size 复制的内存字节大小
+ */
+void kernel_memcpy(void *dest, const void *src, int size) {
+    if (!dest || !src || !size) return;
+
+    uint8_t *d = (uint8_t*)dest;
+    uint8_t *s = (uint8_t*)src;
+
+    while (size--) {
+        *(d++) = *(s++);
+    }
+    
+}
+
+/**
+ * @brief  对内存区域每一个字节赋值置
+ * 
+ * @param dest 区域起始地址
+ * @param v 每个字节的值
+ * @param size 赋值的内存的大小
+ */
+void kernel_memset(void *dest, uint8_t v, int size) {
+    if (!dest || !size) return;
+
+    uint8_t *d = (uint8_t*)dest;
+    
+    while (size--) {
+        *(d++) = v;
+    }
+    
+}
+
+/**
+ * @brief  按按内存区域从低地址到高地址逐字节比较大小
+ * 
+ * @param d1 区域1的起始地址
+ * @param d2 区域2的起始地址
+ * @param size 比较的字节数量
+ * @return int ==:0, >:1, <:-1
+ */
+int kernel_memcmp(const void *dest1, const void *dest2, int size) {
+    if (!dest1 || !dest2 || !size) return 0;
+
+    uint8_t *d1 = (uint8_t*)dest1;
+    uint8_t *d2 = (uint8_t*)dest2;
+
+    while (--size && *d1 == *d2) {
+        d1++;
+        d2++;
+    }
+
+    if (*d1 > *d2) return 1;
+    else if (*d1 < *d2) return -1;
+    else return 0;
+
+}
