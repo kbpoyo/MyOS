@@ -23,36 +23,44 @@
  * 
  */
 void kernel_init(boot_info_t* boot_info) {
-    //1.初始化并重新加载GDT表
-    gdt_init();
+    //1.判断是否检测到可用内存
+    ASSERT(boot_info->ram_region_count != 0);
 
     //2.初始化日志程序,便于后期调用
     log_init();
 
-    //3.初始化并加载中断描述符表IDT
+    //3.初始化并重新加载GDT表
+    gdt_init();
+
+    //4.初始化并加载中断描述符表IDT
     idt_init();
 
-    //4.初始化定时器的中断处理
+    //5.初始化定时器的中断处理
     time_init();
-
-
-    ASSERT(boot_info->ram_region_count == 0);
-
 
     //初始化完成后将在汇编里重新加载内核代码段与数据段的选择子，并为内核程序分配栈空间
 
 }
 
+void init_task_entry(void) {
+
+    int count = 0;
+
+    for (;;) {
+        log_printf("init task: %d", count++);
+     }
+}
 
 void init_main(void) {
 
     log_printf("Kernel is running......");
-    log_printf("Name: %s, Version: %s", "kbpoyoOS", OS_VERSION);
-    log_printf("dex 10 = %d, hex 10 = %x bin: 10 = %b char: %c", 65536, 0, 65536, 'd');
-    //idt_enable_global(); 
+    log_printf("Name: %s, Version: %s", "KbOS", OS_VERSION);
 
-    int a = 10 / 0;
+    int count = 0;
 
+    for (;;) {
+        log_printf("init main: %d", count++);
+     }
 
-    for (;;){}
+     init_task_entry();
 }
