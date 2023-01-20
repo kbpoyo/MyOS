@@ -80,6 +80,5 @@ void init_main(void) {
 
     task_switch_from_to(0, &task_1);
 
-    int count = 0;
 
 }
