@@ -1,4 +1,6 @@
 file(REMOVE_RECURSE
+  "CMakeFiles/kernel.dir/core/task.c.o"
+  "CMakeFiles/kernel.dir/core/task.c.o.d"
   "CMakeFiles/kernel.dir/cpu/gdt.c.o"
   "CMakeFiles/kernel.dir/cpu/gdt.c.o.d"
   "CMakeFiles/kernel.dir/cpu/idt.c.o"

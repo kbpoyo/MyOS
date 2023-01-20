@@ -156,16 +156,27 @@ static inline void write_cr0(uint32_t data) {
 }
 
 /**
- * @brief  进入保护模式后进行远跳转到32位模式下运行的程序
+ * @brief  远跳转，当跳转发生在TSS段之间时，cpu将会保存状态到当前TR寄存器指向的TSS段
  *
  * @param selector 选择子
- * @param offset 跳转的偏移量，也就是某个函数的地址，函数访问是通过(函数地址 =
- * 当前地址 + 偏移地址 + 当前地址的长度)来实现的
+ * @param offset 跳转的偏移量
  */
 static inline void far_jump(uint32_t selector, uint32_t offset) {
-  uint32_t addr[] = {offset, selector};  // 传入远跳转需要的参数
+  // 传入远跳转需要的参数, 即cs = selector, eip = offset 
+  uint32_t addr[] = {offset, selector};  
 
   __asm__ __volatile__("ljmpl *(%[a])" : : [a] "r"(addr));
 }
+
+/**
+ * @brief   写入当前任务的TSS段描述符的选择子到TR寄存器中，告诉cpu当前段的TSS位置
+ *          以便在进行任务切换时，将状态保存到该TSS段中
+ * 
+ * @param tss_selector 准备运行的任务的TSS段的选择子
+ */
+static inline void write_tr(uint16_t tss_selector) {
+  __asm__ __volatile__("ltr %[v]" : : [v]"r"(tss_selector));
+}
+
 
 #endif

@@ -35,7 +35,7 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING, OCTETS
   7 .debug_abbrev 00000358  00000000  00000000  000029a8  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
-  8 .debug_line   000003e3  00000000  00000000  00002d00  2**0
+  8 .debug_line   000003e1  00000000  00000000  00002d00  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
   9 .debug_frame  00000270  00000000  00000000  000030e4  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
@@ -260,16 +260,17 @@ static inline void write_cr0(uint32_t data) {
     80dd:	66 c3                	retl   
 
 000080df <far_jump>:
+ * @brief  远跳转，当跳转发生在TSS段之间时，cpu将会保存状态到当前TR寄存器指向的TSS段
  *
  * @param selector 选择子
- * @param offset 跳转的偏移量，也就是某个函数的地址，函数访问是通过(函数地址 =
- * 当前地址 + 偏移地址 + 当前地址的长度)来实现的
+ * @param offset 跳转的偏移量
  */
 static inline void far_jump(uint32_t selector, uint32_t offset) {
     80df:	66 55                	push   %ebp
     80e1:	66 89 e5             	mov    %esp,%ebp
     80e4:	66 83 ec 10          	sub    $0x10,%esp
-  uint32_t addr[] = {offset, selector};  // 传入远跳转需要的参数
+  // 传入远跳转需要的参数, 即cs = selector, eip = offset 
+  uint32_t addr[] = {offset, selector};  
     80e8:	67 66 8b 45 0c       	mov    0xc(%ebp),%eax
     80ed:	67 66 89 45 f8       	mov    %eax,-0x8(%ebp)
     80f2:	67 66 8b 45 08       	mov    0x8(%ebp),%eax

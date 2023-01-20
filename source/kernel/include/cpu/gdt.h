@@ -25,7 +25,7 @@ typedef struct _segment_desc_t {
     uint16_t attr;      //中间0~7和12~15为属性位，8~11为段界限的高4位
     uint8_t base31_24;  //段基址的高8位
 
-}segment_desc_t;
+}segment_desc_t, tss_desc_t;
 
 
 #pragma pack()
@@ -64,10 +64,11 @@ typedef struct _segment_desc_t {
 #define SEG_ATTR_TYPE_CODE ((uint16_t)(1 << 3))//当为非系统段时，标志该段为代码段
 #define SEG_ATTR_TYPE_DATA ((uint16_t)(0 << 3))//当为非系统段时，标志该段为数据段
 #define SEG_ATTR_TYPE_RW ((uint16_t)(1 << 1))  //若是代码段则可读，若是数据段则可读写
+//标志该段为TSS段, 10B1, B为1表示该任务忙碌，不可启用，为0表示该任务空闲，可启用  
+#define SEG_ATTR_TYPE_TSS ((uint16_t)(9 << 0)) 
 
-
-
+void segment_desc_set(uint16_t selector,  uint32_t base, uint32_t limit, uint16_t attr);
 void gdt_init(void);
-
+int gdt_alloc_desc();
 
 #endif

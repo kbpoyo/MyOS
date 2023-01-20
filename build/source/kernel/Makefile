@@ -130,6 +130,30 @@ kernel/fast:
 	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/build
 .PHONY : kernel/fast
 
+core/task.o: core/task.c.o
+.PHONY : core/task.o
+
+# target to build an object file
+core/task.c.o:
+	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/core/task.c.o
+.PHONY : core/task.c.o
+
+core/task.i: core/task.c.i
+.PHONY : core/task.i
+
+# target to preprocess a source file
+core/task.c.i:
+	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/core/task.c.i
+.PHONY : core/task.c.i
+
+core/task.s: core/task.c.s
+.PHONY : core/task.s
+
+# target to generate assembly for a file
+core/task.c.s:
+	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/core/task.c.s
+.PHONY : core/task.c.s
+
 cpu/gdt.o: cpu/gdt.c.o
 .PHONY : cpu/gdt.o
 
@@ -315,6 +339,9 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... kernel"
+	@echo "... core/task.o"
+	@echo "... core/task.i"
+	@echo "... core/task.s"
 	@echo "... cpu/gdt.o"
 	@echo "... cpu/gdt.i"
 	@echo "... cpu/gdt.s"

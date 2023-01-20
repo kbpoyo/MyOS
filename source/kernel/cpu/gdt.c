@@ -26,7 +26,7 @@ static segment_desc_t gdt_table[GDT_TABLE_SIZE];
  * @param limit 该段的段界限，是一个偏移量，表示段中最大的偏移界限
  * @param attr 该段的属性位
  */
-static void segment_desc_set(uint16_t selector,  uint32_t base, uint32_t limit, uint16_t attr) {
+void segment_desc_set(uint16_t selector,  uint32_t base, uint32_t limit, uint16_t attr) {
     //1. 获取该段描述符在内存中的起始地址，selector >> 3 取出3~15位才是其在全局描述符中的下标
     segment_desc_t *desc = gdt_table + (selector >> 3);
 
@@ -79,5 +79,21 @@ void gdt_init(void) {
     lgdt((uint32_t)gdt_table, sizeof(gdt_table));
 }
 
+
+/**
+ * @brief  寻找gdt中未赋值的段描述符空间
+ * 
+ * @return int 返回的找到的描述符的选择子
+ */
+int gdt_alloc_desc() {
+    for (int i = 1; i < GDT_TABLE_SIZE; ++i) {
+        segment_desc_t *desc = gdt_table + i;
+        if (desc->limit15_0 == 0) {
+            return i << 3;
+        }
+    }
+
+    return -1;
+}
 
 

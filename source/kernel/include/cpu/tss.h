@@ -12,7 +12,10 @@
 #ifndef TSS_H
 #define TSS_H
 
+
 #include "common/types.h"
+
+#pragma pack(1)
 
 //任务状态段的结构体定义，书p230，p486
 typedef struct _tss_t {
@@ -25,6 +28,10 @@ typedef struct _tss_t {
     uint32_t iomap; //任务对应的io位图
 }tss_t;
 
+#pragma pack()
 
+//定义eflags寄存器使用的宏，供TSS初始化时使用
+#define EFLAGS_DEFAULT_1 ((uint32_t)(1 << 1))   //默认为1的位
+#define EFLAGS_IF ((uint32_t)(1 << 9))          //IF位，置1开启中断，置0关闭中断
 
 #endif
