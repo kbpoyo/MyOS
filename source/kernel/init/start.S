@@ -146,3 +146,36 @@ exception_handler control_exception,    21, 1
 
 //定时器的中断处理函数
 exception_handler time,                 0x20, 0 
+
+    .text
+    .global simple_switch
+simple_switch:  //simple_switch(from, to)
+    //1.获取参数
+    mov 8(%esp), %edx   //获取 to, 地址(指针) --> 目标任务的栈空间对应的 esp 的值
+    mov 4(%esp), %eax   //获取 from, 地址(指针) --> 当前任务的栈空间对应的 esp 的值
+
+
+    //2.被调用者保存当前任务的 ebp, ebx, esi, edi 到当前任务的栈中
+    //eax, ecx, edx, eip, eflags 已由调用者压入当前任务的栈中
+    push %ebp
+    push %ebx
+    push %esi
+    push %edi
+
+    //3.更新当前任务栈空间的 esp
+    mov %esp, (%eax)
+
+    //3.进行栈任务栈的切换
+    mov (%edx), %esp
+
+
+    //4.恢复切换后的任务状态，ebp, ebx, esi, edi 手动恢复
+    //eax, ecx, edx, eip, eflags, 是在当前任务(c函数)调用simple_switch时已压入当前任务栈中，
+    //调用 ret 后会自行弹出并恢复
+    pop %edi
+    pop %esi
+    pop %ebx
+    pop %ebp
+
+    //5.恢复切换后的任务执行流，相当于此时 esp ->[eip]， 即 pop %eip
+    ret 

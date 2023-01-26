@@ -11,10 +11,7 @@ source/kernel/CMakeFiles/kernel.dir/core/task.c.o: ../source/kernel/core/task.c 
   ../source/kernel/include/tools/assert.h \
   ../source/kernel/include/tools/log.h \
   ../source/kernel/include/tools/klib.h \
-  ../source/common/cpu_instr.h \
-  ../source/common/types.h \
-  ../source/kernel/include/cpu/gdt.h \
-  ../source/kernel/include/os_cfg.h
+  ../source/kernel/include/cpu/gdt.h
 
 source/kernel/CMakeFiles/kernel.dir/cpu/gdt.c.o: ../source/kernel/cpu/gdt.c \
   /usr/include/stdc-predef.h \

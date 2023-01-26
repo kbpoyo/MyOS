@@ -78,7 +78,7 @@ void init_main(void) {
     task_init(&task_1, (uint32_t)test_task_1, (uint32_t)&init_stack_1[1024]);
     task_init(&task_2, (uint32_t)test_task_2, (uint32_t)&init_stack_2[1024]);
 
-    task_switch_from_to(0, &task_1);
+    task_switch_from_to(0, &task_2);
 
 
 }

@@ -14,10 +14,9 @@
 #include "cpu/tss.h"
 #include "common/types.h"
 
-//定义可执行任务的数据结构
+//定义可执行任务的数据结构,即PCB控制块，书p406
 typedef struct _task_t {
-    tss_t tss;
-    uint32_t tss_selector;
+    uint32_t stack_esp;    //保存任务所使用的栈空间的栈顶指针esp的值
 }task_t;
 
 int task_init(task_t *task, uint32_t entry, uint32_t esp);
