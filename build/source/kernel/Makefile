@@ -258,6 +258,30 @@ init/start.S.o:
 	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/init/start.S.o
 .PHONY : init/start.S.o
 
+test/test.o: test/test.c.o
+.PHONY : test/test.o
+
+# target to build an object file
+test/test.c.o:
+	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/test/test.c.o
+.PHONY : test/test.c.o
+
+test/test.i: test/test.c.i
+.PHONY : test/test.i
+
+# target to preprocess a source file
+test/test.c.i:
+	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/test/test.c.i
+.PHONY : test/test.c.i
+
+test/test.s: test/test.c.s
+.PHONY : test/test.s
+
+# target to generate assembly for a file
+test/test.c.s:
+	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/test/test.c.s
+.PHONY : test/test.c.s
+
 tools/assert.o: tools/assert.c.o
 .PHONY : tools/assert.o
 
@@ -305,6 +329,30 @@ tools/klib.s: tools/klib.c.s
 tools/klib.c.s:
 	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/tools/klib.c.s
 .PHONY : tools/klib.c.s
+
+tools/list.o: tools/list.c.o
+.PHONY : tools/list.o
+
+# target to build an object file
+tools/list.c.o:
+	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/tools/list.c.o
+.PHONY : tools/list.c.o
+
+tools/list.i: tools/list.c.i
+.PHONY : tools/list.i
+
+# target to preprocess a source file
+tools/list.c.i:
+	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/tools/list.c.i
+.PHONY : tools/list.c.i
+
+tools/list.s: tools/list.c.s
+.PHONY : tools/list.s
+
+# target to generate assembly for a file
+tools/list.c.s:
+	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/tools/list.c.s
+.PHONY : tools/list.c.s
 
 tools/log.o: tools/log.c.o
 .PHONY : tools/log.o
@@ -355,12 +403,18 @@ help:
 	@echo "... init/init.i"
 	@echo "... init/init.s"
 	@echo "... init/start.o"
+	@echo "... test/test.o"
+	@echo "... test/test.i"
+	@echo "... test/test.s"
 	@echo "... tools/assert.o"
 	@echo "... tools/assert.i"
 	@echo "... tools/assert.s"
 	@echo "... tools/klib.o"
 	@echo "... tools/klib.i"
 	@echo "... tools/klib.s"
+	@echo "... tools/list.o"
+	@echo "... tools/list.i"
+	@echo "... tools/list.s"
 	@echo "... tools/log.o"
 	@echo "... tools/log.i"
 	@echo "... tools/log.s"

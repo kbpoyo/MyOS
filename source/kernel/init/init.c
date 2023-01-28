@@ -19,6 +19,8 @@
 #include "dev/time.h"
 #include "core/task.h"
 #include "os_cfg.h"
+#include "tools/list.h"
+#include "test/test.h"
 
 /**
  * @brief  对内核进行初始化操作
@@ -70,7 +72,11 @@ void test_task_2(void) {
         task_switch_from_to(&task_2, &task_1);
      }
 }
+
+
 void init_main(void) {
+
+    list_test();
 
     log_printf("Kernel is running......");
     log_printf("Name: %s, Version: %s", "KbOS", OS_VERSION);

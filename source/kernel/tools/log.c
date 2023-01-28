@@ -13,6 +13,7 @@
 #include <stdarg.h> //包含一些处理可变参数的宏
 #include "common/types.h"
 #include "common/cpu_instr.h"
+#include "tools/klib.h"
 
 /**
  * @brief  初始化串行端口寄存器COM1
@@ -28,7 +29,12 @@ void log_init(void) {
     outb(COM1_PORT + 4, 0x0f);
 }
 
-
+/**
+ * @brief  格式化输出到串口
+ * 
+ * @param formate 
+ * @param ... 
+ */
 void log_printf(const char *formate, ...) {
     //1.设置字符缓冲区
     char str_buf[128];

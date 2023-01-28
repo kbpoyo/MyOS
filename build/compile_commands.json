@@ -31,6 +31,11 @@
 },
 {
   "directory": "/home/kbpoyo/code/cpp/MyOs/build/source/kernel",
+  "command": "/usr/bin/gcc  -I/home/kbpoyo/code/cpp/MyOs/source -I/home/kbpoyo/code/cpp/MyOs/source/kernel/include -g -c -O0 -m32 -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -g -o CMakeFiles/kernel.dir/core/task.c.o -c /home/kbpoyo/code/cpp/MyOs/source/kernel/core/task.c",
+  "file": "/home/kbpoyo/code/cpp/MyOs/source/kernel/core/task.c"
+},
+{
+  "directory": "/home/kbpoyo/code/cpp/MyOs/build/source/kernel",
   "command": "/usr/bin/gcc  -I/home/kbpoyo/code/cpp/MyOs/source -I/home/kbpoyo/code/cpp/MyOs/source/kernel/include -g -c -O0 -m32 -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -g -o CMakeFiles/kernel.dir/cpu/gdt.c.o -c /home/kbpoyo/code/cpp/MyOs/source/kernel/cpu/gdt.c",
   "file": "/home/kbpoyo/code/cpp/MyOs/source/kernel/cpu/gdt.c"
 },
@@ -51,6 +56,11 @@
 },
 {
   "directory": "/home/kbpoyo/code/cpp/MyOs/build/source/kernel",
+  "command": "/usr/bin/gcc  -I/home/kbpoyo/code/cpp/MyOs/source -I/home/kbpoyo/code/cpp/MyOs/source/kernel/include -g -c -O0 -m32 -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -g -o CMakeFiles/kernel.dir/test/test.c.o -c /home/kbpoyo/code/cpp/MyOs/source/kernel/test/test.c",
+  "file": "/home/kbpoyo/code/cpp/MyOs/source/kernel/test/test.c"
+},
+{
+  "directory": "/home/kbpoyo/code/cpp/MyOs/build/source/kernel",
   "command": "/usr/bin/gcc  -I/home/kbpoyo/code/cpp/MyOs/source -I/home/kbpoyo/code/cpp/MyOs/source/kernel/include -g -c -O0 -m32 -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -g -o CMakeFiles/kernel.dir/tools/assert.c.o -c /home/kbpoyo/code/cpp/MyOs/source/kernel/tools/assert.c",
   "file": "/home/kbpoyo/code/cpp/MyOs/source/kernel/tools/assert.c"
 },
@@ -58,6 +68,11 @@
   "directory": "/home/kbpoyo/code/cpp/MyOs/build/source/kernel",
   "command": "/usr/bin/gcc  -I/home/kbpoyo/code/cpp/MyOs/source -I/home/kbpoyo/code/cpp/MyOs/source/kernel/include -g -c -O0 -m32 -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -g -o CMakeFiles/kernel.dir/tools/klib.c.o -c /home/kbpoyo/code/cpp/MyOs/source/kernel/tools/klib.c",
   "file": "/home/kbpoyo/code/cpp/MyOs/source/kernel/tools/klib.c"
+},
+{
+  "directory": "/home/kbpoyo/code/cpp/MyOs/build/source/kernel",
+  "command": "/usr/bin/gcc  -I/home/kbpoyo/code/cpp/MyOs/source -I/home/kbpoyo/code/cpp/MyOs/source/kernel/include -g -c -O0 -m32 -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -g -o CMakeFiles/kernel.dir/tools/list.c.o -c /home/kbpoyo/code/cpp/MyOs/source/kernel/tools/list.c",
+  "file": "/home/kbpoyo/code/cpp/MyOs/source/kernel/tools/list.c"
 },
 {
   "directory": "/home/kbpoyo/code/cpp/MyOs/build/source/kernel",
