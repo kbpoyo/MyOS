@@ -57,13 +57,13 @@ void test_task(void) {
 
     for (;;) {
         log_printf("task_1: %d", count++);
-        sys_yield();
      }
 }
 
 
 
 void init_main(void) {
+
 
     list_test();
 
@@ -74,7 +74,11 @@ void init_main(void) {
     task_first_init();
     task_init(&task_test_task, "test_task", (uint32_t)test_task, (uint32_t)&test_task_stack[1024]);
 
+
+    sti();
+
+    int count = 0;
     for (;;) {
-        sys_yield();
+        log_printf("task_2: %d", count++);
     }
 }

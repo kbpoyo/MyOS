@@ -246,7 +246,7 @@ int sys_yield(void) {
  *         减少当前任务的时间片数，并判断是否还有剩余时间片，若没有就进行任务切换
  * 
  */
-void task_time_tick(void) {
+void task_slice_end(void) {
     //1.获取当前任务
     task_t *curr_task = task_current();
 

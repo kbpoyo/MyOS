@@ -62,5 +62,5 @@ void task_first_init(void);
 task_t *task_first_task(void);
 void task_set_ready(task_t *task);
 int sys_yield(void);
-void task_time_tick(void);
+void task_slice_end(void);
 #endif

@@ -14,6 +14,7 @@
 #include "common/exc_frame.h"
 #include "os_cfg.h"
 #include "cpu/idt.h"
+#include "core/task.h"
 
 static uint32_t sys_tick = 0;
 
@@ -28,8 +29,9 @@ void do_handler_time(const exception_frame_t *frame) {
     //因为ICW4的EOI位为0，所以要手动发送EOI即中断结束信号
     pic_send_eoi(IRQ0_TIMER);
 
-    //TODO:运行完一个时间片，判断是否需要执行任务切换，若需要则执行
-    task_time_tick();
+    //运行完一个时间片，判断是否需要执行任务切换，若需要则执行
+    //必须写在发送eoi之后，防止发生任务切换导致eoi没有发送，从而无法进行下一次中断
+    task_slice_end();   
 }
 
 

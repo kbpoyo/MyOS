@@ -42,7 +42,11 @@ source/kernel/CMakeFiles/kernel.dir/dev/time.c.o: ../source/kernel/dev/time.c \
   ../source/common/types.h \
   ../source/common/exc_frame.h \
   ../source/kernel/include/os_cfg.h \
-  ../source/kernel/include/cpu/idt.h
+  ../source/kernel/include/cpu/idt.h \
+  ../source/kernel/include/core/task.h \
+  ../source/kernel/include/cpu/tss.h \
+  ../source/kernel/include/tools/list.h \
+  ../source/kernel/include/tools/assert.h
 
 source/kernel/CMakeFiles/kernel.dir/init/init.c.o: ../source/kernel/init/init.c \
   /usr/include/stdc-predef.h \

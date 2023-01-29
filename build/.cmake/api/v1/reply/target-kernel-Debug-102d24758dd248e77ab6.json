@@ -46,7 +46,7 @@
 			"compileCommandFragments" : 
 			[
 				{
-					"fragment" : "-m32 -g"
+					"fragment" : "-m32 -g -g"
 				}
 			],
 			"includes" : 
@@ -70,7 +70,7 @@
 			"compileCommandFragments" : 
 			[
 				{
-					"fragment" : "-g -c -O0 -m32 -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables"
+					"fragment" : "-g -c -O0 -m32 -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -g"
 				}
 			],
 			"includes" : 
@@ -106,11 +106,11 @@
 		"commandFragments" : 
 		[
 			{
-				"fragment" : "-g -c -O0 -m32 -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables",
+				"fragment" : "-g -c -O0 -m32 -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -g",
 				"role" : "flags"
 			},
 			{
-				"fragment" : "-m elf_i386 -T /home/kbpoyo/code/cpp/MyOs/source/kernel/kernel.lds  -rdynamic",
+				"fragment" : "-m elf_i386 -T /home/kbpoyo/code/cpp/MyOs/source/kernel/kernel.lds   -rdynamic",
 				"role" : "flags"
 			}
 		],
