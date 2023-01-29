@@ -58,7 +58,7 @@ static void print_exception_fram(const exception_frame_t *frame) {
 static void do_default_handler(const exception_frame_t *frame,
                                const char *message) {
 
-  log_printf("----------------------------------");
+  log_printf("---------------------------------------------------");
   log_printf("IRQ/Exception happend: %s", message);
   print_exception_fram(frame);
                               

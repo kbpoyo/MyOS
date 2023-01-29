@@ -42,36 +42,25 @@ void kernel_init(boot_info_t* boot_info) {
     //5.初始化定时器的中断处理
     time_init();
 
+    //6.初始化任务管理器
+    task_manager_init();
     //初始化完成后将在汇编里重新加载内核代码段与数据段的选择子，并为内核程序分配栈空间
 
 }
 
-//声明两个任务对象
-static task_t task_1;
-static task_t task_2;
-//声明预留一下任务使用的栈空间
-static uint32_t init_stack_1[1024]; 
-static uint32_t init_stack_2[1024]; 
+static task_t task_test_task;
+static uint32_t test_task_stack[1024]; 
 
-void test_task_1(void) {
+void test_task(void) {
 
     int count = 0;
 
     for (;;) {
         log_printf("task_1: %d", count++);
-        task_switch_from_to(&task_1, &task_2);
+        sys_yield();
      }
 }
 
-void test_task_2(void) {
-
-    int count = 0;
-
-    for (;;) {
-        log_printf("task_2: %d", count++);
-        task_switch_from_to(&task_2, &task_1);
-     }
-}
 
 
 void init_main(void) {
@@ -81,10 +70,11 @@ void init_main(void) {
     log_printf("Kernel is running......");
     log_printf("Name: %s, Version: %s", "KbOS", OS_VERSION);
 
-    task_init(&task_1, (uint32_t)test_task_1, (uint32_t)&init_stack_1[1024]);
-    task_init(&task_2, (uint32_t)test_task_2, (uint32_t)&init_stack_2[1024]);
+    //当前任务作为任务管理器启用时的第一个任务
+    task_first_init();
+    task_init(&task_test_task, "test_task", (uint32_t)test_task, (uint32_t)&test_task_stack[1024]);
 
-    task_switch_from_to(0, &task_2);
-
-
+    for (;;) {
+        sys_yield();
+    }
 }

@@ -91,7 +91,7 @@
 				2,
 				3,
 				4,
-				15,
+				16,
 				18,
 				19,
 				20,
@@ -140,7 +140,7 @@
 				2,
 				3,
 				4,
-				15,
+				16,
 				18,
 				19,
 				20,
@@ -162,7 +162,7 @@
 				12,
 				13,
 				14,
-				16,
+				15,
 				17
 			]
 		}
@@ -231,6 +231,11 @@
 		},
 		{
 			"backtrace" : 1,
+			"path" : "source/kernel/include/test/test.h",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 1,
 			"path" : "source/kernel/include/tools/assert.h",
 			"sourceGroupIndex" : 2
 		},
@@ -258,11 +263,6 @@
 		{
 			"backtrace" : 1,
 			"path" : "source/kernel/init/init.h",
-			"sourceGroupIndex" : 2
-		},
-		{
-			"backtrace" : 1,
-			"path" : "source/kernel/test/include/test.h",
 			"sourceGroupIndex" : 2
 		},
 		{

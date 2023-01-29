@@ -17,6 +17,27 @@
 #include "cpu/gdt.h"
 #include "os_cfg.h"
 
+//定义全局唯一的任务管理器对象
+static task_manager_t task_manager;
+
+
+static void switch_to_tss(uint16_t tss_selector) {
+    //进行远跳转，让cpu访问该tss段的描述符，cpu将重启到之前运行该tss对应的任务的状态继续运行该任务
+    far_jump(tss_selector, 0);
+}
+
+/**
+ * @brief  将任务从from切换到to
+ * 
+ * @param from 切换前的任务
+ * @param to 切换后的任务
+ */
+void task_switch_from_to(task_t *from, task_t *to) {
+    //跳转到对应的tss段读取并恢复cpu任务状态
+    switch_to_tss(to->tss_selector);
+}
+
+
 /**
  * @brief  初始化任务的tss段
  * 
@@ -69,25 +90,172 @@ static void tss_init(task_t *task, uint32_t entry, uint32_t esp) {
  * @param esp 任务指行时所用的栈顶指针
  * @return int 
  */
-int task_init(task_t *task, uint32_t entry, uint32_t esp) {
+void task_init(task_t *task, const char* name, uint32_t entry, uint32_t esp) {
     ASSERT(task != (task_t*)0);
+    //1.初始化任务TSS段
     tss_init(task, entry, esp);
-    return 0;    
+
+    //2.初始化任务名称
+    kernel_strncpy(task->name, name, TASK_NAME_SIZE);
+
+    //3.初始化任务队列节点及就绪队列节点
+    list_node_init(&task->ready_node);
+    list_node_init(&task->task_node);
+
+    //4.初始化最大时间片数与当前拥有时间片数
+    task->slice_max = task->slice_curr = TASK_TIME_SLICE_DEFAULT;
+
+    //5.将任务加入任务队列
+    list_insert_last(&task_manager.task_list, &task->task_node);
+
+    //6.将任务设置为就绪态
+    task_set_ready(task);
 }
 
 
-static void switch_to_tss(uint16_t tss_selector) {
-    //进行远跳转，让cpu访问该tss段的描述符，cpu将重启到之前运行该tss对应的任务的状态继续运行该任务
-    far_jump(tss_selector, 0);
+/**
+ * @brief  初始化任务管理器
+ * 
+ */
+void task_manager_init(void) {
+    list_init(&task_manager.ready_list);
+    list_init(&task_manager.task_list);
+
+    task_manager.curr_task = (task_t*)0;
 }
 
 /**
- * @brief  将任务从from切换到to
+ * @brief  初始化第一个任务
  * 
- * @param from 切换前的任务
- * @param to 切换后的任务
  */
-void task_switch_from_to(task_t *from, task_t *to) {
-    switch_to_tss(to->tss_selector);
+void task_first_init(void) {
+      //1.初始化任务，当前任务是在任务管理器启用前就执行的，
+      //拥有自己的栈空间，所以入口地址直接和栈空间都置0即可
+      //这一步只是为当前任务绑定一个TSS段并将其绑定到一个task对象
+      task_init(&task_manager.first_task, "first task", 0, 0);
+      
+      //2.将当前任务的TSS选择子告诉cpu，用来切换任务时保存状态
+      write_tr(task_manager.first_task.tss_selector);
+
+      //3.将当前任务执行第一个任务
+      task_manager.curr_task = &task_manager.first_task;
 }
 
+/**
+ * @brief  获取当前任务管理器的第一个任务
+ * 
+ * @return task_t* 
+ */
+task_t *task_first_task(void) {
+    return &task_manager.first_task;
+}
+
+/**
+ * @brief  将任务task加入就绪队列
+ * 
+ * @param task 需要加入就绪队列的任务
+ */
+void task_set_ready(task_t *task) {
+    //1.将任务插入到就绪队列的尾部
+    list_insert_last(&task_manager.ready_list, &task->ready_node);
+
+    //2.将任务状态设置为就绪态
+    task->state = TASK_READY;
+}
+
+
+/**
+ * @brief  将任务task从就绪队列中取下
+ * 
+ * @param task 
+ */
+void task_set_unready(task_t *task) {
+    list_remove(&task_manager.ready_list, &task->ready_node);
+}
+
+/**
+ * @brief  获取就绪队列中的第一个任务
+ * 
+ */
+task_t* task_ready_first(void) {
+    list_node_t *ready_node = list_get_first(&task_manager.ready_list);
+    return list_node_parent(ready_node, task_t, ready_node);
+}
+
+/**
+ * @brief  获取当前正在运行的任务
+ * 
+ * @return task_t* 
+ */
+static task_t *task_current(void) {
+    return task_manager.curr_task;
+}
+
+
+/**
+ * @brief  任务管理器进行任务切换
+ * 
+ */
+void task_switch(void) {
+    //1.获取就绪队列中的第一个任务
+    task_t *to = task_ready_first();
+
+    //2.若获取到的任务不是当前任务就进行切换
+    if (to != task_manager.curr_task) {
+        //3.获取当前任务
+        task_t *from = task_current();
+
+        //4.切换当前任务, 并将当前任务置为运行态
+        to->state = TASK_RUNNING;
+        task_manager.curr_task = to;
+        
+
+        //4.进行任务切换
+        task_switch_from_to(from, to);
+    } 
+}
+
+
+
+/**
+ * @brief  使当前正在运行的任务主动让出cpu
+ * 
+ * @return int 
+ */
+int sys_yield(void) {
+    //1.判断当前就绪队列中是否有多个任务
+    if (list_get_size(&task_manager.ready_list) > 1) {
+        //2.获取当前任务  
+        task_t *curr_task = task_current();
+        
+        //3.将当前任务从就绪队列中取下
+        task_set_unready(curr_task);
+
+        //4.将当前任务重新加入到就绪队列的队尾
+        task_set_ready(curr_task);
+
+        //5.任务管理器运行下一个任务，从而释放cpu使用权
+        task_switch();
+    }
+
+    return 0;
+}
+
+/**
+ * @brief  提供给时钟中断使用，每中断一次，当前任务的时间片使用完一次
+ *         减少当前任务的时间片数，并判断是否还有剩余时间片，若没有就进行任务切换
+ * 
+ */
+void task_time_tick(void) {
+    //1.获取当前任务
+    task_t *curr_task = task_current();
+
+    //2.减小当前时间片数
+    if (--curr_task->slice_curr == 0) {
+        //3.时间片数用完了，重置时间片并进行任务切换
+        curr_task->slice_curr = curr_task->slice_max;
+        task_set_unready(curr_task);
+        task_set_ready(curr_task);
+        task_switch();
+    }
+}
