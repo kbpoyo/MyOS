@@ -14,7 +14,8 @@ source/kernel/CMakeFiles/kernel.dir/core/task.c.o: ../source/kernel/core/task.c 
   ../source/common/cpu_instr.h \
   ../source/common/types.h \
   ../source/kernel/include/cpu/gdt.h \
-  ../source/kernel/include/os_cfg.h
+  ../source/kernel/include/os_cfg.h \
+  ../source/kernel/include/cpu/idt.h
 
 source/kernel/CMakeFiles/kernel.dir/cpu/gdt.c.o: ../source/kernel/cpu/gdt.c \
   /usr/include/stdc-predef.h \
@@ -98,7 +99,8 @@ source/kernel/CMakeFiles/kernel.dir/tools/log.c.o: ../source/kernel/tools/log.c 
   ../source/common/types.h \
   ../source/common/cpu_instr.h \
   ../source/common/types.h \
-  ../source/kernel/include/tools/klib.h
+  ../source/kernel/include/tools/klib.h \
+  ../source/kernel/include/cpu/idt.h
 
 
 ../source/kernel/tools/list.c:

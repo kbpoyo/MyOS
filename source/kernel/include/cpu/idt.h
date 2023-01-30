@@ -163,4 +163,9 @@ void idt_disable_global(void);
 int idt_install(const int idt_num, const idt_handler_t handler);
 void pic_send_eoi(int irq_num);
 
+typedef uint32_t idt_state_t;
+
+idt_state_t idt_enter_protection(void);
+idt_state_t idt_leave_protection(idt_state_t state);
+
 #endif

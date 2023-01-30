@@ -14,7 +14,7 @@
 #include "common/types.h"
 #include "common/cpu_instr.h"
 #include "tools/klib.h"
-
+#include "cpu/idt.h"
 /**
  * @brief  初始化串行端口寄存器COM1
  * 
@@ -48,6 +48,9 @@ void log_printf(const char *formate, ...) {
 
     const char *p = str_buf;
 
+    //将以下资源放入临界资源包含区，防止在运行时发生进程切换（cpu关中断）
+    idt_state_t state = idt_enter_protection(); //TODO:加锁
+
     //3.将字符串输出到串口
     while (*p != '\0') {
         //4.判断串口是否正在忙碌，是则阻塞等待
@@ -61,4 +64,7 @@ void log_printf(const char *formate, ...) {
     //5.换行
     outb(COM1_PORT, '\r');
     outb(COM1_PORT, '\n');
+
+    //执行完毕，将资源离开临界资源保护区，(cpu开中断)
+    idt_leave_protection(state);    //TODO:解锁
 }

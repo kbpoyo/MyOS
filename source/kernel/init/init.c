@@ -48,15 +48,28 @@ void kernel_init(boot_info_t* boot_info) {
 
 }
 
-static task_t task_test_task;
-static uint32_t test_task_stack[1024]; 
+static task_t task_test_task_1;
+static task_t task_test_task_2;
+static uint32_t test_task_1_stack[1024]; 
+static uint32_t test_task_2_stack[1024]; 
 
-void test_task(void) {
+void test_task_1(void) {
 
     int count = 0;
 
     for (;;) {
         log_printf("task_1: %d", count++);
+        sys_sleep(2000);
+     }
+}
+
+void test_task_2(void) {
+
+    int count = 0;
+
+    for (;;) {
+        log_printf("task_2: %d", count++);
+        sys_sleep(1000);
      }
 }
 
@@ -72,7 +85,8 @@ void init_main(void) {
 
     //当前任务作为任务管理器启用时的第一个任务
     task_first_init();
-    task_init(&task_test_task, "test_task", (uint32_t)test_task, (uint32_t)&test_task_stack[1024]);
+    task_init(&task_test_task_1, "test_task_1", (uint32_t)test_task_1, (uint32_t)&test_task_1_stack[1024]);
+    task_init(&task_test_task_2, "test_task_2", (uint32_t)test_task_2, (uint32_t)&test_task_2_stack[1024]);
 
 
     sti();
@@ -80,5 +94,6 @@ void init_main(void) {
     int count = 0;
     for (;;) {
         log_printf("task_2: %d", count++);
+        sys_sleep(1000);
     }
 }

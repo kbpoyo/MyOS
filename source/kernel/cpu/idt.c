@@ -334,3 +334,25 @@ void pic_send_eoi(int irq_num) {
   }
 
 }
+
+
+/**
+ * @brief  
+ * 
+ */
+idt_state_t idt_enter_protection(void) {
+  idt_state_t state = read_eflags();
+  idt_disable_global();
+  return state;;
+}
+
+/**
+ * @brief  
+ * 
+ * @return idt_state_t 
+ */
+idt_state_t idt_leave_protection(idt_state_t state){
+  write_eflags(state);
+}
+
+

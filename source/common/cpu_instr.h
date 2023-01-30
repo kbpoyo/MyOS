@@ -25,7 +25,8 @@ static inline void cli(void) { __asm__ __volatile__("cli"); }
 static inline void sti(void) { __asm__ __volatile__("sti"); }
 
 /**
- * @brief  暂停cpu的运行
+ * @brief  暂停cpu的运行,ip寄存器指向下一条指令
+ *         此时cpu可以接收中断
  *
  */
 static inline void hlt(void) { __asm__ __volatile__("hlt"); }
@@ -178,5 +179,26 @@ static inline void write_tr(uint16_t tss_selector) {
   __asm__ __volatile__("ltr %[v]" : : [v]"r"(tss_selector));
 }
 
+/**
+ * @brief  读取当前cpu的eflags寄存器
+ * 
+ * @return uint32_t 放回eflags的值
+ */
+static inline uint32_t read_eflags(void) {
+  uint32_t eflags;
+  //pushf 压入eflags的值到栈中
+  __asm__ __volatile__("pushf\n\tpop %%eax":"=a"(eflags));
+  
+  return eflags;
+}
+
+/**
+ * @brief  将状态state写入eflags寄存器
+ * 
+ * @param state 
+ */
+static inline void write_eflags(uint32_t state) {
+  __asm__ __volatile__("push %%eax\n\tpopf"::"a"(state));
+}
 
 #endif

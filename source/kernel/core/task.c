@@ -16,6 +16,7 @@
 #include "common/cpu_instr.h"
 #include "cpu/gdt.h"
 #include "os_cfg.h"
+#include "cpu/idt.h"
 
 //定义全局唯一的任务管理器对象
 static task_manager_t task_manager;
@@ -68,6 +69,9 @@ static void tss_init(task_t *task, uint32_t entry, uint32_t esp) {
     //7.初始化eflags寄存器，使cpu中断保持开启
     task->tss.eflags = EFLAGS_DEFAULT_1 | EFLAGS_IF;
 
+    
+    idt_state_t state = idt_enter_protection();//TODO:加锁
+
     //8.将该TSS段绑定到GDT中的某个段描述符
     uint32_t tss_selector = gdt_alloc_desc();
     if (tss_selector < 0) {
@@ -77,6 +81,9 @@ static void tss_init(task_t *task, uint32_t entry, uint32_t esp) {
 
     segment_desc_set(tss_selector, (uint32_t)&task->tss, sizeof(task->tss), 
                     SEG_ATTR_P | SEG_ATTR_DPL_0 | SEG_ATTR_TYPE_TSS);
+
+
+    idt_leave_protection(state);//TODO:解锁 
 
     //9.记录tss绑定到的描述符的选择子
     task->tss_selector = tss_selector;
@@ -102,14 +109,36 @@ void task_init(task_t *task, const char* name, uint32_t entry, uint32_t esp) {
     list_node_init(&task->ready_node);
     list_node_init(&task->task_node);
 
-    //4.初始化最大时间片数与当前拥有时间片数
+    //4.初始化最大时间片数与当前拥有时间片数,以及延时时间片数
     task->slice_max = task->slice_curr = TASK_TIME_SLICE_DEFAULT;
+    task->sleep = 0;
 
+    
+    idt_state_t state = idt_enter_protection();//TODO:加锁
+   
     //5.将任务加入任务队列
     list_insert_last(&task_manager.task_list, &task->task_node);
 
     //6.将任务设置为就绪态
     task_set_ready(task);
+
+    
+    idt_leave_protection(state);//TODO:解锁
+}
+
+
+//空闲进程的栈空间
+static uint32_t empty_task_stack[EMPTY_TASK_STACK_SIZE];
+/**
+ * @brief  空闲进程，当所有进程都延时运行时，让cpu运行空闲进程
+ * 
+ */
+static void empty_task(void) {
+    while(1) {
+        //停止cpu运行，让cpu等待时间中断
+        hlt();
+    };
+
 }
 
 
@@ -118,10 +147,20 @@ void task_init(task_t *task, const char* name, uint32_t entry, uint32_t esp) {
  * 
  */
 void task_manager_init(void) {
+    //1.初始化所有任务队列
     list_init(&task_manager.ready_list);
     list_init(&task_manager.task_list);
+    list_init(&task_manager.sleep_list);
 
+    //2.将当前任务置零
     task_manager.curr_task = (task_t*)0;
+
+    //3.初始化空闲进程
+    //TODO:有问题，进程切换混乱
+    task_init(  &task_manager.empty_task,
+                 "empty_task", 
+                 (uint32_t)empty_task,
+                 empty_task_stack[EMPTY_TASK_STACK_SIZE]);
 }
 
 /**
@@ -139,6 +178,9 @@ void task_first_init(void) {
 
       //3.将当前任务执行第一个任务
       task_manager.curr_task = &task_manager.first_task;
+
+      //4.将当前任务状态设置为运行态
+      task_manager.curr_task->state = TASK_RUNNING;
 }
 
 /**
@@ -171,6 +213,7 @@ void task_set_ready(task_t *task) {
  */
 void task_set_unready(task_t *task) {
     list_remove(&task_manager.ready_list, &task->ready_node);
+    task->state = TASK_CREATED;
 }
 
 /**
@@ -192,27 +235,33 @@ static task_t *task_current(void) {
 }
 
 
+
 /**
  * @brief  任务管理器进行任务切换
  * 
  */
 void task_switch(void) {
+
+    idt_state_t state = idt_enter_protection();//TODO:加锁
+
     //1.获取就绪队列中的第一个任务
     task_t *to = task_ready_first();
 
     //2.若获取到的任务不是当前任务就进行切换
     if (to != task_manager.curr_task) {
         //3.获取当前任务
-        task_t *from = task_current();
+        task_t *from = task_manager.curr_task;
 
         //4.切换当前任务, 并将当前任务置为运行态
         to->state = TASK_RUNNING;
         task_manager.curr_task = to;
         
 
-        //4.进行任务切换
+        //5.进行任务切换
         task_switch_from_to(from, to);
     } 
+
+    idt_leave_protection(state);//TODO:解锁
 }
 
 
@@ -223,6 +272,8 @@ void task_switch(void) {
  * @return int 
  */
 int sys_yield(void) {
+    idt_state_t state = idt_enter_protection();//TODO:加锁
+    
     //1.判断当前就绪队列中是否有多个任务
     if (list_get_size(&task_manager.ready_list) > 1) {
         //2.获取当前任务  
@@ -237,7 +288,8 @@ int sys_yield(void) {
         //5.任务管理器运行下一个任务，从而释放cpu使用权
         task_switch();
     }
-
+    
+    idt_leave_protection(state);//TODO:解锁
     return 0;
 }
 
@@ -247,6 +299,25 @@ int sys_yield(void) {
  * 
  */
 void task_slice_end(void) {
+
+    //1.遍历当前延时队列，判断是否有可唤醒的任务
+    list_node_t *curr_sleep_node = list_get_first(&task_manager.sleep_list);
+
+    //2.遍历并判断每一个任务执行完当前时间片是否可被唤醒，若可以则唤醒
+    while (curr_sleep_node) {
+        
+        list_node_t *next_sleep_node = list_node_next(curr_sleep_node);
+        
+        task_t *curr_sleep_task = list_node_parent(curr_sleep_node, task_t, ready_node);
+        if (--curr_sleep_task->sleep == 0) {
+            task_set_wakeup(curr_sleep_task);   //从延时队列中取下
+            task_set_ready(curr_sleep_task);    //加入就绪队列
+        }
+
+        curr_sleep_node = next_sleep_node;
+    }
+
+    // task_switch(); 没有必要立马进行任务切换，当前任务时间片用完后会自动切换
     //1.获取当前任务
     task_t *curr_task = task_current();
 
@@ -258,4 +329,54 @@ void task_slice_end(void) {
         task_set_ready(curr_task);
         task_switch();
     }
+}
+
+/**
+ * @brief  设置进程延时的时间片数
+ * 
+ * @param task 需要延时的进程
+ * @param slice 延时的时间片数
+ */
+void task_set_sleep(task_t *task, uint32_t slice) {
+    if (slice == 0) return;
+
+    task->sleep = slice;
+    task->state = TASK_SLEEP;
+    list_insert_last(&task_manager.sleep_list, &task->ready_node);
+}
+
+/**
+ * @brief  唤醒正在延时的进程
+ * 
+ * @param task 
+ */
+void task_set_wakeup(task_t *task) {
+    list_remove(&task_manager.sleep_list, &task->ready_node);
+    task->state = TASK_CREATED;
+}
+
+/**
+ * @brief  使进程进入延时状态
+ * 
+ * @param ms 延时的时间，以ms为单位
+ */
+void sys_sleep(uint32_t ms) {
+    idt_state_t state = idt_enter_protection(); //TODO:加锁
+
+    //1.获取当前任务  
+    task_t *curr_task = task_current();
+    
+    //2.将当前任务离开就绪队列
+    task_set_unready(curr_task);
+
+    //3.计算出需要延时的时间片数，对时间片数向上取整，保证进程至少能延时指定时间
+    uint32_t slice = (ms + (OS_TICKS_MS - 1)) / OS_TICKS_MS;
+
+    //4.将当前任务放入延时队列，并设置延时时间片数
+    task_set_sleep(curr_task, slice);
+
+    //5.切换任务
+    task_switch();
+
+    idt_leave_protection(state); //TODO:解锁
 }
