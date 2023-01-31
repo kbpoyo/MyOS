@@ -65,7 +65,9 @@ source/kernel/CMakeFiles/kernel.dir/init/init.c.o: ../source/kernel/init/init.c 
   ../source/kernel/include/cpu/tss.h \
   ../source/kernel/include/tools/list.h \
   ../source/kernel/include/os_cfg.h \
-  ../source/kernel/include/test/test.h
+  ../source/kernel/include/test/test.h \
+  ../source/kernel/include/tools/klib.h \
+  /usr/lib/gcc/x86_64-linux-gnu/11/include/stdarg.h
 
 source/kernel/CMakeFiles/kernel.dir/test/test.c.o: ../source/kernel/test/test.c \
   /usr/include/stdc-predef.h \

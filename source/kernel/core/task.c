@@ -160,7 +160,12 @@ void task_manager_init(void) {
     task_init(  &task_manager.empty_task,
                  "empty_task", 
                  (uint32_t)empty_task,
-                 empty_task_stack[EMPTY_TASK_STACK_SIZE]);
+                 (uint32_t)&empty_task_stack[EMPTY_TASK_STACK_SIZE]);
+                 
+
+    //4.将空闲进程从就绪队列中取出
+    task_set_unready(&task_manager.empty_task);
+    task_manager.empty_task.state = TASK_CREATED;
 }
 
 /**
@@ -252,12 +257,16 @@ void task_switch(void) {
         //3.获取当前任务
         task_t *from = task_manager.curr_task;
 
-        //4.切换当前任务, 并将当前任务置为运行态
+        //4.目标任务若为空，则所有任务都在延时，让cpu运行空闲任务
+        if (to == (task_t*)0) { 
+            to = &task_manager.empty_task;
+        }
+        //5.切换当前任务, 并将当前任务置为运行态
         to->state = TASK_RUNNING;
         task_manager.curr_task = to;
         
 
-        //5.进行任务切换
+        //6.进行任务切换
         task_switch_from_to(from, to);
     } 
 
@@ -318,12 +327,22 @@ void task_slice_end(void) {
     }
 
     // task_switch(); 没有必要立马进行任务切换，当前任务时间片用完后会自动切换
-    //1.获取当前任务
+    //3.获取当前任务
     task_t *curr_task = task_current();
 
-    //2.减小当前时间片数
-    if (--curr_task->slice_curr == 0) {
-        //3.时间片数用完了，重置时间片并进行任务切换
+    //4.若当前任务为空闲任务，则判断就绪队列是否为空
+    if (curr_task == &task_manager.empty_task) {
+        
+        if (list_is_empty(&task_manager.ready_list)) return;
+        
+        task_manager.empty_task.state = TASK_CREATED;
+        
+        task_switch();//就绪队列有任务，则直接切换任务
+    }
+
+    //5.若当前任务为普通任务则，减小当前时间片数
+    if (curr_task != &task_manager.empty_task && --curr_task->slice_curr == 0) {
+        //6.时间片数用完了，重置时间片并进行任务切换
         curr_task->slice_curr = curr_task->slice_max;
         task_set_unready(curr_task);
         task_set_ready(curr_task);

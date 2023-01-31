@@ -46,7 +46,7 @@
 			"compileCommandFragments" : 
 			[
 				{
-					"fragment" : "-m32 -g -g"
+					"fragment" : "-m32 -g"
 				}
 			],
 			"includes" : 
@@ -70,7 +70,7 @@
 			"compileCommandFragments" : 
 			[
 				{
-					"fragment" : "-g -c -O0 -m32 -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -g"
+					"fragment" : "-g -c -O0 -m32 -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables"
 				}
 			],
 			"includes" : 
@@ -97,11 +97,11 @@
 		"commandFragments" : 
 		[
 			{
-				"fragment" : "-g -c -O0 -m32 -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -g",
+				"fragment" : "-g -c -O0 -m32 -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables",
 				"role" : "flags"
 			},
 			{
-				"fragment" : "-m elf_i386 -Ttext=0x7c00 --section-start=boot_end=0x7dfe   -rdynamic",
+				"fragment" : "-m elf_i386 -Ttext=0x7c00 --section-start=boot_end=0x7dfe  -rdynamic",
 				"role" : "flags"
 			}
 		],

@@ -15,4 +15,6 @@ source/kernel/CMakeFiles/kernel.dir/init/init.c.o: \
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/cpu/tss.h \
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/tools/list.h \
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/os_cfg.h \
- /home/kbpoyo/code/cpp/MyOs/source/kernel/include/test/test.h
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/include/test/test.h \
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/include/tools/klib.h \
+ /usr/lib/gcc/x86_64-linux-gnu/11/include/stdarg.h
