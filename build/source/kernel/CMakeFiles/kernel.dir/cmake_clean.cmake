@@ -10,6 +10,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/kernel.dir/init/init.c.o"
   "CMakeFiles/kernel.dir/init/init.c.o.d"
   "CMakeFiles/kernel.dir/init/start.S.o"
+  "CMakeFiles/kernel.dir/ipc/mutex.c.o"
+  "CMakeFiles/kernel.dir/ipc/mutex.c.o.d"
   "CMakeFiles/kernel.dir/ipc/sem.c.o"
   "CMakeFiles/kernel.dir/ipc/sem.c.o.d"
   "CMakeFiles/kernel.dir/test/test.c.o"

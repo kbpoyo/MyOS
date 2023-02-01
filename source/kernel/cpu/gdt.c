@@ -10,11 +10,15 @@
 
 #include "cpu/gdt.h"
 #include "common/cpu_instr.h"
+#include "ipc/mutex.h"
 #include "os_cfg.h"
 
 //定义全局描述符GDT
 static segment_desc_t gdt_table[GDT_TABLE_SIZE];
-
+//定义全局描述符表标记数组
+static int is_alloc[GDT_TABLE_SIZE];
+//定义互斥锁，保护gdt_table的分配
+static mutex_t mutex;
 
 /**
  * @brief  添加段描述到GDT中
@@ -62,21 +66,29 @@ void gdt_init(void) {
     //TODO:暂时将所有段都初始化为0
     for (int i = 0; i < GDT_TABLE_SIZE; ++i) {
         segment_desc_set(i << 3, 0, 0, 0);
+        //初始化段描述符标记数组
+        is_alloc[i] == 0;
     }
 
     //使用平坦模型，即段基址为0, 段界限直接用最大值，界限粒度为4kb，即段大小为4GB
-    //1.设置内核的数据段
+    //1.设置内核的数据段,并将其标记
     segment_desc_set(KERNEL_SELECTOR_DS, 0, 0xffffffff,
                     SEG_ATTR_P | SEG_ATTR_DPL_0 | SEG_ATTR_S_NORMAL | 
                     SEG_ATTR_TYPE_DATA | SEG_ATTR_TYPE_RW | SEG_ATTR_D_OR_B);
 
-    //2.设置内核的代码段
+    is_alloc[KERNEL_SELECTOR_DS >> 3] = 1;
+
+    //2.设置内核的代码段，并将其标记
     segment_desc_set(KERNEL_SELECTOR_CS, 0, 0xffffffff,
                     SEG_ATTR_P | SEG_ATTR_DPL_0 | SEG_ATTR_S_NORMAL |
                     SEG_ATTR_TYPE_CODE | SEG_ATTR_TYPE_RW | SEG_ATTR_D_OR_B);
 
+    is_alloc[KERNEL_SELECTOR_CS >> 3] = 1;
     //3.加载新的GDT表
     lgdt((uint32_t)gdt_table, sizeof(gdt_table));
+
+    //4.初始化互斥锁
+    mutex_init(&mutex);
 }
 
 
@@ -86,13 +98,19 @@ void gdt_init(void) {
  * @return int 返回的找到的描述符的选择子
  */
 int gdt_alloc_desc() {
+
+    mutex_lock(&mutex);//TODO:加锁
+
     for (int i = 1; i < GDT_TABLE_SIZE; ++i) {
-        segment_desc_t *desc = gdt_table + i;
-        if (desc->limit15_0 == 0) {
-            return i << 3;
+        if (is_alloc[i] == 0)  {
+            is_alloc[i] = 1;
+
+            mutex_unlock(&mutex);//TODO:解锁
+            return (i << 3);
         }
     }
 
+    mutex_unlock(&mutex);//TODO:解锁
     return -1;
 }
 

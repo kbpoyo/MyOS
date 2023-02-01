@@ -64,7 +64,7 @@ void test_task_1(void) {
         // sem_wait(&sem);
         log_printf("task_1: %d", count++);
         // sem_notify(&sem);
-        sys_sleep(1000);
+        // sys_sleep(1000);
      }
 }
 
@@ -75,7 +75,7 @@ void test_task_2(void) {
         // sem_wait(&sem);
         log_printf("task_2: %d", count++);
         // sem_notify(&sem);
-        sys_sleep(1000);
+        // sys_sleep(1000);
      }
 }
 
@@ -94,13 +94,13 @@ void init_main(void) {
     task_init(&task_test_task_2, "test_task_2", (uint32_t)test_task_2, (uint32_t)&test_task_2_stack[1024]);
 
 
-    sem_init(&sem, 0);
+    // sem_init(&sem, 0);
     sti();
 
     int count = 0;
     for (;;) {
         log_printf("first: %d", count++);
         // sem_notify(&sem);
-        sys_sleep(1000);
+        // sys_sleep(1000);
     }
 }

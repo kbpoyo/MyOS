@@ -69,9 +69,6 @@ static void tss_init(task_t *task, uint32_t entry, uint32_t esp) {
     //7.初始化eflags寄存器，使cpu中断保持开启
     task->tss.eflags = EFLAGS_DEFAULT_1 | EFLAGS_IF;
 
-    
-    idt_state_t state = idt_enter_protection();//TODO:加锁
-
     //8.将该TSS段绑定到GDT中的某个段描述符
     uint32_t tss_selector = gdt_alloc_desc();
     if (tss_selector < 0) {
@@ -82,8 +79,6 @@ static void tss_init(task_t *task, uint32_t entry, uint32_t esp) {
     segment_desc_set(tss_selector, (uint32_t)&task->tss, sizeof(task->tss), 
                     SEG_ATTR_P | SEG_ATTR_DPL_0 | SEG_ATTR_TYPE_TSS);
 
-
-    idt_leave_protection(state);//TODO:解锁 
 
     //9.记录tss绑定到的描述符的选择子
     task->tss_selector = tss_selector;
@@ -157,7 +152,6 @@ void task_manager_init(void) {
     task_manager.curr_task = (task_t*)0;
 
     //3.初始化空闲进程
-    //TODO:有问题，进程切换混乱
     task_init(  &task_manager.empty_task,
                  "empty_task", 
                  (uint32_t)empty_task,
@@ -230,6 +224,7 @@ void task_set_unready(task_t *task) {
  */
 task_t* task_ready_first(void) {
     list_node_t *ready_node = list_get_first(&task_manager.ready_list);
+    
     return list_node_parent(ready_node, task_t, ready_node);
 }
 

@@ -15,6 +15,11 @@
 #include "common/cpu_instr.h"
 #include "tools/klib.h"
 #include "cpu/idt.h"
+#include "ipc/mutex.h"
+
+//定义互斥锁保护输出资源，确保输出为原子操作
+static mutex_t mutex;
+
 /**
  * @brief  初始化串行端口寄存器COM1
  * 
@@ -27,6 +32,9 @@ void log_init(void) {
     outb(COM1_PORT + 3, 0x03);
     outb(COM1_PORT + 2, 0xc7);
     outb(COM1_PORT + 4, 0x0f);
+
+    //初始化互斥锁
+    mutex_init(&mutex);
 }
 
 /**
@@ -49,7 +57,7 @@ void log_printf(const char *formate, ...) {
     const char *p = str_buf;
 
     //将以下资源放入临界资源包含区，防止在运行时发生进程切换（cpu关中断）
-    idt_state_t state = idt_enter_protection(); //TODO:加锁
+    mutex_lock(&mutex); //TODO:加锁
 
     //3.将字符串输出到串口
     while (*p != '\0') {
@@ -66,5 +74,5 @@ void log_printf(const char *formate, ...) {
     outb(COM1_PORT, '\n');
 
     //执行完毕，将资源离开临界资源保护区，(cpu开中断)
-    idt_leave_protection(state);    //TODO:解锁
+    mutex_unlock(&mutex); //TODO:解锁
 }
