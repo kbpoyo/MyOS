@@ -108,6 +108,7 @@ void task_init(task_t *task, const char* name, uint32_t entry, uint32_t esp) {
     //3.初始化任务队列节点及就绪队列节点
     list_node_init(&task->ready_node);
     list_node_init(&task->task_node);
+    list_node_init(&task->wait_node);
 
     //4.初始化最大时间片数与当前拥有时间片数,以及延时时间片数
     task->slice_max = task->slice_curr = TASK_TIME_SLICE_DEFAULT;
@@ -203,6 +204,7 @@ task_t *task_first_task(void) {
  * @param task 需要加入就绪队列的任务
  */
 void task_set_ready(task_t *task) {
+    ASSERT(task != (task_t*)0);
     //1.将任务插入到就绪队列的尾部
     list_insert_last(&task_manager.ready_list, &task->ready_node);
 
@@ -217,6 +219,7 @@ void task_set_ready(task_t *task) {
  * @param task 
  */
 void task_set_unready(task_t *task) {
+    ASSERT(task != (task_t*)0);
     list_remove(&task_manager.ready_list, &task->ready_node);
     task->state = TASK_CREATED;
 }
@@ -235,7 +238,7 @@ task_t* task_ready_first(void) {
  * 
  * @return task_t* 
  */
-static task_t *task_current(void) {
+task_t *task_current(void) {
     return task_manager.curr_task;
 }
 
@@ -357,6 +360,7 @@ void task_slice_end(void) {
  * @param slice 延时的时间片数
  */
 void task_set_sleep(task_t *task, uint32_t slice) {
+    ASSERT(task != (task_t*)0);
     if (slice == 0) return;
 
     task->sleep = slice;
@@ -370,6 +374,7 @@ void task_set_sleep(task_t *task, uint32_t slice) {
  * @param task 
  */
 void task_set_wakeup(task_t *task) {
+    ASSERT(task != (task_t*)0);
     list_remove(&task_manager.sleep_list, &task->ready_node);
     task->state = TASK_CREATED;
 }

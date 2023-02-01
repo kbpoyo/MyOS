@@ -258,6 +258,30 @@ init/start.S.o:
 	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/init/start.S.o
 .PHONY : init/start.S.o
 
+ipc/sem.o: ipc/sem.c.o
+.PHONY : ipc/sem.o
+
+# target to build an object file
+ipc/sem.c.o:
+	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/ipc/sem.c.o
+.PHONY : ipc/sem.c.o
+
+ipc/sem.i: ipc/sem.c.i
+.PHONY : ipc/sem.i
+
+# target to preprocess a source file
+ipc/sem.c.i:
+	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/ipc/sem.c.i
+.PHONY : ipc/sem.c.i
+
+ipc/sem.s: ipc/sem.c.s
+.PHONY : ipc/sem.s
+
+# target to generate assembly for a file
+ipc/sem.c.s:
+	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/ipc/sem.c.s
+.PHONY : ipc/sem.c.s
+
 test/test.o: test/test.c.o
 .PHONY : test/test.o
 
@@ -403,6 +427,9 @@ help:
 	@echo "... init/init.i"
 	@echo "... init/init.s"
 	@echo "... init/start.o"
+	@echo "... ipc/sem.o"
+	@echo "... ipc/sem.i"
+	@echo "... ipc/sem.s"
 	@echo "... test/test.o"
 	@echo "... test/test.i"
 	@echo "... test/test.s"

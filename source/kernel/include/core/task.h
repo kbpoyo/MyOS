@@ -41,8 +41,9 @@ typedef struct _task_t {
   int slice_curr;           //任务当前的所拥有的时间分片数
   int sleep;                //当前任务延时的时间片数
   char name[TASK_NAME_SIZE];//任务名称
-  list_node_t ready_node;   // 用于插入任务队列的节点，标记task在就绪队列中的位置
+  list_node_t ready_node;   // 用于插入就绪队列的节点，标记task在就绪队列中的位置
   list_node_t task_node;    // 用于插入任务队列的节点，标记task在任务队列中的位置
+  list_node_t wait_node;   //用于插入信号量对象的等待队列的节点，标记task正在等待信号量
   tss_t tss;                // 任务对应的TSS描述符
   uint32_t tss_selector;    // 任务对应的TSS选择子
 } task_t;
@@ -73,6 +74,8 @@ void task_set_unready(task_t *task);
 void task_set_sleep(task_t *task, uint32_t slice);
 void task_set_wakeup(task_t *task);
 void task_slice_end(void);
+void task_switch(void);
+task_t* task_current(void);
 
 void sys_sleep(uint32_t ms);
 int sys_yield(void);

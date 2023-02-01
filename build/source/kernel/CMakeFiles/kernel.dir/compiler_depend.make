@@ -67,7 +67,18 @@ source/kernel/CMakeFiles/kernel.dir/init/init.c.o: ../source/kernel/init/init.c 
   ../source/kernel/include/os_cfg.h \
   ../source/kernel/include/test/test.h \
   ../source/kernel/include/tools/klib.h \
-  /usr/lib/gcc/x86_64-linux-gnu/11/include/stdarg.h
+  /usr/lib/gcc/x86_64-linux-gnu/11/include/stdarg.h \
+  ../source/kernel/include/ipc/sem.h
+
+source/kernel/CMakeFiles/kernel.dir/ipc/sem.c.o: ../source/kernel/ipc/sem.c \
+  /usr/include/stdc-predef.h \
+  ../source/kernel/include/ipc/sem.h \
+  ../source/kernel/include/tools/list.h \
+  ../source/kernel/include/tools/assert.h \
+  ../source/kernel/include/core/task.h \
+  ../source/common/types.h \
+  ../source/kernel/include/cpu/tss.h \
+  ../source/kernel/include/cpu/idt.h
 
 source/kernel/CMakeFiles/kernel.dir/test/test.c.o: ../source/kernel/test/test.c \
   /usr/include/stdc-predef.h \
@@ -105,58 +116,62 @@ source/kernel/CMakeFiles/kernel.dir/tools/log.c.o: ../source/kernel/tools/log.c 
   ../source/kernel/include/cpu/idt.h
 
 
-../source/kernel/tools/list.c:
-
-../source/kernel/tools/assert.c:
-
-../source/common/boot_info.h:
-
-../source/kernel/init/init.h:
-
-../source/kernel/init/init.c:
-
-../source/kernel/include/dev/time.h:
-
-../source/kernel/dev/time.c:
-
-../source/common/exc_frame.h:
-
-../source/kernel/include/cpu/idt.h:
-
 ../source/kernel/tools/log.c:
-
-../source/kernel/test/test.c:
-
-../source/kernel/cpu/idt.c:
-
-../source/kernel/core/task.c:
-
-/usr/include/stdc-predef.h:
-
-../source/kernel/include/core/task.h:
-
-../source/kernel/include/tools/list.h:
-
-../source/kernel/include/tools/log.h:
-
-../source/kernel/include/test/test.h:
-
-../source/kernel/include/tools/assert.h:
-
-../source/kernel/include/cpu/tss.h:
-
-../source/kernel/cpu/gdt.c:
-
-../source/common/types.h:
-
-../source/kernel/include/tools/klib.h:
-
-../source/kernel/include/os_cfg.h:
-
-../source/kernel/tools/klib.c:
-
-../source/common/cpu_instr.h:
 
 /usr/lib/gcc/x86_64-linux-gnu/11/include/stdarg.h:
 
+../source/kernel/include/os_cfg.h:
+
+../source/kernel/ipc/sem.c:
+
+../source/kernel/include/tools/klib.h:
+
+../source/kernel/include/cpu/tss.h:
+
 ../source/kernel/include/cpu/gdt.h:
+
+../source/common/cpu_instr.h:
+
+../source/common/types.h:
+
+../source/kernel/include/tools/assert.h:
+
+../source/kernel/include/test/test.h:
+
+../source/kernel/cpu/gdt.c:
+
+../source/kernel/include/ipc/sem.h:
+
+../source/kernel/include/core/task.h:
+
+/usr/include/stdc-predef.h:
+
+../source/kernel/cpu/idt.c:
+
+../source/kernel/test/test.c:
+
+../source/kernel/include/cpu/idt.h:
+
+../source/common/exc_frame.h:
+
+../source/kernel/include/tools/list.h:
+
+../source/kernel/dev/time.c:
+
+../source/kernel/tools/klib.c:
+
+../source/kernel/include/dev/time.h:
+
+../source/kernel/core/task.c:
+
+../source/kernel/init/init.c:
+
+../source/kernel/init/init.h:
+
+../source/common/boot_info.h:
+
+../source/kernel/tools/assert.c:
+
+../source/kernel/include/tools/log.h:
+
+../source/kernel/tools/list.c:

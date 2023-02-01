@@ -22,6 +22,7 @@
 #include "tools/list.h"
 #include "test/test.h"
 #include "tools/klib.h"
+#include  "ipc/sem.h"
 
 /**
  * @brief  对内核进行初始化操作
@@ -53,25 +54,28 @@ static task_t task_test_task_1;
 static task_t task_test_task_2;
 static uint32_t test_task_1_stack[1024]; 
 static uint32_t test_task_2_stack[1024]; 
+static sem_t sem;
 
-char str[10] = {"wwwwwwww"};
 
 void test_task_1(void) {
 
+    int count = 0;
     for (;;) {
-        kernel_strcpy(str, "hhhhhhhhh");
-        log_printf("task_1: %s", str);
-        // sys_sleep(100);
+        // sem_wait(&sem);
+        log_printf("task_1: %d", count++);
+        // sem_notify(&sem);
+        sys_sleep(1000);
      }
 }
 
 void test_task_2(void) {
 
-
+    int count = 0;
     for (;;) {
-        kernel_strcpy(str, "aaaaaaaaa");
-        log_printf("task_2: %s", str);
-        // sys_sleep(100);
+        // sem_wait(&sem);
+        log_printf("task_2: %d", count++);
+        // sem_notify(&sem);
+        sys_sleep(1000);
      }
 }
 
@@ -80,8 +84,7 @@ void test_task_2(void) {
 void init_main(void) {
 
 
-    list_test();
-
+    
     log_printf("Kernel is running......");
     log_printf("Name: %s, Version: %s", "KbOS", OS_VERSION);
 
@@ -91,11 +94,13 @@ void init_main(void) {
     task_init(&task_test_task_2, "test_task_2", (uint32_t)test_task_2, (uint32_t)&test_task_2_stack[1024]);
 
 
+    sem_init(&sem, 0);
     sti();
 
+    int count = 0;
     for (;;) {
-        
-        // log_printf("first: %s", str);
-        // sys_sleep(100);
+        log_printf("first: %d", count++);
+        // sem_notify(&sem);
+        sys_sleep(1000);
     }
 }
