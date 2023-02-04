@@ -29,6 +29,7 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/home/kbpoyo/code/cpp/MyOs/source/kernel/ipc/sem.c" "source/kernel/CMakeFiles/kernel.dir/ipc/sem.c.o" "gcc" "source/kernel/CMakeFiles/kernel.dir/ipc/sem.c.o.d"
   "/home/kbpoyo/code/cpp/MyOs/source/kernel/test/test.c" "source/kernel/CMakeFiles/kernel.dir/test/test.c.o" "gcc" "source/kernel/CMakeFiles/kernel.dir/test/test.c.o.d"
   "/home/kbpoyo/code/cpp/MyOs/source/kernel/tools/assert.c" "source/kernel/CMakeFiles/kernel.dir/tools/assert.c.o" "gcc" "source/kernel/CMakeFiles/kernel.dir/tools/assert.c.o.d"
+  "/home/kbpoyo/code/cpp/MyOs/source/kernel/tools/bitmap.c" "source/kernel/CMakeFiles/kernel.dir/tools/bitmap.c.o" "gcc" "source/kernel/CMakeFiles/kernel.dir/tools/bitmap.c.o.d"
   "/home/kbpoyo/code/cpp/MyOs/source/kernel/tools/klib.c" "source/kernel/CMakeFiles/kernel.dir/tools/klib.c.o" "gcc" "source/kernel/CMakeFiles/kernel.dir/tools/klib.c.o.d"
   "/home/kbpoyo/code/cpp/MyOs/source/kernel/tools/list.c" "source/kernel/CMakeFiles/kernel.dir/tools/list.c.o" "gcc" "source/kernel/CMakeFiles/kernel.dir/tools/list.c.o.d"
   "/home/kbpoyo/code/cpp/MyOs/source/kernel/tools/log.c" "source/kernel/CMakeFiles/kernel.dir/tools/log.c.o" "gcc" "source/kernel/CMakeFiles/kernel.dir/tools/log.c.o.d"

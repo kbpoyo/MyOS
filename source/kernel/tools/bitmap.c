@@ -57,7 +57,7 @@ int bitmap_get_bit(bitmap_t *bitmap, int index) {
     ASSERT(bitmap != (bitmap_t*)0);
     ASSERT(index >= 0);
 
-    return (bitmap->bits[index / 8] & (1 << (index % 8)))
+    return (bitmap->bits[index / 8] & (1 << (index % 8)));
 }
 
 /**

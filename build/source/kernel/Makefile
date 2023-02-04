@@ -354,6 +354,30 @@ tools/assert.c.s:
 	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/tools/assert.c.s
 .PHONY : tools/assert.c.s
 
+tools/bitmap.o: tools/bitmap.c.o
+.PHONY : tools/bitmap.o
+
+# target to build an object file
+tools/bitmap.c.o:
+	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/tools/bitmap.c.o
+.PHONY : tools/bitmap.c.o
+
+tools/bitmap.i: tools/bitmap.c.i
+.PHONY : tools/bitmap.i
+
+# target to preprocess a source file
+tools/bitmap.c.i:
+	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/tools/bitmap.c.i
+.PHONY : tools/bitmap.c.i
+
+tools/bitmap.s: tools/bitmap.c.s
+.PHONY : tools/bitmap.s
+
+# target to generate assembly for a file
+tools/bitmap.c.s:
+	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/tools/bitmap.c.s
+.PHONY : tools/bitmap.c.s
+
 tools/klib.o: tools/klib.c.o
 .PHONY : tools/klib.o
 
@@ -463,6 +487,9 @@ help:
 	@echo "... tools/assert.o"
 	@echo "... tools/assert.i"
 	@echo "... tools/assert.s"
+	@echo "... tools/bitmap.o"
+	@echo "... tools/bitmap.i"
+	@echo "... tools/bitmap.s"
 	@echo "... tools/klib.o"
 	@echo "... tools/klib.i"
 	@echo "... tools/klib.s"
