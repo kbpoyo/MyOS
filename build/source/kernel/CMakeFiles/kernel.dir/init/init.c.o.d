@@ -18,4 +18,7 @@ source/kernel/CMakeFiles/kernel.dir/init/init.c.o: \
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/test/test.h \
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/tools/klib.h \
  /usr/lib/gcc/x86_64-linux-gnu/11/include/stdarg.h \
- /home/kbpoyo/code/cpp/MyOs/source/kernel/include/ipc/sem.h
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/include/ipc/sem.h \
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/include/core/memory.h \
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/include/tools/bitmap.h \
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/include/ipc/mutex.h

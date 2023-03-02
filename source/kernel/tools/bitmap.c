@@ -47,13 +47,13 @@ void bitmap_init(bitmap_t *bitmap, uint8_t *bits, int count, int init_bit) {
 }
 
 /**
- * @brief  获取bitmap中第index位的bit值
+ * @brief  获取bitmap中第index位的bit值,index从0开始
  * 
  * @param bitmap 
  * @param index 
- * @return int 
+ * @return uint8_t 
  */
-int bitmap_get_bit(bitmap_t *bitmap, int index) {
+uint8_t bitmap_get_bit(bitmap_t *bitmap, int index) {
     ASSERT(bitmap != (bitmap_t*)0);
     ASSERT(index >= 0);
 
@@ -71,7 +71,7 @@ int bitmap_get_bit(bitmap_t *bitmap, int index) {
 void bitmap_set_bit(bitmap_t *bitmap, int index, int count, int bit) {
     ASSERT(bitmap != (bitmap_t*)0);
     ASSERT(index >= 0 && count >= 0);
-    for (int i = 0; i < count && i < bitmap->bit_count; ++i) {
+    for (int i = 0; i < count && index < bitmap->bit_count; ++i, ++index) {
         if (bit) {
             bitmap->bits[index / 8] |= (1 << (index % 8));
         } else {

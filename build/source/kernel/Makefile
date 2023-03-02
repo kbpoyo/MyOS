@@ -130,6 +130,30 @@ kernel/fast:
 	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/build
 .PHONY : kernel/fast
 
+core/memory.o: core/memory.c.o
+.PHONY : core/memory.o
+
+# target to build an object file
+core/memory.c.o:
+	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/core/memory.c.o
+.PHONY : core/memory.c.o
+
+core/memory.i: core/memory.c.i
+.PHONY : core/memory.i
+
+# target to preprocess a source file
+core/memory.c.i:
+	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/core/memory.c.i
+.PHONY : core/memory.c.i
+
+core/memory.s: core/memory.c.s
+.PHONY : core/memory.s
+
+# target to generate assembly for a file
+core/memory.c.s:
+	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/core/memory.c.s
+.PHONY : core/memory.c.s
+
 core/task.o: core/task.c.o
 .PHONY : core/task.o
 
@@ -459,6 +483,9 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... kernel"
+	@echo "... core/memory.o"
+	@echo "... core/memory.i"
+	@echo "... core/memory.s"
 	@echo "... core/task.o"
 	@echo "... core/task.i"
 	@echo "... core/task.s"
