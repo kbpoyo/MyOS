@@ -19,7 +19,7 @@
 
 
 /**
- * @brief  mbr记录系统信息
+ * @brief  mbr记录系统可用内存空间块的起始地址与大小,和块数
  */
 typedef struct _boot_info_t {
     struct {

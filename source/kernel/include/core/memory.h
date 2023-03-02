@@ -16,6 +16,11 @@
 #include "tools/bitmap.h"
 #include "ipc/mutex.h"
 #include "common/boot_info.h"
+
+//实模式下的1mb内存空间
+#define MEM_EXT_START (1024*1024)
+#define MEM_PAGE_SIZE 4096
+
 //内存分配对象
 typedef struct _addr_alloc_t {
     mutex_t mutex;      //分配内存时进行临界资源管理

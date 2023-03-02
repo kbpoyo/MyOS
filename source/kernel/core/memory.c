@@ -11,6 +11,7 @@
 
 #include "core/memory.h"
 #include "tools/log.h"
+#include "tools/klib.h"
 
 /**
  * @brief  初始化内存分配对象
@@ -73,30 +74,48 @@ static void addr_free_page(addr_alloc_t *alloc, uint32_t addr, int page_count) {
 }
 
 /**
+ * @brief  打印1m以内内存的可用空间
+ * 
+ * @param boot_info 
+ */
+static void show_mem_info(boot_info_t *boot_info) {
+    log_printf("mem region:");
+    for (int i = 0; i < boot_info->ram_region_count; ++i) {
+        log_printf("[%d]: 0x%x - 0x%x", i, boot_info->ram_region_cfg[i].start, boot_info->ram_region_cfg[i].size);
+    }
+
+    log_printf("");
+}
+
+/**
+ * @brief  计算总的可用内存空间大小
+ * 
+ * @param boot_info 
+ * @return uint32_t 
+ */
+static uint32_t total_mem_size(boot_info_t *boot_info) {
+    uint32_t mem_size = 0;
+    for (int i = 0; i < boot_info->ram_region_count; ++i) {
+        mem_size += boot_info->ram_region_cfg[i].size;
+    }
+
+    return mem_size;
+}
+
+/**
  * @brief  初始化化内存
  *
  * @param boot_info cpu在实模式下检测到的可用内存对象
  */
 void memory_init(boot_info_t *boot_info) {
+    log_printf("memory init");
+
+    show_mem_info(boot_info);
     
-    addr_alloc_t addr_alloc;    //内存分配对象
-    uint8_t bits[8];    //提供给内存分配对象的位图缓冲区，8个字节供支持64个页的管理
+    //去除保护模式下1mb大小后可用的内存空间大小
+    uint32_t mem_up1MB_free = total_mem_size(boot_info) - MEM_EXT_START;
 
-    //对起始地址为0x1000，大小为64个4kb的内存页的空间进行管理初始化
-    addr_alloc_init(&addr_alloc, bits, 0x1000, 64 * 4096, 4096);
-
-    for (int i = 0; i < 32; ++i) {
-        uint32_t addr = addr_alloc_page(&addr_alloc, 2);
-        log_printf("alloc addr: 0x%x, bitmap: 0b%b", addr, bits[2*i / 8]);
-    }
-
-
-
-    uint32_t addr = 0x1000;
-    for (int i = 0; i < 32; ++i) {
-        addr_free_page(&addr_alloc, addr, 2);
-        log_printf("free addr: 0x%x, bitmap: 0b%b", addr, bits[2*i / 8]);
-        addr += 2*4096;
-    }
+    //将可用空间大小下调到页大小的整数倍
+    mem_up1MB_free = down2(mem_up1MB_free, MEM_PAGE_SIZE);
 
 }

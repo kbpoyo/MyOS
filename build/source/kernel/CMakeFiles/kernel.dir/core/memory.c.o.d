@@ -11,4 +11,6 @@ source/kernel/CMakeFiles/kernel.dir/core/memory.c.o: \
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/cpu/tss.h \
  /home/kbpoyo/code/cpp/MyOs/source/common/boot_info.h \
  /home/kbpoyo/code/cpp/MyOs/source/common/types.h \
- /home/kbpoyo/code/cpp/MyOs/source/kernel/include/tools/log.h
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/include/tools/log.h \
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/include/tools/klib.h \
+ /usr/lib/gcc/x86_64-linux-gnu/11/include/stdarg.h

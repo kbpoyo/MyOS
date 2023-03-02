@@ -15,6 +15,28 @@
 #include <stdarg.h>
 #include "common/types.h"
 
+/**
+ * @brief  将size向下转换为bound的整数倍
+ * 
+ * @param size 
+ * @param bound 一般取2的n次方
+ * @return uint32_t 
+ */
+static inline uint32_t down2(uint32_t size, uint32_t bound) {
+    return size & ~(bound - 1);  
+}
+
+/**
+ * @brief  将size向上转换为bound的整数倍
+ * 
+ * @param size 
+ * @param bound 一般取2的n次方
+ * @return uint32_t 
+ */
+static inline uint32_t up2(uint32_t size, uint32_t bound) {
+    return (size + bound - 1) & ~(bound - 1);
+}
+
 void kernel_strcpy(char *dest, const char *src);
 void kernel_strncpy(char* dest, const char *src, int size);
 int  kernel_strncmp(const char *s1, const char *s2, int size);
