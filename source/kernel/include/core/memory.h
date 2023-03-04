@@ -20,6 +20,8 @@
 //实模式下的1mb内存空间
 #define MEM_EXT_START (1024*1024)
 #define MEM_PAGE_SIZE 4096
+//实模式下1mb空间中拓展bios数据区的首地址，紧邻可用数据区
+#define MEM_EBDA_START 0x9fc00
 
 //内存分配对象
 typedef struct _addr_alloc_t {

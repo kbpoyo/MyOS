@@ -20,7 +20,7 @@
  * @param bit_count  位图数组拥有的bit位数
  * @return int 向上取整得到的字节数
  */
-static int bitmap_byte_count(int bit_count) {
+int bitmap_byte_count(int bit_count) {
     return (bit_count + 8 - 1) / 8;
 }
 

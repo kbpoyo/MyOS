@@ -30,5 +30,8 @@ SECTIONS {/*SECTIONS必须大小*/
     .bss : {
         *(.bss)
     }
+
+    /*用 . 在bss段后面新开一个段，记录内核四个段后的紧邻的空间地址*/
+    PROVIDE(mem_free_start = .);
  }
 

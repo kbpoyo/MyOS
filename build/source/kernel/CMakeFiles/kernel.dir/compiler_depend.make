@@ -13,7 +13,9 @@ source/kernel/CMakeFiles/kernel.dir/core/memory.c.o: ../source/kernel/core/memor
   ../source/kernel/include/cpu/tss.h \
   ../source/common/boot_info.h \
   ../source/common/types.h \
-  ../source/kernel/include/tools/log.h
+  ../source/kernel/include/tools/log.h \
+  ../source/kernel/include/tools/klib.h \
+  /usr/lib/gcc/x86_64-linux-gnu/11/include/stdarg.h
 
 source/kernel/CMakeFiles/kernel.dir/core/task.c.o: ../source/kernel/core/task.c \
   /usr/include/stdc-predef.h \
@@ -171,7 +173,7 @@ source/kernel/CMakeFiles/kernel.dir/tools/log.c.o: ../source/kernel/tools/log.c 
 
 ../source/kernel/ipc/sem.c:
 
-../source/kernel/include/core/memory.h:
+../source/kernel/include/tools/klib.h:
 
 ../source/common/boot_info.h:
 
@@ -183,21 +185,21 @@ source/kernel/CMakeFiles/kernel.dir/tools/log.c.o: ../source/kernel/tools/log.c 
 
 /usr/include/stdc-predef.h:
 
+../source/kernel/cpu/gdt.c:
+
+../source/kernel/include/ipc/sem.h:
+
 ../source/kernel/tools/list.c:
 
 ../source/kernel/include/tools/log.h:
 
-../source/kernel/include/tools/klib.h:
-
-../source/kernel/include/ipc/sem.h:
-
-../source/kernel/cpu/gdt.c:
-
 ../source/kernel/include/ipc/mutex.h:
 
-../source/kernel/core/task.c:
+../source/kernel/include/core/memory.h:
 
 ../source/kernel/init/init.c:
+
+../source/kernel/core/task.c:
 
 ../source/kernel/include/tools/bitmap.h:
 
@@ -207,9 +209,9 @@ source/kernel/CMakeFiles/kernel.dir/tools/log.c.o: ../source/kernel/tools/log.c 
 
 /usr/lib/gcc/x86_64-linux-gnu/11/include/stdarg.h:
 
-../source/kernel/include/tools/assert.h:
-
 ../source/common/types.h:
+
+../source/kernel/include/tools/assert.h:
 
 ../source/kernel/include/cpu/gdt.h:
 

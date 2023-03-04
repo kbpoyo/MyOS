@@ -12,6 +12,10 @@
 #include "core/memory.h"
 #include "tools/log.h"
 #include "tools/klib.h"
+#include "tools/assert.h"
+
+//定义全局内存页分配对象
+static addr_alloc_t paddr_alloc;
 
 /**
  * @brief  初始化内存分配对象
@@ -108,6 +112,10 @@ static uint32_t total_mem_size(boot_info_t *boot_info) {
  * @param boot_info cpu在实模式下检测到的可用内存对象
  */
 void memory_init(boot_info_t *boot_info) {
+
+    //声明紧邻在内核bss段后面的空间地址，用于存储位图，该变量定义在kernel.lds中
+    extern uint8_t * mem_free_start;
+
     log_printf("memory init");
 
     show_mem_info(boot_info);
@@ -117,5 +125,18 @@ void memory_init(boot_info_t *boot_info) {
 
     //将可用空间大小下调到页大小的整数倍
     mem_up1MB_free = down2(mem_up1MB_free, MEM_PAGE_SIZE);
+    
+    log_printf("free memory: 0x%x, size: 0x%x", MEM_EXT_START, mem_up1MB_free);
+
+    uint8_t *mem_free = mem_free_start;
+
+    //用paddr_alloc，内存页分配对象管理1mb以上的所有空闲空间，页大小为MEM_PAGE_SIZE=4kb
+    addr_alloc_init(&paddr_alloc, mem_free, MEM_EXT_START, mem_up1MB_free, MEM_PAGE_SIZE);
+
+    //跳过存储位图的内存区域
+    mem_free += bitmap_byte_count(paddr_alloc.size / MEM_PAGE_SIZE);  //位图的每一位表示一个页，计算位图所站的字节数即可跳过该区域
+
+    //判断mem_free是否已越过可用数据区
+    ASSERT(mem_free < (uint8_t*)MEM_EBDA_START);
 
 }

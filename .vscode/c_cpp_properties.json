@@ -3,10 +3,14 @@
         {
             "name": "Linux",
             "includePath": [
-                "${workspaceFolder}/**"
+                "${workspaceFolder}/**",
+                "${workspaceFolder}/source/**",
+                "${workspaceFolder}/source/kernel/**"
             ],
             "defines": [],
             "configurationProvider": "${default}"
+            // "cStandard": "c11",
+            // "cppStandard": "c++17"
         }
     ],
     "version": 4
