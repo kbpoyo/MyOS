@@ -113,10 +113,13 @@ static uint32_t total_mem_size(boot_info_t *boot_info) {
  */
 void memory_init(boot_info_t *boot_info) {
 
-    //声明紧邻在内核bss段后面的空间地址，用于存储位图，该变量定义在kernel.lds中
-    extern uint8_t * mem_free_start;
+  
+  //声明紧邻在内核bss段后面的空间地址，用于存储位图，该变量定义在kernel.lds中
+    extern uint8_t* mem_free_start;
 
     log_printf("memory init");
+
+    log_printf("mem_free_start: %d", mem_free_start);
 
     show_mem_info(boot_info);
     
@@ -128,7 +131,7 @@ void memory_init(boot_info_t *boot_info) {
     
     log_printf("free memory: 0x%x, size: 0x%x", MEM_EXT_START, mem_up1MB_free);
 
-    uint8_t *mem_free = mem_free_start;
+    uint8_t *mem_free = (uint8_t*)&mem_free_start;
 
     //用paddr_alloc，内存页分配对象管理1mb以上的所有空闲空间，页大小为MEM_PAGE_SIZE=4kb
     addr_alloc_init(&paddr_alloc, mem_free, MEM_EXT_START, mem_up1MB_free, MEM_PAGE_SIZE);
@@ -138,5 +141,6 @@ void memory_init(boot_info_t *boot_info) {
 
     //判断mem_free是否已越过可用数据区
     ASSERT(mem_free < (uint8_t*)MEM_EBDA_START);
+    
 
 }
