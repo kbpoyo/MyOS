@@ -115,7 +115,7 @@ void memory_init(boot_info_t *boot_info) {
 
   
   //声明紧邻在内核bss段后面的空间地址，用于存储位图，该变量定义在kernel.lds中
-    extern uint8_t* mem_free_start;
+    extern char mem_free_start;
 
     log_printf("memory init");
 
@@ -131,6 +131,7 @@ void memory_init(boot_info_t *boot_info) {
     
     log_printf("free memory: 0x%x, size: 0x%x", MEM_EXT_START, mem_up1MB_free);
 
+    //mem_free_start被分配的地址在链接文件中定义，紧邻着内核的.bss段
     uint8_t *mem_free = (uint8_t*)&mem_free_start;
 
     //用paddr_alloc，内存页分配对象管理1mb以上的所有空闲空间，页大小为MEM_PAGE_SIZE=4kb
