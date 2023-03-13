@@ -106,6 +106,27 @@ static uint32_t total_mem_size(boot_info_t *boot_info) {
     return mem_size;
 }
 
+//TODO:编写函数注释
+void create_kernal_table(void) {
+  static memory_map_t kernal_map[] = {
+
+  };
+
+  for (int i = 0; i < sizeof(kernal_map) / sizeof(kernal_map[0]); ++i) {
+    memory_map_t *map = kernal_map + i;
+
+    //将虚拟地址的起始地址按页大小4kb对齐，为了不丢失原有的虚拟地址空间，所以向下对齐vstart
+    uint32_t vstart = down2(map->vstart, MEM_PAGE_SIZE);
+    //将虚拟地址的结束地址按页大小4kb对齐, 为了不丢失原有的虚拟地址空间，所以向上对齐vend
+    uint32_t vend = up2(map->vend, MEM_PAGE_SIZE);
+    //计算该虚拟空间需要的页数
+    int page_count = (vend - vstart) / MEM_PAGE_SIZE;
+
+
+  }
+}
+
+
 /**
  * @brief  初始化化内存
  *
@@ -114,7 +135,7 @@ static uint32_t total_mem_size(boot_info_t *boot_info) {
 void memory_init(boot_info_t *boot_info) {
 
   
-  //声明紧邻在内核bss段后面的空间地址，用于存储位图，该变量定义在kernel.lds中
+    //声明紧邻在内核bss段后面的空间地址，用于存储位图，该变量定义在kernel.lds中
     extern char mem_free_start;
 
     log_printf("memory init");
@@ -137,11 +158,12 @@ void memory_init(boot_info_t *boot_info) {
     //用paddr_alloc，内存页分配对象管理1mb以上的所有空闲空间，页大小为MEM_PAGE_SIZE=4kb
     addr_alloc_init(&paddr_alloc, mem_free, MEM_EXT_START, mem_up1MB_free, MEM_PAGE_SIZE);
 
-    //跳过存储位图的内存区域
-    mem_free += bitmap_byte_count(paddr_alloc.size / MEM_PAGE_SIZE);  //位图的每一位表示一个页，计算位图所站的字节数即可跳过该区域
+    //跳过存储位图的内存区域, 位图的每一位表示一个页，计算位图所站的字节数即可跳过该区域
+    mem_free += bitmap_byte_count(paddr_alloc.size / MEM_PAGE_SIZE);  
 
     //判断mem_free是否已越过可用数据区
     ASSERT(mem_free < (uint8_t*)MEM_EBDA_START);
     
-
+    //创建内核的页表映射
+    create_kernal_table();
 }

@@ -147,6 +147,7 @@ exception_handler control_exception,    21, 1
 //定时器的中断处理函数
 exception_handler time,                 0x20, 0 
 
+//TODO:该部分为另一种任务切换时cpu上下文环境的保存方法，并未被调用
     .text
     .global simple_switch
 simple_switch:  //simple_switch(from, to)

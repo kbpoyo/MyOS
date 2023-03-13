@@ -157,6 +157,46 @@ static inline void write_cr0(uint32_t data) {
 }
 
 /**
+ * @brief  读取cr3寄存器的值
+ *
+ * @return uint16_t
+ */
+static inline uint32_t read_cr3(void) {
+  uint32_t cr3;
+  __asm__ __volatile__("mov %%cr3, %[v]" : [v] "=r"(cr3));
+  return cr3;
+}
+
+/**
+ * @brief  向cr3寄存器写入数据
+ *
+ * @param data
+ */
+static inline void write_cr3(uint32_t data) {
+  __asm__ __volatile__("mov %[v], %%cr3" : : [v] "r"(data));
+}
+
+/**
+ * @brief  读取cr4寄存器的值
+ *
+ * @return uint16_t
+ */
+static inline uint32_t read_cr4(void) {
+  uint32_t cr4;
+  __asm__ __volatile__("mov %%cr4, %[v]" : [v] "=r"(cr4));
+  return cr4;
+}
+
+/**
+ * @brief  向cr4寄存器写入数据
+ *
+ * @param data
+ */
+static inline void write_cr4(uint32_t data) {
+  __asm__ __volatile__("mov %[v], %%cr4" : : [v] "r"(data));
+}
+
+/**
  * @brief  远跳转，当跳转发生在TSS段之间时，cpu将会保存状态到当前TR寄存器指向的TSS段
  *
  * @param selector 选择子

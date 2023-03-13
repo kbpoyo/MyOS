@@ -5,12 +5,10 @@
             "includePath": [
                 "${workspaceFolder}/**",
                 "${workspaceFolder}/source/**",
-                "${workspaceFolder}/source/kernel/**"
+                "${workspaceFolder}/source/kernel/include/**/**"
             ],
             "defines": [],
             "configurationProvider": "${default}"
-            // "cStandard": "c11",
-            // "cppStandard": "c++17"
         }
     ],
     "version": 4

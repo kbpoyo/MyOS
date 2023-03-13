@@ -33,6 +33,15 @@ typedef struct _addr_alloc_t {
 
 }addr_alloc_t;
 
+//定义内存映射的数据结构
+typedef struct _memory_map_t {
+    void *vstart;   //虚拟地址空间的起始地址
+    void *vend;     //虚拟地址空间的结束地址
+    void *pstart;   //物理地址空间的起始地址
+    uint32_t privilege; //该映射段的特权级，用户或者内核
+}memory_map_t;
+
+
 void memory_init(boot_info_t *boot_info);
 
 
