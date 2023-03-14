@@ -128,32 +128,32 @@ static void die(uint8_t err_code) {
 #define PED_PS  (1 << 7)
 
 
-/**
- * @brief 打开分页机制
- * 
- */
-void enable_page_mode(void) {
+// /**
+//  * @brief 打开分页机制
+//  * 
+//  */
+// void enable_page_mode(void) {
     
-    //1.声明页目录表结构，并且使该页目录的起始地址按4kb对齐
-    //页目录项的高10位为页的物理地址位，及1024个4mb页
-    static uint32_t page_dir[1024] __attribute__((aligned(4096))) = {
-        [0] = PDE_P | PDE_W | PED_PS| 0x10000000    //地址位为0，所以从内存的低4mb开始映射
-    };
+//     //1.声明页目录表结构，并且使该页目录的起始地址按4kb对齐
+//     //页目录项的高10位为页的物理地址位，及1024个4mb页
+//     static uint32_t page_dir[1024] __attribute__((aligned(4096))) = {
+//         [0] = PDE_P | PDE_W | PED_PS  //地址位为0，所以从内存的低4mb开始映射
+//     };
 
-    //2.将cr4寄存器的PSE位置1
-    write_cr4(read_cr4() | CR4_PSE);
+//     //2.将cr4寄存器的PSE位置1
+//     write_cr4(read_cr4() | CR4_PSE);
 
-    //3.设置cr3寄存器的高20位为页目录表的地址，因为按4kb对齐，所以
-    //页目录表的起始地址page_dir的高20位才为有效位，低12位为0，将cr3的低12位就设置为0
-    write_cr3((uint32_t)page_dir);
+//     //3.设置cr3寄存器的高20位为页目录表的地址，因为按4kb对齐，所以
+//     //页目录表的起始地址page_dir的高20位才为有效位，低12位为0，将cr3的低12位就设置为0
+//     write_cr3((uint32_t)page_dir);
 
-    //4.将cr0寄存器的PG_ENABLE位置1
-    write_cr0(read_cr0() | CR0_PG);
-
-
+//     //4.将cr0寄存器的PG_ENABLE位置1
+//     write_cr0(read_cr0() | CR0_PG);
 
 
-}
+
+
+// }
 
 
 /**
@@ -173,7 +173,7 @@ void load_kernel(void) {
     } 
 
     //4.加载为内核后开启分页机制
-    enable_page_mode();              
+    // enable_page_mode();              
 
     //5.将boot_info记录的信息传递给已拷贝到确定内存中的内核初始化函数
     ((void(*)(boot_info_t*))kernel_entry)(&boot_info);    

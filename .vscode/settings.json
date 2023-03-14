@@ -11,7 +11,8 @@
         "fcntl.h": "c",
         "_default_fcntl.h": "c",
         "loader.h": "c",
-        "log.h": "c"
+        "log.h": "c",
+        "mmu.h": "c"
     },
     "todo-tree.tree.scanMode": "workspace only",
 }

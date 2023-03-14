@@ -4,7 +4,7 @@
             "name": "Linux",
             "includePath": [
                 "${workspaceFolder}/**",
-                "${workspaceFolder}/source/**",
+                "${workspaceFolder}/source/kernel/**",
                 "${workspaceFolder}/source/kernel/include/**/**"
             ],
             "defines": [],

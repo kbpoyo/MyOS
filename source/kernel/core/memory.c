@@ -13,9 +13,16 @@
 #include "tools/log.h"
 #include "tools/klib.h"
 #include "tools/assert.h"
+#include "cpu/mmu.h"
 
 //定义全局内存页分配对象
 static addr_alloc_t paddr_alloc;
+
+//1.声明页目录表结构，并且使该页目录的起始地址按4kb对齐
+//页目录项的高10位为页的物理地址位，及1024个子页表
+static pde_t kernel_page_dir_table[PDE_CNT] __attribute__((aligned(MEM_PAGE_SIZE)));
+
+
 
 /**
  * @brief  初始化内存分配对象
@@ -108,7 +115,14 @@ static uint32_t total_mem_size(boot_info_t *boot_info) {
 
 //TODO:编写函数注释
 void create_kernal_table(void) {
+  
+  //声明内核只读段的起始与结束地址和数据段的起始地址
+  extern char s_text, e_text, s_data;
+
   static memory_map_t kernal_map[] = {
+    {0, &s_text, 0, 0},                             //低64kb的空间映射关系，即0x10000(内核起始地址)以下部分的空间
+    {&s_text, &e_text, &s_text, 0},                 //只读段的映射关系(内核.text和.rodata段)
+    {&s_data, (void*)MEM_EBDA_START, &s_data, 0}    //可读写段的映射关系，一直到bios的拓展数据区(内核.data与.bss段再加上剩余的可用数据区域)
 
   };
 
@@ -116,9 +130,9 @@ void create_kernal_table(void) {
     memory_map_t *map = kernal_map + i;
 
     //将虚拟地址的起始地址按页大小4kb对齐，为了不丢失原有的虚拟地址空间，所以向下对齐vstart
-    uint32_t vstart = down2(map->vstart, MEM_PAGE_SIZE);
+    uint32_t vstart = down2((uint32_t)map->vstart, MEM_PAGE_SIZE);
     //将虚拟地址的结束地址按页大小4kb对齐, 为了不丢失原有的虚拟地址空间，所以向上对齐vend
-    uint32_t vend = up2(map->vend, MEM_PAGE_SIZE);
+    uint32_t vend = up2((uint32_t)map->vend, MEM_PAGE_SIZE);
     //计算该虚拟空间需要的页数
     int page_count = (vend - vstart) / MEM_PAGE_SIZE;
 
@@ -166,4 +180,7 @@ void memory_init(boot_info_t *boot_info) {
     
     //创建内核的页表映射
     create_kernal_table();
+
+    //设置内核的页目录表到CR3寄存器，并开启分页机制
+    mmu_set_page_dir_table((uint32_t)kernel_page_dir_table)
 }

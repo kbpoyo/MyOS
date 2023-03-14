@@ -28,7 +28,7 @@ SECTIONS {/*SECTIONS必须大小*/
     /* TODO: 存疑，此处 . 地址应该为下一个段的起始地址，即当前段结束地址的下一个字节 */
     PROVIDE(e_text = .);
 
-    /* 记录可读性段的起始地址 */
+    /* 记录可读写段的起始地址 */
     PROVIDE(s_data = .);
     .data : {
         *(.data)
