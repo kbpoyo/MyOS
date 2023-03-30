@@ -226,6 +226,30 @@ cpu/idt.c.s:
 	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/cpu/idt.c.s
 .PHONY : cpu/idt.c.s
 
+cpu/mmu.o: cpu/mmu.c.o
+.PHONY : cpu/mmu.o
+
+# target to build an object file
+cpu/mmu.c.o:
+	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/cpu/mmu.c.o
+.PHONY : cpu/mmu.c.o
+
+cpu/mmu.i: cpu/mmu.c.i
+.PHONY : cpu/mmu.i
+
+# target to preprocess a source file
+cpu/mmu.c.i:
+	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/cpu/mmu.c.i
+.PHONY : cpu/mmu.c.i
+
+cpu/mmu.s: cpu/mmu.c.s
+.PHONY : cpu/mmu.s
+
+# target to generate assembly for a file
+cpu/mmu.c.s:
+	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/cpu/mmu.c.s
+.PHONY : cpu/mmu.c.s
+
 dev/time.o: dev/time.c.o
 .PHONY : dev/time.o
 
@@ -495,6 +519,9 @@ help:
 	@echo "... cpu/idt.o"
 	@echo "... cpu/idt.i"
 	@echo "... cpu/idt.s"
+	@echo "... cpu/mmu.o"
+	@echo "... cpu/mmu.i"
+	@echo "... cpu/mmu.s"
 	@echo "... dev/time.o"
 	@echo "... dev/time.i"
 	@echo "... dev/time.s"

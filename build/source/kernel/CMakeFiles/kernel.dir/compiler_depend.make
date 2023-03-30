@@ -15,7 +15,9 @@ source/kernel/CMakeFiles/kernel.dir/core/memory.c.o: ../source/kernel/core/memor
   ../source/common/types.h \
   ../source/kernel/include/tools/log.h \
   ../source/kernel/include/tools/klib.h \
-  /usr/lib/gcc/x86_64-linux-gnu/11/include/stdarg.h
+  /usr/lib/gcc/x86_64-linux-gnu/11/include/stdarg.h \
+  ../source/kernel/include/cpu/mmu.h \
+  ../source/common/cpu_instr.h
 
 source/kernel/CMakeFiles/kernel.dir/core/task.c.o: ../source/kernel/core/task.c \
   /usr/include/stdc-predef.h \
@@ -55,6 +57,9 @@ source/kernel/CMakeFiles/kernel.dir/cpu/idt.c.o: ../source/kernel/cpu/idt.c \
   ../source/common/cpu_instr.h \
   ../source/kernel/include/os_cfg.h \
   ../source/kernel/include/tools/log.h
+
+source/kernel/CMakeFiles/kernel.dir/cpu/mmu.c.o: ../source/kernel/cpu/mmu.c \
+  /usr/include/stdc-predef.h
 
 source/kernel/CMakeFiles/kernel.dir/dev/time.c.o: ../source/kernel/dev/time.c \
   /usr/include/stdc-predef.h \
@@ -175,6 +180,10 @@ source/kernel/CMakeFiles/kernel.dir/tools/log.c.o: ../source/kernel/tools/log.c 
 
 ../source/kernel/include/tools/klib.h:
 
+../source/kernel/include/ipc/sem.h:
+
+../source/kernel/cpu/gdt.c:
+
 ../source/common/boot_info.h:
 
 ../source/kernel/include/cpu/tss.h:
@@ -184,10 +193,6 @@ source/kernel/CMakeFiles/kernel.dir/tools/log.c.o: ../source/kernel/tools/log.c 
 ../source/kernel/include/core/task.h:
 
 /usr/include/stdc-predef.h:
-
-../source/kernel/cpu/gdt.c:
-
-../source/kernel/include/ipc/sem.h:
 
 ../source/kernel/tools/list.c:
 
@@ -217,11 +222,17 @@ source/kernel/CMakeFiles/kernel.dir/tools/log.c.o: ../source/kernel/tools/log.c 
 
 ../source/common/cpu_instr.h:
 
+../source/kernel/include/cpu/mmu.h:
+
 ../source/kernel/include/os_cfg.h:
 
 ../source/kernel/include/cpu/idt.h:
 
 ../source/common/exc_frame.h:
+
+../source/kernel/ipc/mutex.c:
+
+../source/kernel/cpu/mmu.c:
 
 ../source/kernel/include/tools/list.h:
 
@@ -232,5 +243,3 @@ source/kernel/CMakeFiles/kernel.dir/tools/log.c.o: ../source/kernel/tools/log.c 
 ../source/kernel/include/dev/time.h:
 
 ../source/kernel/init/init.h:
-
-../source/kernel/ipc/mutex.c:

@@ -17,6 +17,8 @@ source/kernel/CMakeFiles/kernel.dir/core/memory.c.o
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/tools/log.h
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/tools/klib.h
  /usr/lib/gcc/x86_64-linux-gnu/11/include/stdarg.h
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/include/cpu/mmu.h
+ /home/kbpoyo/code/cpp/MyOs/source/common/cpu_instr.h
 
 source/kernel/CMakeFiles/kernel.dir/core/task.c.o
  /home/kbpoyo/code/cpp/MyOs/source/kernel/core/task.c
@@ -59,6 +61,10 @@ source/kernel/CMakeFiles/kernel.dir/cpu/idt.c.o
  /home/kbpoyo/code/cpp/MyOs/source/common/cpu_instr.h
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/os_cfg.h
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/tools/log.h
+
+source/kernel/CMakeFiles/kernel.dir/cpu/mmu.c.o
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/cpu/mmu.c
+ /usr/include/stdc-predef.h
 
 source/kernel/CMakeFiles/kernel.dir/dev/time.c.o
  /home/kbpoyo/code/cpp/MyOs/source/kernel/dev/time.c

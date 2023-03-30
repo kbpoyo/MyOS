@@ -24,6 +24,7 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/home/kbpoyo/code/cpp/MyOs/source/kernel/core/task.c" "source/kernel/CMakeFiles/kernel.dir/core/task.c.o" "gcc" "source/kernel/CMakeFiles/kernel.dir/core/task.c.o.d"
   "/home/kbpoyo/code/cpp/MyOs/source/kernel/cpu/gdt.c" "source/kernel/CMakeFiles/kernel.dir/cpu/gdt.c.o" "gcc" "source/kernel/CMakeFiles/kernel.dir/cpu/gdt.c.o.d"
   "/home/kbpoyo/code/cpp/MyOs/source/kernel/cpu/idt.c" "source/kernel/CMakeFiles/kernel.dir/cpu/idt.c.o" "gcc" "source/kernel/CMakeFiles/kernel.dir/cpu/idt.c.o.d"
+  "/home/kbpoyo/code/cpp/MyOs/source/kernel/cpu/mmu.c" "source/kernel/CMakeFiles/kernel.dir/cpu/mmu.c.o" "gcc" "source/kernel/CMakeFiles/kernel.dir/cpu/mmu.c.o.d"
   "/home/kbpoyo/code/cpp/MyOs/source/kernel/dev/time.c" "source/kernel/CMakeFiles/kernel.dir/dev/time.c.o" "gcc" "source/kernel/CMakeFiles/kernel.dir/dev/time.c.o.d"
   "/home/kbpoyo/code/cpp/MyOs/source/kernel/init/init.c" "source/kernel/CMakeFiles/kernel.dir/init/init.c.o" "gcc" "source/kernel/CMakeFiles/kernel.dir/init/init.c.o.d"
   "/home/kbpoyo/code/cpp/MyOs/source/kernel/ipc/mutex.c" "source/kernel/CMakeFiles/kernel.dir/ipc/mutex.c.o" "gcc" "source/kernel/CMakeFiles/kernel.dir/ipc/mutex.c.o.d"

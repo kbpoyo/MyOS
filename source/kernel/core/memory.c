@@ -20,7 +20,7 @@ static addr_alloc_t paddr_alloc;
 
 //1.声明页目录表结构，并且使该页目录的起始地址按4kb对齐
 //页目录项的高10位为页的物理地址位，及1024个子页表
-static pde_t kernel_page_dir_table[PDE_CNT] __attribute__((aligned(MEM_PAGE_SIZE)));
+static pde_t kernel_page_dir[PDE_CNT] __attribute__((aligned(MEM_PAGE_SIZE)));
 
 
 
@@ -113,6 +113,93 @@ static uint32_t total_mem_size(boot_info_t *boot_info) {
     return mem_size;
 }
 
+/**
+ * @brief 通过虚拟地址的高10位在页目录表中索引到对应的页目录项，及页目录项对应的页表
+ *        再通过虚拟地址的次10位在索引到的页表中索引出对应的页表项
+ * 
+ * @param page_dir 被索引的页目录表
+ * @param vstart  虚拟地址
+ * @param is_alloc 若没有索引到对应的页表项
+ *                 1：表示创建一个新页目录项，并为其分配一个新页作为页表
+ *                 0: 返回0
+ *                
+ * @return pte_t* 索引到的页表项
+ */
+pte_t* find_pte(pde_t* page_dir, uint32_t vstart, int is_alloc) {
+  pte_t* page_table; //记录被索引的页表
+  //1.通过虚拟地址高10位索引到对应的页目录项
+  pde_t* pde = page_dir + pde_index(vstart);
+
+  //2.判断该页目录项是否已存在，及该页目录项是否已指向一个被分配的页表
+  if (pde->present) { //该页目录项存在，及存在对应的页表，可以索引到对应的页表
+    page_table = (pte_t*)pde_to_pt_addr(pde);
+  } else {//该目录项不存在内存中，及对应的页表不存在
+    if (is_alloc == 0) {  //不为该目录项创建对应的页表
+      return (pte_t*)0;
+    }
+
+    //为该目录项分配一页作为页表
+    uint32_t pg_addr = addr_alloc_page(&paddr_alloc, 1);
+    if (pg_addr == 0) { //分配失败
+      return (pte_t*)0;
+    }
+
+    //分配成功, 索引对应的页表
+    page_table = (pte_t*)pg_addr;
+    kernel_memset(page_table, 0, MEM_PAGE_SIZE);
+
+    //将该页表的起始地址放入对应的页目录项中并放入页目录表中，方便后续索引到该页表
+    page_dir[pde_index(vstart)].phy_pt_addr = (uint32_t)page_table >> 12;
+    page_dir[pde_index(vstart)].present = 1;
+
+  }
+
+  //3.返回在该页表中索引到的页表项
+  return page_table + pte_index(vstart);
+
+}
+
+/**
+ * @brief 让虚拟地址和物理地址在页目录表中形成对照关系
+ *        通过虚拟地址的高10位索引到对应的页目录项，及对应的页表
+ *        再通过虚拟地址的次10位索引到页表中的页表项，及对应的页
+ * 
+ * @param page_dir 页目录表的地址
+ * @param vstart 虚拟地址的起始地址
+ * @param pstart 物理地址的起始地址
+ * @param page_count 分页数量
+ * @param privilege 该段虚拟地址的特权级
+ * @return int 
+ */
+int  memory_creat_map(pde_t *page_dir, uint32_t vstart, uint32_t pstart, int page_count, uint32_t privilege) {
+  //1.为每一页创建对应的页表项
+  for (int i = 0; i < page_count; ++i) {
+
+    //打印调试信息
+    log_printf("creat map: v-0x%x, p-0x%x, privilege:0x%x", vstart, pstart, privilege);
+
+    //2.通过虚拟地址在页目录表中获取对应的页目录项指向的页表,
+    //且当没有该页目录项时，为其分配一个页作为页表并让一个目录项指向该页表
+    pte_t *pte = find_pte(page_dir, vstart, 1);
+    if (pte == (pte_t*)0) {//没有找到可用的页表项
+    log_printf("creat pte failed pte == 0");
+      return -1;
+    }
+
+    log_printf("pte addr : 0x%x", (uint32_t)pte);
+    //3.确保该页并未已存在内存中
+    ASSERT(pte->present == 0);
+
+    //4.在页表项中创建对应的映射关系
+    pte->v = pstart | privilege | PTE_P;
+
+    //5.切换为下一页
+    vstart += MEM_PAGE_SIZE;
+    pstart += MEM_PAGE_SIZE;
+
+  }
+ }
+
 //TODO:编写函数注释
 void create_kernal_table(void) {
   
@@ -136,6 +223,9 @@ void create_kernal_table(void) {
     //计算该虚拟空间需要的页数
     int page_count = (vend - vstart) / MEM_PAGE_SIZE;
 
+    //创建内存映射关系
+    memory_creat_map(kernel_page_dir, vstart, (uint32_t)map->pstart, page_count, map->privilege);
+
 
   }
 }
@@ -154,7 +244,7 @@ void memory_init(boot_info_t *boot_info) {
 
     log_printf("memory init");
 
-    log_printf("mem_free_start: %d", mem_free_start);
+    log_printf("mem_free_start: 0x%x", &mem_free_start);
 
     show_mem_info(boot_info);
     
@@ -182,5 +272,5 @@ void memory_init(boot_info_t *boot_info) {
     create_kernal_table();
 
     //设置内核的页目录表到CR3寄存器，并开启分页机制
-    mmu_set_page_dir_table((uint32_t)kernel_page_dir_table)
+    mmu_set_page_dir((uint32_t)kernel_page_dir);
 }
