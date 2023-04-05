@@ -20,7 +20,11 @@
 
 //定义页表项的第0位，present位
 #define PTE_P   (1 << 0)
+//定义页目录项的第0位，present位
+#define PDE_P   (1 << 0)
 
+
+#pragma pack(1)
 
 //csapp p578
 //定义页目录项PDE结构的联合体
@@ -54,12 +58,13 @@ typedef union _pte_t {
         uint32_t dirty : 1;     //D位，修改位，标记该页是否被写
         uint32_t pat : 1;
         uint32_t gloable : 1;   //G位，全局位，标记该页在任务切换时是否从TLB缓存中驱逐出去
-        uint32_t : 4;
+        uint32_t : 3;
         uint32_t phy_page_addr : 20;  //高20位，页的物理地址
     };
     
 }pte_t;
 
+#pragma pack()
 
 /**
  * @brief 获取虚拟地址的高10位，及对应的页目录项在页目录表中的索引

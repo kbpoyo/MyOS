@@ -149,10 +149,11 @@ pte_t* find_pte(pde_t* page_dir, uint32_t vstart, int is_alloc) {
     kernel_memset(page_table, 0, MEM_PAGE_SIZE);
 
     //将该页表的起始地址放入对应的页目录项中并放入页目录表中，方便后续索引到该页表
-    page_dir[pde_index(vstart)].phy_pt_addr = (uint32_t)page_table >> 12;
-    page_dir[pde_index(vstart)].present = 1;
-
+    pde->v = pg_addr | PDE_P;
   }
+
+  log_printf("sizeof(pte_t) = %d", sizeof(pte_t));
+
 
   //3.返回在该页表中索引到的页表项
   return page_table + pte_index(vstart);
@@ -218,13 +219,14 @@ void create_kernal_table(void) {
 
     //将虚拟地址的起始地址按页大小4kb对齐，为了不丢失原有的虚拟地址空间，所以向下对齐vstart
     uint32_t vstart = down2((uint32_t)map->vstart, MEM_PAGE_SIZE);
+    uint32_t pstart = down2((uint32_t)map->pstart, MEM_PAGE_SIZE);
     //将虚拟地址的结束地址按页大小4kb对齐, 为了不丢失原有的虚拟地址空间，所以向上对齐vend
     uint32_t vend = up2((uint32_t)map->vend, MEM_PAGE_SIZE);
     //计算该虚拟空间需要的页数
     int page_count = (vend - vstart) / MEM_PAGE_SIZE;
 
     //创建内存映射关系
-    memory_creat_map(kernel_page_dir, vstart, (uint32_t)map->pstart, page_count, map->privilege);
+    memory_creat_map(kernel_page_dir, vstart, pstart, page_count, map->privilege);
 
 
   }

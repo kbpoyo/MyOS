@@ -12,7 +12,9 @@
         "_default_fcntl.h": "c",
         "loader.h": "c",
         "log.h": "c",
-        "mmu.h": "c"
+        "mmu.h": "c",
+        "klib.h": "c",
+        "memory.h": "c"
     },
     "todo-tree.tree.scanMode": "workspace only",
 }
