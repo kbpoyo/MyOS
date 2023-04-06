@@ -46,7 +46,7 @@ void task_switch_from_to(task_t *from, task_t *to) {
  * @param entry 任务入口地址
  * @param esp 任务所用的栈顶指针
  */
-static void tss_init(task_t *task, uint32_t entry, uint32_t esp) {
+static int tss_init(task_t *task, uint32_t entry, uint32_t esp) {
 
     //1.将tss段的值置空
     kernel_memset(&task->tss, 0, sizeof(task->tss));
@@ -69,19 +69,27 @@ static void tss_init(task_t *task, uint32_t entry, uint32_t esp) {
     //7.初始化eflags寄存器，使cpu中断保持开启
     task->tss.eflags = EFLAGS_DEFAULT_1 | EFLAGS_IF;
 
-    //8.将该TSS段绑定到GDT中的某个段描述符
+    //8.创建当前进程的虚拟页表，并设置cr3寄存器
+    uint32_t page_dir = memory_creat_uvm();
+    if (page_dir == 0) return -1;
+    task->tss.cr3 = page_dir;
+    
+
+
+    //9.将该TSS段绑定到GDT中的某个段描述符
     uint32_t tss_selector = gdt_alloc_desc();
     if (tss_selector < 0) {
         log_printf("alloc tss failed!");
-        return;
+        return -1;
     }
-
     segment_desc_set(tss_selector, (uint32_t)&task->tss, sizeof(task->tss), 
                     SEG_ATTR_P | SEG_ATTR_DPL_0 | SEG_ATTR_TYPE_TSS);
 
 
-    //9.记录tss绑定到的描述符的选择子
+    //10.记录tss绑定到的描述符的选择子
     task->tss_selector = tss_selector;
+
+    return 0;
 }
 
 /**

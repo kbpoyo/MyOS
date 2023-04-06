@@ -15,13 +15,18 @@
 #include "common/types.h"
 #include "common/cpu_instr.h"
 
-//定义页目录项的个数,1024个即可，每个目录项4字节，刚好4kb即页目录表刚好占一个页
-#define PDE_CNT 1024
+//定义页目录项相关的宏
+#define PDE_CNT 1024        //页目录项的个数,1024个即可，每个目录项4字节，刚好4kb即页目录表刚好占一个页
+#define PDE_P   (1 << 0)    //第0位，present位
+#define PDE_W   (1 << 1)    //第1位，write位
+#define PDE_U   (1 << 2)    //第2位，user位
 
-//定义页表项的第0位，present位
-#define PTE_P   (1 << 0)
-//定义页目录项的第0位，present位
-#define PDE_P   (1 << 0)
+//定义页表项相关的宏
+#define PTE_P   (1 << 0)    //第0位，present位
+#define PTE_W   (1 << 1)    //第1位，
+#define PTE_U   (1 << 2)    //第2位，user位
+
+
 
 
 #pragma pack(1)

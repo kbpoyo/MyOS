@@ -149,7 +149,7 @@ pte_t* find_pte(pde_t* page_dir, uint32_t vstart, int is_alloc) {
     kernel_memset(page_table, 0, MEM_PAGE_SIZE);
 
     //将该页表的起始地址放入对应的页目录项中并放入页目录表中，方便后续索引到该页表
-    pde->v = pg_addr | PDE_P;
+    pde->v = pg_addr | PDE_U | PDE_W | PDE_P;
   }
 
   log_printf("sizeof(pte_t) = %d", sizeof(pte_t));
@@ -208,9 +208,9 @@ void create_kernal_table(void) {
   extern char s_text, e_text, s_data;
 
   static memory_map_t kernal_map[] = {
-    {0, &s_text, 0, 0},                             //低64kb的空间映射关系，即0x10000(内核起始地址)以下部分的空间
+    {0, &s_text, 0, PTE_W},                             //低64kb的空间映射关系，即0x10000(内核起始地址)以下部分的空间
     {&s_text, &e_text, &s_text, 0},                 //只读段的映射关系(内核.text和.rodata段)
-    {&s_data, (void*)MEM_EBDA_START, &s_data, 0}    //可读写段的映射关系，一直到bios的拓展数据区(内核.data与.bss段再加上剩余的可用数据区域)
+    {&s_data, (void*)MEM_EBDA_START, &s_data, PTE_W}    //可读写段的映射关系，一直到bios的拓展数据区(内核.data与.bss段再加上剩余的可用数据区域)
 
   };
 
@@ -230,6 +230,35 @@ void create_kernal_table(void) {
 
 
   }
+}
+
+
+/**
+ * @brief 创建用户进程的虚拟内存空间，即页目录表
+ * 
+ * @return uint32_t 
+ */
+uint32_t memory_creat_uvm() {
+  //1.分配一页作为页目录表
+  pde_t *page_dir = (pde_t *)addr_alloc_page(&paddr_alloc, 1);
+  if (page_dir == 0) return 0;
+  //TODO:新分配的页并未做虚拟内存映射，会触发缺页异常，需要处理
+
+  //2.将该页的内容清空
+  kernel_memset((void*)page_dir, 0, MEM_PAGE_SIZE);
+
+  //3.获取用户进程空间的第一个页目录项索引, 用户进程空间的起始地址MEM_TASK_BASE = 0x800 00000
+  uint32_t user_pde_start = pde_index(MEM_TASK_BASE);
+
+  //4.将用户进程空间以下的空间映射给操作系统使用，即将0~user_pde_start的pde提供给操作系统作为页目录项
+  for (int i = 0; i < user_pde_start; ++i) {
+      page_dir[i].v = kernel_page_dir[i].v; //所有进程都共享操作系统的页表
+  }
+
+
+  return (uint32_t)page_dir;
+
+
 }
 
 

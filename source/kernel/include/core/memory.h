@@ -22,6 +22,8 @@
 #define MEM_PAGE_SIZE 4096
 //实模式下1mb空间中拓展bios数据区的首地址，紧邻可用数据区
 #define MEM_EBDA_START 0x9fc00
+//虚拟空间中，用户进程的起始地址设置为 0x8000 0000, 以下的空间映射给操作系统使用
+#define MEM_TASK_BASE 0x80000000
 
 //内存分配对象
 typedef struct _addr_alloc_t {
