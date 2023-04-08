@@ -13,4 +13,9 @@ source/kernel/CMakeFiles/kernel.dir/core/task.c.o: \
  /home/kbpoyo/code/cpp/MyOs/source/common/types.h \
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/cpu/gdt.h \
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/os_cfg.h \
- /home/kbpoyo/code/cpp/MyOs/source/kernel/include/cpu/idt.h
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/include/cpu/idt.h \
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/include/core/memory.h \
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/include/tools/bitmap.h \
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/include/ipc/mutex.h \
+ /home/kbpoyo/code/cpp/MyOs/source/common/boot_info.h \
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/include/cpu/mmu.h

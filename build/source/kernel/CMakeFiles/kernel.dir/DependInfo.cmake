@@ -8,6 +8,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_ASM
+  "/home/kbpoyo/code/cpp/MyOs/source/kernel/init/first_task_entry.S" "/home/kbpoyo/code/cpp/MyOs/build/source/kernel/CMakeFiles/kernel.dir/init/first_task_entry.S.o"
   "/home/kbpoyo/code/cpp/MyOs/source/kernel/init/start.S" "/home/kbpoyo/code/cpp/MyOs/build/source/kernel/CMakeFiles/kernel.dir/init/start.S.o"
   )
 set(CMAKE_ASM_COMPILER_ID "GNU")
@@ -26,6 +27,7 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/home/kbpoyo/code/cpp/MyOs/source/kernel/cpu/idt.c" "source/kernel/CMakeFiles/kernel.dir/cpu/idt.c.o" "gcc" "source/kernel/CMakeFiles/kernel.dir/cpu/idt.c.o.d"
   "/home/kbpoyo/code/cpp/MyOs/source/kernel/cpu/mmu.c" "source/kernel/CMakeFiles/kernel.dir/cpu/mmu.c.o" "gcc" "source/kernel/CMakeFiles/kernel.dir/cpu/mmu.c.o.d"
   "/home/kbpoyo/code/cpp/MyOs/source/kernel/dev/time.c" "source/kernel/CMakeFiles/kernel.dir/dev/time.c.o" "gcc" "source/kernel/CMakeFiles/kernel.dir/dev/time.c.o.d"
+  "/home/kbpoyo/code/cpp/MyOs/source/kernel/init/first_task.c" "source/kernel/CMakeFiles/kernel.dir/init/first_task.c.o" "gcc" "source/kernel/CMakeFiles/kernel.dir/init/first_task.c.o.d"
   "/home/kbpoyo/code/cpp/MyOs/source/kernel/init/init.c" "source/kernel/CMakeFiles/kernel.dir/init/init.c.o" "gcc" "source/kernel/CMakeFiles/kernel.dir/init/init.c.o.d"
   "/home/kbpoyo/code/cpp/MyOs/source/kernel/ipc/mutex.c" "source/kernel/CMakeFiles/kernel.dir/ipc/mutex.c.o" "gcc" "source/kernel/CMakeFiles/kernel.dir/ipc/mutex.c.o.d"
   "/home/kbpoyo/code/cpp/MyOs/source/kernel/ipc/sem.c" "source/kernel/CMakeFiles/kernel.dir/ipc/sem.c.o" "gcc" "source/kernel/CMakeFiles/kernel.dir/ipc/sem.c.o.d"

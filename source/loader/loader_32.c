@@ -87,7 +87,7 @@ static uint32_t reload_elf_file(uint8_t *file_start_addr ) {
         uint8_t *src = file_start_addr + phdr->p_offset;
 
         //7.加载到内存中的目的地址
-        uint8_t *dest = (uint8_t*)phdr->p_vaddr;
+        uint8_t *dest = (uint8_t*)phdr->p_paddr;
 
         //8.逐个字节拷贝到对应位置
         for (int i = 0; i < phdr->p_filesz; ++i) {

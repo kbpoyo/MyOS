@@ -912,9 +912,9 @@ static uint32_t reload_elf_file(uint8_t *file_start_addr ) {
     85a1:	89 45 f8             	mov    %ax,-0x8(%di)
 
         //7.加载到内存中的目的地址
-        uint8_t *dest = (uint8_t*)phdr->p_vaddr;
+        uint8_t *dest = (uint8_t*)phdr->p_paddr;
     85a4:	8b 45 e4             	mov    -0x1c(%di),%ax
-    85a7:	8b 40 08             	mov    0x8(%bx,%si),%ax
+    85a7:	8b 40 0c             	mov    0xc(%bx,%si),%ax
     85aa:	89 45 f4             	mov    %ax,-0xc(%di)
 
         //8.逐个字节拷贝到对应位置

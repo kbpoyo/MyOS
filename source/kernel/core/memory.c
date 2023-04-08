@@ -152,7 +152,7 @@ pte_t* find_pte(pde_t* page_dir, uint32_t vstart, int is_alloc) {
     pde->v = pg_addr | PDE_U | PDE_W | PDE_P;
   }
 
-  log_printf("sizeof(pte_t) = %d", sizeof(pte_t));
+  // log_printf("sizeof(pte_t) = %d", sizeof(pte_t));
 
 
   //3.返回在该页表中索引到的页表项
@@ -176,8 +176,8 @@ int  memory_creat_map(pde_t *page_dir, uint32_t vstart, uint32_t pstart, int pag
   //1.为每一页创建对应的页表项
   for (int i = 0; i < page_count; ++i) {
 
-    //打印调试信息
-    log_printf("creat map: v-0x%x, p-0x%x, privilege:0x%x", vstart, pstart, privilege);
+    // //打印调试信息
+    // log_printf("creat map: v-0x%x, p-0x%x, privilege:0x%x", vstart, pstart, privilege);
 
     //2.通过虚拟地址在页目录表中获取对应的页目录项指向的页表,
     //且当没有该页目录项时，为其分配一个页作为页表并让一个目录项指向该页表
@@ -187,7 +187,7 @@ int  memory_creat_map(pde_t *page_dir, uint32_t vstart, uint32_t pstart, int pag
       return -1;
     }
 
-    log_printf("pte addr : 0x%x", (uint32_t)pte);
+    // log_printf("pte addr : 0x%x", (uint32_t)pte);
     //3.确保该页并未已存在内存中
     ASSERT(pte->present == 0);
 
@@ -210,7 +210,8 @@ void create_kernal_table(void) {
   static memory_map_t kernal_map[] = {
     {0, &s_text, 0, PTE_W},                             //低64kb的空间映射关系，即0x10000(内核起始地址)以下部分的空间
     {&s_text, &e_text, &s_text, 0},                 //只读段的映射关系(内核.text和.rodata段)
-    {&s_data, (void*)MEM_EBDA_START, &s_data, PTE_W}    //可读写段的映射关系，一直到bios的拓展数据区(内核.data与.bss段再加上剩余的可用数据区域)
+    {&s_data, (void*)MEM_EBDA_START, &s_data, PTE_W},    //可读写段的映射关系，一直到bios的拓展数据区(内核.data与.bss段再加上剩余的可用数据区域)
+    {(void*)MEM_EXT_START, (void*)MEM_EXT_END, (void*)MEM_EXT_START, PTE_W} //将1mb到127mb都映射给操作系统使用
 
   };
 
@@ -227,7 +228,6 @@ void create_kernal_table(void) {
 
     //创建内存映射关系
     memory_creat_map(kernel_page_dir, vstart, pstart, page_count, map->privilege);
-
 
   }
 }
@@ -257,8 +257,6 @@ uint32_t memory_creat_uvm() {
 
 
   return (uint32_t)page_dir;
-
-
 }
 
 

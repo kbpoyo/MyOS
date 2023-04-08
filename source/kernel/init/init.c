@@ -54,35 +54,25 @@ void kernel_init(boot_info_t* boot_info) {
 
 }
 
-static task_t task_test_task_1;
-static task_t task_test_task_2;
-static uint32_t test_task_1_stack[1024]; 
-static uint32_t test_task_2_stack[1024]; 
-static sem_t sem;
 
 
-void test_task_1(void) {
+/**
+ * @brief 跳转到第一个任务进程
+ * 
+ */
+void move_to_first_task(void) {
+    //1.获取当前任务
+    task_t *curr = task_current();
+    ASSERT(curr != 0);
 
-    int count = 0;
-    for (;;) {
-        // sem_wait(&sem);
-        log_printf("task_1: %d", count++);
-        // sem_notify(&sem);
-        // sys_sleep(1000);
-     }
+    //2.获取当前任务的tss结构
+    tss_t *tss = &(curr->tss);
+
+    //3.用内联汇编进行间接跳转,需要 jmp * %寄存器 (从寄存器中给出地址为间接跳转,直接从值跳转为直接跳转)
+    __asm__ __volatile__(
+        "jmp * %[ip]"::[ip]"r"(tss->eip)
+    );
 }
-
-void test_task_2(void) {
-
-    int count = 0;
-    for (;;) {
-        // sem_wait(&sem);
-        log_printf("task_2: %d", count++);
-        // sem_notify(&sem);
-        // sys_sleep(1000);
-     }
-}
-
 
 
 void init_main(void) {
@@ -94,17 +84,7 @@ void init_main(void) {
 
     //当前任务作为任务管理器启用时的第一个任务
     task_first_init();
-    task_init(&task_test_task_1, "test_task_1", (uint32_t)test_task_1, (uint32_t)&test_task_1_stack[1024]);
-    task_init(&task_test_task_2, "test_task_2", (uint32_t)test_task_2, (uint32_t)&test_task_2_stack[1024]);
 
-
-    // sem_init(&sem, 0);
-    sti();
-
-    int count = 0;
-    for (;;) {
-        log_printf("first: %d", count++);
-        // sem_notify(&sem);
-        // sys_sleep(1000);
-    }
+    //跳转到第一个任务进程去运行
+    move_to_first_task();
 }

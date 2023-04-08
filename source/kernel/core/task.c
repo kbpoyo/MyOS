@@ -17,6 +17,8 @@
 #include "cpu/gdt.h"
 #include "os_cfg.h"
 #include "cpu/idt.h"
+#include "core/memory.h"
+#include "cpu/mmu.h"
 
 //定义全局唯一的任务管理器对象
 static task_manager_t task_manager;
@@ -69,7 +71,7 @@ static int tss_init(task_t *task, uint32_t entry, uint32_t esp) {
     //7.初始化eflags寄存器，使cpu中断保持开启
     task->tss.eflags = EFLAGS_DEFAULT_1 | EFLAGS_IF;
 
-    //8.创建当前进程的虚拟页表，并设置cr3寄存器
+    //8.创建当前进程的虚拟页目录表，并设置cr3寄存器
     uint32_t page_dir = memory_creat_uvm();
     if (page_dir == 0) return -1;
     task->tss.cr3 = page_dir;
@@ -175,20 +177,41 @@ void task_manager_init(void) {
  * @brief  初始化第一个任务
  * 
  */
-void task_first_init(void) {
-      //1.初始化任务，当前任务是在任务管理器启用前就执行的，
-      //拥有自己的栈空间，所以入口地址直接和栈空间都置0即可
-      //这一步只是为当前任务绑定一个TSS段并将其绑定到一个task对象
-      task_init(&task_manager.first_task, "first task", 0, 0);
+// void task_first_init(void) {
+//       //1.初始化任务，当前任务是在任务管理器启用前就执行的，
+//       //拥有自己的栈空间，所以入口地址直接和栈空间都置0即可
+//       //这一步只是为当前任务绑定一个TSS段并将其绑定到一个task对象
+//       task_init(&task_manager.first_task, "first task", 0, 0);
       
-      //2.将当前任务的TSS选择子告诉cpu，用来切换任务时保存状态
-      write_tr(task_manager.first_task.tss_selector);
+//       //2.将当前任务的TSS选择子告诉cpu，用来切换任务时保存状态
+//       write_tr(task_manager.first_task.tss_selector);
 
-      //3.将当前任务执行第一个任务
-      task_manager.curr_task = &task_manager.first_task;
+//       //3.将当前任务执行第一个任务
+//       task_manager.curr_task = &task_manager.first_task;
 
-      //4.将当前任务状态设置为运行态
-      task_manager.curr_task->state = TASK_RUNNING;
+//       //4.将当前任务状态设置为运行态
+//       task_manager.curr_task->state = TASK_RUNNING;
+// }
+
+void task_first_init(void) {
+
+    //1.声明第一个任务的符号
+    void first_task_entry(void);
+
+    //2.初始化第一个任务
+    task_init(&task_manager.first_task, "first task", (uint32_t)first_task_entry, 0);
+      
+    //3.将当前任务的TSS选择子告诉cpu，用来切换任务时保存状态
+    write_tr(task_manager.first_task.tss_selector);
+
+    //4.将当前任务执行第一个任务
+    task_manager.curr_task = &task_manager.first_task;
+
+    //5.设置第一个任务的页表
+    mmu_set_page_dir(task_manager.first_task.tss.cr3);
+
+    //5.将当前任务状态设置为运行态
+    task_manager.curr_task->state = TASK_RUNNING;
 }
 
 /**

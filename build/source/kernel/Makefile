@@ -274,6 +274,38 @@ dev/time.c.s:
 	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/dev/time.c.s
 .PHONY : dev/time.c.s
 
+init/first_task.o: init/first_task.c.o
+.PHONY : init/first_task.o
+
+# target to build an object file
+init/first_task.c.o:
+	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/init/first_task.c.o
+.PHONY : init/first_task.c.o
+
+init/first_task.i: init/first_task.c.i
+.PHONY : init/first_task.i
+
+# target to preprocess a source file
+init/first_task.c.i:
+	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/init/first_task.c.i
+.PHONY : init/first_task.c.i
+
+init/first_task.s: init/first_task.c.s
+.PHONY : init/first_task.s
+
+# target to generate assembly for a file
+init/first_task.c.s:
+	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/init/first_task.c.s
+.PHONY : init/first_task.c.s
+
+init/first_task_entry.o: init/first_task_entry.S.o
+.PHONY : init/first_task_entry.o
+
+# target to build an object file
+init/first_task_entry.S.o:
+	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/init/first_task_entry.S.o
+.PHONY : init/first_task_entry.S.o
+
 init/init.o: init/init.c.o
 .PHONY : init/init.o
 
@@ -525,6 +557,10 @@ help:
 	@echo "... dev/time.o"
 	@echo "... dev/time.i"
 	@echo "... dev/time.s"
+	@echo "... init/first_task.o"
+	@echo "... init/first_task.i"
+	@echo "... init/first_task.s"
+	@echo "... init/first_task_entry.o"
 	@echo "... init/init.o"
 	@echo "... init/init.i"
 	@echo "... init/init.s"

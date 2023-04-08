@@ -14,7 +14,9 @@
         "log.h": "c",
         "mmu.h": "c",
         "klib.h": "c",
-        "memory.h": "c"
+        "memory.h": "c",
+        "gdt.h": "c",
+        "idt.h": "c"
     },
     "todo-tree.tree.scanMode": "workspace only",
 }
