@@ -1094,7 +1094,7 @@ void load_kernel(void) {
     86ad:	ff 83 c4 04          	incw   0x4c4(%bp,%di)
     } 
 
-    //4.加载为内核后开启分页机制
+    //4.加载内核后开启分页机制
     enable_page_mode();              
     86b1:	e8 86 ff             	call   863a <die+0xc>
     86b4:	ff                   	(bad)  

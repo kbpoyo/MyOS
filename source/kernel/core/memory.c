@@ -47,7 +47,7 @@ static void addr_alloc_init(addr_alloc_t *alloc, uint8_t *bits, uint32_t start,
  *
  * @param alloc
  * @param page_count 申请页的数量
- * @return uint32_t 申请的第一个页的起始地址
+ * @return uint32_t 申请的第一个页的起始地址， 0：分配失败
  */
 static uint32_t addr_alloc_page(addr_alloc_t *alloc, int page_count) {
   uint32_t addr = 0;  // 记录分配的页的起始地址
@@ -170,7 +170,7 @@ pte_t* find_pte(pde_t* page_dir, uint32_t vstart, int is_alloc) {
  * @param pstart 物理地址的起始地址
  * @param page_count 分页数量
  * @param privilege 该段虚拟地址的特权级
- * @return int 
+ * @return int -1:分配失败
  */
 int  memory_creat_map(pde_t *page_dir, uint32_t vstart, uint32_t pstart, int page_count, uint32_t privilege) {
   //1.为每一页创建对应的页表项
@@ -207,11 +207,13 @@ void create_kernal_table(void) {
   //声明内核只读段的起始与结束地址和数据段的起始地址
   extern char s_text, e_text, s_data;
 
+  extern char s_first_task, e_first_task_v;
+
   static memory_map_t kernal_map[] = {
     {0, &s_text, 0, PTE_W},                             //低64kb的空间映射关系，即0x10000(内核起始地址)以下部分的空间
     {&s_text, &e_text, &s_text, 0},                 //只读段的映射关系(内核.text和.rodata段)
     {&s_data, (void*)MEM_EBDA_START, &s_data, PTE_W},    //可读写段的映射关系，一直到bios的拓展数据区(内核.data与.bss段再加上剩余的可用数据区域)
-    {(void*)MEM_EXT_START, (void*)MEM_EXT_END, (void*)MEM_EXT_START, PTE_W} //将1mb到127mb都映射给操作系统使用
+    {(void*)MEM_EXT_START, (void*)MEM_EXT_END, (void*)MEM_EXT_START, PTE_W}, //将1mb到127mb都映射给操作系统使用
 
   };
 
@@ -302,4 +304,54 @@ void memory_init(boot_info_t *boot_info) {
 
     //设置内核的页目录表到CR3寄存器，并开启分页机制
     mmu_set_page_dir((uint32_t)kernel_page_dir);
+}
+
+/**
+ * @brief 为进程在物理地址空间中分配对应的页空间，并进行映射，
+ *        使进程的虚拟地址与物理地址对应起来
+ * 
+ * @param page_dir 进程的页目录表
+ * @param vaddr 进程各个代码段的起始虚拟地址
+ * @param alloc_size 为进程分配的页空间大小
+ * @param priority 进程页空间的权限
+ * @return int 
+ */
+int memory_alloc_for_page_dir(uint32_t page_dir, uint32_t vaddr, uint32_t alloc_size, uint32_t privilege) {
+  //1.记录当前分配的虚拟页的起始地址
+  uint32_t curr_vaddr = vaddr;
+  //2.计算需要分配多少页
+  int page_count = up2(alloc_size, MEM_PAGE_SIZE) / MEM_PAGE_SIZE;
+
+  //3.逐页进行映射
+  for (int i = 0; i < page_count; ++i) {
+    uint32_t paddr = addr_alloc_page(&paddr_alloc, 1);
+    if (paddr == 0) {//分配失败
+      log_printf("mem alloc failed. no memory");
+      //TODO:当分配失败时应该将之前分配的页全部归还，且将映射关系也全部解除
+      return 0;
+    }
+
+    int err = memory_creat_map((pde_t*)page_dir, curr_vaddr, paddr, 1, privilege);
+    if (err < 0) {//分配失败
+      log_printf("create memory failed. err = %d", err);
+      //TODO:当分配失败时应该将之前分配的页全部归还，且将映射关系也全部解除
+      return 0;
+    }
+
+    curr_vaddr += MEM_PAGE_SIZE;
+  }
+
+  return 0;
+}
+
+/**
+ * @brief 为虚拟地址分配页空间
+ * 
+ * @param vaddr 待分配空间的起始地址
+ * @param alloc_size 为其分配的空间大小
+ * @param priority 对应页空间的权限
+ * @return int 错误码
+ */
+int memory_alloc_page_for(uint32_t vaddr, uint32_t alloc_size, uint32_t priority) {
+  return memory_alloc_for_page_dir(task_current()->tss.cr3, vaddr, alloc_size, priority);
 }

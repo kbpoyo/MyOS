@@ -172,7 +172,7 @@ void load_kernel(void) {
         die(-1);
     } 
 
-    //4.加载为内核后开启分页机制
+    //4.加载内核后开启分页机制
     enable_page_mode();              
 
     //5.将boot_info记录的信息传递给已拷贝到确定内存中的内核初始化函数

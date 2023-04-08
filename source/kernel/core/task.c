@@ -198,20 +198,33 @@ void task_first_init(void) {
     //1.声明第一个任务的符号
     void first_task_entry(void);
 
-    //2.初始化第一个任务
+    //2.确定第一个任务进程需要的空间大小
+    extern char s_first_task, e_first_task;
+    uint32_t copy_size = (uint32_t)(&e_first_task - &s_first_task);   //进程所需空间大小
+    uint32_t alloc_size = up2(copy_size, MEM_PAGE_SIZE);   //为进程分配10页内存足矣
+    ASSERT(copy_size < alloc_size);
+
+
+    //3.初始化第一个任务
     task_init(&task_manager.first_task, "first task", (uint32_t)first_task_entry, 0);
       
-    //3.将当前任务的TSS选择子告诉cpu，用来切换任务时保存状态
+    //4.将当前任务的TSS选择子告诉cpu，用来切换任务时保存状态
     write_tr(task_manager.first_task.tss_selector);
 
-    //4.将当前任务执行第一个任务
+    //5.将当前任务执行第一个任务
     task_manager.curr_task = &task_manager.first_task;
 
-    //5.设置第一个任务的页表
+    //6.将当前页表设置为第一个任务的页表
     mmu_set_page_dir(task_manager.first_task.tss.cr3);
 
-    //5.将当前任务状态设置为运行态
+    //7.将当前任务状态设置为运行态
     task_manager.curr_task->state = TASK_RUNNING;
+
+    //8.进程的各个段还只是在虚拟地址中，所以要为各个段分配物理地址页空间，并进行映射
+    memory_alloc_page_for((uint32_t)first_task_entry, alloc_size, PTE_P | PTE_W);
+
+    //9.将任务进程各个段从内核四个段之后的紧邻位置，拷贝到已分配好的且与虚拟地址对应的物理地址空间，实现代码隔离
+    kernel_memcpy(first_task_entry, &s_first_task, alloc_size);
 }
 
 /**
