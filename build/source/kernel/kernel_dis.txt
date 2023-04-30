@@ -31,17 +31,17 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING, OCTETS
   6 .debug_line_str 000006d7  00000000  00000000  00007cf6  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
-  7 .debug_info   000050a7  00000000  00000000  000083cd  2**0
+  7 .debug_info   0000508d  00000000  00000000  000083cd  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
-  8 .debug_abbrev 000018f1  00000000  00000000  0000d474  2**0
+  8 .debug_abbrev 000018f3  00000000  00000000  0000d45a  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
-  9 .debug_aranges 00000220  00000000  00000000  0000ed68  2**3
+  9 .debug_aranges 00000220  00000000  00000000  0000ed50  2**3
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 10 .debug_str    00001160  00000000  00000000  0000ef88  2**0
+ 10 .debug_str    00001154  00000000  00000000  0000ef70  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 11 .comment      0000002b  00000000  00000000  000100e8  2**0
+ 11 .comment      0000002b  00000000  00000000  000100c4  2**0
                   CONTENTS, READONLY
- 12 .debug_frame  000013b8  00000000  00000000  00010114  2**2
+ 12 .debug_frame  000013b8  00000000  00000000  000100f0  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
 SYMBOL TABLE:
 00000000 l    df *ABS*	00000000 start.S.o
@@ -1489,7 +1489,7 @@ uint32_t memory_creat_uvm() {
    10700:	75 07                	jne    10709 <memory_creat_uvm+0x28>
    10702:	b8 00 00 00 00       	mov    $0x0,%eax
    10707:	eb 5b                	jmp    10764 <memory_creat_uvm+0x83>
-  //TODO:新分配的页并未做虚拟内存映射，会触发缺页异常，需要处理
+  //TODO:新分配的页并未做虚拟内存映射，会触发缺页异常，需要处理,这里先将1mb以上的所有空间都映射给内核进程
 
   //2.将该页的内容清空
   kernel_memset((void*)page_dir, 0, MEM_PAGE_SIZE);
@@ -1625,7 +1625,7 @@ void memory_init(boot_info_t *boot_info) {
    10828:	76 1c                	jbe    10846 <memory_init+0xe0>
    1082a:	68 f0 33 01 00       	push   $0x133f0
    1082f:	68 64 34 01 00       	push   $0x13464
-   10834:	68 2c 01 00 00       	push   $0x12c
+   10834:	68 2a 01 00 00       	push   $0x12a
    10839:	68 78 33 01 00       	push   $0x13378
    1083e:	e8 20 1d 00 00       	call   12563 <pannic>
    10843:	83 c4 10             	add    $0x10,%esp
@@ -2387,7 +2387,7 @@ void task_first_init(void) {
    10d95:	b8 44 20 03 00       	mov    $0x32044,%eax
    10d9a:	2d 00 20 03 00       	sub    $0x32000,%eax
    10d9f:	89 45 f4             	mov    %eax,-0xc(%ebp)
-    uint32_t alloc_size = up2(copy_size, MEM_PAGE_SIZE);   //为进程分配10页内存足矣
+    uint32_t alloc_size = up2(copy_size, MEM_PAGE_SIZE);   //需要为进程分配的内存大小，按4kb对齐
    10da2:	68 00 10 00 00       	push   $0x1000
    10da7:	ff 75 f4             	push   -0xc(%ebp)
    10daa:	e8 c9 fc ff ff       	call   10a78 <up2>
@@ -2405,7 +2405,8 @@ void task_first_init(void) {
    10dd6:	83 c4 10             	add    $0x10,%esp
 
 
-    //3.初始化第一个任务
+    //3.初始化第一个任务,因为当前为操作系统进程，esp初始值随意赋值都可，
+    // 因为当前进程已开启，cpu会在切换的时候保留真实的状态，即真实的esp值
     task_init(&task_manager.first_task, "first task", (uint32_t)first_task_entry, 0);
    10dd9:	b8 00 00 00 80       	mov    $0x80000000,%eax
    10dde:	6a 00                	push   $0x0
@@ -2496,7 +2497,7 @@ void task_set_ready(task_t *task) {
    10e73:	75 1c                	jne    10e91 <task_set_ready+0x28>
    10e75:	68 d9 34 01 00       	push   $0x134d9
    10e7a:	68 88 35 01 00       	push   $0x13588
-   10e7f:	68 f5 00 00 00       	push   $0xf5
+   10e7f:	68 f6 00 00 00       	push   $0xf6
    10e84:	68 ec 34 01 00       	push   $0x134ec
    10e89:	e8 d5 16 00 00       	call   12563 <pannic>
    10e8e:	83 c4 10             	add    $0x10,%esp
@@ -2534,7 +2535,7 @@ void task_set_unready(task_t *task) {
    10ebe:	75 1c                	jne    10edc <task_set_unready+0x28>
    10ec0:	68 d9 34 01 00       	push   $0x134d9
    10ec5:	68 98 35 01 00       	push   $0x13598
-   10eca:	68 04 01 00 00       	push   $0x104
+   10eca:	68 05 01 00 00       	push   $0x105
    10ecf:	68 ec 34 01 00       	push   $0x134ec
    10ed4:	e8 8a 16 00 00       	call   12563 <pannic>
    10ed9:	83 c4 10             	add    $0x10,%esp
@@ -2868,7 +2869,7 @@ void task_set_sleep(task_t *task, uint32_t slice) {
    11115:	75 1c                	jne    11133 <task_set_sleep+0x28>
    11117:	68 d9 34 01 00       	push   $0x134d9
    1111c:	68 ec 35 01 00       	push   $0x135ec
-   11121:	68 92 01 00 00       	push   $0x192
+   11121:	68 93 01 00 00       	push   $0x193
    11126:	68 ec 34 01 00       	push   $0x134ec
    1112b:	e8 33 14 00 00       	call   12563 <pannic>
    11130:	83 c4 10             	add    $0x10,%esp
@@ -2913,7 +2914,7 @@ void task_set_wakeup(task_t *task) {
    11171:	75 1c                	jne    1118f <task_set_wakeup+0x28>
    11173:	68 d9 34 01 00       	push   $0x134d9
    11178:	68 fc 35 01 00       	push   $0x135fc
-   1117d:	68 a0 01 00 00       	push   $0x1a0
+   1117d:	68 a1 01 00 00       	push   $0x1a1
    11182:	68 ec 34 01 00       	push   $0x134ec
    11187:	e8 d7 13 00 00       	call   12563 <pannic>
    1118c:	83 c4 10             	add    $0x10,%esp
@@ -4672,8 +4673,6 @@ void init_main(void) {
    11d95:	55                   	push   %ebp
    11d96:	89 e5                	mov    %esp,%ebp
    11d98:	83 ec 08             	sub    $0x8,%esp
-
-
     
     log_printf("Kernel is running......");
    11d9b:	83 ec 0c             	sub    $0xc,%esp

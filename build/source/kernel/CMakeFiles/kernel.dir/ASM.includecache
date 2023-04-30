@@ -6,5 +6,11 @@
 
 #IncludeRegexTransform: 
 
+../source/kernel/include/os_cfg.h
+
 /home/kbpoyo/code/cpp/MyOs/source/kernel/init/first_task_entry.S
+
+/home/kbpoyo/code/cpp/MyOs/source/kernel/init/start.S
+os_cfg.h
+/home/kbpoyo/code/cpp/MyOs/source/kernel/init/os_cfg.h
 

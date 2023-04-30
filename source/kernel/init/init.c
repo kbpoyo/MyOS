@@ -76,8 +76,6 @@ void move_to_first_task(void) {
 
 
 void init_main(void) {
-
-
     
     log_printf("Kernel is running......");
     log_printf("Name: %s, Version: %s", "KbOS", OS_VERSION);

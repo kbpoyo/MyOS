@@ -207,8 +207,6 @@ void create_kernal_table(void) {
   //声明内核只读段的起始与结束地址和数据段的起始地址
   extern char s_text, e_text, s_data;
 
-  extern char s_first_task, e_first_task_v;
-
   static memory_map_t kernal_map[] = {
     {0, &s_text, 0, PTE_W},                             //低64kb的空间映射关系，即0x10000(内核起始地址)以下部分的空间
     {&s_text, &e_text, &s_text, 0},                 //只读段的映射关系(内核.text和.rodata段)
@@ -244,7 +242,7 @@ uint32_t memory_creat_uvm() {
   //1.分配一页作为页目录表
   pde_t *page_dir = (pde_t *)addr_alloc_page(&paddr_alloc, 1);
   if (page_dir == 0) return 0;
-  //TODO:新分配的页并未做虚拟内存映射，会触发缺页异常，需要处理
+  //TODO:新分配的页并未做虚拟内存映射，会触发缺页异常，需要处理,这里先将1mb以上的所有空间都映射给内核进程
 
   //2.将该页的内容清空
   kernel_memset((void*)page_dir, 0, MEM_PAGE_SIZE);

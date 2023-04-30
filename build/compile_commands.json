@@ -61,6 +61,16 @@
 },
 {
   "directory": "/home/kbpoyo/code/cpp/MyOs/build/source/kernel",
+  "command": "/usr/bin/gcc  -I/home/kbpoyo/code/cpp/MyOs/source -I/home/kbpoyo/code/cpp/MyOs/source/kernel/include -g -c -O0 -m32 -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -g -o CMakeFiles/kernel.dir/init/first_task.c.o -c /home/kbpoyo/code/cpp/MyOs/source/kernel/init/first_task.c",
+  "file": "/home/kbpoyo/code/cpp/MyOs/source/kernel/init/first_task.c"
+},
+{
+  "directory": "/home/kbpoyo/code/cpp/MyOs/build/source/kernel",
+  "command": "/usr/bin/gcc  -I/home/kbpoyo/code/cpp/MyOs/source -I/home/kbpoyo/code/cpp/MyOs/source/kernel/include -m32 -g -g -o CMakeFiles/kernel.dir/init/first_task_entry.S.o -c /home/kbpoyo/code/cpp/MyOs/source/kernel/init/first_task_entry.S",
+  "file": "/home/kbpoyo/code/cpp/MyOs/source/kernel/init/first_task_entry.S"
+},
+{
+  "directory": "/home/kbpoyo/code/cpp/MyOs/build/source/kernel",
   "command": "/usr/bin/gcc  -I/home/kbpoyo/code/cpp/MyOs/source -I/home/kbpoyo/code/cpp/MyOs/source/kernel/include -g -c -O0 -m32 -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -g -o CMakeFiles/kernel.dir/init/init.c.o -c /home/kbpoyo/code/cpp/MyOs/source/kernel/init/init.c",
   "file": "/home/kbpoyo/code/cpp/MyOs/source/kernel/init/init.c"
 },

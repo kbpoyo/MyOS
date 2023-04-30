@@ -201,11 +201,12 @@ void task_first_init(void) {
     //2.确定第一个任务进程需要的空间大小
     extern char s_first_task, e_first_task;
     uint32_t copy_size = (uint32_t)(&e_first_task - &s_first_task);   //进程所需空间大小
-    uint32_t alloc_size = up2(copy_size, MEM_PAGE_SIZE);   //为进程分配10页内存足矣
+    uint32_t alloc_size = up2(copy_size, MEM_PAGE_SIZE);   //需要为进程分配的内存大小，按4kb对齐
     ASSERT(copy_size < alloc_size);
 
 
-    //3.初始化第一个任务
+    //3.初始化第一个任务,因为当前为操作系统进程，esp初始值随意赋值都可，
+    // 因为当前进程已开启，cpu会在切换的时候保留真实的状态，即真实的esp值
     task_init(&task_manager.first_task, "first task", (uint32_t)first_task_entry, 0);
       
     //4.将当前任务的TSS选择子告诉cpu，用来切换任务时保存状态
