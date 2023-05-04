@@ -67,6 +67,10 @@ typedef struct _segment_desc_t {
 //标志该段为TSS段, 10B1, B为1表示该任务忙碌，不可启用，为0表示该任务空闲，可启用  
 #define SEG_ATTR_TYPE_TSS ((uint16_t)(9 << 0)) 
 
+//定义选择子的低2位CPL权限位
+#define SEG_CPL0    (0 << 0)
+#define SEG_CPL3    (3 << 0)
+
 void segment_desc_set(uint16_t selector,  uint32_t base, uint32_t limit, uint16_t attr);
 void gdt_init(void);
 int gdt_alloc_desc();

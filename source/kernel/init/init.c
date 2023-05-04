@@ -80,6 +80,8 @@ void init_main(void) {
     log_printf("Kernel is running......");
     log_printf("Name: %s, Version: %s", "KbOS", OS_VERSION);
 
+   // idt_enable_global();
+
     //当前任务作为任务管理器启用时的第一个任务
     task_first_init();
 

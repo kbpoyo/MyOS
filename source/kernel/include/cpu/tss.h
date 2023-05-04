@@ -32,6 +32,7 @@ typedef struct _tss_t {
 
 //定义eflags寄存器使用的宏，供TSS初始化时使用
 #define EFLAGS_DEFAULT_1 ((uint32_t)(1 << 1))   //默认为1的位
-#define EFLAGS_IF ((uint32_t)(1 << 9))          //IF位，置1开启中断，置0关闭中断
+//IF位，置1开启中断，置0关闭中断
+#define EFLAGS_IF ((uint32_t)(1 << 9))          
 
 #endif

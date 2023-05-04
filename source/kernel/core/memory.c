@@ -347,9 +347,9 @@ int memory_alloc_for_page_dir(uint32_t page_dir, uint32_t vaddr, uint32_t alloc_
  * 
  * @param vaddr 待分配空间的起始地址
  * @param alloc_size 为其分配的空间大小
- * @param priority 对应页空间的权限
+ * @param privilege 对应页空间的权限
  * @return int 错误码
  */
-int memory_alloc_page_for(uint32_t vaddr, uint32_t alloc_size, uint32_t priority) {
-  return memory_alloc_for_page_dir(task_current()->tss.cr3, vaddr, alloc_size, priority);
+int memory_alloc_page_for(uint32_t vaddr, uint32_t alloc_size, uint32_t privilege) {
+  return memory_alloc_for_page_dir(task_current()->tss.cr3, vaddr, alloc_size, privilege);
 }

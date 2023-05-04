@@ -38,7 +38,7 @@ typedef union _pde_t {
     struct {
         uint32_t present : 1;   //P位，1：子页表存在于内存中
         uint32_t write_enable : 1; //R/W位， 1：对于子页表中所有可访问页可读写
-        uint32_t user_mode_acc : 1; //U/S位，1：用户以超级用户的权限访问
+        uint32_t user_mode_acc : 1; //U/S位，0：用户以超级用户的权限访问
         uint32_t write_through : 1; //PWT位 子页表的直写或写回策略
         uint32_t cache_disable : 1; //PCD位，能否缓存子页表PTE到TLB中
         uint32_t accessed : 1;  //A位,引用位，标志子页表是否被访问
@@ -56,7 +56,7 @@ typedef union _pte_t {
     struct {
         uint32_t present : 1;   //P位，1：子页存在于内存中
         uint32_t write_enable : 1; //R/W位， 1：对于子页可读写
-        uint32_t user_mode_acc : 1; //U/S位，1：用户以超级用户的权限访问
+        uint32_t user_mode_acc : 1; //U/S位，0：用户以超级用户的权限访问
         uint32_t write_through : 1; //PWT位 子页的直写或写回策略
         uint32_t cache_disable : 1; //PCD位，能否缓存子页表PTE到TLB中
         uint32_t accessed : 1;  //A位,引用位，标志子页表是否被访问

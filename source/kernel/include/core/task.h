@@ -62,6 +62,10 @@ typedef struct _task_manager_t {
 
   task_t first_task;  // 执行的第一个任务
   task_t empty_task;  //一个空的空闲进程，当所有进程都延时运行时，让cpu运行空闲进程
+
+  uint32_t app_code_selector; //应用程序代码段的选择子
+  uint32_t app_data_selector; //应用程序数据段的选择子
+
 } task_manager_t;
 
 

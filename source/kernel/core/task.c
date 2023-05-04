@@ -49,6 +49,9 @@ void task_switch_from_to(task_t *from, task_t *to) {
  * @param esp 任务所用的栈顶指针
  */
 static int tss_init(task_t *task, uint32_t entry, uint32_t esp) {
+    //获取任务的代码段选择子和数据段选择子，并初始化其CPL,因为是平台模型，所以基本不涉及到跨段访问，所以不需要RPL
+    uint32_t code_selector = task_manager.app_code_selector | SEG_CPL3;
+    uint32_t data_selector = task_manager.app_data_selector | SEG_CPL3;
 
     //1.将tss段的值置空
     kernel_memset(&task->tss, 0, sizeof(task->tss));
@@ -171,6 +174,16 @@ void task_manager_init(void) {
     //4.将空闲进程从就绪队列中取出
     task_set_unready(&task_manager.empty_task);
     task_manager.empty_task.state = TASK_CREATED;
+
+    //5.初始化应用程序及所有任务的代码段选择子和数据段选择子，以区分和内核选择子的特权级
+    //应用程序运行在 DPL_3 下， 内核运行在DPL_0下，配合分页机制中的us位，0为内核特权级，1为用户特权级
+    //就可做到特权级保护
+    uint32_t data_selector = gdt_alloc_desc();
+    uint32_t code_selector = gdt_alloc_desc();
+    segment_desc_set(data_selector, 0, 0xffffffff, SEG_ATTR_P | SEG_ATTR_DPL_3 | SEG_ATTR_S_NORMAL | SEG_ATTR_TYPE_DATA | SEG_ATTR_TYPE_RW | SEG_ATTR_G);
+    segment_desc_set(code_selector, 0, 0xffffffff, SEG_ATTR_P | SEG_ATTR_DPL_3 | SEG_ATTR_S_NORMAL | SEG_ATTR_TYPE_CODE | SEG_ATTR_TYPE_RW | SEG_ATTR_G);
+    task_manager.app_code_selector = code_selector;
+    task_manager.app_data_selector = data_selector;
 }
 
 /**
