@@ -63,13 +63,13 @@ static int tss_init(task_t *task, uint32_t entry, uint32_t esp) {
     task->tss.esp = task->tss.esp0 = esp;
 
     //4.平坦模型，初始化栈空间段寄存器
-    task->tss.ss = task->tss.ss0 = KERNEL_SELECTOR_DS;
+    task->tss.ss = task->tss.ss0 = data_selector;
 
     //5. 平坦模型，初始其余化段寄存器
-    task->tss.es = task->tss.fs = task->tss.gs = task->tss.ds = KERNEL_SELECTOR_DS;
+    task->tss.es = task->tss.fs = task->tss.gs = task->tss.ds = data_selector;
 
     //6.平坦模型，初始化代码段寄存器
-    task->tss.cs = KERNEL_SELECTOR_CS;
+    task->tss.cs = code_selector;
 
     //7.初始化eflags寄存器，使cpu中断保持开启
     task->tss.eflags = EFLAGS_DEFAULT_1 | EFLAGS_IF;
@@ -156,34 +156,36 @@ static void empty_task(void) {
  * 
  */
 void task_manager_init(void) {
-    //1.初始化所有任务队列
+    //1.初始化应用程序及所有任务的代码段选择子和数据段选择子，以区分和内核选择子的特权级
+    //应用程序运行在 DPL_3 下， 内核运行在DPL_0下，配合分页机制中的us位，0为内核特权级，1为用户特权级
+    //就可做到特权级保护
+    uint32_t data_selector = gdt_alloc_desc();
+    uint32_t code_selector = gdt_alloc_desc();
+    segment_desc_set(data_selector, 0, 0xffffffff, SEG_ATTR_P | SEG_ATTR_DPL_3 | SEG_ATTR_S_NORMAL | SEG_ATTR_TYPE_DATA | SEG_ATTR_TYPE_RW | SEG_ATTR_D_OR_B);
+    segment_desc_set(code_selector, 0, 0xffffffff, SEG_ATTR_P | SEG_ATTR_DPL_3 | SEG_ATTR_S_NORMAL | SEG_ATTR_TYPE_CODE | SEG_ATTR_TYPE_RW | SEG_ATTR_D_OR_B);
+    task_manager.app_code_selector = code_selector;
+    task_manager.app_data_selector = data_selector;
+    
+    //2.初始化所有任务队列
     list_init(&task_manager.ready_list);
     list_init(&task_manager.task_list);
     list_init(&task_manager.sleep_list);
 
-    //2.将当前任务置零
+    //3.将当前任务置零
     task_manager.curr_task = (task_t*)0;
 
-    //3.初始化空闲进程
+    //4.初始化空闲进程
     task_init(  &task_manager.empty_task,
                  "empty_task", 
                  (uint32_t)empty_task,
                  (uint32_t)&empty_task_stack[EMPTY_TASK_STACK_SIZE]);
                  
 
-    //4.将空闲进程从就绪队列中取出
+    //5.将空闲进程从就绪队列中取出
     task_set_unready(&task_manager.empty_task);
     task_manager.empty_task.state = TASK_CREATED;
 
-    //5.初始化应用程序及所有任务的代码段选择子和数据段选择子，以区分和内核选择子的特权级
-    //应用程序运行在 DPL_3 下， 内核运行在DPL_0下，配合分页机制中的us位，0为内核特权级，1为用户特权级
-    //就可做到特权级保护
-    uint32_t data_selector = gdt_alloc_desc();
-    uint32_t code_selector = gdt_alloc_desc();
-    segment_desc_set(data_selector, 0, 0xffffffff, SEG_ATTR_P | SEG_ATTR_DPL_3 | SEG_ATTR_S_NORMAL | SEG_ATTR_TYPE_DATA | SEG_ATTR_TYPE_RW | SEG_ATTR_G);
-    segment_desc_set(code_selector, 0, 0xffffffff, SEG_ATTR_P | SEG_ATTR_DPL_3 | SEG_ATTR_S_NORMAL | SEG_ATTR_TYPE_CODE | SEG_ATTR_TYPE_RW | SEG_ATTR_G);
-    task_manager.app_code_selector = code_selector;
-    task_manager.app_data_selector = data_selector;
+  
 }
 
 /**

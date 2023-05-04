@@ -120,7 +120,7 @@ exception_handler_\name:
 //宏结束标志
 .endm
 
-//使用定义的异常宏 
+//使用定义的异常宏 ,以下都是不可屏蔽中断，cpu必须处理该中断请求。
 //                |异常类型|       |IDT索引| |错误码|
 exception_handler unknown,              -1, 0    //未知异常
 exception_handler divider,              0,  0    //除0异常

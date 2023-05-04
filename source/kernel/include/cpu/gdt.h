@@ -55,7 +55,7 @@ typedef struct _segment_desc_t {
 //用来将不常用的段在内存与磁盘中进行置换
 #define SEG_ATTR_P ((uint16_t)(1 << 7))
 //6~5位：DPL位，标志段的特权级(0,1,2,3)
-#define SEG_ATTR_DPL_0 ((uint16_t)(0 << 6))   //最高特权级
+#define SEG_ATTR_DPL_0 ((uint16_t)(0 << 5))   //最高特权级
 #define SEG_ATTR_DPL_3 ((uint16_t)(3 << 5))   //最低特权级
 //4位：S位，0是系统段, 1是非系统段，书p153
 #define SEG_ATTR_S_SYSTEM ((uint16_t)(0 << 4))//系统段
