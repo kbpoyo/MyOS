@@ -233,7 +233,7 @@ static inline void lgdt(uint32_t start, uint32_t size) {
 /**
  * @brief  读取cr0寄存器的值
  *
- * @return uint16_t
+ * @return uint32_t
  */
 static inline uint32_t read_cr0(void) {
     80b3:	66 55                	push   %ebp

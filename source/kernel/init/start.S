@@ -80,7 +80,8 @@ gdt_reload:
     .global exception_handler_\name
 
 exception_handler_\name:
-    //调用c处理函数前先保存现场,中断发生前cpu会自动在栈中压入 EFLAGS，CS， EIP 寄存器，以及错误代码
+    //调用c处理函数前先保存现场,调用中断处理函数前cpu会自动在栈中压入 EFLAGS，CS， EIP 寄存器，以及错误代码
+    //若原始特权级为3，cpu还会首先压入 SS3 和 ESP3 寄存器，并进行特权级切换,即将cs寄存器切换为之前运行的内核cs段选择子，ss切换为ss0选择子
     
     //1.判断是否有错误代码被压入，如果没有则压入0来占位，并压入中断在向量表中的下标
     .if \with_err_code == 0
@@ -115,7 +116,8 @@ exception_handler_\name:
     popa
     add $(2*4), %esp //弹出num 和 err_code,cpu恢复现场时自己压入的错误码不会自己弹出，而是直接pop给EIP，所以要手动弹出
 
-    iret //中断处理程序必须要用iret进行返回，所以必须用汇编来实现
+    iret    //中断处理程序必须要用iret进行返回，所以必须用汇编来实现, 
+            //iret返回后会将之前自动压入的寄存器与错误码弹出，并将之前压入的SS和ESP返回给ss和esp寄存器，可以回复到中断前的特权级
 
 //宏结束标志
 .endm

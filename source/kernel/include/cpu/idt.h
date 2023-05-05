@@ -116,6 +116,17 @@ typedef struct _gate_desc_t {
 //设置OCW2的7~5位为 001，将EOI模式置为普通EOI结束模式,书p318
 #define PIC_OCW2_EOI        ((uint8_t)(1 << 5))
 
+
+//设置 page_fault 错误码对应的异常宏
+
+#define ERR_PAGE_P  (1 << 0)    //页不存在异常
+#define ERR_PAGE_WR (1 << 1)    //对只读页进行写操作异常，或不可读页进行读操作异常
+#define ERR_PAGE_US (1 << 2)    //访问特权级异常
+
+//设置 general_protection 错误码对应的异常宏
+#define ERR_EXT     (1 << 0)    //
+#define ERR_IDT     (1 << 1)    //
+
 /**
  *  对于EOI模式的理解：
  *    EOI位置1，表示自动结束中断调用，即当cpu第一次发送INTA信号时，8259A将ISR对应位置1，IRR对应位置0

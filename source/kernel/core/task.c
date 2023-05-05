@@ -47,11 +47,18 @@ void task_switch_from_to(task_t *from, task_t *to) {
  * @param task 需要初始化的任务对象
  * @param entry 任务入口地址
  * @param esp 任务所用的栈顶指针
+ * @param flag 任务属性标志位，如特权级
  */
-static int tss_init(task_t *task, uint32_t entry, uint32_t esp) {
-    //获取任务的代码段选择子和数据段选择子，并初始化其CPL,因为是平台模型，所以基本不涉及到跨段访问，所以不需要RPL
-    uint32_t code_selector = task_manager.app_code_selector | SEG_CPL3;
-    uint32_t data_selector = task_manager.app_data_selector | SEG_CPL3;
+static int tss_init(task_t *task, uint32_t entry, uint32_t esp, uint32_t flag) {
+    uint32_t code_selector, data_selector;
+    if (flag & TASK_FLAGS_SYSTEM) { //内核特权级
+        code_selector = KERNEL_SELECTOR_CS;
+        data_selector = KERNEL_SELECTOR_DS;
+    } else {    //用户特权级
+        //获取任务的代码段选择子和数据段选择子，并初始化其CPL,因为是平台模型，所以基本不涉及到跨段访问，所以不需要RPL
+        code_selector = task_manager.app_code_selector | SEG_CPL3;
+        data_selector = task_manager.app_data_selector | SEG_CPL3;
+    }
 
     //1.将tss段的值置空
     kernel_memset(&task->tss, 0, sizeof(task->tss));
@@ -63,7 +70,9 @@ static int tss_init(task_t *task, uint32_t entry, uint32_t esp) {
     task->tss.esp = task->tss.esp0 = esp;
 
     //4.平坦模型，初始化栈空间段寄存器
-    task->tss.ss = task->tss.ss0 = data_selector;
+    task->tss.ss =  data_selector;  //特权级为3时使用的栈段
+    task->tss.ss0 = KERNEL_SELECTOR_DS; //特权级为0时使用的栈段，
+                                        //由于平坦模型，其实使用的是同一片空间，只是特权级发生了变化
 
     //5. 平坦模型，初始其余化段寄存器
     task->tss.es = task->tss.fs = task->tss.gs = task->tss.ds = data_selector;
@@ -103,12 +112,13 @@ static int tss_init(task_t *task, uint32_t entry, uint32_t esp) {
  * @param task 任务对象
  * @param entry 任务的入口地址
  * @param esp 任务指行时所用的栈顶指针
+ * @param flag 任务属性标志位，如特权级
  * @return int 
  */
-void task_init(task_t *task, const char* name, uint32_t entry, uint32_t esp) {
+void task_init(task_t *task, const char* name, uint32_t entry, uint32_t esp, uint32_t flag) {
     ASSERT(task != (task_t*)0);
     //1.初始化任务TSS段
-    tss_init(task, entry, esp);
+    tss_init(task, entry, esp, flag);
 
     //2.初始化任务名称
     kernel_strncpy(task->name, name, TASK_NAME_SIZE);
@@ -143,6 +153,8 @@ static uint32_t empty_task_stack[EMPTY_TASK_STACK_SIZE];
  * 
  */
 static void empty_task(void) {
+    int a = 10 / 0;
+
     while(1) {
         //停止cpu运行，让cpu等待时间中断
         hlt();
@@ -178,7 +190,7 @@ void task_manager_init(void) {
     task_init(  &task_manager.empty_task,
                  "empty_task", 
                  (uint32_t)empty_task,
-                 (uint32_t)&empty_task_stack[EMPTY_TASK_STACK_SIZE]);
+                 (uint32_t)&empty_task_stack[EMPTY_TASK_STACK_SIZE], TASK_FLAGS_USER);
                  
 
     //5.将空闲进程从就绪队列中取出
@@ -222,7 +234,7 @@ void task_first_init(void) {
 
     //3.初始化第一个任务,因为当前为操作系统进程，esp初始值随意赋值都可，
     // 因为当前进程已开启，cpu会在切换的时候保留真实的状态，即真实的esp值
-    task_init(&task_manager.first_task, "first task", (uint32_t)first_task_entry, 0);
+    task_init(&task_manager.first_task, "first task", (uint32_t)first_task_entry, 0, TASK_FLAGS_SYSTEM);
       
     //4.将当前任务的TSS选择子告诉cpu，用来切换任务时保存状态
     write_tr(task_manager.first_task.tss_selector);

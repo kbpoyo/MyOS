@@ -139,7 +139,7 @@ static inline void lidt(uint32_t start, uint32_t size) {
 /**
  * @brief  读取cr0寄存器的值
  *
- * @return uint16_t
+ * @return uint32_t
  */
 static inline uint32_t read_cr0(void) {
   uint32_t cr0;
@@ -155,6 +155,19 @@ static inline uint32_t read_cr0(void) {
 static inline void write_cr0(uint32_t data) {
   __asm__ __volatile__("mov %[v], %%cr0" : : [v] "r"(data));
 }
+
+/**
+ * @brief  读取cr2寄存器的值，cr2寄存器在发生page_fault异常时会记录触发异常的访问地址
+ *
+ * @return uint32_t
+ */
+static inline uint32_t read_cr2(void) {
+  uint32_t cr2;
+  __asm__ __volatile__("mov %%cr2, %[v]" : [v] "=r"(cr2));
+  return cr2;
+}
+
+
 
 /**
  * @brief  读取cr3寄存器的值

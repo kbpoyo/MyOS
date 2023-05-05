@@ -24,12 +24,20 @@ static gate_desc_t idt_table[IDT_TABLE_SIZE];
  * @param frame 栈帧
  */
 static void print_exception_fram(const exception_frame_t *frame) {
+  uint32_t ss, esp;
+  if (frame->cs & 0x3) {  //cpl不为0，因为只设置了两种特权级，所以当前cpl为3，即用户程序异常
+    ss = frame->ss3;
+    esp = frame->esp3;
+  } else {  //cpl为0，即内核异常
+    ss = frame->ds; //内核ss与ds相同
+    esp = frame->esp;
+  }
 
   log_printf("------------------------stack frame info---------------------");
   log_printf("IRQ:\t\t%d\nerror code:\t%d", frame->num, frame->error_code);
   log_printf("CS:\t\t%d\nDS:\t\t%d\nSS:\t\t%d\nES:\t\t%d\nFS:\t\t%d\nGS:\t\t%d", 
     //TODO:SS暂时没法获取，先用ds替代，之后再进行获取
-    frame->cs, frame->ds, frame->ds, frame->es, frame->fs, frame->gs
+    frame->cs, frame->ds, ss, frame->es, frame->fs, frame->gs
   );
 
   log_printf( 
@@ -42,7 +50,7 @@ static void print_exception_fram(const exception_frame_t *frame) {
               "EBP:\t\t0x%x\n"
               "ESP:\t\t0x%x", 
               frame->eax, frame->ebx, frame->ecx, frame->edx,
-              frame->esi, frame->edi, frame->ebp, frame->esp 
+              frame->esi, frame->edi, frame->ebp, esp 
               );
 
   log_printf("EIP:\t\t0x%x\nEFLAGS:\t\t0x%x", frame->eip, frame->eflags);
@@ -122,11 +130,56 @@ void do_handler_stack_segment_fault(const exception_frame_t *frame) {
   do_default_handler(frame, "stack_segment_fault exception");
 }
 void do_handler_general_protection(const exception_frame_t *frame) {
-  do_default_handler(frame, "general_protection exception");
+    log_printf("--------------------------------");
+    log_printf("IRQ/Exception happend: General Protection.");
+    if (frame->error_code & ERR_EXT) {
+        log_printf("the exception occurred during delivery of an "
+                "event external to the program, such as an interrupt"
+                "or an earlier exception.");
+    } else {
+        log_printf("the exception occurred during delivery of a"
+                    "software interrupt (INT n, INT3, or INTO).");
+    }
+    
+    if (frame->error_code & ERR_IDT) {
+        log_printf("the index portion of the error code refers "
+                    "to a gate descriptor in the IDT");
+    } else {
+        log_printf("the index refers to a descriptor in the GDT");
+    }
+    
+    log_printf("segment index: %d", frame->error_code & 0xFFF8);
+    print_exception_fram(frame);
 }
+/**
+ * @brief page_fault异常处理函数
+ * 
+ * @param frame 
+ */
 void do_handler_page_fault(const exception_frame_t *frame) {
-  do_default_handler(frame, "page_fault exception");
+    log_printf("--------------------------------");
+    log_printf("IRQ/Exception happend: Page fault.");
+    if (frame->error_code & ERR_PAGE_P) {
+        log_printf("page-level protection violation: 0x%x.", read_cr2());
+    } else {
+        log_printf("Page doesn't present 0x%x", read_cr2());
+   }
+    
+    if (frame->error_code & ERR_PAGE_WR) {
+        log_printf("The access causing the fault was a write.");
+    } else {
+        log_printf("The access causing the fault was a read.");
+    }
+    
+    if (frame->error_code & ERR_PAGE_US) {
+        log_printf("A user-mode access caused the fault.");
+    } else {
+        log_printf("A supervisor-mode access caused the fault.");
+    }
+
+   print_exception_fram(frame);
 }
+
 void do_handler_fpu_error(const exception_frame_t *frame) {
   do_default_handler(frame, "fpu_error exception");
 }

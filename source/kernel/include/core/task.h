@@ -24,6 +24,9 @@
 //定义空闲进程的栈空间大小
 #define EMPTY_TASK_STACK_SIZE 128
 
+//设置任务进程的特权级标志位
+#define TASK_FLAGS_SYSTEM   (1 << 0)  //内核特权级即最高特权级
+#define TASK_FLAGS_USER   (0 << 0)  //用户特权级
 // 定义任务状态枚举类型
 typedef enum _task_state_t {
   TASK_CREATED,   // 已创建，任务被创建，但为加入就绪队列
@@ -48,7 +51,7 @@ typedef struct _task_t {
   uint32_t tss_selector;    // 任务对应的TSS选择子
 } task_t;
 
-void task_init(task_t *task, const char *name, uint32_t entry, uint32_t esp);
+void task_init(task_t *task, const char *name, uint32_t entry, uint32_t esp, uint32_t flag);
 void task_switch_from_to(task_t *from, task_t *to);
 
 

@@ -14,7 +14,6 @@
 
 int first_main(void) {
     for (;;) {
-        int a = 10 / 0;
         log_printf("first task.");
         sys_sleep(1000);
     }
