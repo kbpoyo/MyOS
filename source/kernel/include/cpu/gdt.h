@@ -73,6 +73,6 @@ typedef struct _segment_desc_t {
 
 void segment_desc_set(uint16_t selector,  uint32_t base, uint32_t limit, uint16_t attr);
 void gdt_init(void);
-int gdt_alloc_desc();
-
+int gdt_alloc_desc(void);
+void gdt_free(uint16_t selector);
 #endif

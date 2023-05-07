@@ -50,6 +50,24 @@ void task_switch_from_to(task_t *from, task_t *to) {
  * @param flag 任务属性标志位，如特权级
  */
 static int tss_init(task_t *task, uint32_t entry, uint32_t esp, uint32_t flag) {
+   //1.将该TSS段绑定到GDT中的某个段描述符
+    uint32_t tss_selector = gdt_alloc_desc();
+    if (tss_selector < 0) {
+        log_printf("alloc tss failed!");
+        return -1;
+    }
+    segment_desc_set(tss_selector, (uint32_t)&task->tss, sizeof(task->tss), 
+                    SEG_ATTR_P | SEG_ATTR_DPL_0 | SEG_ATTR_TYPE_TSS);
+
+
+    //2.将tss段的值置空
+    kernel_memset(&task->tss, 0, sizeof(task->tss));
+
+    //3.记录tss绑定到的描述符的选择子
+    task->tss_selector = tss_selector;
+
+
+    //4.根据任务的特权级来设置对应选择子的cpl
     uint32_t code_selector, data_selector;
     if (flag & TASK_FLAGS_SYSTEM) { //内核特权级
         code_selector = KERNEL_SELECTOR_CS;
@@ -60,50 +78,47 @@ static int tss_init(task_t *task, uint32_t entry, uint32_t esp, uint32_t flag) {
         data_selector = task_manager.app_data_selector | SEG_CPL3;
     }
 
-    //1.将tss段的值置空
-    kernel_memset(&task->tss, 0, sizeof(task->tss));
 
-    //2.设置eip，即任务的起始地址
+    //5.设置eip，即任务的起始地址
     task->tss.eip = entry;
 
-    //3.根据任务的特权级设置任务所使用的栈空间
-    task->tss.esp = task->tss.esp0 = esp;
+    //6.根据任务的特权级设置任务所使用的栈空间
+    task->tss.esp =  esp;   //特权级为3的栈空间
+    uint32_t kernel_stack = memory_alloc_page();  //分配一页作为内核特权级0的栈空间
+    if (kernel_stack == 0) //内核栈空间初始化失败
+        goto tss_init_failed;   
+    else task->tss.esp0 =  kernel_stack + MEM_PAGE_SIZE;//特权级为0的栈空间
 
-    //4.平坦模型，初始化栈空间段寄存器
+    //7.平坦模型，初始化栈空间段寄存器
     task->tss.ss =  data_selector;  //特权级为3时使用的栈段
     task->tss.ss0 = KERNEL_SELECTOR_DS; //特权级为0时使用的栈段，
                                         //由于平坦模型，其实使用的是同一片空间，只是特权级发生了变化
 
-    //5. 平坦模型，初始其余化段寄存器
+    //8. 平坦模型，初始其余化段寄存器
     task->tss.es = task->tss.fs = task->tss.gs = task->tss.ds = data_selector;
 
-    //6.平坦模型，初始化代码段寄存器
+    //9.平坦模型，初始化代码段寄存器
     task->tss.cs = code_selector;
 
-    //7.初始化eflags寄存器，使cpu中断保持开启
+    //10.初始化eflags寄存器，使cpu中断保持开启
     task->tss.eflags = EFLAGS_DEFAULT_1 | EFLAGS_IF;
 
-    //8.创建当前进程的虚拟页目录表，并设置cr3寄存器
+    //11.创建当前进程的虚拟页目录表，并设置cr3寄存器
     uint32_t page_dir = memory_creat_uvm();
-    if (page_dir == 0) return -1;
+    if (page_dir == 0) 
+        goto tss_init_failed;
     task->tss.cr3 = page_dir;
     
-
-
-    //9.将该TSS段绑定到GDT中的某个段描述符
-    uint32_t tss_selector = gdt_alloc_desc();
-    if (tss_selector < 0) {
-        log_printf("alloc tss failed!");
-        return -1;
-    }
-    segment_desc_set(tss_selector, (uint32_t)&task->tss, sizeof(task->tss), 
-                    SEG_ATTR_P | SEG_ATTR_DPL_0 | SEG_ATTR_TYPE_TSS);
-
-
-    //10.记录tss绑定到的描述符的选择子
-    task->tss_selector = tss_selector;
-
     return 0;
+
+//tss初始化失败
+tss_init_failed:
+    gdt_free(tss_selector);  //释放选择子
+
+    if (kernel_stack) { //内核栈空间分配有效，需要释放
+        memory_free_page(kernel_stack);
+    }
+    return -1;
 }
 
 /**
@@ -153,7 +168,6 @@ static uint32_t empty_task_stack[EMPTY_TASK_STACK_SIZE];
  * 
  */
 static void empty_task(void) {
-    int a = 10 / 0;
 
     while(1) {
         //停止cpu运行，让cpu等待时间中断
@@ -190,7 +204,7 @@ void task_manager_init(void) {
     task_init(  &task_manager.empty_task,
                  "empty_task", 
                  (uint32_t)empty_task,
-                 (uint32_t)&empty_task_stack[EMPTY_TASK_STACK_SIZE], TASK_FLAGS_USER);
+                 (uint32_t)&empty_task_stack[EMPTY_TASK_STACK_SIZE], TASK_FLAGS_SYSTEM);
                  
 
     //5.将空闲进程从就绪队列中取出
@@ -219,7 +233,19 @@ void task_manager_init(void) {
 //       //4.将当前任务状态设置为运行态
 //       task_manager.curr_task->state = TASK_RUNNING;
 // }
-
+/**
+ * @brief 初始化第一个任务
+ * 内存分部：
+ * -------------------
+ *      stack段 = 5 页
+ * -------------------
+ *      code段
+ *      rodata段
+ * -------------------
+ *      data段
+ *      bss段
+ * -------------------
+ */
 void task_first_init(void) {
 
     //1.声明第一个任务的符号
@@ -228,13 +254,14 @@ void task_first_init(void) {
     //2.确定第一个任务进程需要的空间大小
     extern char s_first_task, e_first_task;
     uint32_t copy_size = (uint32_t)(&e_first_task - &s_first_task);   //进程所需空间大小
-    uint32_t alloc_size = up2(copy_size, MEM_PAGE_SIZE);   //需要为进程分配的内存大小，按4kb对齐
+    uint32_t alloc_size = up2(copy_size, MEM_PAGE_SIZE) + 10 * MEM_PAGE_SIZE;   //需要为进程分配的内存大小，按4kb对齐,并多拿五页当作栈空间
     ASSERT(copy_size < alloc_size);
 
+    uint32_t task_start = (uint32_t)first_task_entry;
 
     //3.初始化第一个任务,因为当前为操作系统进程，esp初始值随意赋值都可，
     // 因为当前进程已开启，cpu会在切换的时候保留真实的状态，即真实的esp值
-    task_init(&task_manager.first_task, "first task", (uint32_t)first_task_entry, 0, TASK_FLAGS_SYSTEM);
+    task_init(&task_manager.first_task, "first task", task_start, task_start + alloc_size, TASK_FLAGS_USER);
       
     //4.将当前任务的TSS选择子告诉cpu，用来切换任务时保存状态
     write_tr(task_manager.first_task.tss_selector);
@@ -249,7 +276,7 @@ void task_first_init(void) {
     task_manager.curr_task->state = TASK_RUNNING;
 
     //8.进程的各个段还只是在虚拟地址中，所以要为各个段分配物理地址页空间，并进行映射
-    memory_alloc_page_for((uint32_t)first_task_entry, alloc_size, PTE_P | PTE_W);
+    memory_alloc_page_for(task_start, alloc_size, PTE_P | PTE_W | PTE_U);
 
     //9.将任务进程各个段从内核四个段之后的紧邻位置，拷贝到已分配好的且与虚拟地址对应的物理地址空间，实现代码隔离
     kernel_memcpy(first_task_entry, &s_first_task, alloc_size);

@@ -149,6 +149,7 @@ pte_t* find_pte(pde_t* page_dir, uint32_t vstart, int is_alloc) {
     kernel_memset(page_table, 0, MEM_PAGE_SIZE);
 
     //将该页表的起始地址放入对应的页目录项中并放入页目录表中，方便后续索引到该页表
+    //且权限都放宽，即普通用户可访问，对应的页表的所有页可读写，将具体的权限交给每一页来进一步限制
     pde->v = pg_addr | PDE_U | PDE_W | PDE_P;
   }
 
@@ -191,7 +192,7 @@ int  memory_creat_map(pde_t *page_dir, uint32_t vstart, uint32_t pstart, int pag
     //3.确保该页并未已存在内存中
     ASSERT(pte->present == 0);
 
-    //4.在页表项中创建对应的映射关系
+    //4.在页表项中创建对应的映射关系，并该页权限，页权限以当前权限为主，因为pde处已放宽权限
     pte->v = pstart | privilege | PTE_P;
 
     //5.切换为下一页
@@ -219,6 +220,9 @@ void create_kernal_table(void) {
     memory_map_t *map = kernal_map + i;
 
     //将虚拟地址的起始地址按页大小4kb对齐，为了不丢失原有的虚拟地址空间，所以向下对齐vstart
+    //理论上虚拟地址是不需要上下边缘对齐的，这里主要是为了计算所需页数
+    //因为虚拟地址的每一页都和页目录项以及页表项捆绑了，
+    //只需用页目录项和页表项为该页映射一个物理页即可，所以物理页才必须上下边缘按4kb对齐
     uint32_t vstart = down2((uint32_t)map->vstart, MEM_PAGE_SIZE);
     uint32_t pstart = down2((uint32_t)map->pstart, MEM_PAGE_SIZE);
     //将虚拟地址的结束地址按页大小4kb对齐, 为了不丢失原有的虚拟地址空间，所以向上对齐vend
@@ -352,4 +356,50 @@ int memory_alloc_for_page_dir(uint32_t page_dir, uint32_t vaddr, uint32_t alloc_
  */
 int memory_alloc_page_for(uint32_t vaddr, uint32_t alloc_size, uint32_t privilege) {
   return memory_alloc_for_page_dir(task_current()->tss.cr3, vaddr, alloc_size, privilege);
+}
+
+/**
+ * @brief 为进程的内核空间分配一页内存，需特权级0访问
+ * 
+ * @return uint32_t 内存的起始地址
+ */
+uint32_t memory_alloc_page() {
+  //因为0x100000 ~ 0x8000 0000,即低 1mb~2gb都由操作系统内核使用，
+  //操作系统内核已对整个内存空间进行了一一映射，而每个程序的2gb以下空间都使用操作系统的虚拟页表
+  //所以直接返回该页物理地址，也就是该页在操作系统虚拟地址空间中的虚拟地址
+  //需要注意的是后续访问该页需要0特权级，因为访问的是内核空间
+  uint32_t addr = addr_alloc_page(&paddr_alloc, 1);
+  return addr;
+}
+
+/**
+ * @brief 返回当前进程的页目录表的地址
+ * 
+ * @return pde_t* 
+ */
+static pde_t* curr_page_dir() {
+  return (pde_t*)(task_current()->tss.cr3);
+}
+
+/**
+ * @brief 释放一页内存空间
+ * 
+ * @param addr 
+ */
+
+void memory_free_page(uint32_t addr) {
+  if (addr < MEM_TASK_BASE) { //释放内核空间的一页内存
+    addr_free_page(&paddr_alloc, addr, 1);  //因为内核空间为一一映射关系，虚拟地址即为物理地址,且不需要解除映射关系
+  } else {  //释放用户空间的一页内存
+    //1.用虚拟地址找到该页对应的页表项
+    pte_t *pte = find_pte(curr_page_dir(), addr, 0);
+    ASSERT(pte != (pte_t*)0 && pte->present);
+    
+    //2.用该页的物理地址释放该页
+    addr_free_page(&paddr_alloc, pte_to_pg_addr(pte), 1);
+
+    //3.将页表项清空，解除映射关系
+    pte->v = 0;
+  }
+
 }

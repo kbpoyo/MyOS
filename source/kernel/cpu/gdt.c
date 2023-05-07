@@ -16,7 +16,7 @@
 //定义全局描述符GDT
 static segment_desc_t gdt_table[GDT_TABLE_SIZE];
 //定义全局描述符表标记数组
-static int is_alloc[GDT_TABLE_SIZE];
+static uint8_t is_alloc[GDT_TABLE_SIZE];
 //定义互斥锁，保护gdt_table的分配
 static mutex_t mutex;
 
@@ -112,6 +112,16 @@ int gdt_alloc_desc() {
 
     mutex_unlock(&mutex);//TODO:解锁
     return -1;
+}
+
+/**
+ * @brief 释放gdt表项
+ * 
+ * @param selector 需要释放的表项对应的选择子
+ */
+void gdt_free(uint16_t selector) {
+    uint16_t index = selector >> 3;
+    is_alloc[index] = 0;
 }
 
 

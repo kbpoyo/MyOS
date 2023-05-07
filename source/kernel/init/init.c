@@ -68,9 +68,25 @@ void move_to_first_task(void) {
     //2.获取当前任务的tss结构
     tss_t *tss = &(curr->tss);
 
-    //3.用内联汇编进行间接跳转,需要 jmp * %寄存器 (从寄存器中给出地址为间接跳转,直接从值跳转为直接跳转)
-    __asm__ __volatile__(
-        "jmp * %[ip]"::[ip]"r"(tss->eip)
+    // //3.用内联汇编进行间接跳转,需要 jmp * %寄存器 (从寄存器中给出地址为间接跳转,直接从值跳转为直接跳转)
+    // __asm__ __volatile__(
+    //     "jmp * %[ip]"::[ip]"r"(tss->eip)
+    // );
+
+    //3.由于当前任务特权级仍为内核的最高特权级，为了切换到first_task时内将特权级切换到低特权级
+    //需要模拟中断发生，因为只有iret指令可以将cpu的特权级由高切换到低，同时也只有中断门中的调用发生才能
+    //使cpu的特权级由低到高切换，且只切换ss,esp,eflags,cs,eip这几个寄存器都由在中断门调用发生时cpu自动压入
+    //(ss,esp只在由低特权级触发中断门时压入，以用来iret恢复到原始特权级)
+     __asm__ __volatile__(
+        //模拟中断门调用时，cpu压入的特权级的寄存器,并用iret指令返回
+        "push %[ss]\n\t"
+        "push %[esp]\n\t"
+        "push %[eflags]\n\t"
+        "push %[cs]\n\t"
+        "push %[eip]\n\t"
+        "iret"::[ss]"r"(tss->ss), [esp]"r"(tss->esp), [eflags]"r"(tss->eflags), [cs]"r"(tss->cs), [eip]"r"(tss->eip)
+
+        
     );
 }
 

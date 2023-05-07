@@ -17,14 +17,14 @@
 
 //定义页目录项相关的宏
 #define PDE_CNT 1024        //页目录项的个数,1024个即可，每个目录项4字节，刚好4kb即页目录表刚好占一个页
-#define PDE_P   (1 << 0)    //第0位，present位
-#define PDE_W   (1 << 1)    //第1位，write位
-#define PDE_U   (1 << 2)    //第2位，user位
+#define PDE_P   (1 << 0)    //第0位，present位, 当前pde存在
+#define PDE_W   (1 << 1)    //第1位，write位，当前pde对应的页表所对应的页都可读写
+#define PDE_U   (1 << 2)    //第2位，user位，访问权限为user，即普通用户和超级用户都可访问
 
 //定义页表项相关的宏
-#define PTE_P   (1 << 0)    //第0位，present位
-#define PTE_W   (1 << 1)    //第1位，
-#define PTE_U   (1 << 2)    //第2位，user位
+#define PTE_P   (1 << 0)    //第0位，present位，页表存在
+#define PTE_W   (1 << 1)    //第1位，页表项对应的所有页都可读写
+#define PTE_U   (1 << 2)    //第2位，user位，该页访问权限为user，即普通用户和超级用户都可以访问
 
 
 
