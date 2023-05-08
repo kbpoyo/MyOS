@@ -149,7 +149,10 @@ static inline uint32_t read_cr0(void) {
 
 /**
  * @brief  向cr0寄存器写入数据
- *
+ *CR0 是系统内的控制寄存器之一。控制寄存器是一些特殊的寄存器，它们可以控制 CPU 的一些重要特性。
+ *CR0 中包含了 6 个预定义标志：
+ *第 0 位是保护允许位 PE (Protected Enable)，用于启动保护模式，如果 PE 位置 1，则保护模式启动，如果 PE=0，则在实模式下运行。
+ *第 31 位是分页允许位 (Paging Enable)，它表示芯片上的分页部件是否允许工作。
  * @param data
  */
 static inline void write_cr0(uint32_t data) {
@@ -158,7 +161,8 @@ static inline void write_cr0(uint32_t data) {
 
 /**
  * @brief  读取cr2寄存器的值，cr2寄存器在发生page_fault异常时会记录触发异常的访问地址
- *
+ *CR2 寄存器用于发生页异常时报告出错信息。当发生页异常时，处理器把引起页异常的线性地址保存在 CR2 中。
+ *操作系统中的页异常处理程序可以检查 CR2 的内容，从而查出线性地址空间中的哪一页引起本次异常²。
  * @return uint32_t
  */
 static inline uint32_t read_cr2(void) {
@@ -182,6 +186,9 @@ static inline uint32_t read_cr3(void) {
 
 /**
  * @brief  向cr3寄存器写入数据
+ * CR3 寄存器用于控制和确定处理器的操作模式以及当前执行任务的特性。
+ * 它含有存放页目录表页面的物理地址，
+ * 因此 CR3 也被称为 PDBR（Page-Directory Base address Register）。
  *
  * @param data
  */
