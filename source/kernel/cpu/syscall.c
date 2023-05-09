@@ -1,0 +1,47 @@
+/**
+ * @file syscall.c
+ * @author kbpoyo (kbpoyo@qq.com)
+ * @brief 调用门处理函数，即各个系统函数的调用
+ * @version 0.1
+ * @date 2023-05-09
+ * 
+ * @copyright Copyright (c) 2023
+ * 
+ */
+
+#include "cpu/syscall.h"
+#include "core/task.h"
+#include "core/task.h"
+#include "tools/log.h"
+
+static const sys_handler_t sys_table[] = {
+    [SYS_sleep] = (sys_handler_t)sys_sleep,
+    [SYS_getpid] = (sys_handler_t)sys_getpid,
+};
+
+/**
+ * @brief 门调用处理函数，通过定义的系统调用id，将该调用分发到正确的系统调用上
+ * 
+ * @param frame 
+ */
+void do_handler_syscall(syscall_frame_t* frame) {
+    if (frame->function_id < sizeof(sys_table) / sizeof(sys_table[0])) {    //当前系统调用存在
+        sys_handler_t handler = sys_table[frame->function_id];
+        if (handler) {
+            //直接将4个参数全部传入即可，
+            //因为是按从右到左的顺序将参数压栈，所以原始的参数只要是从arg0开始赋值的即可，
+            //多余的参数在高地址处，不影响handler对应的真正的系统调用
+            int ret = handler(frame->arg0, frame->arg1, frame->arg2, frame->arg3);
+            //正常函数返回后会将返回值先存放到eax寄存器中，再eax中的值放入对应接收返回值的内存中
+            //此处用eax先接收ret，在调用门返回后再从eax中取处该值
+            frame->eax = ret;
+            return;
+        }
+    }
+    
+    //打印系统调用失败的异常日志
+    task_t *task = task_current();
+    log_printf("task: %s, Unknown syscall_id: %d", task->name, frame->function_id);
+    frame->eax = -1;
+
+}

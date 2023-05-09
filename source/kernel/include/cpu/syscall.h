@@ -11,8 +11,30 @@
 #ifndef SYSCALL_H
 #define SYSCALL_H
 
+#include "common/types.h"
+
 //定义调用门描述符中，参数个数属性，即系统调用函数的参数个数
 #define SYSCALL_PARAM_COUNT 5
+
+//定义系统调用的id
+#define SYS_sleep   0   //延时函数
+#define SYS_getpid  1   //获取pid
+
+//定义调用门处理函数的栈帧
+typedef struct _syscall_frame_t {
+    //手动压入的寄存器
+    uint32_t eflags;
+    uint32_t gs, fs, es, ds;
+    uint32_t edi, esi, ebp, esp_by_pusha, ebx, edx, ecx, eax; //pusha指令压入的通用寄存器
+
+    //cpu自动压入的寄存器
+    uint32_t eip, cs;
+    uint32_t function_id, arg0, arg1, arg2, arg3;   //cpu从用户栈中拷贝过来的
+    uint32_t esp, ss;
+
+}syscall_frame_t;
+
+typedef int(*sys_handler_t)(uint32_t arg0, uint32_t arg1, uint32_t arg2, uint32_t arg3);
 
 void exception_handler_syscall (void);
 

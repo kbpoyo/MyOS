@@ -31,9 +31,6 @@ default_target: all
 
 .SUFFIXES: .hpux_make_needs_suffix_list
 
-# Produce verbose output by default.
-VERBOSE = 1
-
 # Command-line flag to silence nested $(MAKE).
 $(VERBOSE)MAKESILENT = -s
 
@@ -276,6 +273,30 @@ cpu/mmu.s: cpu/mmu.c.s
 cpu/mmu.c.s:
 	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/cpu/mmu.c.s
 .PHONY : cpu/mmu.c.s
+
+cpu/syscall.o: cpu/syscall.c.o
+.PHONY : cpu/syscall.o
+
+# target to build an object file
+cpu/syscall.c.o:
+	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/cpu/syscall.c.o
+.PHONY : cpu/syscall.c.o
+
+cpu/syscall.i: cpu/syscall.c.i
+.PHONY : cpu/syscall.i
+
+# target to preprocess a source file
+cpu/syscall.c.i:
+	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/cpu/syscall.c.i
+.PHONY : cpu/syscall.c.i
+
+cpu/syscall.s: cpu/syscall.c.s
+.PHONY : cpu/syscall.s
+
+# target to generate assembly for a file
+cpu/syscall.c.s:
+	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/cpu/syscall.c.s
+.PHONY : cpu/syscall.c.s
 
 dev/time.o: dev/time.c.o
 .PHONY : dev/time.o
@@ -584,6 +605,9 @@ help:
 	@echo "... cpu/mmu.o"
 	@echo "... cpu/mmu.i"
 	@echo "... cpu/mmu.s"
+	@echo "... cpu/syscall.o"
+	@echo "... cpu/syscall.i"
+	@echo "... cpu/syscall.s"
 	@echo "... dev/time.o"
 	@echo "... dev/time.i"
 	@echo "... dev/time.s"

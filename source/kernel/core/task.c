@@ -146,7 +146,7 @@ void task_init(task_t *task, const char* name, uint32_t entry, uint32_t esp, uin
     //4.初始化最大时间片数与当前拥有时间片数,以及延时时间片数
     task->slice_max = task->slice_curr = TASK_TIME_SLICE_DEFAULT;
     task->sleep = 0;
-
+    task->pid = (uint32_t)task;
     
     idt_state_t state = idt_enter_protection();//TODO:加锁
    
@@ -504,4 +504,13 @@ void sys_sleep(uint32_t ms) {
     task_switch();
 
     idt_leave_protection(state); //TODO:解锁
+}
+
+/**
+ * @brief 获取任务pid
+ * 
+ * @return int pid
+ */
+int sys_getpid(void) {
+    return task_current()->pid;
 }

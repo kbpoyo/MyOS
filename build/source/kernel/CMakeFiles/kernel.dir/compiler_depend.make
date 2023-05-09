@@ -74,6 +74,16 @@ source/kernel/CMakeFiles/kernel.dir/cpu/idt.c.o: ../source/kernel/cpu/idt.c \
 source/kernel/CMakeFiles/kernel.dir/cpu/mmu.c.o: ../source/kernel/cpu/mmu.c \
   /usr/include/stdc-predef.h
 
+source/kernel/CMakeFiles/kernel.dir/cpu/syscall.c.o: ../source/kernel/cpu/syscall.c \
+  /usr/include/stdc-predef.h \
+  ../source/kernel/include/cpu/syscall.h \
+  ../source/common/types.h \
+  ../source/kernel/include/core/task.h \
+  ../source/kernel/include/cpu/tss.h \
+  ../source/kernel/include/tools/list.h \
+  ../source/kernel/include/tools/assert.h \
+  ../source/kernel/include/tools/log.h
+
 source/kernel/CMakeFiles/kernel.dir/dev/time.c.o: ../source/kernel/dev/time.c \
   /usr/include/stdc-predef.h \
   ../source/kernel/include/dev/time.h \
@@ -97,6 +107,7 @@ source/kernel/CMakeFiles/kernel.dir/init/first_task.c.o: ../source/kernel/init/f
   ../source/kernel/include/tools/list.h \
   ../source/kernel/include/tools/assert.h \
   ../source/applib/lib_syscall.h \
+  ../source/kernel/include/cpu/syscall.h \
   ../source/kernel/include/os_cfg.h
 
 source/kernel/CMakeFiles/kernel.dir/init/init.c.o: ../source/kernel/init/init.c \
@@ -208,6 +219,10 @@ source/kernel/CMakeFiles/kernel.dir/tools/log.c.o: ../source/kernel/tools/log.c 
 
 ../source/kernel/init/first_task.c:
 
+../source/kernel/tools/klib.c:
+
+../source/kernel/include/dev/time.h:
+
 ../source/kernel/include/tools/klib.h:
 
 ../source/kernel/include/ipc/sem.h:
@@ -262,10 +277,6 @@ source/kernel/CMakeFiles/kernel.dir/tools/log.c.o: ../source/kernel/tools/log.c 
 
 ../source/kernel/include/cpu/syscall.h:
 
-../source/kernel/tools/klib.c:
-
-../source/kernel/include/dev/time.h:
-
 ../source/common/exc_frame.h:
 
 ../source/kernel/ipc/mutex.c:
@@ -277,3 +288,5 @@ source/kernel/CMakeFiles/kernel.dir/tools/log.c.o: ../source/kernel/tools/log.c 
 ../source/kernel/include/tools/list.h:
 
 ../source/kernel/dev/time.c:
+
+../source/kernel/cpu/syscall.c:

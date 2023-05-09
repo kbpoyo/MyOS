@@ -80,6 +80,17 @@ source/kernel/CMakeFiles/kernel.dir/cpu/mmu.c.o
  /home/kbpoyo/code/cpp/MyOs/source/kernel/cpu/mmu.c
  /usr/include/stdc-predef.h
 
+source/kernel/CMakeFiles/kernel.dir/cpu/syscall.c.o
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/cpu/syscall.c
+ /usr/include/stdc-predef.h
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/include/cpu/syscall.h
+ /home/kbpoyo/code/cpp/MyOs/source/common/types.h
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/include/core/task.h
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/include/cpu/tss.h
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/include/tools/list.h
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/include/tools/assert.h
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/include/tools/log.h
+
 source/kernel/CMakeFiles/kernel.dir/dev/time.c.o
  /home/kbpoyo/code/cpp/MyOs/source/kernel/dev/time.c
  /usr/include/stdc-predef.h
@@ -105,6 +116,7 @@ source/kernel/CMakeFiles/kernel.dir/init/first_task.c.o
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/tools/list.h
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/tools/assert.h
  /home/kbpoyo/code/cpp/MyOs/source/applib/lib_syscall.h
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/include/cpu/syscall.h
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/os_cfg.h
 
 source/kernel/CMakeFiles/kernel.dir/init/init.c.o

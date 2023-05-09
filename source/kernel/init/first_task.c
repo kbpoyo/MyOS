@@ -14,6 +14,7 @@
 #include  "applib/lib_syscall.h"
 
 int first_main(void) {
+    int pid = getpid();
     for (;;) {
         //log_printf("first task.");
         msleep(1000);

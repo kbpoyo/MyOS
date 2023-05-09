@@ -13,6 +13,7 @@
 #define LIB_SYSCALL_H
 
 #include    "common/types.h"
+#include    "cpu/syscall.h"
 #include    "os_cfg.h"
 
 /**
@@ -28,9 +29,6 @@ typedef struct _syscall_args_t {
     int arg3;
 }syscall_args_t;
 
-//定义系统调用的id
-#define SYS_sleep   0
-
 
 
 
@@ -40,21 +38,34 @@ static inline int sys_call(syscall_args_t *args) {
     //门描述符中目标选择子的 CPL <= 门描述符的 DPL
     uint32_t addr[] = {0, SYSCALL_SELECTOR | 0};  
 
+    //lcalll指令是一个汇编伪指令，它用于调用远子程序，
+    //它会将当前的CS和IP压入栈中，并跳转到指定的段选择子和偏移量⁴。
+    //lcalll指令可以实现特权级的转换，可以触发调用门机制。
     //将参数压入用户栈中，再跳转到调用门，cpu会将用户的ss和esp寄存器压入栈中，并将用户栈中的参数拷贝到内核栈中
     //再压入 cs 和 eip 寄存器
+
+    int ret;
+
      __asm__ __volatile__(
         "push %[arg3]\n\t"
         "push %[arg2]\n\t"
         "push %[arg1]\n\t"
         "push %[arg0]\n\t"
         "push %[id]\n\t"
-        "lcalll *(%[addr])" : :[arg3]"r"(args->arg3), 
-                            [arg2]"r"(args->arg2), 
-                            [arg1]"r"(args->arg1),
-                            [arg0]"r"(args->arg0), 
-                            [id]"r"(args->id), 
-                            [addr]"r"(addr)
+        "lcalll *(%[addr])\n\t"
+        :"=a"(ret)
+        :[arg3]"r"(args->arg3), 
+         [arg2]"r"(args->arg2), 
+         [arg1]"r"(args->arg1),
+         [arg0]"r"(args->arg0), 
+         [id]"r"(args->id), 
+         [addr]"r"(addr)
     );
+
+
+
+
+    return ret;
 }
 
 
@@ -74,6 +85,13 @@ static inline void msleep(int ms) {
 
     sys_call(&args);
 
+}
+
+static inline int getpid(void) {
+    syscall_args_t args;
+    args.id = SYS_getpid;
+
+    return sys_call(&args);
 }
 
 #endif

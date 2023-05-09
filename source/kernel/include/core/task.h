@@ -40,6 +40,7 @@ typedef enum _task_state_t {
 // 定义可执行任务的数据结构,即PCB控制块，书p406
 typedef struct _task_t {
   state_t state;            //任务状态
+  int pid;                  //进程id
   int slice_max;            //任务所能拥有的最大时间分片数
   int slice_curr;           //任务当前的所拥有的时间分片数
   int sleep;                //当前任务延时的时间片数
@@ -84,6 +85,9 @@ void task_slice_end(void);
 void task_switch(void);
 task_t* task_current(void);
 
+//系统调用函数
+
 void sys_sleep(uint32_t ms);
 int sys_yield(void);
+int sys_getpid(void);
 #endif

@@ -82,7 +82,7 @@ gdt_reload:
 exception_handler_\name:
     //触发中断处门后cpu会关掉外部中断，并在处理结束后重新将原来的 eflags 赋值给对应寄存器，从而打开外部中断
     //调用c处理函数前先保存现场,调用中断处理函数前cpu会自动在栈中压入 EFLAGS，CS， EIP 寄存器，以及错误代码
-    //若原始特权级为3，cpu还会首先压入 SS3 和 ESP3 寄存器，并进行特权级切换,即将cs寄存器切换为之前运行的内核cs段选择子，ss切换为ss0选择子
+    //若原始特权级为3，cpu会首先压入 SS3 和 ESP3 寄存器，并进行特权级切换,即将cs寄存器切换为中断门中指定的段选择子，ss切换为ss0选择子
     
     //1.判断是否有错误代码被压入，如果没有则压入0来占位，并压入中断在向量表中的下标
     .if \with_err_code == 0
@@ -103,7 +103,11 @@ exception_handler_\name:
     //使该结构体可以访问到之前保留现场所压入的所有信息，这些信息可以看作一个栈帧
     push %esp
 
-    //5.调用c处理函数，会自动压入返回地址
+    //5.调用c处理函数，会自动压入 eip，
+    //之后用 ebp 访问参数时也会自动跳过 eip 
+    //如第一个参数都是 0x8(%ebp)
+    //会自动跳过4字节的原始 ebp 和 4字节的 eip 访问到刚刚压入的 esp 的值
+    //该值便是当前存储着 gs 的栈中内存单元的地址，将该值赋值给栈帧结构体指针便可访问到之前压入的一系列寄存器的值
     call do_handler_\name
 
     //6.将 esp 重新指向 ->[gs]
@@ -155,7 +159,7 @@ exception_handler time,                 0x20, 0
     .text
     .global simple_switch
 simple_switch:  //simple_switch(from, to)
-    //1.获取参数
+    //1.获取参数，跳过4字节的 eip
     mov 8(%esp), %edx   //获取 to, 地址(指针) --> 目标任务的栈空间对应的 esp 的值
     mov 4(%esp), %eax   //获取 from, 地址(指针) --> 当前任务的栈空间对应的 esp 的值
 
@@ -170,7 +174,7 @@ simple_switch:  //simple_switch(from, to)
     //3.更新当前任务栈空间的 esp
     mov %esp, (%eax)
 
-    //3.进行栈任务栈的切换
+    //3.进行任务栈的切换
     mov (%edx), %esp
 
 
@@ -186,7 +190,52 @@ simple_switch:  //simple_switch(from, to)
     ret 
 
 
+
+
+//调用门处理程序入口
     .text
     .global exception_handler_syscall
+    .extern do_handler_syscall
 exception_handler_syscall:
-    ret
+
+    //注意：cpu只自动保护了 cs eip ss esp寄存器，其它寄存器没有被维护，可能在调用门处理函数里被修改
+    //所以需要手动压入，即保护cpu上下文环境，也为fork系统调用提供cpu上下文环境
+
+    //1.用 pusha 指令压入8个通用寄存器
+    pusha
+
+    //2.压入其他段寄存器
+    push %ds
+    push %es
+    push %fs
+    push %gs
+
+    //3.压入eflags寄存器
+    pushf
+
+    //4.将当前 esp 的值压入栈中，当作调用门栈帧的起始地址
+    push %esp
+
+    //5.调用系统调用处理函数，按id进一步判断需要进行的系统调用并执行
+    call do_handler_syscall
+
+
+    //5.恢复现场
+    pop %esp
+    popf
+    pop %gs
+    pop %fs
+    pop %es
+    pop %ds
+    popa
+
+    //retf指令会检查保存的CS中的RPL以判断返回时是否要变换特权级¹。
+    //如果要变换特权级，它会加载被调用者堆栈上的CS和EIP，并增加ESP跳过参数，
+    //然后ESP将指向被保存过的调用者SS和ESP¹。
+    //它还会对目标代码段特权级和目标栈段特权级做严格的检查，
+    //要求代码段可执行特权级CPL (即DPL) == 栈段选择子请求特权级RPL == 栈段目标内存特权级DPL²。
+    
+    retf $(5*4) 
+    
+    //弹出 eip 和 cs 后让 esp 向上跳过20个字节，即之前压入的参数，再继续弹出 esp 和 ss，即可恢复到原来的特权级和栈空间
+    //通过实际运行发现，retf 指令应该是在 esp 的原始值上加上了 20 再赋给 esp 寄存器，帮用户栈空间也做了清理 
