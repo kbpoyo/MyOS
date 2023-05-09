@@ -31,6 +31,9 @@ default_target: all
 
 .SUFFIXES: .hpux_make_needs_suffix_list
 
+# Produce verbose output by default.
+VERBOSE = 1
+
 # Command-line flag to silence nested $(MAKE).
 $(VERBOSE)MAKESILENT = -s
 
@@ -177,6 +180,30 @@ core/task.s: core/task.c.s
 core/task.c.s:
 	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/core/task.c.s
 .PHONY : core/task.c.s
+
+cpu/gate.o: cpu/gate.c.o
+.PHONY : cpu/gate.o
+
+# target to build an object file
+cpu/gate.c.o:
+	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/cpu/gate.c.o
+.PHONY : cpu/gate.c.o
+
+cpu/gate.i: cpu/gate.c.i
+.PHONY : cpu/gate.i
+
+# target to preprocess a source file
+cpu/gate.c.i:
+	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/cpu/gate.c.i
+.PHONY : cpu/gate.c.i
+
+cpu/gate.s: cpu/gate.c.s
+.PHONY : cpu/gate.s
+
+# target to generate assembly for a file
+cpu/gate.c.s:
+	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/cpu/gate.c.s
+.PHONY : cpu/gate.c.s
 
 cpu/gdt.o: cpu/gdt.c.o
 .PHONY : cpu/gdt.o
@@ -545,6 +572,9 @@ help:
 	@echo "... core/task.o"
 	@echo "... core/task.i"
 	@echo "... core/task.s"
+	@echo "... cpu/gate.o"
+	@echo "... cpu/gate.i"
+	@echo "... cpu/gate.s"
 	@echo "... cpu/gdt.o"
 	@echo "... cpu/gdt.i"
 	@echo "... cpu/gdt.s"

@@ -11,11 +11,12 @@
 
 #include "tools/log.h"
 #include "core/task.h"
+#include  "applib/lib_syscall.h"
 
 int first_main(void) {
     for (;;) {
-        log_printf("first task.");
-        sys_sleep(1000);
+        //log_printf("first task.");
+        msleep(1000);
     }
     
     return 0;

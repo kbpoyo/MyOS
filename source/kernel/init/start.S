@@ -80,6 +80,7 @@ gdt_reload:
     .global exception_handler_\name
 
 exception_handler_\name:
+    //触发中断处门后cpu会关掉外部中断，并在处理结束后重新将原来的 eflags 赋值给对应寄存器，从而打开外部中断
     //调用c处理函数前先保存现场,调用中断处理函数前cpu会自动在栈中压入 EFLAGS，CS， EIP 寄存器，以及错误代码
     //若原始特权级为3，cpu还会首先压入 SS3 和 ESP3 寄存器，并进行特权级切换,即将cs寄存器切换为之前运行的内核cs段选择子，ss切换为ss0选择子
     
@@ -183,3 +184,9 @@ simple_switch:  //simple_switch(from, to)
 
     //5.恢复切换后的任务执行流，相当于此时 esp ->[eip]， 即 pop %eip
     ret 
+
+
+    .text
+    .global exception_handler_syscall
+exception_handler_syscall:
+    ret

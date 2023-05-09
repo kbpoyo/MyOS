@@ -42,11 +42,19 @@ source/kernel/CMakeFiles/kernel.dir/core/task.c.o
  /home/kbpoyo/code/cpp/MyOs/source/common/boot_info.h
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/cpu/mmu.h
 
+source/kernel/CMakeFiles/kernel.dir/cpu/gate.c.o
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/cpu/gate.c
+ /usr/include/stdc-predef.h
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/include/cpu/gate.h
+ /home/kbpoyo/code/cpp/MyOs/source/common/types.h
+
 source/kernel/CMakeFiles/kernel.dir/cpu/gdt.c.o
  /home/kbpoyo/code/cpp/MyOs/source/kernel/cpu/gdt.c
  /usr/include/stdc-predef.h
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/cpu/gdt.h
  /home/kbpoyo/code/cpp/MyOs/source/common/types.h
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/include/cpu/gate.h
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/include/cpu/syscall.h
  /home/kbpoyo/code/cpp/MyOs/source/common/cpu_instr.h
  /home/kbpoyo/code/cpp/MyOs/source/common/types.h
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/ipc/mutex.h
@@ -66,6 +74,7 @@ source/kernel/CMakeFiles/kernel.dir/cpu/idt.c.o
  /home/kbpoyo/code/cpp/MyOs/source/common/cpu_instr.h
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/os_cfg.h
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/tools/log.h
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/include/cpu/gate.h
 
 source/kernel/CMakeFiles/kernel.dir/cpu/mmu.c.o
  /home/kbpoyo/code/cpp/MyOs/source/kernel/cpu/mmu.c
@@ -95,6 +104,8 @@ source/kernel/CMakeFiles/kernel.dir/init/first_task.c.o
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/cpu/tss.h
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/tools/list.h
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/tools/assert.h
+ /home/kbpoyo/code/cpp/MyOs/source/applib/lib_syscall.h
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/include/os_cfg.h
 
 source/kernel/CMakeFiles/kernel.dir/init/init.c.o
  /home/kbpoyo/code/cpp/MyOs/source/kernel/init/init.c

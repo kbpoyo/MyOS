@@ -35,13 +35,13 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING, OCTETS
   7 .debug_abbrev 00000379  00000000  00000000  00005a36  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
-  8 .debug_line   00000435  00000000  00000000  00005daf  2**0
+  8 .debug_line   0000043a  00000000  00000000  00005daf  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
-  9 .debug_frame  00000330  00000000  00000000  000061e4  2**2
+  9 .debug_frame  00000330  00000000  00000000  000061ec  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 10 .debug_str    00000424  00000000  00000000  00006514  2**0
+ 10 .debug_str    00000427  00000000  00000000  0000651c  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 11 .debug_line_str 00000122  00000000  00000000  00006938  2**0
+ 11 .debug_line_str 00000122  00000000  00000000  00006943  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
 SYMBOL TABLE:
 00000000 l    df *ABS*	00000000 loader_16.c
@@ -250,9 +250,9 @@ static inline uint32_t read_cr0(void) {
     80cb:	66 c3                	retl   
 
 000080cd <write_cr0>:
-/**
- * @brief  向cr0寄存器写入数据
- *
+ *CR0 中包含了 6 个预定义标志：
+ *第 0 位是保护允许位 PE (Protected Enable)，用于启动保护模式，如果 PE 位置 1，则保护模式启动，如果 PE=0，则在实模式下运行。
+ *第 31 位是分页允许位 (Paging Enable)，它表示芯片上的分页部件是否允许工作。
  * @param data
  */
 static inline void write_cr0(uint32_t data) {

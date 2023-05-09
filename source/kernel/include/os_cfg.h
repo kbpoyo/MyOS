@@ -18,6 +18,9 @@
 //内核数据段的选择子,gdt_table[2]
 #define KERNEL_SELECTOR_DS (0x0002 << 3)
 
+//系统调用门描述符的选择子
+#define SYSCALL_SELECTOR    (0x0003 << 3)
+
 //内核栈空间的大小为8kb
 #define KERNEL_STACK_SIZE (8 * 1024)
 

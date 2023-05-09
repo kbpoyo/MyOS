@@ -16,7 +16,8 @@
         "klib.h": "c",
         "memory.h": "c",
         "gdt.h": "c",
-        "idt.h": "c"
+        "idt.h": "c",
+        "os_cfg.h": "c"
     },
     "todo-tree.tree.scanMode": "workspace only",
 }

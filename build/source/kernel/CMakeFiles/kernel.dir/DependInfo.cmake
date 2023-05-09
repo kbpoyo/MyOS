@@ -23,6 +23,7 @@ set(CMAKE_ASM_TARGET_INCLUDE_PATH
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/home/kbpoyo/code/cpp/MyOs/source/kernel/core/memory.c" "source/kernel/CMakeFiles/kernel.dir/core/memory.c.o" "gcc" "source/kernel/CMakeFiles/kernel.dir/core/memory.c.o.d"
   "/home/kbpoyo/code/cpp/MyOs/source/kernel/core/task.c" "source/kernel/CMakeFiles/kernel.dir/core/task.c.o" "gcc" "source/kernel/CMakeFiles/kernel.dir/core/task.c.o.d"
+  "/home/kbpoyo/code/cpp/MyOs/source/kernel/cpu/gate.c" "source/kernel/CMakeFiles/kernel.dir/cpu/gate.c.o" "gcc" "source/kernel/CMakeFiles/kernel.dir/cpu/gate.c.o.d"
   "/home/kbpoyo/code/cpp/MyOs/source/kernel/cpu/gdt.c" "source/kernel/CMakeFiles/kernel.dir/cpu/gdt.c.o" "gcc" "source/kernel/CMakeFiles/kernel.dir/cpu/gdt.c.o.d"
   "/home/kbpoyo/code/cpp/MyOs/source/kernel/cpu/idt.c" "source/kernel/CMakeFiles/kernel.dir/cpu/idt.c.o" "gcc" "source/kernel/CMakeFiles/kernel.dir/cpu/idt.c.o.d"
   "/home/kbpoyo/code/cpp/MyOs/source/kernel/cpu/mmu.c" "source/kernel/CMakeFiles/kernel.dir/cpu/mmu.c.o" "gcc" "source/kernel/CMakeFiles/kernel.dir/cpu/mmu.c.o.d"

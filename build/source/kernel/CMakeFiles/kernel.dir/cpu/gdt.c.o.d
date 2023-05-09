@@ -3,6 +3,8 @@ source/kernel/CMakeFiles/kernel.dir/cpu/gdt.c.o: \
  /usr/include/stdc-predef.h \
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/cpu/gdt.h \
  /home/kbpoyo/code/cpp/MyOs/source/common/types.h \
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/include/cpu/gate.h \
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/include/cpu/syscall.h \
  /home/kbpoyo/code/cpp/MyOs/source/common/cpu_instr.h \
  /home/kbpoyo/code/cpp/MyOs/source/common/types.h \
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/ipc/mutex.h \

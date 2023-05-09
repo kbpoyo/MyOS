@@ -9,6 +9,8 @@
  */
 
 #include "cpu/gdt.h"
+#include "cpu/gate.h"
+#include "cpu/syscall.h"
 #include "common/cpu_instr.h"
 #include "ipc/mutex.h"
 #include "os_cfg.h"
@@ -84,7 +86,16 @@ void gdt_init(void) {
                     SEG_ATTR_TYPE_CODE | SEG_ATTR_TYPE_RW | SEG_ATTR_D_OR_B);
 
     is_alloc[KERNEL_SELECTOR_CS >> 3] = 1;
-    //3.加载新的GDT表
+
+    //3.初始化调用门描述符
+    gate_desc_set((gate_desc_t*)(gdt_table + (SYSCALL_SELECTOR >> 3)), 
+        KERNEL_SELECTOR_CS, (uint32_t)exception_handler_syscall, 
+        GATE_ATTR_P | GATE_ATTR_DPL_3 | GATE_TYPE_SYSCALL | SYSCALL_PARAM_COUNT);
+    
+    is_alloc[SYSCALL_SELECTOR >> 3] = 1;
+
+
+    //4.加载新的GDT表
     lgdt((uint32_t)gdt_table, sizeof(gdt_table));
 
     //4.初始化互斥锁
