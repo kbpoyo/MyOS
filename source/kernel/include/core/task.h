@@ -37,9 +37,10 @@ typedef enum _task_state_t {
   TASK_BLOCKED,   // 阻塞态，等待外部资源或锁准备好
 } state_t;
 
-// 定义可执行任务的数据结构,即PCB控制块，书p406
+// 定义可执行任务的数据结构,即PCB进程控制块，书p406
 typedef struct _task_t {
   state_t state;            //任务状态
+  struct _task_t *parent;   //父进程控制块的地址
   int pid;                  //进程id
   int slice_max;            //任务所能拥有的最大时间分片数
   int slice_curr;           //任务当前的所拥有的时间分片数
@@ -52,7 +53,7 @@ typedef struct _task_t {
   uint32_t tss_selector;    // 任务对应的TSS选择子
 } task_t;
 
-void task_init(task_t *task, const char *name, uint32_t entry, uint32_t esp, uint32_t flag);
+int task_init(task_t *task, const char *name, uint32_t entry, uint32_t esp, uint32_t flag);
 void task_switch_from_to(task_t *from, task_t *to);
 
 
@@ -90,4 +91,5 @@ task_t* task_current(void);
 void sys_sleep(uint32_t ms);
 int sys_yield(void);
 int sys_getpid(void);
+int sys_fork(void);
 #endif

@@ -62,9 +62,6 @@ static inline int sys_call(syscall_args_t *args) {
          [addr]"r"(addr)
     );
 
-
-
-
     return ret;
 }
 
@@ -87,11 +84,33 @@ static inline void msleep(int ms) {
 
 }
 
+/**
+ * @brief 获取用户进程id
+ * 
+ * @return int 
+ */
 static inline int getpid(void) {
     syscall_args_t args;
     args.id = SYS_getpid;
 
     return sys_call(&args);
 }
+
+static inline void print_msg(const char *fmt, int arg) {
+    syscall_args_t args;
+    args.id = SYS_printmsg;
+    args.arg0 = (int)fmt;
+    args.arg1 = arg;
+
+    sys_call(&args);
+}
+
+static inline int fork (void) {
+    syscall_args_t args;
+    args.id = SYS_fork;
+
+    return sys_call(&args);
+}
+
 
 #endif

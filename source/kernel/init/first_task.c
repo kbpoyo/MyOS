@@ -15,8 +15,11 @@
 
 int first_main(void) {
     int pid = getpid();
+
+    int cpid = fork();
+
     for (;;) {
-        //log_printf("first task.");
+        print_msg("task id=%d", pid);
         msleep(1000);
     }
     

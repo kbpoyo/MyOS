@@ -17,8 +17,12 @@
 #define SYSCALL_PARAM_COUNT 5
 
 //定义系统调用的id
-#define SYS_sleep   0   //延时函数
-#define SYS_getpid  1   //获取pid
+#define SYS_sleep       0   //延时函数
+#define SYS_getpid      1   //获取pid
+#define SYS_fork        2   //fork子进程
+
+#define SYS_printmsg    10   //临时使用的打印函数
+
 
 //定义调用门处理函数的栈帧
 typedef struct _syscall_frame_t {

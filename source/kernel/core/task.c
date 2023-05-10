@@ -19,9 +19,14 @@
 #include "cpu/idt.h"
 #include "core/memory.h"
 #include "cpu/mmu.h"
+#include "cpu/syscall.h"
 
 //定义全局唯一的任务管理器对象
 static task_manager_t task_manager;
+//定义静态的任务表，用于任务的静态分配
+static task_t task_table[TASK_COUNT];
+//定义用于维护task_table的互斥锁
+static mutex_t task_table_lock;
 
 
 static void switch_to_tss(uint16_t tss_selector) {
@@ -130,7 +135,7 @@ tss_init_failed:
  * @param flag 任务属性标志位，如特权级
  * @return int 
  */
-void task_init(task_t *task, const char* name, uint32_t entry, uint32_t esp, uint32_t flag) {
+int task_init(task_t *task, const char* name, uint32_t entry, uint32_t esp, uint32_t flag) {
     ASSERT(task != (task_t*)0);
     //1.初始化任务TSS段
     tss_init(task, entry, esp, flag);
@@ -144,9 +149,11 @@ void task_init(task_t *task, const char* name, uint32_t entry, uint32_t esp, uin
     list_node_init(&task->wait_node);
 
     //4.初始化最大时间片数与当前拥有时间片数,以及延时时间片数
+    task->state = TASK_CREATED;
     task->slice_max = task->slice_curr = TASK_TIME_SLICE_DEFAULT;
     task->sleep = 0;
     task->pid = (uint32_t)task;
+    task->parent = (task_t*)0;
     
     idt_state_t state = idt_enter_protection();//TODO:加锁
    
@@ -158,6 +165,8 @@ void task_init(task_t *task, const char* name, uint32_t entry, uint32_t esp, uin
 
     
     idt_leave_protection(state);//TODO:解锁
+
+    return 1;
 }
 
 
@@ -210,6 +219,11 @@ void task_manager_init(void) {
     //5.将空闲进程从就绪队列中取出
     task_set_unready(&task_manager.empty_task);
     task_manager.empty_task.state = TASK_CREATED;
+
+
+    //6.初始化静态任务表,及其互斥锁
+    kernel_memset(task_table, 0, sizeof(task_table));
+    mutex_init(&task_table_lock);
 
   
 }
@@ -480,6 +494,45 @@ void task_set_wakeup(task_t *task) {
     task->state = TASK_CREATED;
 }
 
+
+/**
+ * @brief 从静态任务表中分配一个任务对象
+ * 
+ * @return task_t* 
+ */
+static task_t *alloc_task(void) {
+    task_t *task = 0;
+
+    mutex_lock(&task_table_lock);
+    
+    //遍历静态任务表，取出未被分配的任务对象空间
+    for (int i = 0; i < TASK_COUNT; ++i) {
+        task_t *curr = task_table + i;
+        if (curr->pid == 0) {
+            task = curr;
+            break;
+        }
+    }
+
+    mutex_unlock(&task_table_lock);
+
+    return task;
+}
+
+/**
+ * @brief 释放静态任务表的任务对象
+ * 
+ * @param task 
+ */
+static void free_task(task_t *task) {
+    mutex_lock(&task_table_lock);
+    
+    task->pid = 0;
+
+    mutex_unlock(&task_table_lock);
+}
+
+
 /**
  * @brief  使进程进入延时状态
  * 
@@ -514,3 +567,64 @@ void sys_sleep(uint32_t ms) {
 int sys_getpid(void) {
     return task_current()->pid;
 }
+
+/**
+ * @brief 创建子进程
+ * 
+ * @return int 子进程的pid
+ */
+int sys_fork(void) {
+
+    //获取当前进程为fork进程的父进程
+    task_t *parent_task = task_current();
+
+    //分配子进程控制块
+    task_t *child_task = alloc_task();
+    if (child_task == (task_t*)0)
+        goto fork_failed;
+
+    //获取系统调用的栈帧,因为每次通过调用门进入内核栈中都只会一帧该结构体的数据，
+    //所以用最高地址减去大小即可获得该帧的起始地址
+    syscall_frame_t *frame = (syscall_frame_t*)(parent_task->tss.esp0 - sizeof(syscall_frame_t));
+
+    //初始子进程控制块，直接用父进程进入调用门的下一条指令地址作为子进程的入口地址
+    int err = task_init(child_task, parent_task->name, frame->eip, frame->esp, TASK_FLAGS_USER);
+    if (err < 0)
+        goto fork_failed;
+
+    //恢复到父进程的上下文环境
+    tss_t *tss = &(child_task->tss);
+    //子进程执行的第一条指令就是从eax中取出系统用的返回值，即进程id，子进程固定获取0
+    tss->eax = 0;   
+    tss->ebx = frame->ebx;
+    tss->ecx = frame->ecx;
+    tss->edx = frame->edx;
+    tss->edi = frame->edi;
+    tss->esi = frame->esi;
+    tss->eflags = frame->eflags;
+    tss->ebp = frame->ebp;
+
+    //复用父进程的段寄存器
+    tss->cs = frame->cs;
+    tss->ds = frame->ds;
+    tss->es = frame->es;
+    tss->fs = frame->fs;
+    tss->gs = frame->gs;
+    tss->ss = frame->ss;
+
+    //复用父进程的页目录，之后会复用父进程的只读段，进行读共享写复制
+    tss->cr3 = parent_task->tss.cr3;
+
+
+    //记录父进程地址
+    child_task->parent = parent_task;
+
+    //反回子进程id
+    return child_task->pid;
+
+//fork失败，清理资源
+fork_failed:
+
+    return -1;
+}
+

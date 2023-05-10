@@ -38,7 +38,8 @@ source/kernel/CMakeFiles/kernel.dir/core/task.c.o: ../source/kernel/core/task.c 
   ../source/kernel/include/tools/bitmap.h \
   ../source/kernel/include/ipc/mutex.h \
   ../source/common/boot_info.h \
-  ../source/kernel/include/cpu/mmu.h
+  ../source/kernel/include/cpu/mmu.h \
+  ../source/kernel/include/cpu/syscall.h
 
 source/kernel/CMakeFiles/kernel.dir/cpu/gate.c.o: ../source/kernel/cpu/gate.c \
   /usr/include/stdc-predef.h \

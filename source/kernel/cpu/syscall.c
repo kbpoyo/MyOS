@@ -11,12 +11,24 @@
 
 #include "cpu/syscall.h"
 #include "core/task.h"
-#include "core/task.h"
 #include "tools/log.h"
+
+
+/**
+ * @brief 临时的格式化输出系统调用
+ * 
+ * @param fmt 
+ * @param arg 
+ */
+void sys_print_msg(const char *fmt, int arg) {
+    log_printf(fmt, arg);
+}
 
 static const sys_handler_t sys_table[] = {
     [SYS_sleep] = (sys_handler_t)sys_sleep,
     [SYS_getpid] = (sys_handler_t)sys_getpid,
+    [SYS_fork] = (sys_handler_t)sys_fork,
+    [SYS_printmsg] = (sys_handler_t)sys_print_msg,
 };
 
 /**
