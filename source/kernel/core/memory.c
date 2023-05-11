@@ -200,6 +200,8 @@ int  memory_creat_map(pde_t *page_dir, uint32_t vstart, uint32_t pstart, int pag
     pstart += MEM_PAGE_SIZE;
 
   }
+
+  return 1;
  }
 
 //TODO:编写函数注释
@@ -266,19 +268,108 @@ uint32_t memory_creat_uvm() {
 
 /**
  * @brief 拷贝页目录表的映射关系
+ *      //TODO:提供的读共享写复制的进程拷贝操作，只能供fork系统调用使用
  * 
  * @param to_page_dir 拷贝到的目标页目录表地址
  * @param from_page_dir 被拷贝的源页目录表地址
  * @return uint32_t 
  */
-uint32_t memory_copy_uvm(uint32_t to_page_dir, uint32_t from_page_dir) {
+int memory_copy_uvm(uint32_t to_page_dir, uint32_t from_page_dir) {
+  //1.获取用户程序虚拟地址的起始pde索引，即0x8000 0000 的pde索引值
+  uint32_t user_pde_start = pde_index(MEM_TASK_BASE);
+  pde_t *pde = (pde_t *)from_page_dir + user_pde_start;
+
+  //2.遍历源页目录表中的每一个页目录项，拷贝给目标目录
+  for (int i = user_pde_start; i < PDE_CNT; ++i, ++pde) {
+    if (!pde->present)  //当前页目录项不存在
+      continue;
+
+    //3.获取页目录项指向的页表的起始地址
+    pte_t *pte = (pte_t*)pde_to_pt_addr(pde);
+
+    //4.遍历页表的页表项，进行读共享写复制的映射操作
+    for (int j = 0; j < PTE_CNT; ++j, ++pte) {
+      if (!pte->present)  //当前页表项不存在
+        continue;
+      
+      //5.获取该页表项对应的虚拟地址
+      uint32_t vaddr = (i << 22) | (j << 12);
+      
+      //6.判断当前页表项指向的页是否支持写操作
+      if (pte->v & PTE_W) { //当前页支持写操作，需进行复制操作
+        //分配一个新的页，进行拷贝
+        uint32_t page = addr_alloc_page(&paddr_alloc, 1);
+        if (page == 0)  //分配失败
+          goto copy_uvm_failed;
+        
+        //记录映射关系
+        int err = memory_creat_map((pde_t*)to_page_dir, vaddr, page, 1, get_pte_privilege(pte));
+        if (err < 0)
+          goto copy_uvm_failed;
+        
+        //拷贝该页内容
+        kernel_memcpy((void*)page, (void*)vaddr, MEM_PAGE_SIZE);
+
+      } else {  //当前页为只读页，直接共享该页即可，即只复制页表项即可
+        //获取该页的地址
+        uint32_t page = pte_to_pg_addr(pte);
+        //记录映射关系
+        int err = memory_creat_map((pde_t*)to_page_dir, vaddr, page, 1, get_pte_privilege(pte));
+        if (err < 0)
+          goto copy_uvm_failed;
+      }
+
+    }
+  }
+
+  return 1;
 
 
+copy_uvm_failed:
+  //copy虚拟空间映射失败，清理对应资源
+  memory_destroy_uvm(to_page_dir);
+  return -1;
 }
 
 
+/**
+ * @brief 销毁该页目录表对应的所有虚拟空间资源，包括映射关系与内存空间
+ *        //TODO:进行了读不释放写释放的处理操作，只能供memory_copy_uvm函数失败时调用
+ * 
+ * @param page_dir 
+ */
 void memory_destroy_uvm(uint32_t page_dir) {
-  
+  //1.获取用户进程虚拟地址的起始地址对应的该页目录项
+  uint32_t user_task_start  = pde_index(MEM_TASK_BASE);
+  pde_t *pde = (pde_t*) page_dir + user_task_start;
+
+  //2.遍历每一个页目录项，清理对应资源
+  for (int i = user_task_start; i < PDE_CNT; ++i, ++pde) {
+    if (!pde->present) 
+        continue;
+
+    //3.获取页目录项对应的页表的起始地址
+    pte_t *pte = (pte_t*)pde_to_pt_addr(pde);
+    
+    //4.遍历所有页表项，清理对应资源
+    for (int j = 0; j < PTE_CNT; ++j, ++pte) {
+      if (!pte->present)
+        continue;
+      
+      //5.判断该页的可读属性，读则不释放关联物理页，写则释放该关联物理页
+      if (pte->v & PTE_W) { //该页为可写页
+        //释放该页表项关联的物理页
+        addr_free_page(&paddr_alloc, pte_to_pg_addr(pte), 1);
+      }
+    }
+
+    //6.释放存储该页表的物理页
+    addr_free_page(&paddr_alloc, pde_to_pt_addr(pde), 1);
+  }
+
+
+  //7.释放存储该页目录表的物理页
+  addr_free_page(&paddr_alloc, page_dir, 1);
 }
 
 
@@ -377,6 +468,17 @@ int memory_alloc_page_for(uint32_t vaddr, uint32_t alloc_size, uint32_t privileg
 }
 
 /**
+ * @brief 返回当前进程的页目录表的地址
+ * 
+ * @return pde_t* 
+ */
+static pde_t* curr_page_dir() {
+  return (pde_t*)(task_current()->tss.cr3);
+}
+
+
+
+/**
  * @brief 为进程的内核空间分配一页内存，需特权级0访问
  * 
  * @return uint32_t 内存的起始地址
@@ -390,14 +492,7 @@ uint32_t memory_alloc_page() {
   return addr;
 }
 
-/**
- * @brief 返回当前进程的页目录表的地址
- * 
- * @return pde_t* 
- */
-static pde_t* curr_page_dir() {
-  return (pde_t*)(task_current()->tss.cr3);
-}
+
 
 /**
  * @brief 释放一页内存空间
@@ -421,4 +516,3 @@ void memory_free_page(uint32_t addr) {
   }
 
 }
-

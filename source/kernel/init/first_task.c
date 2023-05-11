@@ -14,12 +14,20 @@
 #include  "applib/lib_syscall.h"
 
 int first_main(void) {
-    int pid = getpid();
-
-    int cpid = fork();
+    int count = 3;
+    int pid = fork();
 
     for (;;) {
-        print_msg("task id=%d", pid);
+        print_msg("pid=%d", pid);
+        if (pid == 0) {
+            print_msg("child pid=%d", getpid());
+            print_msg("count=%d", count++);
+        } else {
+            print_msg("parent pid=%d", getpid());
+            print_msg("count=%d", count);
+            count += 2;
+
+        }
         msleep(1000);
     }
     

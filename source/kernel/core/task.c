@@ -127,6 +127,24 @@ tss_init_failed:
 }
 
 /**
+ * @brief 将任务插入任务链表中并设为就绪态，标志该任务可被调度
+ * 
+ * @param task 
+ */
+void task_start(task_t *task) {
+    idt_state_t state = idt_enter_protection();//TODO:加锁
+   
+    //5.将任务加入任务队列
+    list_insert_last(&task_manager.task_list, &task->task_node);
+
+    //6.将任务设置为就绪态
+    task_set_ready(task);
+
+    
+    idt_leave_protection(state);//TODO:解锁
+}
+
+/**
  * @brief  初始化任务
  * 
  * @param task 任务对象
@@ -157,17 +175,7 @@ int task_init(task_t *task, const char* name, uint32_t entry, uint32_t esp, uint
     task->sleep = 0;
     task->pid = (uint32_t)task;
     task->parent = (task_t*)0;
-    
-    idt_state_t state = idt_enter_protection();//TODO:加锁
    
-    //5.将任务加入任务队列
-    list_insert_last(&task_manager.task_list, &task->task_node);
-
-    //6.将任务设置为就绪态
-    task_set_ready(task);
-
-    
-    idt_leave_protection(state);//TODO:解锁
 
     return 1;
 }
@@ -240,15 +248,10 @@ void task_manager_init(void) {
                  (uint32_t)&empty_task_stack[EMPTY_TASK_STACK_SIZE], TASK_FLAGS_SYSTEM);
                  
 
-    //5.将空闲进程从就绪队列中取出
-    task_set_unready(&task_manager.empty_task);
-    task_manager.empty_task.state = TASK_CREATED;
 
-
-    //6.初始化静态任务表,及其互斥锁
+    //5.初始化静态任务表,及其互斥锁
     kernel_memset(task_table, 0, sizeof(task_table));
     mutex_init(&task_table_lock);
-
   
 }
 
@@ -302,11 +305,11 @@ void task_first_init(void) {
     uint32_t alloc_size = up2(copy_size, MEM_PAGE_SIZE) + 10 * MEM_PAGE_SIZE;   //需要为进程分配的内存大小，按4kb对齐,并多拿五页当作栈空间
     ASSERT(copy_size < alloc_size);
 
-    uint32_t task_start = (uint32_t)first_task_entry;
+    uint32_t task_start_addr = (uint32_t)first_task_entry;  //获取第一个任务的入口地址
 
     //3.初始化第一个任务,因为当前为操作系统进程，esp初始值随意赋值都可，
     // 因为当前进程已开启，cpu会在切换的时候保留真实的状态，即真实的esp值
-    task_init(&task_manager.first_task, "first task", task_start, task_start + alloc_size, TASK_FLAGS_USER);
+    task_init(&task_manager.first_task, "first task", task_start_addr, task_start_addr + alloc_size, TASK_FLAGS_USER);
       
     //4.将当前任务的TSS选择子告诉cpu，用来切换任务时保存状态
     write_tr(task_manager.first_task.tss_selector);
@@ -321,10 +324,13 @@ void task_first_init(void) {
     task_manager.curr_task->state = TASK_RUNNING;
 
     //8.进程的各个段还只是在虚拟地址中，所以要为各个段分配物理地址页空间，并进行映射
-    memory_alloc_page_for(task_start, alloc_size, PTE_P | PTE_W | PTE_U);
+    memory_alloc_page_for(task_start_addr, alloc_size, PTE_P | PTE_W | PTE_U);
 
     //9.将任务进程各个段从内核四个段之后的紧邻位置，拷贝到已分配好的且与虚拟地址对应的物理地址空间，实现代码隔离
     kernel_memcpy(first_task_entry, &s_first_task, alloc_size);
+
+    //10.将任务设为可被调度
+    task_start(&task_manager.first_task);
 }
 
 /**
@@ -417,32 +423,7 @@ void task_switch(void) {
 
 
 
-/**
- * @brief  使当前正在运行的任务主动让出cpu
- * 
- * @return int 
- */
-int sys_yield(void) {
-    idt_state_t state = idt_enter_protection();//TODO:加锁
-    
-    //1.判断当前就绪队列中是否有多个任务
-    if (list_get_size(&task_manager.ready_list) > 1) {
-        //2.获取当前任务  
-        task_t *curr_task = task_current();
-        
-        //3.将当前任务从就绪队列中取下
-        task_set_unready(curr_task);
 
-        //4.将当前任务重新加入到就绪队列的队尾
-        task_set_ready(curr_task);
-
-        //5.任务管理器运行下一个任务，从而释放cpu使用权
-        task_switch();
-    }
-    
-    idt_leave_protection(state);//TODO:解锁
-    return 0;
-}
 
 /**
  * @brief  提供给时钟中断使用，每中断一次，当前任务的时间片使用完一次
@@ -643,6 +624,8 @@ int sys_fork(void) {
     if (memory_copy_uvm(tss->cr3, parent_task->tss.cr3) < 0)
         goto fork_failed;
 
+    //子进程控制块初始化完毕，设为可被调度态
+    task_start(child_task);
     //反回子进程id
     return child_task->pid;
 
@@ -656,3 +639,29 @@ fork_failed:
     return -1;
 }
 
+/**
+ * @brief  使当前正在运行的任务主动让出cpu
+ * 
+ * @return int 
+ */
+int sys_yield(void) {
+    idt_state_t state = idt_enter_protection();//TODO:加锁
+    
+    //1.判断当前就绪队列中是否有多个任务
+    if (list_get_size(&task_manager.ready_list) > 1) {
+        //2.获取当前任务  
+        task_t *curr_task = task_current();
+        
+        //3.将当前任务从就绪队列中取下
+        task_set_unready(curr_task);
+
+        //4.将当前任务重新加入到就绪队列的队尾
+        task_set_ready(curr_task);
+
+        //5.任务管理器运行下一个任务，从而释放cpu使用权
+        task_switch();
+    }
+    
+    idt_leave_protection(state);//TODO:解锁
+    return 0;
+}
