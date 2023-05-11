@@ -138,7 +138,10 @@ tss_init_failed:
 int task_init(task_t *task, const char* name, uint32_t entry, uint32_t esp, uint32_t flag) {
     ASSERT(task != (task_t*)0);
     //1.初始化任务TSS段
-    tss_init(task, entry, esp, flag);
+    int err = tss_init(task, entry, esp, flag);
+    if (err == -1)
+        return err;
+    
 
     //2.初始化任务名称
     kernel_strncpy(task->name, name, TASK_NAME_SIZE);
@@ -167,6 +170,27 @@ int task_init(task_t *task, const char* name, uint32_t entry, uint32_t esp, uint
     idt_leave_protection(state);//TODO:解锁
 
     return 1;
+}
+
+/**
+ * @brief 反初始化任务对象，释放对应的资源
+ * 
+ * @param task 
+ */
+void task_uninit(task_t *task) {
+    if (task->tss_selector) {   //释放已分配的选择子
+        gdt_free(task->tss_selector);
+    }
+
+    if (task->tss.esp0) {   //释放已分配的内核栈空间
+        memory_free_page((uint32_t)(task->tss.esp0 - MEM_PAGE_SIZE));
+    }
+
+    if (task->tss.cr3) {    //释放为页目录分配的页空间及其映射关系
+        memory_destroy_uvm(task->tss.cr3);
+    }
+
+    kernel_memset(task, 0, sizeof(task_t));
 }
 
 
@@ -588,7 +612,7 @@ int sys_fork(void) {
     syscall_frame_t *frame = (syscall_frame_t*)(parent_task->tss.esp0 - sizeof(syscall_frame_t));
 
     //初始子进程控制块，直接用父进程进入调用门的下一条指令地址作为子进程的入口地址
-    int err = task_init(child_task, parent_task->name, frame->eip, frame->esp, TASK_FLAGS_USER);
+    int err = task_init(child_task, parent_task->name, frame->eip, frame->esp + sizeof(uint32_t)*SYSCALL_PARAM_COUNT, TASK_FLAGS_USER);
     if (err < 0)
         goto fork_failed;
 
@@ -612,18 +636,22 @@ int sys_fork(void) {
     tss->gs = frame->gs;
     tss->ss = frame->ss;
 
-    //复用父进程的页目录，之后会复用父进程的只读段，进行读共享写复制
-    tss->cr3 = parent_task->tss.cr3;
-
-
     //记录父进程地址
     child_task->parent = parent_task;
+
+    //拷贝进程虚拟页目录表和页表，即拷贝其映射关系
+    if (memory_copy_uvm(tss->cr3, parent_task->tss.cr3) < 0)
+        goto fork_failed;
 
     //反回子进程id
     return child_task->pid;
 
 //fork失败，清理资源
 fork_failed:
+    if (child_task) {   //初始化失败，释放对应资源
+        task_uninit(child_task);
+        free_task(child_task);
+    }
 
     return -1;
 }

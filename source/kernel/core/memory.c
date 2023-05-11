@@ -265,6 +265,24 @@ uint32_t memory_creat_uvm() {
 
 
 /**
+ * @brief 拷贝页目录表的映射关系
+ * 
+ * @param to_page_dir 拷贝到的目标页目录表地址
+ * @param from_page_dir 被拷贝的源页目录表地址
+ * @return uint32_t 
+ */
+uint32_t memory_copy_uvm(uint32_t to_page_dir, uint32_t from_page_dir) {
+
+
+}
+
+
+void memory_destroy_uvm(uint32_t page_dir) {
+  
+}
+
+
+/**
  * @brief  初始化化内存
  *
  * @param boot_info cpu在实模式下检测到的可用内存对象
@@ -403,3 +421,4 @@ void memory_free_page(uint32_t addr) {
   }
 
 }
+
