@@ -12,7 +12,7 @@ if(NOT DEFINED CMAKE_INSTALL_CONFIG_NAME)
     string(REGEX REPLACE "^[^A-Za-z0-9_]+" ""
            CMAKE_INSTALL_CONFIG_NAME "${BUILD_TYPE}")
   else()
-    set(CMAKE_INSTALL_CONFIG_NAME "")
+    set(CMAKE_INSTALL_CONFIG_NAME "Debug")
   endif()
   message(STATUS "Install configuration: \"${CMAKE_INSTALL_CONFIG_NAME}\"")
 endif()
@@ -47,6 +47,8 @@ if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   include("/home/kbpoyo/code/cpp/MyOs/build/source/boot/cmake_install.cmake")
   include("/home/kbpoyo/code/cpp/MyOs/build/source/loader/cmake_install.cmake")
   include("/home/kbpoyo/code/cpp/MyOs/build/source/kernel/cmake_install.cmake")
+  include("/home/kbpoyo/code/cpp/MyOs/build/source/applib/cmake_install.cmake")
+  include("/home/kbpoyo/code/cpp/MyOs/build/source/shell/cmake_install.cmake")
 
 endif()
 

@@ -1,0 +1,133 @@
+In archive /home/kbpoyo/code/cpp/MyOs/build/source/applib/libapp.a:
+
+crt0.S.o:     file format elf32-i386
+rw-r--r-- 0/0   1536 Jan  1 08:00 1970 crt0.S.o
+architecture: i386, flags 0x00000011:
+HAS_RELOC, HAS_SYMS
+start address 0x00000000
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         00000010  00000000  00000000  00000034  2**0
+                  CONTENTS, ALLOC, LOAD, RELOC, READONLY, CODE
+  1 .data         00000000  00000000  00000000  00000044  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  2 .bss          00000000  00000000  00000000  00000044  2**0
+                  ALLOC
+  3 .debug_line   0000004e  00000000  00000000  00000044  2**0
+                  CONTENTS, RELOC, READONLY, DEBUGGING, OCTETS
+  4 .debug_line_str 00000066  00000000  00000000  00000092  2**0
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+  5 .debug_info   00000024  00000000  00000000  000000f8  2**0
+                  CONTENTS, RELOC, READONLY, DEBUGGING, OCTETS
+  6 .debug_abbrev 00000014  00000000  00000000  0000011c  2**0
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+  7 .debug_aranges 00000020  00000000  00000000  00000130  2**3
+                  CONTENTS, RELOC, READONLY, DEBUGGING, OCTETS
+  8 .debug_str    0000006b  00000000  00000000  00000150  2**0
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+SYMBOL TABLE:
+00000000 l    d  .text	00000000 .text
+00000000 l    d  .debug_info	00000000 .debug_info
+00000000 l    d  .debug_abbrev	00000000 .debug_abbrev
+00000000 l    d  .debug_line	00000000 .debug_line
+00000000 l    d  .debug_line_str	00000000 .debug_line_str
+00000000 l    d  .debug_str	00000000 .debug_str
+00000000 g       .text	00000000 _start
+00000000         *UND*	00000000 cstart
+
+
+
+Disassembly of section .text:
+
+00000000 <_start>:
+    .extern cstart
+_start:
+    //iret指令返回后，将之前压入的 ss,esp,eflags,cs,eip 寄存器值返回给对应寄存器，
+	//由于cpu从0特权级切换到了3特权级，而之前其余的段寄存器都是0特权级，不能供3特权级使用，
+	//所以cpu将其余寄存器置零，这里直接用ss寄存器再初始化其余段寄存器即可
+	mov %ss, %ax
+   0:	66 8c d0             	mov    %ss,%ax
+	mov %ax, %ds
+   3:	8e d8                	mov    %eax,%ds
+	mov %ax, %es
+   5:	8e c0                	mov    %eax,%es
+	mov %ax, %fs
+   7:	8e e0                	mov    %eax,%fs
+	mov %ax, %gs
+   9:	8e e8                	mov    %eax,%gs
+
+    //因为cs寄存器已由操作系统分配，所以直接跳转即可
+	jmp cstart
+   b:	e9 fc ff ff ff       	jmp    c <_start+0xc>
+			c: R_386_PC32	cstart
+
+cstart.c.o:     file format elf32-i386
+rw-r--r-- 0/0   2324 Jan  1 08:00 1970 cstart.c.o
+architecture: i386, flags 0x00000011:
+HAS_RELOC, HAS_SYMS
+start address 0x00000000
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         0000001a  00000000  00000000  00000034  2**0
+                  CONTENTS, ALLOC, LOAD, RELOC, READONLY, CODE
+  1 .data         00000000  00000000  00000000  0000004e  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  2 .bss          00000000  00000000  00000000  0000004e  2**0
+                  ALLOC
+  3 .debug_info   00000087  00000000  00000000  0000004e  2**0
+                  CONTENTS, RELOC, READONLY, DEBUGGING, OCTETS
+  4 .debug_abbrev 0000007e  00000000  00000000  000000d5  2**0
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+  5 .debug_aranges 00000020  00000000  00000000  00000153  2**0
+                  CONTENTS, RELOC, READONLY, DEBUGGING, OCTETS
+  6 .debug_line   00000052  00000000  00000000  00000173  2**0
+                  CONTENTS, RELOC, READONLY, DEBUGGING, OCTETS
+  7 .debug_str    000000ab  00000000  00000000  000001c5  2**0
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+  8 .debug_line_str 000000cb  00000000  00000000  00000270  2**0
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+  9 .comment      0000002c  00000000  00000000  0000033b  2**0
+                  CONTENTS, READONLY
+ 10 .note.GNU-stack 00000000  00000000  00000000  00000367  2**0
+                  CONTENTS, READONLY
+ 11 .debug_frame  00000034  00000000  00000000  00000368  2**2
+                  CONTENTS, RELOC, READONLY, DEBUGGING, OCTETS
+SYMBOL TABLE:
+00000000 l    df *ABS*	00000000 cstart.c
+00000000 l    d  .text	00000000 .text
+00000000 l    d  .debug_info	00000000 .debug_info
+00000000 l    d  .debug_abbrev	00000000 .debug_abbrev
+00000000 l    d  .debug_line	00000000 .debug_line
+00000000 l    d  .debug_str	00000000 .debug_str
+00000000 l    d  .debug_line_str	00000000 .debug_line_str
+00000000 l    d  .debug_frame	00000000 .debug_frame
+00000000 g     F .text	0000001a cstart
+00000000         *UND*	00000000 main
+
+
+
+Disassembly of section .text:
+
+00000000 <cstart>:
+ * @brief 执行调用main之前的初始化工作
+ *
+ * @param argc
+ * @param argv
+ */
+void cstart(int argc, char **argv) {
+   0:	55                   	push   %ebp
+   1:	89 e5                	mov    %esp,%ebp
+   3:	83 ec 08             	sub    $0x8,%esp
+    main(argc, argv);
+   6:	83 ec 08             	sub    $0x8,%esp
+   9:	ff 75 0c             	push   0xc(%ebp)
+   c:	ff 75 08             	push   0x8(%ebp)
+   f:	e8 fc ff ff ff       	call   10 <cstart+0x10>
+			10: R_386_PC32	main
+  14:	83 c4 10             	add    $0x10,%esp
+}
+  17:	90                   	nop
+  18:	c9                   	leave  
+  19:	c3                   	ret    

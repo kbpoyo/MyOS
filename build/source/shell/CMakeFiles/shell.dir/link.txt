@@ -1,0 +1,1 @@
+ld CMakeFiles/shell.dir/main.c.o -m elf_i386 -T /home/kbpoyo/code/cpp/MyOs/source/shell/link.lds -L /home/kbpoyo/code/cpp/MyOs/build/source/applib/ -lapp -L /home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/lib -lm -lc -o /home/kbpoyo/code/cpp/MyOs/build/source/shell/shell.elf

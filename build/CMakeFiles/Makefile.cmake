@@ -11,9 +11,11 @@ set(CMAKE_MAKEFILE_DEPENDS
   "CMakeFiles/3.22.1/CMakeASMCompiler.cmake"
   "CMakeFiles/3.22.1/CMakeCCompiler.cmake"
   "CMakeFiles/3.22.1/CMakeSystem.cmake"
+  "../source/applib/CMakeLists.txt"
   "../source/boot/CMakeLists.txt"
   "../source/kernel/CMakeLists.txt"
   "../source/loader/CMakeLists.txt"
+  "../source/shell/CMakeLists.txt"
   "/usr/share/cmake-3.22/Modules/CMakeASMCompiler.cmake.in"
   "/usr/share/cmake-3.22/Modules/CMakeASMInformation.cmake"
   "/usr/share/cmake-3.22/Modules/CMakeCCompiler.cmake.in"
@@ -106,6 +108,8 @@ set(CMAKE_MAKEFILE_PRODUCTS
   "source/boot/CMakeFiles/CMakeDirectoryInformation.cmake"
   "source/loader/CMakeFiles/CMakeDirectoryInformation.cmake"
   "source/kernel/CMakeFiles/CMakeDirectoryInformation.cmake"
+  "source/applib/CMakeFiles/CMakeDirectoryInformation.cmake"
+  "source/shell/CMakeFiles/CMakeDirectoryInformation.cmake"
   )
 
 # Dependency information for all targets:
@@ -113,4 +117,6 @@ set(CMAKE_DEPEND_INFO_FILES
   "source/boot/CMakeFiles/boot.dir/DependInfo.cmake"
   "source/loader/CMakeFiles/loader.dir/DependInfo.cmake"
   "source/kernel/CMakeFiles/kernel.dir/DependInfo.cmake"
+  "source/applib/CMakeFiles/app.dir/DependInfo.cmake"
+  "source/shell/CMakeFiles/shell.dir/DependInfo.cmake"
   )

@@ -665,3 +665,15 @@ int sys_yield(void) {
     idt_leave_protection(state);//TODO:解锁
     return 0;
 }
+
+/**
+ * @brief execve系统调用，加载外部程序
+ * 
+ * @param name 程序名
+ * @param argv 命令行参数数组
+ * @param env 程序继承的环境变量数组
+ * @return int 
+ */
+int sys_execve(char *name, char * const *argv, char * const *env ) {
+
+}

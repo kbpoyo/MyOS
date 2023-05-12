@@ -113,4 +113,23 @@ static inline int fork (void) {
 }
 
 
+/**
+ * @brief 加载执行外部程序
+ * 
+ * @param name 外部程序名
+ * @param argv 外部程序的参数，字符串常量指针，即字符串数组，数组中的char*值为常量
+ * @param env  所加载程序的环境变量
+ * @return int 
+ */
+static inline int execve(const char *name, char * const * argv, char * const * env) {
+    syscall_args_t args;
+    args.id = SYS_execve;
+    args.arg0 = (int)name;
+    args.arg1 = (int)argv;
+    args.arg2 = (int)env;
+
+
+    return sys_call(&args);
+}
+
 #endif

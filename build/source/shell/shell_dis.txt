@@ -1,0 +1,198 @@
+
+/home/kbpoyo/code/cpp/MyOs/build/source/shell/shell.elf:     file format elf32-i386
+/home/kbpoyo/code/cpp/MyOs/build/source/shell/shell.elf
+architecture: i386, flags 0x00000112:
+EXEC_P, HAS_SYMS, D_PAGED
+start address 0x80000088
+
+Program Header:
+    LOAD off    0x00001000 vaddr 0x80000000 paddr 0x80000000 align 2**12
+         filesz 0x000000b2 memsz 0x000000b2 flags r-x
+   STACK off    0x00000000 vaddr 0x00000000 paddr 0x00000000 align 2**4
+         filesz 0x00000000 memsz 0x00000000 flags rwx
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         000000b2  80000000  80000000  00001000  2**0
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .debug_info   00000221  00000000  00000000  000010b2  2**0
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+  2 .debug_abbrev 000001b0  00000000  00000000  000012d3  2**0
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+  3 .debug_aranges 00000060  00000000  00000000  00001488  2**3
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+  4 .debug_line   00000140  00000000  00000000  000014e8  2**0
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+  5 .debug_str    00000179  00000000  00000000  00001628  2**0
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+  6 .debug_line_str 00000187  00000000  00000000  000017a1  2**0
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+  7 .comment      0000002b  00000000  00000000  00001928  2**0
+                  CONTENTS, READONLY
+  8 .debug_frame  000000ac  00000000  00000000  00001954  2**2
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+SYMBOL TABLE:
+00000000 l    df *ABS*	00000000 main.c
+80000000 l     F .text	0000004c sys_call
+8000004c l     F .text	0000002a msleep
+00000000 l    df *ABS*	00000000 cstart.c
+80000088 g       .text	00000000 _start
+80000098 g     F .text	0000001a cstart
+80000076 g     F .text	00000012 main
+
+
+
+Disassembly of section .text:
+
+80000000 <sys_call>:
+}syscall_args_t;
+
+
+
+
+static inline int sys_call(syscall_args_t *args) {
+80000000:	55                   	push   %ebp
+80000001:	89 e5                	mov    %esp,%ebp
+80000003:	57                   	push   %edi
+80000004:	56                   	push   %esi
+80000005:	53                   	push   %ebx
+80000006:	83 ec 10             	sub    $0x10,%esp
+    // 传入远跳转需要的参数, 即cs = selector, eip = offset 
+    //为调用门选择子赋予0特权级,调用门的 cpl 和 RPL <= 系统调用段描述符的DPL
+    //门描述符中目标选择子的 CPL <= 门描述符的 DPL
+    uint32_t addr[] = {0, SYSCALL_SELECTOR | 0};  
+80000009:	c7 45 e8 00 00 00 00 	movl   $0x0,-0x18(%ebp)
+80000010:	c7 45 ec 18 00 00 00 	movl   $0x18,-0x14(%ebp)
+        "push %[arg1]\n\t"
+        "push %[arg0]\n\t"
+        "push %[id]\n\t"
+        "lcalll *(%[addr])\n\t"
+        :"=a"(ret)
+        :[arg3]"r"(args->arg3), 
+80000017:	8b 45 08             	mov    0x8(%ebp),%eax
+8000001a:	8b 40 10             	mov    0x10(%eax),%eax
+         [arg2]"r"(args->arg2), 
+8000001d:	8b 55 08             	mov    0x8(%ebp),%edx
+80000020:	8b 52 0c             	mov    0xc(%edx),%edx
+         [arg1]"r"(args->arg1),
+80000023:	8b 4d 08             	mov    0x8(%ebp),%ecx
+80000026:	8b 49 08             	mov    0x8(%ecx),%ecx
+         [arg0]"r"(args->arg0), 
+80000029:	8b 5d 08             	mov    0x8(%ebp),%ebx
+8000002c:	8b 5b 04             	mov    0x4(%ebx),%ebx
+         [id]"r"(args->id), 
+8000002f:	8b 75 08             	mov    0x8(%ebp),%esi
+80000032:	8b 36                	mov    (%esi),%esi
+     __asm__ __volatile__(
+80000034:	8d 7d e8             	lea    -0x18(%ebp),%edi
+80000037:	50                   	push   %eax
+80000038:	52                   	push   %edx
+80000039:	51                   	push   %ecx
+8000003a:	53                   	push   %ebx
+8000003b:	56                   	push   %esi
+8000003c:	ff 1f                	lcall  *(%edi)
+8000003e:	89 45 f0             	mov    %eax,-0x10(%ebp)
+         [addr]"r"(addr)
+    );
+
+    return ret;
+80000041:	8b 45 f0             	mov    -0x10(%ebp),%eax
+}
+80000044:	83 c4 10             	add    $0x10,%esp
+80000047:	5b                   	pop    %ebx
+80000048:	5e                   	pop    %esi
+80000049:	5f                   	pop    %edi
+8000004a:	5d                   	pop    %ebp
+8000004b:	c3                   	ret    
+
+8000004c <msleep>:
+/**
+ * @brief 以ms为单位进行延时
+ * 
+ * @param ms 
+ */
+static inline void msleep(int ms) {
+8000004c:	55                   	push   %ebp
+8000004d:	89 e5                	mov    %esp,%ebp
+8000004f:	83 ec 20             	sub    $0x20,%esp
+    if (ms <= 0) return;
+80000052:	83 7d 08 00          	cmpl   $0x0,0x8(%ebp)
+80000056:	7e 1b                	jle    80000073 <msleep+0x27>
+
+    syscall_args_t args;
+    args.id = SYS_sleep;
+80000058:	c7 45 ec 00 00 00 00 	movl   $0x0,-0x14(%ebp)
+    args.arg0 = ms;
+8000005f:	8b 45 08             	mov    0x8(%ebp),%eax
+80000062:	89 45 f0             	mov    %eax,-0x10(%ebp)
+
+    sys_call(&args);
+80000065:	8d 45 ec             	lea    -0x14(%ebp),%eax
+80000068:	50                   	push   %eax
+80000069:	e8 92 ff ff ff       	call   80000000 <sys_call>
+8000006e:	83 c4 04             	add    $0x4,%esp
+80000071:	eb 01                	jmp    80000074 <msleep+0x28>
+    if (ms <= 0) return;
+80000073:	90                   	nop
+
+}
+80000074:	c9                   	leave  
+80000075:	c3                   	ret    
+
+80000076 <main>:
+ * 
+ */
+
+#include "lib_syscall.h"
+
+int main(int argc, char** argv) {
+80000076:	55                   	push   %ebp
+80000077:	89 e5                	mov    %esp,%ebp
+    for (;;) {
+        msleep(1000);
+80000079:	68 e8 03 00 00       	push   $0x3e8
+8000007e:	e8 c9 ff ff ff       	call   8000004c <msleep>
+80000083:	83 c4 04             	add    $0x4,%esp
+80000086:	eb f1                	jmp    80000079 <main+0x3>
+
+80000088 <_start>:
+    .extern cstart
+_start:
+    //iret指令返回后，将之前压入的 ss,esp,eflags,cs,eip 寄存器值返回给对应寄存器，
+	//由于cpu从0特权级切换到了3特权级，而之前其余的段寄存器都是0特权级，不能供3特权级使用，
+	//所以cpu将其余寄存器置零，这里直接用ss寄存器再初始化其余段寄存器即可
+	mov %ss, %ax
+80000088:	66 8c d0             	mov    %ss,%ax
+	mov %ax, %ds
+8000008b:	8e d8                	mov    %eax,%ds
+	mov %ax, %es
+8000008d:	8e c0                	mov    %eax,%es
+	mov %ax, %fs
+8000008f:	8e e0                	mov    %eax,%fs
+	mov %ax, %gs
+80000091:	8e e8                	mov    %eax,%gs
+
+    //因为cs寄存器已由操作系统分配，所以直接跳转即可
+	jmp cstart
+80000093:	e9 00 00 00 00       	jmp    80000098 <cstart>
+
+80000098 <cstart>:
+ * @brief 执行调用main之前的初始化工作
+ *
+ * @param argc
+ * @param argv
+ */
+void cstart(int argc, char **argv) {
+80000098:	55                   	push   %ebp
+80000099:	89 e5                	mov    %esp,%ebp
+8000009b:	83 ec 08             	sub    $0x8,%esp
+    main(argc, argv);
+8000009e:	83 ec 08             	sub    $0x8,%esp
+800000a1:	ff 75 0c             	push   0xc(%ebp)
+800000a4:	ff 75 08             	push   0x8(%ebp)
+800000a7:	e8 ca ff ff ff       	call   80000076 <main>
+800000ac:	83 c4 10             	add    $0x10,%esp
+}
+800000af:	90                   	nop
+800000b0:	c9                   	leave  
+800000b1:	c3                   	ret    

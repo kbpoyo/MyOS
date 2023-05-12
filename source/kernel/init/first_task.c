@@ -22,6 +22,8 @@ int first_main(void) {
         if (pid == 0) {
             print_msg("child pid=%d", getpid());
             print_msg("count=%d", count++);
+            char const *argv[] = {"arg0", "arg1", "arg2", "arg3"};
+            execve("/shell.elf", argv, 0);
         } else {
             print_msg("parent pid=%d", getpid());
             print_msg("count=%d", count);

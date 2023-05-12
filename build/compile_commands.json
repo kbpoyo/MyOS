@@ -123,5 +123,20 @@
   "directory": "/home/kbpoyo/code/cpp/MyOs/build/source/kernel",
   "command": "/usr/bin/gcc  -I/home/kbpoyo/code/cpp/MyOs/source -I/home/kbpoyo/code/cpp/MyOs/source/kernel/include -g -c -O0 -m32 -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -g -o CMakeFiles/kernel.dir/tools/log.c.o -c /home/kbpoyo/code/cpp/MyOs/source/kernel/tools/log.c",
   "file": "/home/kbpoyo/code/cpp/MyOs/source/kernel/tools/log.c"
+},
+{
+  "directory": "/home/kbpoyo/code/cpp/MyOs/build/source/applib",
+  "command": "/usr/bin/gcc  -I/home/kbpoyo/code/cpp/MyOs/source -I/home/kbpoyo/code/cpp/MyOs/source/kernel/include -m32 -g -g -o CMakeFiles/app.dir/crt0.S.o -c /home/kbpoyo/code/cpp/MyOs/source/applib/crt0.S",
+  "file": "/home/kbpoyo/code/cpp/MyOs/source/applib/crt0.S"
+},
+{
+  "directory": "/home/kbpoyo/code/cpp/MyOs/build/source/applib",
+  "command": "/usr/bin/gcc  -I/home/kbpoyo/code/cpp/MyOs/source -I/home/kbpoyo/code/cpp/MyOs/source/kernel/include -g -c -O0 -m32 -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -g -o CMakeFiles/app.dir/cstart.c.o -c /home/kbpoyo/code/cpp/MyOs/source/applib/cstart.c",
+  "file": "/home/kbpoyo/code/cpp/MyOs/source/applib/cstart.c"
+},
+{
+  "directory": "/home/kbpoyo/code/cpp/MyOs/build/source/shell",
+  "command": "/usr/bin/gcc  -I/home/kbpoyo/code/cpp/MyOs/source -I/home/kbpoyo/code/cpp/MyOs/source/kernel/include -I/home/kbpoyo/code/cpp/MyOs/source/shell/../applib -g -c -O0 -m32 -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -g -o CMakeFiles/shell.dir/main.c.o -c /home/kbpoyo/code/cpp/MyOs/source/shell/main.c",
+  "file": "/home/kbpoyo/code/cpp/MyOs/source/shell/main.c"
 }
 ]

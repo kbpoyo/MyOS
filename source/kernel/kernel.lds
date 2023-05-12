@@ -9,7 +9,7 @@
  */
 
 
-SECTIONS {/*SECTIONS必须大小*/
+SECTIONS {/*SECTIONS必须大写*/
 
     /*让链接后的程序以此顺序布局各个段中(0x10000为.text的起始位置) */
     /*此处设置的其实是elf文件段头信息中的p_vaddr, 因为没有指定p_paddr，所以p_paddr默认与p_vaddr相等*/

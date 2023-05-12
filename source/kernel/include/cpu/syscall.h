@@ -20,6 +20,7 @@
 #define SYS_sleep       0   //延时函数
 #define SYS_getpid      1   //获取pid
 #define SYS_fork        2   //fork子进程
+#define SYS_execve      3   //加载外部程序
 
 #define SYS_printmsg    10   //临时使用的打印函数
 

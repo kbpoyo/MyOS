@@ -9,3 +9,9 @@
 /home/kbpoyo/code/cpp/MyOs/build/source/kernel/CMakeFiles/kernel.dir
 /home/kbpoyo/code/cpp/MyOs/build/source/kernel/CMakeFiles/edit_cache.dir
 /home/kbpoyo/code/cpp/MyOs/build/source/kernel/CMakeFiles/rebuild_cache.dir
+/home/kbpoyo/code/cpp/MyOs/build/source/applib/CMakeFiles/app.dir
+/home/kbpoyo/code/cpp/MyOs/build/source/applib/CMakeFiles/edit_cache.dir
+/home/kbpoyo/code/cpp/MyOs/build/source/applib/CMakeFiles/rebuild_cache.dir
+/home/kbpoyo/code/cpp/MyOs/build/source/shell/CMakeFiles/shell.dir
+/home/kbpoyo/code/cpp/MyOs/build/source/shell/CMakeFiles/edit_cache.dir
+/home/kbpoyo/code/cpp/MyOs/build/source/shell/CMakeFiles/rebuild_cache.dir
