@@ -38,7 +38,7 @@ static inline int page_index(addr_alloc_t *alloc, uint32_t page_addr) {
  * @param alloc 
  * @param page_addr 页起始地址
  */
-static void page_ref_add(addr_alloc_t *alloc, uint32_t page_addr) {
+static inline void page_ref_add(addr_alloc_t *alloc, uint32_t page_addr) {
   //计算出页的索引
   int index = page_index(alloc, page_addr);
   
@@ -55,7 +55,7 @@ static void page_ref_add(addr_alloc_t *alloc, uint32_t page_addr) {
  * @param alloc 
  * @param page_addr 
  */
-static void page_ref_sub(addr_alloc_t *alloc, uint32_t page_addr) {
+static inline void page_ref_sub(addr_alloc_t *alloc, uint32_t page_addr) {
   //计算出页的索引
   int index = page_index(alloc, page_addr);
 
@@ -73,7 +73,7 @@ static void page_ref_sub(addr_alloc_t *alloc, uint32_t page_addr) {
  * @param alloc 
  * @param page_addr 
  */
-static int get_page_ref(addr_alloc_t *alloc, uint32_t page_addr) {
+static inline int get_page_ref(addr_alloc_t *alloc, uint32_t page_addr) {
     //计算出页的索引
   int index = page_index(alloc, page_addr);
 
@@ -92,7 +92,7 @@ static int get_page_ref(addr_alloc_t *alloc, uint32_t page_addr) {
  * @param alloc 
  * @return int 
  */
-static void clear_page_ref(addr_alloc_t *alloc) {
+static inline void clear_page_ref(addr_alloc_t *alloc) {
 
   mutex_lock(&alloc->mutex);
 

@@ -39,7 +39,9 @@ source/kernel/CMakeFiles/kernel.dir/core/task.c.o: ../source/kernel/core/task.c 
   ../source/kernel/include/ipc/mutex.h \
   ../source/common/boot_info.h \
   ../source/kernel/include/cpu/mmu.h \
-  ../source/kernel/include/cpu/syscall.h
+  ../source/kernel/include/cpu/syscall.h \
+  ../source/common/elf.h \
+  ../source/kernel/include/fs/fs.h
 
 source/kernel/CMakeFiles/kernel.dir/cpu/gate.c.o: ../source/kernel/cpu/gate.c \
   /usr/include/stdc-predef.h \
@@ -98,6 +100,16 @@ source/kernel/CMakeFiles/kernel.dir/dev/time.c.o: ../source/kernel/dev/time.c \
   ../source/kernel/include/cpu/tss.h \
   ../source/kernel/include/tools/list.h \
   ../source/kernel/include/tools/assert.h
+
+source/kernel/CMakeFiles/kernel.dir/fs/fs.c.o: ../source/kernel/fs/fs.c \
+  /usr/include/stdc-predef.h \
+  ../source/kernel/include/fs/fs.h \
+  ../source/kernel/include/tools/klib.h \
+  /usr/lib/gcc/x86_64-linux-gnu/11/include/stdarg.h \
+  ../source/common/types.h \
+  ../source/common/cpu_instr.h \
+  ../source/common/types.h \
+  ../source/common/boot_info.h
 
 source/kernel/CMakeFiles/kernel.dir/init/first_task.c.o: ../source/kernel/init/first_task.c \
   /usr/include/stdc-predef.h \
@@ -224,6 +236,8 @@ source/kernel/CMakeFiles/kernel.dir/tools/log.c.o: ../source/kernel/tools/log.c 
 
 ../source/kernel/include/dev/time.h:
 
+../source/kernel/cpu/syscall.c:
+
 ../source/kernel/include/tools/klib.h:
 
 ../source/kernel/include/ipc/sem.h:
@@ -238,7 +252,15 @@ source/kernel/CMakeFiles/kernel.dir/tools/log.c.o: ../source/kernel/tools/log.c 
 
 /usr/include/stdc-predef.h:
 
+../source/applib/lib_syscall.h:
+
+../source/kernel/dev/time.c:
+
+../source/kernel/include/tools/list.h:
+
 ../source/kernel/include/ipc/mutex.h:
+
+../source/kernel/include/fs/fs.h:
 
 ../source/kernel/include/core/memory.h:
 
@@ -255,6 +277,8 @@ source/kernel/CMakeFiles/kernel.dir/tools/log.c.o: ../source/kernel/tools/log.c 
 ../source/kernel/include/tools/log.h:
 
 ../source/kernel/cpu/gate.c:
+
+../source/kernel/fs/fs.c:
 
 ../source/kernel/cpu/idt.c:
 
@@ -282,12 +306,6 @@ source/kernel/CMakeFiles/kernel.dir/tools/log.c.o: ../source/kernel/tools/log.c 
 
 ../source/kernel/ipc/mutex.c:
 
+../source/common/elf.h:
+
 ../source/kernel/cpu/mmu.c:
-
-../source/applib/lib_syscall.h:
-
-../source/kernel/include/tools/list.h:
-
-../source/kernel/dev/time.c:
-
-../source/kernel/cpu/syscall.c:

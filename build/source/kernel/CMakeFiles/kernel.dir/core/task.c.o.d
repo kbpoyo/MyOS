@@ -19,4 +19,6 @@ source/kernel/CMakeFiles/kernel.dir/core/task.c.o: \
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/ipc/mutex.h \
  /home/kbpoyo/code/cpp/MyOs/source/common/boot_info.h \
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/cpu/mmu.h \
- /home/kbpoyo/code/cpp/MyOs/source/kernel/include/cpu/syscall.h
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/include/cpu/syscall.h \
+ /home/kbpoyo/code/cpp/MyOs/source/common/elf.h \
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/include/fs/fs.h

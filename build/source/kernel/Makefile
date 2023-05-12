@@ -322,6 +322,30 @@ dev/time.c.s:
 	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/dev/time.c.s
 .PHONY : dev/time.c.s
 
+fs/fs.o: fs/fs.c.o
+.PHONY : fs/fs.o
+
+# target to build an object file
+fs/fs.c.o:
+	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/fs/fs.c.o
+.PHONY : fs/fs.c.o
+
+fs/fs.i: fs/fs.c.i
+.PHONY : fs/fs.i
+
+# target to preprocess a source file
+fs/fs.c.i:
+	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/fs/fs.c.i
+.PHONY : fs/fs.c.i
+
+fs/fs.s: fs/fs.c.s
+.PHONY : fs/fs.s
+
+# target to generate assembly for a file
+fs/fs.c.s:
+	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/fs/fs.c.s
+.PHONY : fs/fs.c.s
+
 init/first_task.o: init/first_task.c.o
 .PHONY : init/first_task.o
 
@@ -611,6 +635,9 @@ help:
 	@echo "... dev/time.o"
 	@echo "... dev/time.i"
 	@echo "... dev/time.s"
+	@echo "... fs/fs.o"
+	@echo "... fs/fs.i"
+	@echo "... fs/fs.s"
 	@echo "... init/first_task.o"
 	@echo "... init/first_task.i"
 	@echo "... init/first_task.s"

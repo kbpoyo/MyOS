@@ -29,6 +29,7 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/home/kbpoyo/code/cpp/MyOs/source/kernel/cpu/mmu.c" "source/kernel/CMakeFiles/kernel.dir/cpu/mmu.c.o" "gcc" "source/kernel/CMakeFiles/kernel.dir/cpu/mmu.c.o.d"
   "/home/kbpoyo/code/cpp/MyOs/source/kernel/cpu/syscall.c" "source/kernel/CMakeFiles/kernel.dir/cpu/syscall.c.o" "gcc" "source/kernel/CMakeFiles/kernel.dir/cpu/syscall.c.o.d"
   "/home/kbpoyo/code/cpp/MyOs/source/kernel/dev/time.c" "source/kernel/CMakeFiles/kernel.dir/dev/time.c.o" "gcc" "source/kernel/CMakeFiles/kernel.dir/dev/time.c.o.d"
+  "/home/kbpoyo/code/cpp/MyOs/source/kernel/fs/fs.c" "source/kernel/CMakeFiles/kernel.dir/fs/fs.c.o" "gcc" "source/kernel/CMakeFiles/kernel.dir/fs/fs.c.o.d"
   "/home/kbpoyo/code/cpp/MyOs/source/kernel/init/first_task.c" "source/kernel/CMakeFiles/kernel.dir/init/first_task.c.o" "gcc" "source/kernel/CMakeFiles/kernel.dir/init/first_task.c.o.d"
   "/home/kbpoyo/code/cpp/MyOs/source/kernel/init/init.c" "source/kernel/CMakeFiles/kernel.dir/init/init.c.o" "gcc" "source/kernel/CMakeFiles/kernel.dir/init/init.c.o.d"
   "/home/kbpoyo/code/cpp/MyOs/source/kernel/ipc/mutex.c" "source/kernel/CMakeFiles/kernel.dir/ipc/mutex.c.o" "gcc" "source/kernel/CMakeFiles/kernel.dir/ipc/mutex.c.o.d"

@@ -20,6 +20,8 @@
 #include "core/memory.h"
 #include "cpu/mmu.h"
 #include "cpu/syscall.h"
+#include "common/elf.h"
+#include "fs/fs.h"
 
 //定义全局唯一的任务管理器对象
 static task_manager_t task_manager;
@@ -667,6 +669,92 @@ int sys_yield(void) {
 }
 
 /**
+ * @brief 加载解析elf文件，并返回程序入口地址
+ * 
+ * @param task 
+ * @param name 
+ * @param page_dir 
+ * @return uint32_t 
+ */
+static uint32_t load_elf_file(task_t *task, const char * name, uint32_t page_dir) {
+    //1.定义elf文件头对象,和程序段表项对象
+    Elf32_Ehdr elf_hdr;
+    Elf32_Phdr elf_phdr;
+
+    //2.打开文件
+    int file = sys_open(name, 0);
+    if (file < 0) {
+        log_printf("open failed %s", name);
+        goto load_failed;
+    }
+
+    //3.读取elf文件的elf头部分
+    int cnt = sys_read(file, (char*)&elf_hdr, sizeof(Elf32_Ehdr));
+    if (cnt < sizeof(Elf32_Ehdr)) {
+        log_printf("elf hdr too small. size=%d", cnt);
+        goto load_failed;
+    }
+
+    //4.判断是否为ELF文件
+    if (elf_hdr.e_ident[0] != 0x7F || elf_hdr.e_ident[1] != 'E' 
+        || elf_hdr.e_ident[2] != 'L' || elf_hdr.e_ident[3] != 'F') {
+            log_printf("check elf ident failed.");
+            goto load_failed;
+    }
+
+    
+    //5.必须是可执行文件和针对386处理器的类型，且有入口
+    if ((elf_hdr.e_type != ET_EXEC) || (elf_hdr.e_machine != EM_386) || (elf_hdr.e_entry == 0)) {
+        log_printf("check elf type or entry failed.");
+        goto load_failed;
+    }
+
+    //6.必须有程序头部
+    if ((elf_hdr.e_phentsize == 0) || (elf_hdr.e_phoff == 0)) {
+        log_printf("none programe header");
+        goto load_failed;
+    }
+
+    //7.遍历elf文件的程序段，加载可加载段到内存中对应位置
+    uint32_t e_phoff = elf_hdr.e_phoff; //获取程序段表的偏移地址
+    for (int i = 0; i < elf_hdr.e_phnum; ++i) {
+        if (sys_lseek(file, e_phoff, 0) < 0) {
+            log_printf("read file failed");
+            goto load_failed;
+        }
+
+        cnt = sys_read(file, (char*)&elf_phdr, sizeof(Elf32_Phdr));
+        if (cnt < sizeof(Elf32_Phdr)) {
+            log_printf("read file failed")；
+            goto load_failed;
+        }
+
+        //若程序段不是可加载的或虚拟地址 < 用户程序的起始地址，则不可用
+        if (elf_phdr.p_type != 1 || elf_phdr.p_vaddr < MEM_TASK_BASE) {
+            continue;
+        }
+
+        //加载该程序段
+        int err = load_phdr(file, &elf_phdr, page_dir);
+        if (err < 0) {
+            log_printf("load program failed");
+            goto load_failed;
+        }
+    }
+
+    //成功解析并加载完整个elf文件后关闭文件，并返回程序入口地址
+    sys_close(file);
+    return elf_hdr.e_entry;
+
+//错误处理
+load_failed:
+    if (file >= 0) {    //文件已被打开，则关闭该文件
+        sys_close(file);
+    }
+    return 0;
+}
+
+/**
  * @brief execve系统调用，加载外部程序
  * 
  * @param name 程序名
@@ -678,22 +766,34 @@ int sys_execve(char *name, char * const *argv, char * const *env ) {
         //1.获取当前任务进程
         task_t *task = task_current();
 
-        //2.创建一个新的页目录表
+        //2.获取当前任务的页目录表
+        uint32_t old_page_dir = task->tss.cr3;
+
+        //3.创建一个新的页目录表
         uint32_t new_page_dir = memory_creat_uvm();
         if (new_page_dir == 0)  //创建失败
             goto exec_failed;
 
-        // uint32_t entry = load_elf_file(task, name, new_page_dir);
-        // if (entry == 0)
-        //     goto exec_failed;
+        //4.加载elf文件，替换当前任务
+        uint32_t entry = load_elf_file(task, name, new_page_dir);
+        if (entry == 0)
+            goto exec_failed;
 
         
-        //记录并设置新页目录表
+        //5记录并设置新页目录表，并销毁原页目录表的虚拟映射关系
         task->tss.cr3 = new_page_dir;
         mmu_set_page_dir(new_page_dir);
+        memory_destroy_uvm(old_page_dir);
 
+    return 0;
 
 exec_failed:
+    // 执行失败，释放资源并恢复到原进程状态
+    if (new_page_dir) {
+        task->tss.cr3 = old_page_dir;
+        mmu_set_page_dir(old_page_dir);
+        memory_destroy_uvm(new_page_dir);
+    }
 
     return -1;
 }

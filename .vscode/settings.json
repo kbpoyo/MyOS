@@ -18,7 +18,9 @@
         "gdt.h": "c",
         "idt.h": "c",
         "os_cfg.h": "c",
-        "syscall.h": "c"
+        "syscall.h": "c",
+        "fs.h": "c",
+        "boot.h": "c"
     },
     "todo-tree.tree.scanMode": "workspace only",
 }

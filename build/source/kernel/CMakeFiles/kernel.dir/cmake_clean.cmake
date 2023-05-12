@@ -15,6 +15,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/kernel.dir/cpu/syscall.c.o.d"
   "CMakeFiles/kernel.dir/dev/time.c.o"
   "CMakeFiles/kernel.dir/dev/time.c.o.d"
+  "CMakeFiles/kernel.dir/fs/fs.c.o"
+  "CMakeFiles/kernel.dir/fs/fs.c.o.d"
   "CMakeFiles/kernel.dir/init/first_task.c.o"
   "CMakeFiles/kernel.dir/init/first_task.c.o.d"
   "CMakeFiles/kernel.dir/init/first_task_entry.S.o"
