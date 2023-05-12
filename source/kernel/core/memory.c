@@ -610,3 +610,24 @@ void memory_free_page(uint32_t addr) {
   }
 
 }
+
+/**
+ * @brief 获取虚拟地址在页目录表中关联的物理页的物理地址
+ * 
+ * @param page_dir 
+ * @param vaddr 
+ * @return uint32_t 
+ */
+uint32_t memory_get_paddr(uint32_t page_dir, uint32_t vaddr) {
+  //查找vaddr对应的页表项
+  pte_t * pte = find_pte((pde_t*)page_dir, vaddr, 0);
+
+  //若没有找到该页表项或该页表项还不存在，则返回0
+  if (!pte || !pte->present) {
+    return 0;
+  }
+
+  //找到并存在该页表项，返回绑定的物理地址
+  return pte_to_pg_addr(pte) | (vaddr & (MEM_PAGE_SIZE - 1));
+
+}

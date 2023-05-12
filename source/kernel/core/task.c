@@ -669,6 +669,58 @@ int sys_yield(void) {
 }
 
 /**
+ * @brief 将elf文件的程序段表项对应的程序段加载到page_dir对应的地址空间中
+ * 
+ * @param file elf文件描述符
+ * @param elf_phdr  程序段表项
+ * @param page_dir 需要加载到的目标空间的页目录表地址
+ * @return int 
+ */
+static int load_phdr(int file, Elf32_Phdr *elf_phdr, uint32_t page_dir) {
+    //获取该段的权限
+    uint32_t privilege = PTE_P | PTE_U;
+    if (elf_phdr->p_flags & PT_W) { //该段具有写权限
+        privilege |= PTE_W;
+    }
+
+    //为该段分配页空间并创建映射关系
+    int err = memory_alloc_for_page_dir(page_dir, elf_phdr->p_vaddr, elf_phdr->p_memsz, privilege);
+    if (err < 0) {
+        log_printf("no memory");
+        return -1;
+    }
+
+    //使文件的读取位置偏移到该程序段的起始位置
+    if (sys_lseek(file, elf_phdr->p_offset, 0) < 0) {
+        log_printf("lseek file failed");
+        return -1;
+    }
+
+    //获取该程序段的起始虚拟地址和段在文件中的大小
+    uint32_t vaddr = elf_phdr->p_vaddr;
+    uint32_t size = elf_phdr->p_filesz;
+
+    while (size > 0) {  //按页读取并拷贝
+        //获取需要拷贝的空间大小
+        int curr_size = (size > MEM_PAGE_SIZE) ? MEM_PAGE_SIZE : size;
+        //获取vaddr在page_dir中关联的物理页的物理地址
+        uint32_t paddr = memory_get_paddr(page_dir, vaddr);
+
+        //拷贝curr_size大小的内容到paddr对应的页中
+        if (sys_read(file, (char*)paddr, curr_size) < curr_size) {
+            log_printf("read file failed");
+            return -1;
+        }
+
+        size -= curr_size;
+        vaddr += curr_size;
+    }
+
+    return 0;
+}
+
+
+/**
  * @brief 加载解析elf文件，并返回程序入口地址
  * 
  * @param task 
@@ -717,7 +769,7 @@ static uint32_t load_elf_file(task_t *task, const char * name, uint32_t page_dir
 
     //7.遍历elf文件的程序段，加载可加载段到内存中对应位置
     uint32_t e_phoff = elf_hdr.e_phoff; //获取程序段表的偏移地址
-    for (int i = 0; i < elf_hdr.e_phnum; ++i) {
+    for (int i = 0; i < elf_hdr.e_phnum; ++i, e_phoff += elf_hdr.e_phentsize) {
         if (sys_lseek(file, e_phoff, 0) < 0) {
             log_printf("read file failed");
             goto load_failed;
@@ -725,7 +777,7 @@ static uint32_t load_elf_file(task_t *task, const char * name, uint32_t page_dir
 
         cnt = sys_read(file, (char*)&elf_phdr, sizeof(Elf32_Phdr));
         if (cnt < sizeof(Elf32_Phdr)) {
-            log_printf("read file failed")；
+            log_printf("read file failed");
             goto load_failed;
         }
 
@@ -784,6 +836,8 @@ int sys_execve(char *name, char * const *argv, char * const *env ) {
         task->tss.cr3 = new_page_dir;
         mmu_set_page_dir(new_page_dir);
         memory_destroy_uvm(old_page_dir);
+
+        
 
     return 0;
 

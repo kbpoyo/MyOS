@@ -52,7 +52,8 @@ typedef struct {
 }Elf32_Ehdr;
 
 
-#define PT_LOAD   1 // 可加载类型,程序头，即段头的类型：p_type
+
+
 
 //书p217 program header 结构体
 typedef struct {
@@ -69,4 +70,9 @@ typedef struct {
 
 //将内存对齐改回默认值
 #pragma pack()
+
+#define PT_LOAD   (1 << 0)  //可加载类型,程序头，即段头的类型：p_type
+#define PT_W     (1 << 1)  //本段具有可读权限
+#define PT_R      (1 << 2)  //本段具有可写权限
+
 #endif
