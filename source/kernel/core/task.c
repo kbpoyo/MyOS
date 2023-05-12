@@ -675,5 +675,25 @@ int sys_yield(void) {
  * @return int 
  */
 int sys_execve(char *name, char * const *argv, char * const *env ) {
+        //1.获取当前任务进程
+        task_t *task = task_current();
 
+        //2.创建一个新的页目录表
+        uint32_t new_page_dir = memory_creat_uvm();
+        if (new_page_dir == 0)  //创建失败
+            goto exec_failed;
+
+        // uint32_t entry = load_elf_file(task, name, new_page_dir);
+        // if (entry == 0)
+        //     goto exec_failed;
+
+        
+        //记录并设置新页目录表
+        task->tss.cr3 = new_page_dir;
+        mmu_set_page_dir(new_page_dir);
+
+
+exec_failed:
+
+    return -1;
 }

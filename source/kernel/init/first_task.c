@@ -15,23 +15,39 @@
 
 int first_main(void) {
     int count = 3;
-    int pid = fork();
+    // int pid = fork();
 
-    for (;;) {
-        print_msg("pid=%d", pid);
-        if (pid == 0) {
-            print_msg("child pid=%d", getpid());
-            print_msg("count=%d", count++);
-            char const *argv[] = {"arg0", "arg1", "arg2", "arg3"};
-            execve("/shell.elf", argv, 0);
-        } else {
-            print_msg("parent pid=%d", getpid());
-            print_msg("count=%d", count);
-            count += 2;
+    // for (;;) {
+    //     print_msg("pid=%d", pid);
+    //     if (pid == 0) {
+    //         print_msg("child pid=%d", getpid());
+    //         print_msg("count=%d", count++);
+    //         // char const *argv[] = {"arg0", "arg1", "arg2", "arg3"};
+    //         // execve("/shell.elf", argv, 0);
+    //     } else {
+    //         print_msg("parent pid=%d", getpid());
+    //         print_msg("count=%d", count);
+    //         count += 2;
 
-        }
-        msleep(1000);
+    //     }
+    //     //msleep(100);
+    // }
+    
+    int pid;
+    int i;
+    for (i = 0; i < 1024; ++i) {
+        pid = fork();
+        if (pid == 0)
+            break;
+    }
+
+    print_msg("i = %d", i);
+    print_msg("pid = %d", getpid());
+
+    for (;;)
+    {
     }
     
+
     return 0;
 }

@@ -22,6 +22,86 @@ static addr_alloc_t paddr_alloc;
 //页目录项的高10位为页的物理地址位，及1024个子页表
 static pde_t kernel_page_dir[PDE_CNT] __attribute__((aligned(MEM_PAGE_SIZE)));
 
+/**
+ * @brief 获取页的索引
+ * 
+ * @param alloc 
+ * @param page_addr 
+ */
+static inline int page_index(addr_alloc_t *alloc, uint32_t page_addr) {
+  return (page_addr - alloc->start) / alloc->page_size;
+}
+
+/**
+ * @brief 为页的引用计数+1
+ * 
+ * @param alloc 
+ * @param page_addr 页起始地址
+ */
+static void page_ref_add(addr_alloc_t *alloc, uint32_t page_addr) {
+  //计算出页的索引
+  int index = page_index(alloc, page_addr);
+  
+  mutex_lock(&alloc->mutex);
+  //引用计数+1
+  alloc->page_ref[index]++;
+
+  mutex_unlock(&alloc->mutex);
+ }
+
+/**
+ * @brief 页的引用计数-1
+ * 
+ * @param alloc 
+ * @param page_addr 
+ */
+static void page_ref_sub(addr_alloc_t *alloc, uint32_t page_addr) {
+  //计算出页的索引
+  int index = page_index(alloc, page_addr);
+
+  mutex_lock(&alloc->mutex);
+  //引用计数-1
+  if (alloc->page_ref[index] > 0) 
+      alloc->page_ref[index]--;    
+
+  mutex_unlock(&alloc->mutex);
+ }
+
+/**
+ * @brief 获取页的引用计数
+ * 
+ * @param alloc 
+ * @param page_addr 
+ */
+static int get_page_ref(addr_alloc_t *alloc, uint32_t page_addr) {
+    //计算出页的索引
+  int index = page_index(alloc, page_addr);
+
+  mutex_lock(&alloc->mutex);
+
+  int ref = alloc->page_ref[index];
+
+  mutex_unlock(&alloc->mutex);
+
+  return ref;
+}
+
+/**
+ * @brief 清除所有页的引用
+ * 
+ * @param alloc 
+ * @return int 
+ */
+static void clear_page_ref(addr_alloc_t *alloc) {
+
+  mutex_lock(&alloc->mutex);
+
+  kernel_memset(alloc->page_ref, 0, alloc->size / alloc->page_size);
+
+  mutex_unlock(&alloc->mutex);
+}
+
+
 
 
 /**
@@ -40,6 +120,8 @@ static void addr_alloc_init(addr_alloc_t *alloc, uint8_t *bits, uint32_t start,
   alloc->size = size;
   alloc->page_size = page_size;
   bitmap_init(&alloc->bitmap, bits, alloc->size / alloc->page_size, 0);
+  //清空页的引用数组
+  kernel_memset(alloc->page_ref, 0,  alloc->size / alloc->page_size);
 }
 
 /**
@@ -76,10 +158,19 @@ static uint32_t addr_alloc_page(addr_alloc_t *alloc, int page_count) {
 static void addr_free_page(addr_alloc_t *alloc, uint32_t addr, int page_count) {
   mutex_lock(&alloc->mutex);
 
-  // 计算出第一个页在位图中的索引
-  int page_index = (addr - alloc->start) / alloc->page_size;
+  //将所有页引用-1
+  for (int i = 0; i < page_count; ++i) {
+    //获取当前页的地址
+    uint32_t page_addr = addr + i * MEM_PAGE_SIZE;
+    //引用-1
+    page_ref_sub(alloc, page_addr);
+    //获取当前页引用
+    int ref = get_page_ref(alloc, page_addr);
+    if (ref == 0)  {//引用为0，释放该页
+        bitmap_set_bit(&alloc->bitmap, page_index(alloc, page_addr), 1, 0);
+    }
 
-  bitmap_set_bit(&alloc->bitmap, page_index, page_count, 0);
+  }
 
   mutex_unlock(&alloc->mutex);
 }
@@ -195,7 +286,10 @@ int  memory_creat_map(pde_t *page_dir, uint32_t vstart, uint32_t pstart, int pag
     //4.在页表项中创建对应的映射关系，并该页权限，页权限以当前权限为主，因为pde处已放宽权限
     pte->v = pstart | privilege | PTE_P;
 
-    //5.切换为下一页
+    //5.将该页引用计数+1
+    page_ref_add(&paddr_alloc, pstart);
+
+    //6.切换为下一页
     vstart += MEM_PAGE_SIZE;
     pstart += MEM_PAGE_SIZE;
 
@@ -234,6 +328,8 @@ void create_kernal_table(void) {
 
     //创建内存映射关系
     memory_creat_map(kernel_page_dir, vstart, pstart, page_count, map->privilege);
+    //清空内核空间对页的引用
+    clear_page_ref(&paddr_alloc);
 
   }
 }
@@ -326,7 +422,7 @@ int memory_copy_uvm(uint32_t to_page_dir, uint32_t from_page_dir) {
 
 
 copy_uvm_failed:
-  //copy虚拟空间映射失败，清理对应资源
+  //copy虚拟空间映射失败，以开启读共享的方式清理对应资源
   memory_destroy_uvm(to_page_dir);
   return -1;
 }
@@ -336,7 +432,8 @@ copy_uvm_failed:
  * @brief 销毁该页目录表对应的所有虚拟空间资源，包括映射关系与内存空间
  *        //TODO:进行了读不释放写释放的处理操作，只能供memory_copy_uvm函数失败时调用
  * 
- * @param page_dir 
+ * @param page_dir 页目录表的地址
+ * @param is_read_share 是否开启了读共享策略，1开启，0未开启
  */
 void memory_destroy_uvm(uint32_t page_dir) {
   //1.获取用户进程虚拟地址的起始地址对应的该页目录项
@@ -356,11 +453,8 @@ void memory_destroy_uvm(uint32_t page_dir) {
       if (!pte->present)
         continue;
       
-      //5.判断该页的可读属性，读则不释放关联物理页，写则释放该关联物理页
-      if (pte->v & PTE_W) { //该页为可写页
-        //释放该页表项关联的物理页
-        addr_free_page(&paddr_alloc, pte_to_pg_addr(pte), 1);
-      }
+      //5.释放该物理页
+      addr_free_page(&paddr_alloc, pte_to_pg_addr(pte), 1);
     }
 
     //6.释放存储该页表的物理页
@@ -398,7 +492,7 @@ void memory_init(boot_info_t *boot_info) {
     
     log_printf("free memory: 0x%x, size: 0x%x", MEM_EXT_START, mem_up1MB_free);
 
-    //mem_free_start被分配的地址在链接文件中定义，紧邻着内核的.bss段
+    //mem_free_start被分配的地址在链接文件中定义，紧邻着first_task段
     uint8_t *mem_free = (uint8_t*)&mem_free_start;
 
     //用paddr_alloc，内存页分配对象管理1mb以上的所有空闲空间，页大小为MEM_PAGE_SIZE=4kb
