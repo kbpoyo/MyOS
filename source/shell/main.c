@@ -12,6 +12,7 @@
 #include "lib_syscall.h"
 
 int main(int argc, char** argv) {
+    print_msg("main pid %d", getpid());
     for (int i = 0; i < argc; ++i) {
         print_msg("arg: %s", argv[i]);
     }

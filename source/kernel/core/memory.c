@@ -631,3 +631,43 @@ uint32_t memory_get_paddr(uint32_t page_dir, uint32_t vaddr) {
   return pte_to_pg_addr(pte) | (vaddr & (MEM_PAGE_SIZE - 1));
 
 }
+
+/**
+ * @brief 将当前任务的虚拟空间中的内容拷贝到目标虚拟空间中
+ * 
+ * @param to_addr 目标虚拟空间的起始地址
+ * @param to_page_dir 目标虚拟空间的页目录表
+ * @param from_addr 当前虚拟空间中的源地址
+ * @param size 拷贝的大小
+ */
+int memory_copy_uvm_data(uint32_t to_vaddr, uint32_t to_page_dir, uint32_t from_vaddr, uint32_t size) {
+
+  //由于虚拟地址空间是连续的而物理地址空间不一定，所以需要一页一页的单独拷贝
+  while (size > 0) {
+    //1.获取to_vaddr对应的物理地址
+    uint32_t to_paddr = memory_get_paddr(to_page_dir, to_vaddr);
+    if (to_paddr == 0) {
+      return -1;
+    }
+
+    //2.获取to_paddr所在的物理页可以写入的空间大小
+    //即从to_paddr到该页的末尾的空间大小
+    uint32_t offset = (MEM_PAGE_SIZE - 1) & to_paddr;
+    uint32_t curr_size = MEM_PAGE_SIZE - offset;
+
+    //3.判断size是否  < curr_size
+    if (size < curr_size) { //size < curr_size则在当前物理页拷贝szie个字节即可
+      curr_size = size;
+    }
+
+    //4.拷贝内容并更新到下一个需要拷贝的地方
+    kernel_memcpy((void*)to_paddr, (void*)from_vaddr, curr_size);
+    size -= curr_size;
+    to_vaddr += curr_size;
+    from_vaddr += curr_size;
+
+  }
+  
+  return 0;
+
+}

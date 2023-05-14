@@ -14,7 +14,7 @@
 #include "common/cpu_instr.h"
 #include "common/boot_info.h"
 //定义缓冲区位置，用于暂存从磁盘中读取的文件内容
-#define TEMP_ADDR   (8*1024*1024)
+#define TEMP_ADDR   (120*1024*1024)
 
 //定义一个文件暂时的文件描述符值
 #define TEMP_FILE_ID    100

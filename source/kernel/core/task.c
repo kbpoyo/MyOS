@@ -807,6 +807,46 @@ load_failed:
 }
 
 /**
+ * @brief 在新任务的参数拷贝到其用户栈顶的上方
+ * 
+ * @param to_page_dir 新任务的页目录表
+ * @param stack_top 新任务的栈顶地址
+ * @param argv 参数的字符串数组
+ * @param argc 参数的个数
+ * @return int 
+ */
+static int copy_args(uint32_t to_page_dir, char *stack_top, char * const *argv, int argc) {
+    task_args_t task_args;
+    task_args.argc = argc;
+
+
+    //1.获取char*数组在目标虚拟空间中的的虚拟地址
+    //char*数组将被拷贝到task_args的上方,所以直接让argv指向栈顶偏移task_args的大小个字节的空间即可
+    //即指向了该字符串数组第一个char*的地址
+    task_args.argv = (char **)(stack_top + sizeof(task_args_t));
+
+    //2.获取char*数组对应的虚拟空间关联的物理地址
+    char **to_argv_paddr = (char**)memory_get_paddr(to_page_dir, (uint32_t)task_args.argv);  
+
+    //3.获取参数的存储地址, 偏移量为 task_args 加上 argc个参数的字符串指针的大小，
+    char *dest_arg = stack_top + sizeof(task_args_t) + sizeof(char*) * argc;
+
+    //3.将参数拷贝到dest_arg处，并将每个参数的地址记录到task.argv指向的char*数组中
+    for (int i = 0; i < argc; ++i) {
+        char *from = argv[i];
+        int len = kernel_strlen(from) + 1;
+        int err = memory_copy_uvm_data((uint32_t)dest_arg, to_page_dir, (uint32_t)from, len);
+        ASSERT(err >= 0);
+        to_argv_paddr[i] = dest_arg;
+        dest_arg += len;
+    }
+
+
+    //4.将task_args拷贝到用户虚拟空间中,紧邻栈顶上方，作为入口函数的参数
+    memory_copy_uvm_data((uint32_t)stack_top, to_page_dir, (uint32_t)&task_args, sizeof(task_args_t)); 
+}
+
+/**
  * @brief execve系统调用，加载外部程序
  * 
  * @param name 程序名
@@ -842,37 +882,32 @@ int sys_execve(char *name, char * const *argv, char * const *env ) {
         if (err < 0) 
             goto exec_failed;
 
-        //6.记录并设置新页目录表，并销毁原页目录表的虚拟映射关系
-        task->tss.cr3 = new_page_dir;
-        mmu_set_page_dir(new_page_dir);
-        memory_destroy_uvm(old_page_dir);
-
-        //7.获取系统调用的栈帧,因为每次通过调用门进入内核栈中都只会一帧该结构体的数据，
-        //所以用最高地址减去大小即可获得该帧的起始地址
-        syscall_frame_t *frame = (syscall_frame_t*)(task_current()->tss.esp0 - sizeof(syscall_frame_t));
-        
-        //8.更改进程用户栈的位置，并更改调用门返回后执行的指令地址为程序入口地址
-        frame->esp = stack_top - 5 * 4 - 3 * 4;
-        frame->eip = entry;
-
-        //9.让进程更清爽的运行，清空通用寄存器的值
-        frame->eax = frame->ebx = frame->ecx = frame->edx = 0;
-        frame->esi = frame->edi = frame->ebp = 0;
-        frame->eflags = EFLAGS_IF | EFLAGS_DEFAULT_1;
-
-
-        //10.将被执行任务的入口参数拷贝到对应内存空间
+        //6.将被执行任务的入口参数拷贝到栈上分对应内存空间
         int argc = strings_count(argv);
         err = copy_args(new_page_dir, (char *)stack_top, argv, argc);
         if (err < 0)
             goto exec_failed;
 
+        //7.记录并设置新页目录表，并销毁原页目录表的虚拟映射关系
+        task->tss.cr3 = new_page_dir;
+        mmu_set_page_dir(new_page_dir);
+        memory_destroy_uvm(old_page_dir);
 
-
-        //12.修改当前任务名为被执行任务名
-        kernel_strncpy(task->name, get_file_name(name), TASK_NAME_SIZE);
-
+        //8.获取系统调用的栈帧,因为每次通过调用门进入内核栈中都只会一帧该结构体的数据，
+        //所以用最高地址减去大小即可获得该帧的起始地址
+        syscall_frame_t *frame = (syscall_frame_t*)(task_current()->tss.esp0 - sizeof(syscall_frame_t));
         
+        //9.更改进程用户栈的位置，并更改调用门返回后执行的指令地址为程序入口地址
+        frame->esp = stack_top - 5 * 4;
+        frame->eip = entry;
+
+        //10.让进程更清爽的运行，清空通用寄存器的值
+        frame->eax = frame->ebx = frame->ecx = frame->edx = 0;
+        frame->esi = frame->edi = frame->ebp = 0;
+        frame->eflags = EFLAGS_IF | EFLAGS_DEFAULT_1;
+
+        //11.修改当前任务名为被执行任务名
+        kernel_strncpy(task->name, get_file_name(name), TASK_NAME_SIZE);
 
     return 0;
 

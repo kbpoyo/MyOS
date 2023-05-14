@@ -73,6 +73,14 @@ typedef struct _task_manager_t {
 
 } task_manager_t;
 
+//定义任务入口参数的数据结构
+typedef struct _task_args_t {
+  uint32_t ret_addr;  //模拟调用函数压入的返回地址
+  uint32_t argc;      //入口参数个数
+  char * const *argv; //入口参数的字符串数组
+}task_args_t;
+
+
 
 
 void task_manager_init(void);
