@@ -22,10 +22,16 @@
 #define MEM_PAGE_SIZE 4096
 //实模式下1mb空间中拓展bios数据区的首地址，紧邻可用数据区
 #define MEM_EBDA_START 0x9fc00
-//虚拟空间中，用户进程的起始地址设置为 0x8000 0000, 以下的空间映射给操作系统使用,即2GB
-#define MEM_TASK_BASE 0x80000000
 //真正给操作系统的物理内存空间的结束地址, 暂时给qemu配置了127mb，全部给操作系统
 #define MEM_EXT_END (127 * 1024 * 1024)
+//虚拟空间中，用户进程的起始地址设置为 0x8000 0000, 以下的空间映射给操作系统使用,即2GB
+#define MEM_TASK_BASE 0x80000000
+//定义应用程序的栈空间起始地址的虚拟地址
+#define MEM_TASK_STACK_TOP  (0xE0000000)
+//定义每个应用程序的栈空间大小为50页
+#define MEM_TASK_STACK_SIZE (MEM_PAGE_SIZE * 50)
+//定义分配给每个应用程序的入口参数的空间大小
+#define MEM_TASK_ARG_SIZE   (MEM_PAGE_SIZE * 4)
 
 //内存分配对象
 typedef struct _addr_alloc_t {

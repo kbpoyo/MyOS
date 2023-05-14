@@ -550,7 +550,7 @@ int memory_alloc_for_page_dir(uint32_t page_dir, uint32_t vaddr, uint32_t alloc_
 }
 
 /**
- * @brief 为虚拟地址分配页空间
+ * @brief 为当前进程的虚拟地址分配页空间创建映射关系
  * 
  * @param vaddr 待分配空间的起始地址
  * @param alloc_size 为其分配的空间大小

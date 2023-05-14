@@ -255,3 +255,9 @@ void kernel_itoa(char *buf, int num, int base) {
     }
     *p = '\0';
 }
+
+
+int strings_count(char * const *str) {
+
+}
+char* get_file_name(const char *ame);
