@@ -87,7 +87,7 @@ void gdt_init(void) {
 
     is_alloc[KERNEL_SELECTOR_CS >> 3] = 1;
 
-    //3.初始化调用门描述符，调用门的 DPL >= CPL && DPL >= RPL, 若目标代码段的特权级更高则发生特权级转换
+    //3.初始化调用门描述符，调用门的 DPL >= CPL = 3 && DPL >= RPL = 0, 若目标代码段的特权级更高则发生特权级转换
     gate_desc_set((gate_desc_t*)(gdt_table + (SYSCALL_SELECTOR >> 3)), 
         KERNEL_SELECTOR_CS, (uint32_t)exception_handler_syscall, 
         GATE_ATTR_P | GATE_ATTR_DPL_3 | GATE_TYPE_SYSCALL | SYSCALL_PARAM_COUNT);
