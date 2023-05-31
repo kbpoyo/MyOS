@@ -40,8 +40,8 @@ int first_main(void) {
         if (pid == 0)
             break;
     }
-    int a = 0;
-    char const *argv[] = {"arg0", "arg1", "arg2", "arg3"};
+
+    char const *argv[] = {"arg0", "arg1", "arg2", "arg3", 0};
     print_msg("i = %d", i);
     print_msg("fist task pid = %d", getpid());
     if (pid != 0) execve("/shell.elf", argv, 0);

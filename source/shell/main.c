@@ -16,7 +16,14 @@ int main(int argc, char** argv) {
     for (int i = 0; i < argc; ++i) {
         print_msg("arg: %s", argv[i]);
     }
+
+    int pid = fork();
+    yield();
+    if (pid > 0) print_msg("parent pid=%d", pid);
+    else print_msg("chiled pid=%d", pid);
+
     for (;;) {
+        print_msg("shell pid=%d", getpid());
         msleep(1000);
     }
     

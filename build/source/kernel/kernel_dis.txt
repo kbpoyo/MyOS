@@ -27,13 +27,13 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   ALLOC
   4 .first_task   000001ab  80000000  0003b000  00008000  2**0
                   CONTENTS, ALLOC, LOAD, CODE
-  5 .debug_line   0000276d  00000000  00000000  000081ab  2**0
+  5 .debug_line   0000276b  00000000  00000000  000081ab  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
-  6 .debug_line_str 0000081c  00000000  00000000  0000a918  2**0
+  6 .debug_line_str 0000081c  00000000  00000000  0000a916  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
-  7 .debug_info   00006d94  00000000  00000000  0000b134  2**0
+  7 .debug_info   00006d93  00000000  00000000  0000b132  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
-  8 .debug_abbrev 00001eac  00000000  00000000  00011ec8  2**0
+  8 .debug_abbrev 00001eac  00000000  00000000  00011ec5  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
   9 .debug_aranges 00000280  00000000  00000000  00013d78  2**3
                   CONTENTS, READONLY, DEBUGGING, OCTETS
@@ -10574,13 +10574,13 @@ int first_main(void) {
             break;
 80000110:	90                   	nop
     }
-    int a = 0;
-80000111:	c7 45 f4 00 00 00 00 	movl   $0x0,-0xc(%ebp)
-    char const *argv[] = {"arg0", "arg1", "arg2", "arg3"};
-80000118:	c7 45 e4 72 01 00 80 	movl   $0x80000172,-0x1c(%ebp)
-8000011f:	c7 45 e8 77 01 00 80 	movl   $0x80000177,-0x18(%ebp)
-80000126:	c7 45 ec 7c 01 00 80 	movl   $0x8000017c,-0x14(%ebp)
-8000012d:	c7 45 f0 81 01 00 80 	movl   $0x80000181,-0x10(%ebp)
+
+    char const *argv[] = {"arg0", "arg1", "arg2", "arg3", 0};
+80000111:	c7 45 e4 72 01 00 80 	movl   $0x80000172,-0x1c(%ebp)
+80000118:	c7 45 e8 77 01 00 80 	movl   $0x80000177,-0x18(%ebp)
+8000011f:	c7 45 ec 7c 01 00 80 	movl   $0x8000017c,-0x14(%ebp)
+80000126:	c7 45 f0 81 01 00 80 	movl   $0x80000181,-0x10(%ebp)
+8000012d:	c7 45 f4 00 00 00 00 	movl   $0x0,-0xc(%ebp)
     print_msg("i = %d", i);
 80000134:	ff 75 f8             	push   -0x8(%ebp)
 80000137:	68 86 01 00 80       	push   $0x80000186
