@@ -882,7 +882,7 @@ int sys_execve(char *name, char * const *argv, char * const *env ) {
         if (err < 0) 
             goto exec_failed;
 
-        //6.将被执行任务的入口参数拷贝到栈上分对应内存空间
+        //6.将被执行任务的入口参数拷贝到栈上方对应内存空间
         int argc = strings_count(argv);
         err = copy_args(new_page_dir, (char *)stack_top, argv, argc);
         if (err < 0)

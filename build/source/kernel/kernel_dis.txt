@@ -11,7 +11,7 @@ Program Header:
     LOAD off    0x00007000 vaddr 0x00016000 paddr 0x00016000 align 2**12
          filesz 0x00000044 memsz 0x00024a20 flags rw-
     LOAD off    0x00008000 vaddr 0x80000000 paddr 0x0003b000 align 2**12
-         filesz 0x0000019e memsz 0x0000019e flags rwx
+         filesz 0x000001ab memsz 0x000001ab flags rwx
    STACK off    0x00000000 vaddr 0x00000000 paddr 0x00000000 align 2**4
          filesz 0x00000000 memsz 0x00000000 flags rwx
 
@@ -25,25 +25,25 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, ALLOC, LOAD, DATA
   3 .bss          00023a20  00017000  00017000  00007044  2**12
                   ALLOC
-  4 .first_task   0000019e  80000000  0003b000  00008000  2**0
+  4 .first_task   000001ab  80000000  0003b000  00008000  2**0
                   CONTENTS, ALLOC, LOAD, CODE
-  5 .debug_line   0000275f  00000000  00000000  0000819e  2**0
+  5 .debug_line   0000276d  00000000  00000000  000081ab  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
-  6 .debug_line_str 0000081c  00000000  00000000  0000a8fd  2**0
+  6 .debug_line_str 0000081c  00000000  00000000  0000a918  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
-  7 .debug_info   00006d88  00000000  00000000  0000b119  2**0
+  7 .debug_info   00006d94  00000000  00000000  0000b134  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
-  8 .debug_abbrev 00001eac  00000000  00000000  00011ea1  2**0
+  8 .debug_abbrev 00001eac  00000000  00000000  00011ec8  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
-  9 .debug_aranges 00000280  00000000  00000000  00013d50  2**3
+  9 .debug_aranges 00000280  00000000  00000000  00013d78  2**3
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 10 .debug_str    00001622  00000000  00000000  00013fd0  2**0
+ 10 .debug_str    00001622  00000000  00000000  00013ff8  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 11 .debug_rnglists 0000004e  00000000  00000000  000155f2  2**0
+ 11 .debug_rnglists 0000004e  00000000  00000000  0001561a  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 12 .comment      0000002b  00000000  00000000  00015640  2**0
+ 12 .comment      00000058  00000000  00000000  00015668  2**0
                   CONTENTS, READONLY
- 13 .debug_frame  00001990  00000000  00000000  0001566c  2**2
+ 13 .debug_frame  00001990  00000000  00000000  000156c0  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
 SYMBOL TABLE:
 00000000 l    df *ABS*	00000000 start.S.o
@@ -224,7 +224,7 @@ SYMBOL TABLE:
 00013de5 g     F .text	00000047 kernel_strcpy
 00012dba g     F .text	0000000b idt_disable_global
 00016000 g       .data	00000000 s_data
-800000e7 g     F .first_task	0000007e first_main
+800000e7 g     F .first_task	0000008b first_main
 00012a03 g     F .text	00000043 idt_install
 0001002a g       .text	00000000 exception_handler_unknown
 0001009e g       .text	00000000 exception_handler_breakpoint
@@ -280,7 +280,7 @@ SYMBOL TABLE:
 00010943 g     F .text	00000085 memory_creat_uvm
 00013e2c g     F .text	00000051 kernel_strncpy
 000131b0 g     F .text	00000006 sys_write
-0003b19e g       *ABS*	00000000 mem_free_start
+0003b1ab g       *ABS*	00000000 mem_free_start
 000131e4 g     F .text	00000053 kernel_init
 00013566 g     F .text	00000043 sem_init
 00010000 g       .text	00000000 _start
@@ -293,7 +293,7 @@ SYMBOL TABLE:
 00010209 g       .text	00000000 exception_handler_machine_check
 00012786 g     F .text	0000001c do_handler_invalid_tss
 00012d26 g     F .text	00000094 idt_disable
-0003b19e g       *ABS*	00000000 e_first_task
+0003b1ab g       *ABS*	00000000 e_first_task
 000118ca g     F .text	0000005c task_set_sleep
 000107d9 g     F .text	000000b6 memory_creat_map
 000126c2 g     F .text	0000001c do_handler_nmi
@@ -2306,7 +2306,7 @@ void memory_init(boot_info_t *boot_info) {
 
     log_printf("mem_free_start: 0x%x", &mem_free_start);
    10c52:	83 ec 08             	sub    $0x8,%esp
-   10c55:	68 9e b1 03 00       	push   $0x3b19e
+   10c55:	68 ab b1 03 00       	push   $0x3b1ab
    10c5a:	68 4f 49 01 00       	push   $0x1494f
    10c5f:	e8 47 3b 00 00       	call   147ab <log_printf>
    10c64:	83 c4 10             	add    $0x10,%esp
@@ -2345,7 +2345,7 @@ void memory_init(boot_info_t *boot_info) {
 
     //mem_free_start被分配的地址在链接文件中定义，紧邻着first_task段
     uint8_t *mem_free = (uint8_t*)&mem_free_start;
-   10cb9:	c7 45 f0 9e b1 03 00 	movl   $0x3b19e,-0x10(%ebp)
+   10cb9:	c7 45 f0 ab b1 03 00 	movl   $0x3b1ab,-0x10(%ebp)
 
     //用paddr_alloc，内存页分配对象管理1mb以上的所有空闲空间，页大小为MEM_PAGE_SIZE=4kb
     addr_alloc_init(&paddr_alloc, mem_free, MEM_EXT_START, mem_up1MB_free, MEM_PAGE_SIZE);
@@ -3582,7 +3582,7 @@ void task_first_init(void) {
     //2.确定第一个任务进程需要的空间大小
     extern char s_first_task, e_first_task;
     uint32_t copy_size = (uint32_t)(&e_first_task - &s_first_task);   //进程所需空间大小
-   11593:	b8 9e b1 03 00       	mov    $0x3b19e,%eax
+   11593:	b8 ab b1 03 00       	mov    $0x3b1ab,%eax
    11598:	2d 00 b0 03 00       	sub    $0x3b000,%eax
    1159d:	89 45 f4             	mov    %eax,-0xc(%ebp)
     uint32_t alloc_size = up2(copy_size, MEM_PAGE_SIZE) + 10 * MEM_PAGE_SIZE;   //需要为进程分配的内存大小，按4kb对齐,并多拿五页当作栈空间
@@ -5060,7 +5060,7 @@ int sys_execve(char *name, char * const *argv, char * const *env ) {
    120bd:	0f 88 04 01 00 00    	js     121c7 <sys_execve+0x179>
             goto exec_failed;
 
-        //6.将被执行任务的入口参数拷贝到栈上分对应内存空间
+        //6.将被执行任务的入口参数拷贝到栈上方对应内存空间
         int argc = strings_count(argv);
    120c3:	83 ec 0c             	sub    $0xc,%esp
    120c6:	ff 75 0c             	push   0xc(%ebp)
@@ -5425,7 +5425,7 @@ void gdt_init(void) {
     is_alloc[KERNEL_SELECTOR_CS >> 3] = 1;
    1238c:	c6 05 e1 61 03 00 01 	movb   $0x1,0x361e1
 
-    //3.初始化调用门描述符，调用门的 DPL >= CPL && DPL >= RPL, 若目标代码段的特权级更高则发生特权级转换
+    //3.初始化调用门描述符，调用门的 DPL >= CPL = 3 && DPL >= RPL = 0, 若目标代码段的特权级更高则发生特权级转换
     gate_desc_set((gate_desc_t*)(gdt_table + (SYSCALL_SELECTOR >> 3)), 
    12393:	ba ad 02 01 00       	mov    $0x102ad,%edx
    12398:	b8 f8 61 02 00       	mov    $0x261f8,%eax
@@ -9648,11 +9648,11 @@ int strings_count(char *const *strs) {
   if (strs) {
    142d4:	83 7d 08 00          	cmpl   $0x0,0x8(%ebp)
    142d8:	74 15                	je     142ef <strings_count+0x28>
-    while (*strs++) {
+    while (*(strs++)) {
    142da:	eb 04                	jmp    142e0 <strings_count+0x19>
       count++;
    142dc:	83 45 fc 01          	addl   $0x1,-0x4(%ebp)
-    while (*strs++) {
+    while (*(strs++)) {
    142e0:	8b 45 08             	mov    0x8(%ebp),%eax
    142e3:	8d 50 04             	lea    0x4(%eax),%edx
    142e6:	89 55 08             	mov    %edx,0x8(%ebp)
@@ -10558,72 +10558,75 @@ int first_main(void) {
     int pid;
     int i;
     for (i = 0; i < 1; ++i) {
-800000ed:	c7 45 fc 00 00 00 00 	movl   $0x0,-0x4(%ebp)
+800000ed:	c7 45 f8 00 00 00 00 	movl   $0x0,-0x8(%ebp)
 800000f4:	eb 12                	jmp    80000108 <first_main+0x21>
         pid = fork();
 800000f6:	e8 a4 ff ff ff       	call   8000009f <fork>
-800000fb:	89 45 f8             	mov    %eax,-0x8(%ebp)
+800000fb:	89 45 fc             	mov    %eax,-0x4(%ebp)
         if (pid == 0)
-800000fe:	83 7d f8 00          	cmpl   $0x0,-0x8(%ebp)
+800000fe:	83 7d fc 00          	cmpl   $0x0,-0x4(%ebp)
 80000102:	74 0c                	je     80000110 <first_main+0x29>
     for (i = 0; i < 1; ++i) {
-80000104:	83 45 fc 01          	addl   $0x1,-0x4(%ebp)
-80000108:	83 7d fc 00          	cmpl   $0x0,-0x4(%ebp)
+80000104:	83 45 f8 01          	addl   $0x1,-0x8(%ebp)
+80000108:	83 7d f8 00          	cmpl   $0x0,-0x8(%ebp)
 8000010c:	7e e8                	jle    800000f6 <first_main+0xf>
 8000010e:	eb 01                	jmp    80000111 <first_main+0x2a>
             break;
 80000110:	90                   	nop
     }
+    int a = 0;
+80000111:	c7 45 f4 00 00 00 00 	movl   $0x0,-0xc(%ebp)
     char const *argv[] = {"arg0", "arg1", "arg2", "arg3"};
-80000111:	c7 45 e8 65 01 00 80 	movl   $0x80000165,-0x18(%ebp)
-80000118:	c7 45 ec 6a 01 00 80 	movl   $0x8000016a,-0x14(%ebp)
-8000011f:	c7 45 f0 6f 01 00 80 	movl   $0x8000016f,-0x10(%ebp)
-80000126:	c7 45 f4 74 01 00 80 	movl   $0x80000174,-0xc(%ebp)
+80000118:	c7 45 e4 72 01 00 80 	movl   $0x80000172,-0x1c(%ebp)
+8000011f:	c7 45 e8 77 01 00 80 	movl   $0x80000177,-0x18(%ebp)
+80000126:	c7 45 ec 7c 01 00 80 	movl   $0x8000017c,-0x14(%ebp)
+8000012d:	c7 45 f0 81 01 00 80 	movl   $0x80000181,-0x10(%ebp)
     print_msg("i = %d", i);
-8000012d:	ff 75 fc             	push   -0x4(%ebp)
-80000130:	68 79 01 00 80       	push   $0x80000179
-80000135:	e8 3d ff ff ff       	call   80000077 <print_msg>
-8000013a:	83 c4 08             	add    $0x8,%esp
+80000134:	ff 75 f8             	push   -0x8(%ebp)
+80000137:	68 86 01 00 80       	push   $0x80000186
+8000013c:	e8 36 ff ff ff       	call   80000077 <print_msg>
+80000141:	83 c4 08             	add    $0x8,%esp
     print_msg("fist task pid = %d", getpid());
-8000013d:	e8 1a ff ff ff       	call   8000005c <getpid>
-80000142:	50                   	push   %eax
-80000143:	68 80 01 00 80       	push   $0x80000180
-80000148:	e8 2a ff ff ff       	call   80000077 <print_msg>
-8000014d:	83 c4 08             	add    $0x8,%esp
-    execve("/shell.elf", argv, 0);
-80000150:	6a 00                	push   $0x0
-80000152:	8d 45 e8             	lea    -0x18(%ebp),%eax
-80000155:	50                   	push   %eax
-80000156:	68 93 01 00 80       	push   $0x80000193
-8000015b:	e8 5a ff ff ff       	call   800000ba <execve>
-80000160:	83 c4 0c             	add    $0xc,%esp
+80000144:	e8 13 ff ff ff       	call   8000005c <getpid>
+80000149:	50                   	push   %eax
+8000014a:	68 8d 01 00 80       	push   $0x8000018d
+8000014f:	e8 23 ff ff ff       	call   80000077 <print_msg>
+80000154:	83 c4 08             	add    $0x8,%esp
+    if (pid != 0) execve("/shell.elf", argv, 0);
+80000157:	83 7d fc 00          	cmpl   $0x0,-0x4(%ebp)
+8000015b:	74 13                	je     80000170 <first_main+0x89>
+8000015d:	6a 00                	push   $0x0
+8000015f:	8d 45 e4             	lea    -0x1c(%ebp),%eax
+80000162:	50                   	push   %eax
+80000163:	68 a0 01 00 80       	push   $0x800001a0
+80000168:	e8 4d ff ff ff       	call   800000ba <execve>
+8000016d:	83 c4 0c             	add    $0xc,%esp
     
-
     for (;;)
-80000163:	eb fe                	jmp    80000163 <first_main+0x7c>
-80000165:	61                   	popa   
-80000166:	72 67                	jb     800001cf <first_main+0xe8>
-80000168:	30 00                	xor    %al,(%eax)
-8000016a:	61                   	popa   
-8000016b:	72 67                	jb     800001d4 <first_main+0xed>
-8000016d:	31 00                	xor    %eax,(%eax)
-8000016f:	61                   	popa   
-80000170:	72 67                	jb     800001d9 <first_main+0xf2>
-80000172:	32 00                	xor    (%eax),%al
-80000174:	61                   	popa   
-80000175:	72 67                	jb     800001de <first_main+0xf7>
-80000177:	33 00                	xor    (%eax),%eax
-80000179:	69 20 3d 20 25 64    	imul   $0x6425203d,(%eax),%esp
-8000017f:	00 66 69             	add    %ah,0x69(%esi)
-80000182:	73 74                	jae    800001f8 <first_main+0x111>
-80000184:	20 74 61 73          	and    %dh,0x73(%ecx,%eiz,2)
-80000188:	6b 20 70             	imul   $0x70,(%eax),%esp
-8000018b:	69 64 20 3d 20 25 64 	imul   $0x642520,0x3d(%eax,%eiz,1),%esp
-80000192:	00 
-80000193:	2f                   	das    
-80000194:	73 68                	jae    800001fe <first_main+0x117>
-80000196:	65 6c                	gs insb (%dx),%es:(%edi)
-80000198:	6c                   	insb   (%dx),%es:(%edi)
-80000199:	2e 65 6c             	cs gs insb (%dx),%es:(%edi)
-8000019c:	66                   	data16
+80000170:	eb fe                	jmp    80000170 <first_main+0x89>
+80000172:	61                   	popa   
+80000173:	72 67                	jb     800001dc <first_main+0xf5>
+80000175:	30 00                	xor    %al,(%eax)
+80000177:	61                   	popa   
+80000178:	72 67                	jb     800001e1 <first_main+0xfa>
+8000017a:	31 00                	xor    %eax,(%eax)
+8000017c:	61                   	popa   
+8000017d:	72 67                	jb     800001e6 <first_main+0xff>
+8000017f:	32 00                	xor    (%eax),%al
+80000181:	61                   	popa   
+80000182:	72 67                	jb     800001eb <first_main+0x104>
+80000184:	33 00                	xor    (%eax),%eax
+80000186:	69 20 3d 20 25 64    	imul   $0x6425203d,(%eax),%esp
+8000018c:	00 66 69             	add    %ah,0x69(%esi)
+8000018f:	73 74                	jae    80000205 <first_main+0x11e>
+80000191:	20 74 61 73          	and    %dh,0x73(%ecx,%eiz,2)
+80000195:	6b 20 70             	imul   $0x70,(%eax),%esp
+80000198:	69 64 20 3d 20 25 64 	imul   $0x642520,0x3d(%eax,%eiz,1),%esp
+8000019f:	00 
+800001a0:	2f                   	das    
+800001a1:	73 68                	jae    8000020b <first_main+0x124>
+800001a3:	65 6c                	gs insb (%dx),%es:(%edi)
+800001a5:	6c                   	insb   (%dx),%es:(%edi)
+800001a6:	2e 65 6c             	cs gs insb (%dx),%es:(%edi)
+800001a9:	66                   	data16
 	...

@@ -262,7 +262,7 @@ void kernel_itoa(char *buf, int num, int base) {
 int strings_count(char *const *strs) {
   int count = 0;
   if (strs) {
-    while (*strs++) {
+    while (*(strs++)) {
       count++;
     }
   }

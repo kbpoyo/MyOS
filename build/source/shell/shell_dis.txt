@@ -3,19 +3,19 @@
 /home/kbpoyo/code/cpp/MyOs/build/source/shell/shell.elf
 architecture: i386, flags 0x00000112:
 EXEC_P, HAS_SYMS, D_PAGED
-start address 0x80000115
+start address 0x81000115
 
 Program Header:
-    LOAD off    0x00001000 vaddr 0x80000000 paddr 0x80000000 align 2**12
+    LOAD off    0x00001000 vaddr 0x81000000 paddr 0x81000000 align 2**12
          filesz 0x00000153 memsz 0x00000153 flags r-x
    STACK off    0x00000000 vaddr 0x00000000 paddr 0x00000000 align 2**4
          filesz 0x00000000 memsz 0x00000000 flags rwx
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .text         0000013f  80000000  80000000  00001000  2**0
+  0 .text         0000013f  81000000  81000000  00001000  2**0
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  1 .rodata       00000014  8000013f  8000013f  0000113f  2**0
+  1 .rodata       00000014  8100013f  8100013f  0000113f  2**0
                   CONTENTS, ALLOC, LOAD, READONLY, DATA
   2 .debug_info   000002a7  00000000  00000000  00001153  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
@@ -35,243 +35,243 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING, OCTETS
 SYMBOL TABLE:
 00000000 l    df *ABS*	00000000 main.c
-80000000 l     F .text	0000004c sys_call
-8000004c l     F .text	0000002a msleep
-80000076 l     F .text	0000001b getpid
-80000091 l     F .text	00000028 print_msg
+81000000 l     F .text	0000004c sys_call
+8100004c l     F .text	0000002a msleep
+81000076 l     F .text	0000001b getpid
+81000091 l     F .text	00000028 print_msg
 00000000 l    df *ABS*	00000000 cstart.c
-80000115 g       .text	00000000 _start
-80000125 g     F .text	0000001a cstart
-800000b9 g     F .text	0000005c main
+81000115 g       .text	00000000 _start
+81000125 g     F .text	0000001a cstart
+810000b9 g     F .text	0000005c main
 
 
 
 Disassembly of section .text:
 
-80000000 <sys_call>:
+81000000 <sys_call>:
 }syscall_args_t;
 
 
 
 
 static inline int sys_call(syscall_args_t *args) {
-80000000:	55                   	push   %ebp
-80000001:	89 e5                	mov    %esp,%ebp
-80000003:	57                   	push   %edi
-80000004:	56                   	push   %esi
-80000005:	53                   	push   %ebx
-80000006:	83 ec 10             	sub    $0x10,%esp
+81000000:	55                   	push   %ebp
+81000001:	89 e5                	mov    %esp,%ebp
+81000003:	57                   	push   %edi
+81000004:	56                   	push   %esi
+81000005:	53                   	push   %ebx
+81000006:	83 ec 10             	sub    $0x10,%esp
     // 传入远跳转需要的参数, 即cs = selector, eip = offset 
     //为调用门选择子赋予0特权级,调用门的 cpl 和 RPL <= 系统调用段描述符的DPL
     //门描述符中目标选择子的 CPL <= 门描述符的 DPL
     uint32_t addr[] = {0, SYSCALL_SELECTOR | 0};  
-80000009:	c7 45 e8 00 00 00 00 	movl   $0x0,-0x18(%ebp)
-80000010:	c7 45 ec 18 00 00 00 	movl   $0x18,-0x14(%ebp)
+81000009:	c7 45 e8 00 00 00 00 	movl   $0x0,-0x18(%ebp)
+81000010:	c7 45 ec 18 00 00 00 	movl   $0x18,-0x14(%ebp)
         "push %[arg1]\n\t"
         "push %[arg0]\n\t"
         "push %[id]\n\t"
         "lcalll *(%[addr])\n\t"
         :"=a"(ret)
         :[arg3]"r"(args->arg3), 
-80000017:	8b 45 08             	mov    0x8(%ebp),%eax
-8000001a:	8b 40 10             	mov    0x10(%eax),%eax
+81000017:	8b 45 08             	mov    0x8(%ebp),%eax
+8100001a:	8b 40 10             	mov    0x10(%eax),%eax
          [arg2]"r"(args->arg2), 
-8000001d:	8b 55 08             	mov    0x8(%ebp),%edx
-80000020:	8b 52 0c             	mov    0xc(%edx),%edx
+8100001d:	8b 55 08             	mov    0x8(%ebp),%edx
+81000020:	8b 52 0c             	mov    0xc(%edx),%edx
          [arg1]"r"(args->arg1),
-80000023:	8b 4d 08             	mov    0x8(%ebp),%ecx
-80000026:	8b 49 08             	mov    0x8(%ecx),%ecx
+81000023:	8b 4d 08             	mov    0x8(%ebp),%ecx
+81000026:	8b 49 08             	mov    0x8(%ecx),%ecx
          [arg0]"r"(args->arg0), 
-80000029:	8b 5d 08             	mov    0x8(%ebp),%ebx
-8000002c:	8b 5b 04             	mov    0x4(%ebx),%ebx
+81000029:	8b 5d 08             	mov    0x8(%ebp),%ebx
+8100002c:	8b 5b 04             	mov    0x4(%ebx),%ebx
          [id]"r"(args->id), 
-8000002f:	8b 75 08             	mov    0x8(%ebp),%esi
-80000032:	8b 36                	mov    (%esi),%esi
+8100002f:	8b 75 08             	mov    0x8(%ebp),%esi
+81000032:	8b 36                	mov    (%esi),%esi
      __asm__ __volatile__(
-80000034:	8d 7d e8             	lea    -0x18(%ebp),%edi
-80000037:	50                   	push   %eax
-80000038:	52                   	push   %edx
-80000039:	51                   	push   %ecx
-8000003a:	53                   	push   %ebx
-8000003b:	56                   	push   %esi
-8000003c:	ff 1f                	lcall  *(%edi)
-8000003e:	89 45 f0             	mov    %eax,-0x10(%ebp)
+81000034:	8d 7d e8             	lea    -0x18(%ebp),%edi
+81000037:	50                   	push   %eax
+81000038:	52                   	push   %edx
+81000039:	51                   	push   %ecx
+8100003a:	53                   	push   %ebx
+8100003b:	56                   	push   %esi
+8100003c:	ff 1f                	lcall  *(%edi)
+8100003e:	89 45 f0             	mov    %eax,-0x10(%ebp)
          [addr]"r"(addr)
     );
 
     return ret;
-80000041:	8b 45 f0             	mov    -0x10(%ebp),%eax
+81000041:	8b 45 f0             	mov    -0x10(%ebp),%eax
 }
-80000044:	83 c4 10             	add    $0x10,%esp
-80000047:	5b                   	pop    %ebx
-80000048:	5e                   	pop    %esi
-80000049:	5f                   	pop    %edi
-8000004a:	5d                   	pop    %ebp
-8000004b:	c3                   	ret    
+81000044:	83 c4 10             	add    $0x10,%esp
+81000047:	5b                   	pop    %ebx
+81000048:	5e                   	pop    %esi
+81000049:	5f                   	pop    %edi
+8100004a:	5d                   	pop    %ebp
+8100004b:	c3                   	ret    
 
-8000004c <msleep>:
+8100004c <msleep>:
 /**
  * @brief 以ms为单位进行延时
  * 
  * @param ms 
  */
 static inline void msleep(int ms) {
-8000004c:	55                   	push   %ebp
-8000004d:	89 e5                	mov    %esp,%ebp
-8000004f:	83 ec 20             	sub    $0x20,%esp
+8100004c:	55                   	push   %ebp
+8100004d:	89 e5                	mov    %esp,%ebp
+8100004f:	83 ec 20             	sub    $0x20,%esp
     if (ms <= 0) return;
-80000052:	83 7d 08 00          	cmpl   $0x0,0x8(%ebp)
-80000056:	7e 1b                	jle    80000073 <msleep+0x27>
+81000052:	83 7d 08 00          	cmpl   $0x0,0x8(%ebp)
+81000056:	7e 1b                	jle    81000073 <msleep+0x27>
 
     syscall_args_t args;
     args.id = SYS_sleep;
-80000058:	c7 45 ec 00 00 00 00 	movl   $0x0,-0x14(%ebp)
+81000058:	c7 45 ec 00 00 00 00 	movl   $0x0,-0x14(%ebp)
     args.arg0 = ms;
-8000005f:	8b 45 08             	mov    0x8(%ebp),%eax
-80000062:	89 45 f0             	mov    %eax,-0x10(%ebp)
+8100005f:	8b 45 08             	mov    0x8(%ebp),%eax
+81000062:	89 45 f0             	mov    %eax,-0x10(%ebp)
 
     sys_call(&args);
-80000065:	8d 45 ec             	lea    -0x14(%ebp),%eax
-80000068:	50                   	push   %eax
-80000069:	e8 92 ff ff ff       	call   80000000 <sys_call>
-8000006e:	83 c4 04             	add    $0x4,%esp
-80000071:	eb 01                	jmp    80000074 <msleep+0x28>
+81000065:	8d 45 ec             	lea    -0x14(%ebp),%eax
+81000068:	50                   	push   %eax
+81000069:	e8 92 ff ff ff       	call   81000000 <sys_call>
+8100006e:	83 c4 04             	add    $0x4,%esp
+81000071:	eb 01                	jmp    81000074 <msleep+0x28>
     if (ms <= 0) return;
-80000073:	90                   	nop
+81000073:	90                   	nop
 
 }
-80000074:	c9                   	leave  
-80000075:	c3                   	ret    
+81000074:	c9                   	leave  
+81000075:	c3                   	ret    
 
-80000076 <getpid>:
+81000076 <getpid>:
 /**
  * @brief 获取用户进程id
  * 
  * @return int 
  */
 static inline int getpid(void) {
-80000076:	55                   	push   %ebp
-80000077:	89 e5                	mov    %esp,%ebp
-80000079:	83 ec 20             	sub    $0x20,%esp
+81000076:	55                   	push   %ebp
+81000077:	89 e5                	mov    %esp,%ebp
+81000079:	83 ec 20             	sub    $0x20,%esp
     syscall_args_t args;
     args.id = SYS_getpid;
-8000007c:	c7 45 ec 01 00 00 00 	movl   $0x1,-0x14(%ebp)
+8100007c:	c7 45 ec 01 00 00 00 	movl   $0x1,-0x14(%ebp)
 
     return sys_call(&args);
-80000083:	8d 45 ec             	lea    -0x14(%ebp),%eax
-80000086:	50                   	push   %eax
-80000087:	e8 74 ff ff ff       	call   80000000 <sys_call>
-8000008c:	83 c4 04             	add    $0x4,%esp
+81000083:	8d 45 ec             	lea    -0x14(%ebp),%eax
+81000086:	50                   	push   %eax
+81000087:	e8 74 ff ff ff       	call   81000000 <sys_call>
+8100008c:	83 c4 04             	add    $0x4,%esp
 }
-8000008f:	c9                   	leave  
-80000090:	c3                   	ret    
+8100008f:	c9                   	leave  
+81000090:	c3                   	ret    
 
-80000091 <print_msg>:
+81000091 <print_msg>:
 
 static inline void print_msg(const char *fmt, int arg) {
-80000091:	55                   	push   %ebp
-80000092:	89 e5                	mov    %esp,%ebp
-80000094:	83 ec 20             	sub    $0x20,%esp
+81000091:	55                   	push   %ebp
+81000092:	89 e5                	mov    %esp,%ebp
+81000094:	83 ec 20             	sub    $0x20,%esp
     syscall_args_t args;
     args.id = SYS_printmsg;
-80000097:	c7 45 ec 0a 00 00 00 	movl   $0xa,-0x14(%ebp)
+81000097:	c7 45 ec 0a 00 00 00 	movl   $0xa,-0x14(%ebp)
     args.arg0 = (int)fmt;
-8000009e:	8b 45 08             	mov    0x8(%ebp),%eax
-800000a1:	89 45 f0             	mov    %eax,-0x10(%ebp)
+8100009e:	8b 45 08             	mov    0x8(%ebp),%eax
+810000a1:	89 45 f0             	mov    %eax,-0x10(%ebp)
     args.arg1 = arg;
-800000a4:	8b 45 0c             	mov    0xc(%ebp),%eax
-800000a7:	89 45 f4             	mov    %eax,-0xc(%ebp)
+810000a4:	8b 45 0c             	mov    0xc(%ebp),%eax
+810000a7:	89 45 f4             	mov    %eax,-0xc(%ebp)
 
     sys_call(&args);
-800000aa:	8d 45 ec             	lea    -0x14(%ebp),%eax
-800000ad:	50                   	push   %eax
-800000ae:	e8 4d ff ff ff       	call   80000000 <sys_call>
-800000b3:	83 c4 04             	add    $0x4,%esp
+810000aa:	8d 45 ec             	lea    -0x14(%ebp),%eax
+810000ad:	50                   	push   %eax
+810000ae:	e8 4d ff ff ff       	call   81000000 <sys_call>
+810000b3:	83 c4 04             	add    $0x4,%esp
 }
-800000b6:	90                   	nop
-800000b7:	c9                   	leave  
-800000b8:	c3                   	ret    
+810000b6:	90                   	nop
+810000b7:	c9                   	leave  
+810000b8:	c3                   	ret    
 
-800000b9 <main>:
+810000b9 <main>:
  * 
  */
 
 #include "lib_syscall.h"
 
 int main(int argc, char** argv) {
-800000b9:	55                   	push   %ebp
-800000ba:	89 e5                	mov    %esp,%ebp
-800000bc:	83 ec 10             	sub    $0x10,%esp
+810000b9:	55                   	push   %ebp
+810000ba:	89 e5                	mov    %esp,%ebp
+810000bc:	83 ec 10             	sub    $0x10,%esp
     print_msg("main pid %d", getpid());
-800000bf:	e8 b2 ff ff ff       	call   80000076 <getpid>
-800000c4:	50                   	push   %eax
-800000c5:	68 3f 01 00 80       	push   $0x8000013f
-800000ca:	e8 c2 ff ff ff       	call   80000091 <print_msg>
-800000cf:	83 c4 08             	add    $0x8,%esp
+810000bf:	e8 b2 ff ff ff       	call   81000076 <getpid>
+810000c4:	50                   	push   %eax
+810000c5:	68 3f 01 00 81       	push   $0x8100013f
+810000ca:	e8 c2 ff ff ff       	call   81000091 <print_msg>
+810000cf:	83 c4 08             	add    $0x8,%esp
     for (int i = 0; i < argc; ++i) {
-800000d2:	c7 45 fc 00 00 00 00 	movl   $0x0,-0x4(%ebp)
-800000d9:	eb 23                	jmp    800000fe <main+0x45>
+810000d2:	c7 45 fc 00 00 00 00 	movl   $0x0,-0x4(%ebp)
+810000d9:	eb 23                	jmp    810000fe <main+0x45>
         print_msg("arg: %s", argv[i]);
-800000db:	8b 45 fc             	mov    -0x4(%ebp),%eax
-800000de:	8d 14 85 00 00 00 00 	lea    0x0(,%eax,4),%edx
-800000e5:	8b 45 0c             	mov    0xc(%ebp),%eax
-800000e8:	01 d0                	add    %edx,%eax
-800000ea:	8b 00                	mov    (%eax),%eax
-800000ec:	50                   	push   %eax
-800000ed:	68 4b 01 00 80       	push   $0x8000014b
-800000f2:	e8 9a ff ff ff       	call   80000091 <print_msg>
-800000f7:	83 c4 08             	add    $0x8,%esp
+810000db:	8b 45 fc             	mov    -0x4(%ebp),%eax
+810000de:	8d 14 85 00 00 00 00 	lea    0x0(,%eax,4),%edx
+810000e5:	8b 45 0c             	mov    0xc(%ebp),%eax
+810000e8:	01 d0                	add    %edx,%eax
+810000ea:	8b 00                	mov    (%eax),%eax
+810000ec:	50                   	push   %eax
+810000ed:	68 4b 01 00 81       	push   $0x8100014b
+810000f2:	e8 9a ff ff ff       	call   81000091 <print_msg>
+810000f7:	83 c4 08             	add    $0x8,%esp
     for (int i = 0; i < argc; ++i) {
-800000fa:	83 45 fc 01          	addl   $0x1,-0x4(%ebp)
-800000fe:	8b 45 fc             	mov    -0x4(%ebp),%eax
-80000101:	3b 45 08             	cmp    0x8(%ebp),%eax
-80000104:	7c d5                	jl     800000db <main+0x22>
+810000fa:	83 45 fc 01          	addl   $0x1,-0x4(%ebp)
+810000fe:	8b 45 fc             	mov    -0x4(%ebp),%eax
+81000101:	3b 45 08             	cmp    0x8(%ebp),%eax
+81000104:	7c d5                	jl     810000db <main+0x22>
     }
     for (;;) {
         msleep(1000);
-80000106:	68 e8 03 00 00       	push   $0x3e8
-8000010b:	e8 3c ff ff ff       	call   8000004c <msleep>
-80000110:	83 c4 04             	add    $0x4,%esp
-80000113:	eb f1                	jmp    80000106 <main+0x4d>
+81000106:	68 e8 03 00 00       	push   $0x3e8
+8100010b:	e8 3c ff ff ff       	call   8100004c <msleep>
+81000110:	83 c4 04             	add    $0x4,%esp
+81000113:	eb f1                	jmp    81000106 <main+0x4d>
 
-80000115 <_start>:
+81000115 <_start>:
     .extern cstart
 _start:
     //iret指令返回后，将之前压入的 ss,esp,eflags,cs,eip 寄存器值返回给对应寄存器，
 	//由于cpu从0特权级切换到了3特权级，而之前其余的段寄存器都是0特权级，不能供3特权级使用，
 	//所以cpu将其余寄存器置零，这里直接用ss寄存器再初始化其余段寄存器即可
 	mov %ss, %ax
-80000115:	66 8c d0             	mov    %ss,%ax
+81000115:	66 8c d0             	mov    %ss,%ax
 	mov %ax, %ds
-80000118:	8e d8                	mov    %eax,%ds
+81000118:	8e d8                	mov    %eax,%ds
 	mov %ax, %es
-8000011a:	8e c0                	mov    %eax,%es
+8100011a:	8e c0                	mov    %eax,%es
 	mov %ax, %fs
-8000011c:	8e e0                	mov    %eax,%fs
+8100011c:	8e e0                	mov    %eax,%fs
 	mov %ax, %gs
-8000011e:	8e e8                	mov    %eax,%gs
+8100011e:	8e e8                	mov    %eax,%gs
 
     //因为cs寄存器已由操作系统分配，所以直接跳转即可
 	jmp cstart
-80000120:	e9 00 00 00 00       	jmp    80000125 <cstart>
+81000120:	e9 00 00 00 00       	jmp    81000125 <cstart>
 
-80000125 <cstart>:
+81000125 <cstart>:
  * @brief 执行调用main之前的初始化工作
  *
  * @param argc
  * @param argv
  */
 void cstart(int argc, char **argv) {
-80000125:	55                   	push   %ebp
-80000126:	89 e5                	mov    %esp,%ebp
-80000128:	83 ec 08             	sub    $0x8,%esp
+81000125:	55                   	push   %ebp
+81000126:	89 e5                	mov    %esp,%ebp
+81000128:	83 ec 08             	sub    $0x8,%esp
     main(argc, argv);
-8000012b:	83 ec 08             	sub    $0x8,%esp
-8000012e:	ff 75 0c             	push   0xc(%ebp)
-80000131:	ff 75 08             	push   0x8(%ebp)
-80000134:	e8 80 ff ff ff       	call   800000b9 <main>
-80000139:	83 c4 10             	add    $0x10,%esp
+8100012b:	83 ec 08             	sub    $0x8,%esp
+8100012e:	ff 75 0c             	push   0xc(%ebp)
+81000131:	ff 75 08             	push   0x8(%ebp)
+81000134:	e8 80 ff ff ff       	call   810000b9 <main>
+81000139:	83 c4 10             	add    $0x10,%esp
 }
-8000013c:	90                   	nop
-8000013d:	c9                   	leave  
-8000013e:	c3                   	ret    
+8100013c:	90                   	nop
+8100013d:	c9                   	leave  
+8100013e:	c3                   	ret    

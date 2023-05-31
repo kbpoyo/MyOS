@@ -10,7 +10,7 @@ ELF Header:
   Version:                           0x1
   Entry point address:               0x10000
   Start of program headers:          52 (bytes into file)
-  Start of section headers:          102956 (bytes into file)
+  Start of section headers:          103040 (bytes into file)
   Flags:                             0x0
   Size of this header:               52 (bytes)
   Size of program headers:           32 (bytes)
@@ -26,19 +26,19 @@ Section Headers:
   [ 2] .rodata           PROGBITS        000148c0 0058c0 000ff0 00   A  0   0 32
   [ 3] .data             PROGBITS        00016000 007000 000044 00  WA  0   0 32
   [ 4] .bss              NOBITS          00017000 007044 023a20 00  WA  0   0 4096
-  [ 5] .first_task       PROGBITS        80000000 008000 00019e 00 WAX  0   0  1
-  [ 6] .debug_line       PROGBITS        00000000 00819e 00275f 00      0   0  1
-  [ 7] .debug_line_str   PROGBITS        00000000 00a8fd 00081c 01  MS  0   0  1
-  [ 8] .debug_info       PROGBITS        00000000 00b119 006d88 00      0   0  1
-  [ 9] .debug_abbrev     PROGBITS        00000000 011ea1 001eac 00      0   0  1
-  [10] .debug_aranges    PROGBITS        00000000 013d50 000280 00      0   0  8
-  [11] .debug_str        PROGBITS        00000000 013fd0 001622 01  MS  0   0  1
-  [12] .debug_rnglists   PROGBITS        00000000 0155f2 00004e 00      0   0  1
-  [13] .comment          PROGBITS        00000000 015640 00002b 01  MS  0   0  1
-  [14] .debug_frame      PROGBITS        00000000 01566c 001990 00      0   0  4
-  [15] .symtab           SYMTAB          00000000 016ffc 0012f0 10     16 154  4
-  [16] .strtab           STRTAB          00000000 0182ec 000e89 00      0   0  1
-  [17] .shstrtab         STRTAB          00000000 019175 0000b6 00      0   0  1
+  [ 5] .first_task       PROGBITS        80000000 008000 0001ab 00 WAX  0   0  1
+  [ 6] .debug_line       PROGBITS        00000000 0081ab 00276d 00      0   0  1
+  [ 7] .debug_line_str   PROGBITS        00000000 00a918 00081c 01  MS  0   0  1
+  [ 8] .debug_info       PROGBITS        00000000 00b134 006d94 00      0   0  1
+  [ 9] .debug_abbrev     PROGBITS        00000000 011ec8 001eac 00      0   0  1
+  [10] .debug_aranges    PROGBITS        00000000 013d78 000280 00      0   0  8
+  [11] .debug_str        PROGBITS        00000000 013ff8 001622 01  MS  0   0  1
+  [12] .debug_rnglists   PROGBITS        00000000 01561a 00004e 00      0   0  1
+  [13] .comment          PROGBITS        00000000 015668 000058 01  MS  0   0  1
+  [14] .debug_frame      PROGBITS        00000000 0156c0 001990 00      0   0  4
+  [15] .symtab           SYMTAB          00000000 017050 0012f0 10     16 154  4
+  [16] .strtab           STRTAB          00000000 018340 000e89 00      0   0  1
+  [17] .shstrtab         STRTAB          00000000 0191c9 0000b6 00      0   0  1
 Key to Flags:
   W (write), A (alloc), X (execute), M (merge), S (strings), I (info),
   L (link order), O (extra OS processing required), G (group), T (TLS),
@@ -51,7 +51,7 @@ Program Headers:
   Type           Offset   VirtAddr   PhysAddr   FileSiz MemSiz  Flg Align
   LOAD           0x001000 0x00010000 0x00010000 0x058b0 0x058b0 R E 0x1000
   LOAD           0x007000 0x00016000 0x00016000 0x00044 0x24a20 RW  0x1000
-  LOAD           0x008000 0x80000000 0x0003b000 0x0019e 0x0019e RWE 0x1000
+  LOAD           0x008000 0x80000000 0x0003b000 0x001ab 0x001ab RWE 0x1000
   GNU_STACK      0x000000 0x00000000 0x00000000 0x00000 0x00000 RWE 0x10
 
  Section to Segment mapping:
@@ -247,7 +247,7 @@ Symbol table '.symtab' contains 303 entries:
    176: 00013de5    71 FUNC    GLOBAL DEFAULT    1 kernel_strcpy
    177: 00012dba    11 FUNC    GLOBAL DEFAULT    1 idt_disable_global
    178: 00016000     0 NOTYPE  GLOBAL DEFAULT    3 s_data
-   179: 800000e7   126 FUNC    GLOBAL DEFAULT    5 first_main
+   179: 800000e7   139 FUNC    GLOBAL DEFAULT    5 first_main
    180: 00012a03    67 FUNC    GLOBAL DEFAULT    1 idt_install
    181: 0001002a     0 NOTYPE  GLOBAL DEFAULT    1 exception_handle[...]
    182: 0001009e     0 NOTYPE  GLOBAL DEFAULT    1 exception_handle[...]
@@ -303,7 +303,7 @@ Symbol table '.symtab' contains 303 entries:
    232: 00010943   133 FUNC    GLOBAL DEFAULT    1 memory_creat_uvm
    233: 00013e2c    81 FUNC    GLOBAL DEFAULT    1 kernel_strncpy
    234: 000131b0     6 FUNC    GLOBAL DEFAULT    1 sys_write
-   235: 0003b19e     0 NOTYPE  GLOBAL DEFAULT  ABS mem_free_start
+   235: 0003b1ab     0 NOTYPE  GLOBAL DEFAULT  ABS mem_free_start
    236: 000131e4    83 FUNC    GLOBAL DEFAULT    1 kernel_init
    237: 00013566    67 FUNC    GLOBAL DEFAULT    1 sem_init
    238: 00010000     0 NOTYPE  GLOBAL DEFAULT    1 _start
@@ -316,7 +316,7 @@ Symbol table '.symtab' contains 303 entries:
    245: 00010209     0 NOTYPE  GLOBAL DEFAULT    1 exception_handle[...]
    246: 00012786    28 FUNC    GLOBAL DEFAULT    1 do_handler_inval[...]
    247: 00012d26   148 FUNC    GLOBAL DEFAULT    1 idt_disable
-   248: 0003b19e     0 NOTYPE  GLOBAL DEFAULT  ABS e_first_task
+   248: 0003b1ab     0 NOTYPE  GLOBAL DEFAULT  ABS e_first_task
    249: 000118ca    92 FUNC    GLOBAL DEFAULT    1 task_set_sleep
    250: 000107d9   182 FUNC    GLOBAL DEFAULT    1 memory_creat_map
    251: 000126c2    28 FUNC    GLOBAL DEFAULT    1 do_handler_nmi
