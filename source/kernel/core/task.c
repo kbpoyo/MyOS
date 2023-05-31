@@ -888,27 +888,28 @@ int sys_execve(char *name, char * const *argv, char * const *env ) {
         if (err < 0)
             goto exec_failed;
 
-        //7.记录并设置新页目录表，并销毁原页目录表的虚拟映射关系
-        task->tss.cr3 = new_page_dir;
-        mmu_set_page_dir(new_page_dir);
-        memory_destroy_uvm(old_page_dir);
+      
 
-        //8.获取系统调用的栈帧,因为每次通过调用门进入内核栈中都只会一帧该结构体的数据，
+        //7.获取系统调用的栈帧,因为每次通过调用门进入内核栈中都只会一帧该结构体的数据，
         //所以用最高地址减去大小即可获得该帧的起始地址
         syscall_frame_t *frame = (syscall_frame_t*)(task_current()->tss.esp0 - sizeof(syscall_frame_t));
         
-        //9.更改进程用户栈的位置，并更改调用门返回后执行的指令地址为程序入口地址
+        //8.更改进程用户栈的位置，并更改调用门返回后执行的指令地址为程序入口地址
         frame->esp = stack_top - 5 * 4;
         frame->eip = entry;
 
-        //10.让进程更清爽的运行，清空通用寄存器的值
+        //9.让进程更清爽的运行，清空通用寄存器的值
         frame->eax = frame->ebx = frame->ecx = frame->edx = 0;
         frame->esi = frame->edi = frame->ebp = 0;
         frame->eflags = EFLAGS_IF | EFLAGS_DEFAULT_1;
 
-        //11.修改当前任务名为被执行任务名
+        //10.修改当前任务名为被执行任务名
         kernel_strncpy(task->name, get_file_name(name), TASK_NAME_SIZE);
-
+        
+        //11.记录并设置新页目录表，并销毁原页目录表的虚拟映射关系
+        task->tss.cr3 = new_page_dir;
+        mmu_set_page_dir(new_page_dir);
+        memory_destroy_uvm(old_page_dir);
     return 0;
 
 exec_failed:

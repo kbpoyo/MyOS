@@ -5079,89 +5079,89 @@ int sys_execve(char *name, char * const *argv, char * const *env ) {
         if (err < 0)
    120ec:	83 7d e0 00          	cmpl   $0x0,-0x20(%ebp)
    120f0:	0f 88 d4 00 00 00    	js     121ca <sys_execve+0x17c>
-            goto exec_failed;
 
-        //7.记录并设置新页目录表，并销毁原页目录表的虚拟映射关系
-        task->tss.cr3 = new_page_dir;
-   120f6:	8b 45 f4             	mov    -0xc(%ebp),%eax
-   120f9:	8b 55 ec             	mov    -0x14(%ebp),%edx
-   120fc:	89 50 6c             	mov    %edx,0x6c(%eax)
-        mmu_set_page_dir(new_page_dir);
-   120ff:	83 ec 0c             	sub    $0xc,%esp
-   12102:	ff 75 ec             	push   -0x14(%ebp)
-   12105:	e8 3e f0 ff ff       	call   11148 <mmu_set_page_dir>
-   1210a:	83 c4 10             	add    $0x10,%esp
-        memory_destroy_uvm(old_page_dir);
-   1210d:	83 ec 0c             	sub    $0xc,%esp
-   12110:	ff 75 f0             	push   -0x10(%ebp)
-   12113:	e8 3d ea ff ff       	call   10b55 <memory_destroy_uvm>
-   12118:	83 c4 10             	add    $0x10,%esp
+      
 
-        //8.获取系统调用的栈帧,因为每次通过调用门进入内核栈中都只会一帧该结构体的数据，
+        //7.获取系统调用的栈帧,因为每次通过调用门进入内核栈中都只会一帧该结构体的数据，
         //所以用最高地址减去大小即可获得该帧的起始地址
         syscall_frame_t *frame = (syscall_frame_t*)(task_current()->tss.esp0 - sizeof(syscall_frame_t));
-   1211b:	e8 2d f6 ff ff       	call   1174d <task_current>
-   12120:	8b 40 54             	mov    0x54(%eax),%eax
-   12123:	83 e8 58             	sub    $0x58,%eax
-   12126:	89 45 d8             	mov    %eax,-0x28(%ebp)
+   120f6:	e8 52 f6 ff ff       	call   1174d <task_current>
+   120fb:	8b 40 54             	mov    0x54(%eax),%eax
+   120fe:	83 e8 58             	sub    $0x58,%eax
+   12101:	89 45 d8             	mov    %eax,-0x28(%ebp)
         
-        //9.更改进程用户栈的位置，并更改调用门返回后执行的指令地址为程序入口地址
+        //8.更改进程用户栈的位置，并更改调用门返回后执行的指令地址为程序入口地址
         frame->esp = stack_top - 5 * 4;
-   12129:	8b 45 e4             	mov    -0x1c(%ebp),%eax
-   1212c:	8d 50 ec             	lea    -0x14(%eax),%edx
-   1212f:	8b 45 d8             	mov    -0x28(%ebp),%eax
-   12132:	89 50 50             	mov    %edx,0x50(%eax)
+   12104:	8b 45 e4             	mov    -0x1c(%ebp),%eax
+   12107:	8d 50 ec             	lea    -0x14(%eax),%edx
+   1210a:	8b 45 d8             	mov    -0x28(%ebp),%eax
+   1210d:	89 50 50             	mov    %edx,0x50(%eax)
         frame->eip = entry;
-   12135:	8b 45 d8             	mov    -0x28(%ebp),%eax
-   12138:	8b 55 e8             	mov    -0x18(%ebp),%edx
-   1213b:	89 50 34             	mov    %edx,0x34(%eax)
+   12110:	8b 45 d8             	mov    -0x28(%ebp),%eax
+   12113:	8b 55 e8             	mov    -0x18(%ebp),%edx
+   12116:	89 50 34             	mov    %edx,0x34(%eax)
 
-        //10.让进程更清爽的运行，清空通用寄存器的值
+        //9.让进程更清爽的运行，清空通用寄存器的值
         frame->eax = frame->ebx = frame->ecx = frame->edx = 0;
-   1213e:	8b 45 d8             	mov    -0x28(%ebp),%eax
-   12141:	c7 40 28 00 00 00 00 	movl   $0x0,0x28(%eax)
-   12148:	8b 45 d8             	mov    -0x28(%ebp),%eax
-   1214b:	8b 50 28             	mov    0x28(%eax),%edx
-   1214e:	8b 45 d8             	mov    -0x28(%ebp),%eax
-   12151:	89 50 2c             	mov    %edx,0x2c(%eax)
-   12154:	8b 45 d8             	mov    -0x28(%ebp),%eax
-   12157:	8b 50 2c             	mov    0x2c(%eax),%edx
-   1215a:	8b 45 d8             	mov    -0x28(%ebp),%eax
-   1215d:	89 50 24             	mov    %edx,0x24(%eax)
-   12160:	8b 45 d8             	mov    -0x28(%ebp),%eax
-   12163:	8b 50 24             	mov    0x24(%eax),%edx
-   12166:	8b 45 d8             	mov    -0x28(%ebp),%eax
-   12169:	89 50 30             	mov    %edx,0x30(%eax)
+   12119:	8b 45 d8             	mov    -0x28(%ebp),%eax
+   1211c:	c7 40 28 00 00 00 00 	movl   $0x0,0x28(%eax)
+   12123:	8b 45 d8             	mov    -0x28(%ebp),%eax
+   12126:	8b 50 28             	mov    0x28(%eax),%edx
+   12129:	8b 45 d8             	mov    -0x28(%ebp),%eax
+   1212c:	89 50 2c             	mov    %edx,0x2c(%eax)
+   1212f:	8b 45 d8             	mov    -0x28(%ebp),%eax
+   12132:	8b 50 2c             	mov    0x2c(%eax),%edx
+   12135:	8b 45 d8             	mov    -0x28(%ebp),%eax
+   12138:	89 50 24             	mov    %edx,0x24(%eax)
+   1213b:	8b 45 d8             	mov    -0x28(%ebp),%eax
+   1213e:	8b 50 24             	mov    0x24(%eax),%edx
+   12141:	8b 45 d8             	mov    -0x28(%ebp),%eax
+   12144:	89 50 30             	mov    %edx,0x30(%eax)
         frame->esi = frame->edi = frame->ebp = 0;
-   1216c:	8b 45 d8             	mov    -0x28(%ebp),%eax
-   1216f:	c7 40 1c 00 00 00 00 	movl   $0x0,0x1c(%eax)
-   12176:	8b 45 d8             	mov    -0x28(%ebp),%eax
-   12179:	8b 50 1c             	mov    0x1c(%eax),%edx
-   1217c:	8b 45 d8             	mov    -0x28(%ebp),%eax
-   1217f:	89 50 14             	mov    %edx,0x14(%eax)
-   12182:	8b 45 d8             	mov    -0x28(%ebp),%eax
-   12185:	8b 50 14             	mov    0x14(%eax),%edx
-   12188:	8b 45 d8             	mov    -0x28(%ebp),%eax
-   1218b:	89 50 18             	mov    %edx,0x18(%eax)
+   12147:	8b 45 d8             	mov    -0x28(%ebp),%eax
+   1214a:	c7 40 1c 00 00 00 00 	movl   $0x0,0x1c(%eax)
+   12151:	8b 45 d8             	mov    -0x28(%ebp),%eax
+   12154:	8b 50 1c             	mov    0x1c(%eax),%edx
+   12157:	8b 45 d8             	mov    -0x28(%ebp),%eax
+   1215a:	89 50 14             	mov    %edx,0x14(%eax)
+   1215d:	8b 45 d8             	mov    -0x28(%ebp),%eax
+   12160:	8b 50 14             	mov    0x14(%eax),%edx
+   12163:	8b 45 d8             	mov    -0x28(%ebp),%eax
+   12166:	89 50 18             	mov    %edx,0x18(%eax)
         frame->eflags = EFLAGS_IF | EFLAGS_DEFAULT_1;
-   1218e:	8b 45 d8             	mov    -0x28(%ebp),%eax
-   12191:	c7 00 02 02 00 00    	movl   $0x202,(%eax)
+   12169:	8b 45 d8             	mov    -0x28(%ebp),%eax
+   1216c:	c7 00 02 02 00 00    	movl   $0x202,(%eax)
 
-        //11.修改当前任务名为被执行任务名
+        //10.修改当前任务名为被执行任务名
         kernel_strncpy(task->name, get_file_name(name), TASK_NAME_SIZE);
-   12197:	83 ec 0c             	sub    $0xc,%esp
-   1219a:	ff 75 08             	push   0x8(%ebp)
-   1219d:	e8 52 21 00 00       	call   142f4 <get_file_name>
-   121a2:	83 c4 10             	add    $0x10,%esp
-   121a5:	8b 55 f4             	mov    -0xc(%ebp),%edx
-   121a8:	83 c2 18             	add    $0x18,%edx
-   121ab:	83 ec 04             	sub    $0x4,%esp
-   121ae:	6a 20                	push   $0x20
-   121b0:	50                   	push   %eax
-   121b1:	52                   	push   %edx
-   121b2:	e8 75 1c 00 00       	call   13e2c <kernel_strncpy>
+   12172:	83 ec 0c             	sub    $0xc,%esp
+   12175:	ff 75 08             	push   0x8(%ebp)
+   12178:	e8 77 21 00 00       	call   142f4 <get_file_name>
+   1217d:	83 c4 10             	add    $0x10,%esp
+   12180:	8b 55 f4             	mov    -0xc(%ebp),%edx
+   12183:	83 c2 18             	add    $0x18,%edx
+   12186:	83 ec 04             	sub    $0x4,%esp
+   12189:	6a 20                	push   $0x20
+   1218b:	50                   	push   %eax
+   1218c:	52                   	push   %edx
+   1218d:	e8 9a 1c 00 00       	call   13e2c <kernel_strncpy>
+   12192:	83 c4 10             	add    $0x10,%esp
+        
+        //11.记录并设置新页目录表，并销毁原页目录表的虚拟映射关系
+        task->tss.cr3 = new_page_dir;
+   12195:	8b 45 f4             	mov    -0xc(%ebp),%eax
+   12198:	8b 55 ec             	mov    -0x14(%ebp),%edx
+   1219b:	89 50 6c             	mov    %edx,0x6c(%eax)
+        mmu_set_page_dir(new_page_dir);
+   1219e:	83 ec 0c             	sub    $0xc,%esp
+   121a1:	ff 75 ec             	push   -0x14(%ebp)
+   121a4:	e8 9f ef ff ff       	call   11148 <mmu_set_page_dir>
+   121a9:	83 c4 10             	add    $0x10,%esp
+        memory_destroy_uvm(old_page_dir);
+   121ac:	83 ec 0c             	sub    $0xc,%esp
+   121af:	ff 75 f0             	push   -0x10(%ebp)
+   121b2:	e8 9e e9 ff ff       	call   10b55 <memory_destroy_uvm>
    121b7:	83 c4 10             	add    $0x10,%esp
-
     return 0;
    121ba:	b8 00 00 00 00       	mov    $0x0,%eax
    121bf:	eb 3a                	jmp    121fb <sys_execve+0x1ad>
