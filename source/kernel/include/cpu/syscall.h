@@ -22,6 +22,12 @@
 #define SYS_fork        2   //fork子进程
 #define SYS_execve      3   //加载外部程序
 #define SYS_yield       4   //进程主动放弃cpu
+//文件相关系统调用
+#define SYS_open        50 
+#define SYS_read        51  
+#define SYS_write       52
+#define SYS_close       53
+#define SYS_lseek       54
 
 #define SYS_printmsg    10   //临时使用的打印函数
 

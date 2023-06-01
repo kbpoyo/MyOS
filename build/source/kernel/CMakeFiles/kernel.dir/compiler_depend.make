@@ -85,7 +85,8 @@ source/kernel/CMakeFiles/kernel.dir/cpu/syscall.c.o: ../source/kernel/cpu/syscal
   ../source/kernel/include/cpu/tss.h \
   ../source/kernel/include/tools/list.h \
   ../source/kernel/include/tools/assert.h \
-  ../source/kernel/include/tools/log.h
+  ../source/kernel/include/tools/log.h \
+  ../source/kernel/include/fs/fs.h
 
 source/kernel/CMakeFiles/kernel.dir/dev/time.c.o: ../source/kernel/dev/time.c \
   /usr/include/stdc-predef.h \

@@ -12,6 +12,7 @@
 #include "cpu/syscall.h"
 #include "core/task.h"
 #include "tools/log.h"
+#include "fs/fs.h"
 
 
 /**
@@ -31,7 +32,11 @@ static const sys_handler_t sys_table[] = {
     [SYS_execve] = (sys_handler_t)sys_execve,
     [SYS_yield] = (sys_handler_t)sys_yield,
     [SYS_printmsg] = (sys_handler_t)sys_print_msg,
-
+    [SYS_open] = (sys_handler_t)sys_open,
+    [SYS_read] = (sys_handler_t)sys_read,
+    [SYS_write] = (sys_handler_t)sys_write,
+    [SYS_close] = (sys_handler_t)sys_close,
+    [SYS_lseek] = (sys_handler_t)sys_lseek,
 };
 
 /**
