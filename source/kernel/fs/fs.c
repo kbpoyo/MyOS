@@ -13,6 +13,8 @@
 #include "tools/klib.h"
 #include "common/cpu_instr.h"
 #include "common/boot_info.h"
+
+
 //定义缓冲区位置，用于暂存从磁盘中读取的文件内容
 #define TEMP_ADDR   (120*1024*1024)
 
@@ -141,4 +143,25 @@ int sys_lseek(int file, int offset, int pos) {
  */
 int sys_close(int file) {
     return 0;
+}
+
+/**
+ * @brief 
+ * 
+ * @param file 
+ * @return int 
+ */
+int sys_isatty(int file) {
+    return -1;
+}
+
+/**
+ * @brief 
+ * 
+ * @param file 
+ * @param st 
+ * @return int 
+ */
+int sys_fstat(int file, struct stat *st) {
+    return -1;
 }

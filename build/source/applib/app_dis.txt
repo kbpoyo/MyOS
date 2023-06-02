@@ -63,36 +63,36 @@ _start:
 			c: R_386_PC32	cstart
 
 cstart.c.o:     file format elf32-i386
-rw-r--r-- 0/0   2328 Jan  1 08:00 1970 cstart.c.o
+rw-r--r-- 0/0   2588 Jan  1 08:00 1970 cstart.c.o
 architecture: i386, flags 0x00000011:
 HAS_RELOC, HAS_SYMS
 start address 0x00000000
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .text         0000001a  00000000  00000000  00000034  2**0
+  0 .text         00000035  00000000  00000000  00000034  2**0
                   CONTENTS, ALLOC, LOAD, RELOC, READONLY, CODE
-  1 .data         00000000  00000000  00000000  0000004e  2**0
+  1 .data         00000000  00000000  00000000  00000069  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  2 .bss          00000000  00000000  00000000  0000004e  2**0
+  2 .bss          00000000  00000000  00000000  00000069  2**0
                   ALLOC
-  3 .debug_info   00000087  00000000  00000000  0000004e  2**0
+  3 .debug_info   000000b5  00000000  00000000  00000069  2**0
                   CONTENTS, RELOC, READONLY, DEBUGGING, OCTETS
-  4 .debug_abbrev 0000007e  00000000  00000000  000000d5  2**0
+  4 .debug_abbrev 000000b2  00000000  00000000  0000011e  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
-  5 .debug_aranges 00000020  00000000  00000000  00000153  2**0
+  5 .debug_aranges 00000020  00000000  00000000  000001d0  2**0
                   CONTENTS, RELOC, READONLY, DEBUGGING, OCTETS
-  6 .debug_line   00000052  00000000  00000000  00000173  2**0
+  6 .debug_line   0000005c  00000000  00000000  000001f0  2**0
                   CONTENTS, RELOC, READONLY, DEBUGGING, OCTETS
-  7 .debug_str    000000ab  00000000  00000000  000001c5  2**0
+  7 .debug_str    000000cb  00000000  00000000  0000024c  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
-  8 .debug_line_str 000000cb  00000000  00000000  00000270  2**0
+  8 .debug_line_str 000000cb  00000000  00000000  00000317  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
-  9 .comment      0000002e  00000000  00000000  0000033b  2**0
+  9 .comment      0000002e  00000000  00000000  000003e2  2**0
                   CONTENTS, READONLY
- 10 .note.GNU-stack 00000000  00000000  00000000  00000369  2**0
+ 10 .note.GNU-stack 00000000  00000000  00000000  00000410  2**0
                   CONTENTS, READONLY
- 11 .debug_frame  00000034  00000000  00000000  0000036c  2**2
+ 11 .debug_frame  00000034  00000000  00000000  00000410  2**2
                   CONTENTS, RELOC, READONLY, DEBUGGING, OCTETS
 SYMBOL TABLE:
 00000000 l    df *ABS*	00000000 cstart.c
@@ -103,7 +103,9 @@ SYMBOL TABLE:
 00000000 l    d  .debug_str	00000000 .debug_str
 00000000 l    d  .debug_line_str	00000000 .debug_line_str
 00000000 l    d  .debug_frame	00000000 .debug_frame
-00000000 g     F .text	0000001a cstart
+00000000 g     F .text	00000035 cstart
+00000000         *UND*	00000000 __bss_start__
+00000000         *UND*	00000000 __bss_end__
 00000000         *UND*	00000000 main
 
 
@@ -119,50 +121,66 @@ Disassembly of section .text:
 void cstart(int argc, char **argv) {
    0:	55                   	push   %ebp
    1:	89 e5                	mov    %esp,%ebp
-   3:	83 ec 08             	sub    $0x8,%esp
+   3:	83 ec 18             	sub    $0x18,%esp
+    //对程序的bss段进行清零操作
+    char *start = __bss_start__;
+   6:	c7 45 f4 00 00 00 00 	movl   $0x0,-0xc(%ebp)
+			9: R_386_32	__bss_start__
+    while (start < __bss_end__) {
+   d:	eb 09                	jmp    18 <cstart+0x18>
+        *(start++);
+   f:	8b 45 f4             	mov    -0xc(%ebp),%eax
+  12:	83 c0 01             	add    $0x1,%eax
+  15:	89 45 f4             	mov    %eax,-0xc(%ebp)
+    while (start < __bss_end__) {
+  18:	81 7d f4 00 00 00 00 	cmpl   $0x0,-0xc(%ebp)
+			1b: R_386_32	__bss_end__
+  1f:	72 ee                	jb     f <cstart+0xf>
+    }
+    
     main(argc, argv);
-   6:	83 ec 08             	sub    $0x8,%esp
-   9:	ff 75 0c             	push   0xc(%ebp)
-   c:	ff 75 08             	push   0x8(%ebp)
-   f:	e8 fc ff ff ff       	call   10 <cstart+0x10>
-			10: R_386_PC32	main
-  14:	83 c4 10             	add    $0x10,%esp
+  21:	83 ec 08             	sub    $0x8,%esp
+  24:	ff 75 0c             	push   0xc(%ebp)
+  27:	ff 75 08             	push   0x8(%ebp)
+  2a:	e8 fc ff ff ff       	call   2b <cstart+0x2b>
+			2b: R_386_PC32	main
+  2f:	83 c4 10             	add    $0x10,%esp
 }
-  17:	90                   	nop
-  18:	c9                   	leave  
-  19:	c3                   	ret    
+  32:	90                   	nop
+  33:	c9                   	leave  
+  34:	c3                   	ret    
 
 lib_syscall.c.o:     file format elf32-i386
-rw-r--r-- 0/0   5832 Jan  1 08:00 1970 lib_syscall.c.o
+rw-r--r-- 0/0   8108 Jan  1 08:00 1970 lib_syscall.c.o
 architecture: i386, flags 0x00000011:
 HAS_RELOC, HAS_SYMS
 start address 0x00000000
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .text         000001eb  00000000  00000000  00000034  2**0
+  0 .text         00000254  00000000  00000000  00000034  2**0
                   CONTENTS, ALLOC, LOAD, RELOC, READONLY, CODE
-  1 .data         00000000  00000000  00000000  0000021f  2**0
+  1 .data         00000000  00000000  00000000  00000288  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  2 .bss          00000000  00000000  00000000  0000021f  2**0
+  2 .bss          00000000  00000000  00000000  00000288  2**0
                   ALLOC
-  3 .debug_info   000003f1  00000000  00000000  0000021f  2**0
+  3 .debug_info   000006c4  00000000  00000000  00000288  2**0
                   CONTENTS, RELOC, READONLY, DEBUGGING, OCTETS
-  4 .debug_abbrev 00000134  00000000  00000000  00000610  2**0
+  4 .debug_abbrev 0000013b  00000000  00000000  0000094c  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
-  5 .debug_aranges 00000020  00000000  00000000  00000744  2**0
+  5 .debug_aranges 00000020  00000000  00000000  00000a87  2**0
                   CONTENTS, RELOC, READONLY, DEBUGGING, OCTETS
-  6 .debug_line   0000014b  00000000  00000000  00000764  2**0
+  6 .debug_line   000001ad  00000000  00000000  00000aa7  2**0
                   CONTENTS, RELOC, READONLY, DEBUGGING, OCTETS
-  7 .debug_str    000001e0  00000000  00000000  000008af  2**0
+  7 .debug_str    0000034d  00000000  00000000  00000c54  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
-  8 .debug_line_str 00000119  00000000  00000000  00000a8f  2**0
+  8 .debug_line_str 0000020b  00000000  00000000  00000fa1  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
-  9 .comment      0000002e  00000000  00000000  00000ba8  2**0
+  9 .comment      0000002e  00000000  00000000  000011ac  2**0
                   CONTENTS, READONLY
- 10 .note.GNU-stack 00000000  00000000  00000000  00000bd6  2**0
+ 10 .note.GNU-stack 00000000  00000000  00000000  000011da  2**0
                   CONTENTS, READONLY
- 11 .debug_frame  000001a0  00000000  00000000  00000bd8  2**2
+ 11 .debug_frame  00000200  00000000  00000000  000011dc  2**2
                   CONTENTS, RELOC, READONLY, DEBUGGING, OCTETS
 SYMBOL TABLE:
 00000000 l    df *ABS*	00000000 lib_syscall.c
@@ -185,6 +203,9 @@ SYMBOL TABLE:
 00000170 g     F .text	0000002d write
 0000019d g     F .text	00000021 close
 000001be g     F .text	0000002d lseek
+000001eb g     F .text	00000021 isatty
+0000020c g     F .text	00000027 fstat
+00000233 g     F .text	00000021 sbrk
 
 
 
@@ -567,5 +588,89 @@ int lseek(int file, int offset, int dir) {
  1e1:	e8 fc ff ff ff       	call   1e2 <lseek+0x24>
 			1e2: R_386_PC32	sys_call
  1e6:	83 c4 04             	add    $0x4,%esp
+}
  1e9:	c9                   	leave  
  1ea:	c3                   	ret    
+
+000001eb <isatty>:
+ * @brief 
+ * 
+ * @param file 
+ * @return int 
+ */
+int isatty(int file) {
+ 1eb:	55                   	push   %ebp
+ 1ec:	89 e5                	mov    %esp,%ebp
+ 1ee:	83 ec 20             	sub    $0x20,%esp
+    syscall_args_t args;
+    args.id = SYS_isatty;
+ 1f1:	c7 45 ec 37 00 00 00 	movl   $0x37,-0x14(%ebp)
+    args.arg0 = file;
+ 1f8:	8b 45 08             	mov    0x8(%ebp),%eax
+ 1fb:	89 45 f0             	mov    %eax,-0x10(%ebp)
+
+    return sys_call(&args);
+ 1fe:	8d 45 ec             	lea    -0x14(%ebp),%eax
+ 201:	50                   	push   %eax
+ 202:	e8 fc ff ff ff       	call   203 <isatty+0x18>
+			203: R_386_PC32	sys_call
+ 207:	83 c4 04             	add    $0x4,%esp
+}
+ 20a:	c9                   	leave  
+ 20b:	c3                   	ret    
+
+0000020c <fstat>:
+ * 
+ * @param file 
+ * @param st 
+ * @return int 
+ */
+int fstat(int file, struct stat *st) {
+ 20c:	55                   	push   %ebp
+ 20d:	89 e5                	mov    %esp,%ebp
+ 20f:	83 ec 20             	sub    $0x20,%esp
+    syscall_args_t args;
+    args.id = SYS_fstat;
+ 212:	c7 45 ec 38 00 00 00 	movl   $0x38,-0x14(%ebp)
+    args.arg0 = file;
+ 219:	8b 45 08             	mov    0x8(%ebp),%eax
+ 21c:	89 45 f0             	mov    %eax,-0x10(%ebp)
+    args.arg1 = (int)st;
+ 21f:	8b 45 0c             	mov    0xc(%ebp),%eax
+ 222:	89 45 f4             	mov    %eax,-0xc(%ebp)
+
+    return sys_call(&args);
+ 225:	8d 45 ec             	lea    -0x14(%ebp),%eax
+ 228:	50                   	push   %eax
+ 229:	e8 fc ff ff ff       	call   22a <fstat+0x1e>
+			22a: R_386_PC32	sys_call
+ 22e:	83 c4 04             	add    $0x4,%esp
+}
+ 231:	c9                   	leave  
+ 232:	c3                   	ret    
+
+00000233 <sbrk>:
+ * @brief 
+ * 
+ * @param incr 
+ * @return void* 
+ */
+char *sbrk(ptrdiff_t incr) {
+ 233:	55                   	push   %ebp
+ 234:	89 e5                	mov    %esp,%ebp
+ 236:	83 ec 20             	sub    $0x20,%esp
+    syscall_args_t args;
+    args.id = SYS_sbrk;
+ 239:	c7 45 ec 39 00 00 00 	movl   $0x39,-0x14(%ebp)
+    args.arg0 = (int)incr;
+ 240:	8b 45 08             	mov    0x8(%ebp),%eax
+ 243:	89 45 f0             	mov    %eax,-0x10(%ebp)
+
+    return sys_call(&args);
+ 246:	8d 45 ec             	lea    -0x14(%ebp),%eax
+ 249:	50                   	push   %eax
+ 24a:	e8 fc ff ff ff       	call   24b <sbrk+0x18>
+			24b: R_386_PC32	sys_call
+ 24f:	83 c4 04             	add    $0x4,%esp
+ 252:	c9                   	leave  
+ 253:	c3                   	ret    

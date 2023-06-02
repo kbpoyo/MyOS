@@ -10,6 +10,7 @@
  */
 
 #include "cpu/syscall.h"
+#include "core/memory.h"
 #include "core/task.h"
 #include "tools/log.h"
 #include "fs/fs.h"
@@ -37,6 +38,9 @@ static const sys_handler_t sys_table[] = {
     [SYS_write] = (sys_handler_t)sys_write,
     [SYS_close] = (sys_handler_t)sys_close,
     [SYS_lseek] = (sys_handler_t)sys_lseek,
+    [SYS_isatty] = (sys_handler_t)sys_isatty,
+    [SYS_fstat] = (sys_handler_t)sys_fstat,
+    [SYS_sbrk] = (sys_handler_t)sys_sbrk,
 };
 
 /**

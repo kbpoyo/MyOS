@@ -39,6 +39,8 @@ int fork (void);
 int execve(const char *name, char * const * argv, char * const * env);
 int yield (void);
 
+
+//提供给newlib库的系统调用
 //文件操作相关系统调用
 int open(const char *name, int flags, ...);
 int read(int file, char *ptr, int len);
@@ -46,8 +48,7 @@ int write(int file, char *ptr, int len);
 int close(int file);
 int lseek(int file, int offset, int dir);
 
-//提供给newlib库的系统调用
 int isatty(int file);
 int fstat(int file, struct stat *st);
-void *sbrk(ptrdiff_t incr);
+char *sbrk(ptrdiff_t incr);
 #endif

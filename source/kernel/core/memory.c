@@ -671,3 +671,13 @@ int memory_copy_uvm_data(uint32_t to_vaddr, uint32_t to_page_dir, uint32_t from_
   return 0;
 
 }
+
+/**
+ * @brief 拓展堆区内存
+ * 
+ * @param incr 
+ * @return char* 
+ */
+char *sys_sbrk(int incr) {
+  return (char*)0;
+}

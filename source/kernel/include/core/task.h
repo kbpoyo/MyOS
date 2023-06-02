@@ -42,6 +42,8 @@ typedef struct _task_t {
   state_t state;            //任务状态
   struct _task_t *parent;   //父进程控制块的地址
   int pid;                  //进程id
+  uint32_t heap_start;      //进程堆空间的起始地址
+  uint32_t heap_end;        //进程堆空间的结束地址
   int slice_max;            //任务所能拥有的最大时间分片数
   int slice_curr;           //任务当前的所拥有的时间分片数
   int sleep;                //当前任务延时的时间片数

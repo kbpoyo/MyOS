@@ -81,10 +81,15 @@ source/kernel/CMakeFiles/kernel.dir/cpu/syscall.c.o: ../source/kernel/cpu/syscal
   /usr/include/stdc-predef.h \
   ../source/kernel/include/cpu/syscall.h \
   ../source/common/types.h \
-  ../source/kernel/include/core/task.h \
-  ../source/kernel/include/cpu/tss.h \
+  ../source/kernel/include/core/memory.h \
+  ../source/kernel/include/tools/bitmap.h \
+  ../source/kernel/include/ipc/mutex.h \
   ../source/kernel/include/tools/list.h \
   ../source/kernel/include/tools/assert.h \
+  ../source/kernel/include/core/task.h \
+  ../source/kernel/include/cpu/tss.h \
+  ../source/common/boot_info.h \
+  ../source/common/types.h \
   ../source/kernel/include/tools/log.h \
   ../source/kernel/include/fs/fs.h
 

@@ -28,6 +28,10 @@
 #define SYS_write       52
 #define SYS_close       53
 #define SYS_lseek       54
+#define SYS_isatty      55
+#define SYS_fstat       56
+//内存分配系统调用
+#define SYS_sbrk        57
 
 #define SYS_printmsg    10   //临时使用的打印函数
 

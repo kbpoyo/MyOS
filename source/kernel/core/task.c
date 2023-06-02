@@ -177,6 +177,7 @@ int task_init(task_t *task, const char* name, uint32_t entry, uint32_t esp, uint
     task->sleep = 0;
     task->pid = (uint32_t)task;
     task->parent = (task_t*)0;
+    task->heap_start = task->heap_end = 0;
    
 
     return 1;
@@ -302,8 +303,8 @@ void task_first_init(void) {
     void first_task_entry(void);
 
     //2.确定第一个任务进程需要的空间大小
-    extern char s_first_task, e_first_task;
-    uint32_t copy_size = (uint32_t)(&e_first_task - &s_first_task);   //进程所需空间大小
+    extern char s_first_task[], e_first_task[];
+    uint32_t copy_size = (uint32_t)(e_first_task - s_first_task);   //进程所需空间大小
     uint32_t alloc_size = up2(copy_size, MEM_PAGE_SIZE) + 10 * MEM_PAGE_SIZE;   //需要为进程分配的内存大小，按4kb对齐,并多拿五页当作栈空间
     ASSERT(copy_size < alloc_size);
 
@@ -312,26 +313,30 @@ void task_first_init(void) {
     //3.初始化第一个任务,因为当前为操作系统进程，esp初始值随意赋值都可，
     // 因为当前进程已开启，cpu会在切换的时候保留真实的状态，即真实的esp值
     task_init(&task_manager.first_task, "first task", task_start_addr, task_start_addr + alloc_size, TASK_FLAGS_USER);
-      
-    //4.将当前任务的TSS选择子告诉cpu，用来切换任务时保存状态
+    
+    //4.初始化进程的起始堆空间 TODO:不对，此处堆区还在低2gb的内核空间中
+    task_manager.first_task.heap_start = (uint32_t)e_first_task;    //堆起始地址紧靠程序bss段之后
+    task_manager.first_task.heap_end = (uint32_t)e_first_task;      //堆大小初始为0
+
+    //5.将当前任务的TSS选择子告诉cpu，用来切换任务时保存状态
     write_tr(task_manager.first_task.tss_selector);
 
-    //5.将当前任务执行第一个任务
+    //6.将当前任务执行第一个任务
     task_manager.curr_task = &task_manager.first_task;
 
-    //6.将当前页表设置为第一个任务的页表
+    //7.将当前页表设置为第一个任务的页表
     mmu_set_page_dir(task_manager.first_task.tss.cr3);
 
-    //7.将当前任务状态设置为运行态
+    //8.将当前任务状态设置为运行态
     task_manager.curr_task->state = TASK_RUNNING;
 
-    //8.进程的各个段还只是在虚拟地址中，所以要为各个段分配物理地址页空间，并进行映射
+    //9.进程的各个段还只是在虚拟地址中，所以要为各个段分配物理地址页空间，并进行映射
     memory_alloc_page_for(task_start_addr, alloc_size, PTE_P | PTE_W | PTE_U);
 
-    //9.将任务进程各个段从内核四个段之后的紧邻位置，拷贝到已分配好的且与虚拟地址对应的物理地址空间，实现代码隔离
-    kernel_memcpy(first_task_entry, &s_first_task, alloc_size);
+    //10.将任务进程各个段从内核四个段之后的紧邻位置，拷贝到已分配好的且与虚拟地址对应的物理地址空间，实现代码隔离
+    kernel_memcpy(first_task_entry, s_first_task, alloc_size);
 
-    //10.将任务设为可被调度
+    //11.将任务设为可被调度
     task_start(&task_manager.first_task);
 }
 
@@ -792,6 +797,10 @@ static uint32_t load_elf_file(task_t *task, const char * name, uint32_t page_dir
             log_printf("load program failed");
             goto load_failed;
         }
+
+        //更新堆空间的位置，紧靠最后一个可加载段
+        task->heap_start = elf_phdr.p_vaddr + elf_phdr.p_memsz;
+        task->heap_end = task->heap_start;
     }
 
     //成功解析并加载完整个elf文件后关闭文件，并返回程序入口地址

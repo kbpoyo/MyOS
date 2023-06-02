@@ -10,6 +10,7 @@
  */
 
 int main(int argc, char **argv);
+extern char __bss_start__[], __bss_end__[];
 
 /**
  * @brief 执行调用main之前的初始化工作
@@ -18,5 +19,11 @@ int main(int argc, char **argv);
  * @param argv
  */
 void cstart(int argc, char **argv) {
+    //对程序的bss段进行清零操作
+    char *start = __bss_start__;
+    while (start < __bss_end__) {
+        *(start++);
+    }
+    
     main(argc, argv);
 }

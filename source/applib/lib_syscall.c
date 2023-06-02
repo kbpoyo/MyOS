@@ -210,3 +210,46 @@ int lseek(int file, int offset, int dir) {
 
     return sys_call(&args);
 }
+
+/**
+ * @brief 
+ * 
+ * @param file 
+ * @return int 
+ */
+int isatty(int file) {
+    syscall_args_t args;
+    args.id = SYS_isatty;
+    args.arg0 = file;
+
+    return sys_call(&args);
+}
+/**
+ * @brief 
+ * 
+ * @param file 
+ * @param st 
+ * @return int 
+ */
+int fstat(int file, struct stat *st) {
+    syscall_args_t args;
+    args.id = SYS_fstat;
+    args.arg0 = file;
+    args.arg1 = (int)st;
+
+    return sys_call(&args);
+}
+
+/**
+ * @brief 
+ * 
+ * @param incr 
+ * @return void* 
+ */
+char *sbrk(ptrdiff_t incr) {
+    syscall_args_t args;
+    args.id = SYS_sbrk;
+    args.arg0 = (int)incr;
+
+    return sys_call(&args);
+}

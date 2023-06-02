@@ -64,4 +64,6 @@ int memory_alloc_page_for(uint32_t vaddr, uint32_t alloc_size, uint32_t priority
 uint32_t memory_alloc_page();
 void memory_free_page(uint32_t addr);
 int memory_copy_uvm_data(uint32_t to_vaddr, uint32_t to_page_dir, uint32_t from_vaddr, uint32_t size); 
+
+char *sys_sbrk(int incr);
 #endif
