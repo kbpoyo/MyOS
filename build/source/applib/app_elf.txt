@@ -106,7 +106,7 @@ ELF Header:
   Version:                           0x1
   Entry point address:               0x0
   Start of program headers:          0 (bytes into file)
-  Start of section headers:          1484 (bytes into file)
+  Start of section headers:          1488 (bytes into file)
   Flags:                             0x0
   Size of this header:               52 (bytes)
   Size of program headers:           0 (bytes)
@@ -119,25 +119,25 @@ Section Headers:
   [Nr] Name              Type            Addr     Off    Size   ES Flg Lk Inf Al
   [ 0]                   NULL            00000000 000000 000000 00      0   0  0
   [ 1] .text             PROGBITS        00000000 000034 00001a 00  AX  0   0  1
-  [ 2] .rel.text         REL             00000000 000464 000008 08   I 18   1  4
+  [ 2] .rel.text         REL             00000000 000468 000008 08   I 18   1  4
   [ 3] .data             PROGBITS        00000000 00004e 000000 00  WA  0   0  1
   [ 4] .bss              NOBITS          00000000 00004e 000000 00  WA  0   0  1
   [ 5] .debug_info       PROGBITS        00000000 00004e 000087 00      0   0  1
-  [ 6] .rel.debug_info   REL             00000000 00046c 000060 08   I 18   5  4
+  [ 6] .rel.debug_info   REL             00000000 000470 000060 08   I 18   5  4
   [ 7] .debug_abbrev     PROGBITS        00000000 0000d5 00007e 00      0   0  1
   [ 8] .debug_aranges    PROGBITS        00000000 000153 000020 00      0   0  1
-  [ 9] .rel.debug_a[...] REL             00000000 0004cc 000010 08   I 18   8  4
+  [ 9] .rel.debug_a[...] REL             00000000 0004d0 000010 08   I 18   8  4
   [10] .debug_line       PROGBITS        00000000 000173 000052 00      0   0  1
-  [11] .rel.debug_line   REL             00000000 0004dc 000028 08   I 18  10  4
+  [11] .rel.debug_line   REL             00000000 0004e0 000028 08   I 18  10  4
   [12] .debug_str        PROGBITS        00000000 0001c5 0000ab 01  MS  0   0  1
   [13] .debug_line_str   PROGBITS        00000000 000270 0000cb 01  MS  0   0  1
-  [14] .comment          PROGBITS        00000000 00033b 00002c 01  MS  0   0  1
-  [15] .note.GNU-stack   PROGBITS        00000000 000367 000000 00      0   0  1
-  [16] .debug_frame      PROGBITS        00000000 000368 000034 00      0   0  4
-  [17] .rel.debug_frame  REL             00000000 000504 000010 08   I 18  16  4
-  [18] .symtab           SYMTAB          00000000 00039c 0000b0 10     19   9  4
-  [19] .strtab           STRTAB          00000000 00044c 000016 00      0   0  1
-  [20] .shstrtab         STRTAB          00000000 000514 0000b6 00      0   0  1
+  [14] .comment          PROGBITS        00000000 00033b 00002e 01  MS  0   0  1
+  [15] .note.GNU-stack   PROGBITS        00000000 000369 000000 00      0   0  1
+  [16] .debug_frame      PROGBITS        00000000 00036c 000034 00      0   0  4
+  [17] .rel.debug_frame  REL             00000000 000508 000010 08   I 18  16  4
+  [18] .symtab           SYMTAB          00000000 0003a0 0000b0 10     19   9  4
+  [19] .strtab           STRTAB          00000000 000450 000016 00      0   0  1
+  [20] .shstrtab         STRTAB          00000000 000518 0000b6 00      0   0  1
 Key to Flags:
   W (write), A (alloc), X (execute), M (merge), S (strings), I (info),
   L (link order), O (extra OS processing required), G (group), T (TLS),
@@ -150,11 +150,11 @@ There are no program headers in this file.
 
 There is no dynamic section in this file.
 
-Relocation section '.rel.text' at offset 0x464 contains 1 entry:
+Relocation section '.rel.text' at offset 0x468 contains 1 entry:
  Offset     Info    Type            Sym.Value  Sym. Name
 00000010  00000a02 R_386_PC32        00000000   main
 
-Relocation section '.rel.debug_info' at offset 0x46c contains 12 entries:
+Relocation section '.rel.debug_info' at offset 0x470 contains 12 entries:
  Offset     Info    Type            Sym.Value  Sym. Name
 00000008  00000401 R_386_32          00000000   .debug_abbrev
 0000000d  00000601 R_386_32          00000000   .debug_str
@@ -169,12 +169,12 @@ Relocation section '.rel.debug_info' at offset 0x46c contains 12 entries:
 0000006c  00000601 R_386_32          00000000   .debug_str
 00000079  00000601 R_386_32          00000000   .debug_str
 
-Relocation section '.rel.debug_aranges' at offset 0x4cc contains 2 entries:
+Relocation section '.rel.debug_aranges' at offset 0x4d0 contains 2 entries:
  Offset     Info    Type            Sym.Value  Sym. Name
 00000006  00000301 R_386_32          00000000   .debug_info
 00000010  00000201 R_386_32          00000000   .text
 
-Relocation section '.rel.debug_line' at offset 0x4dc contains 5 entries:
+Relocation section '.rel.debug_line' at offset 0x4e0 contains 5 entries:
  Offset     Info    Type            Sym.Value  Sym. Name
 00000022  00000701 R_386_32          00000000   .debug_line_str
 00000026  00000701 R_386_32          00000000   .debug_line_str
@@ -182,7 +182,7 @@ Relocation section '.rel.debug_line' at offset 0x4dc contains 5 entries:
 00000035  00000701 R_386_32          00000000   .debug_line_str
 0000003f  00000201 R_386_32          00000000   .text
 
-Relocation section '.rel.debug_frame' at offset 0x504 contains 2 entries:
+Relocation section '.rel.debug_frame' at offset 0x508 contains 2 entries:
  Offset     Info    Type            Sym.Value  Sym. Name
 00000018  00000801 R_386_32          00000000   .debug_frame
 0000001c  00000201 R_386_32          00000000   .text
@@ -201,5 +201,220 @@ Symbol table '.symtab' contains 11 entries:
      8: 00000000     0 SECTION LOCAL  DEFAULT   16 .debug_frame
      9: 00000000    26 FUNC    GLOBAL DEFAULT    1 cstart
     10: 00000000     0 NOTYPE  GLOBAL DEFAULT  UND main
+
+No version information found in this file.
+
+File: /home/kbpoyo/code/cpp/MyOs/build/source/applib/libapp.a(lib_syscall.c.o)
+ELF Header:
+  Magic:   7f 45 4c 46 01 01 01 00 00 00 00 00 00 00 00 00 
+  Class:                             ELF32
+  Data:                              2's complement, little endian
+  Version:                           1 (current)
+  OS/ABI:                            UNIX - System V
+  ABI Version:                       0
+  Type:                              REL (Relocatable file)
+  Machine:                           Intel 80386
+  Version:                           0x1
+  Entry point address:               0x0
+  Start of program headers:          0 (bytes into file)
+  Start of section headers:          4992 (bytes into file)
+  Flags:                             0x0
+  Size of this header:               52 (bytes)
+  Size of program headers:           0 (bytes)
+  Number of program headers:         0
+  Size of section headers:           40 (bytes)
+  Number of section headers:         21
+  Section header string table index: 20
+
+Section Headers:
+  [Nr] Name              Type            Addr     Off    Size   ES Flg Lk Inf Al
+  [ 0]                   NULL            00000000 000000 000000 00      0   0  0
+  [ 1] .text             PROGBITS        00000000 000034 0001eb 00  AX  0   0  1
+  [ 2] .rel.text         REL             00000000 000f28 000058 08   I 18   1  4
+  [ 3] .data             PROGBITS        00000000 00021f 000000 00  WA  0   0  1
+  [ 4] .bss              NOBITS          00000000 00021f 000000 00  WA  0   0  1
+  [ 5] .debug_info       PROGBITS        00000000 00021f 0003f1 00      0   0  1
+  [ 6] .rel.debug_info   REL             00000000 000f80 000238 08   I 18   5  4
+  [ 7] .debug_abbrev     PROGBITS        00000000 000610 000134 00      0   0  1
+  [ 8] .debug_aranges    PROGBITS        00000000 000744 000020 00      0   0  1
+  [ 9] .rel.debug_a[...] REL             00000000 0011b8 000010 08   I 18   8  4
+  [10] .debug_line       PROGBITS        00000000 000764 00014b 00      0   0  1
+  [11] .rel.debug_line   REL             00000000 0011c8 000040 08   I 18  10  4
+  [12] .debug_str        PROGBITS        00000000 0008af 0001e0 01  MS  0   0  1
+  [13] .debug_line_str   PROGBITS        00000000 000a8f 000119 01  MS  0   0  1
+  [14] .comment          PROGBITS        00000000 000ba8 00002e 01  MS  0   0  1
+  [15] .note.GNU-stack   PROGBITS        00000000 000bd6 000000 00      0   0  1
+  [16] .debug_frame      PROGBITS        00000000 000bd8 0001a0 00      0   0  4
+  [17] .rel.debug_frame  REL             00000000 001208 0000c0 08   I 18  16  4
+  [18] .symtab           SYMTAB          00000000 000d78 000150 10     19   9  4
+  [19] .strtab           STRTAB          00000000 000ec8 00005e 00      0   0  1
+  [20] .shstrtab         STRTAB          00000000 0012c8 0000b6 00      0   0  1
+Key to Flags:
+  W (write), A (alloc), X (execute), M (merge), S (strings), I (info),
+  L (link order), O (extra OS processing required), G (group), T (TLS),
+  C (compressed), x (unknown), o (OS specific), E (exclude),
+  D (mbind), p (processor specific)
+
+There are no section groups in this file.
+
+There are no program headers in this file.
+
+There is no dynamic section in this file.
+
+Relocation section '.rel.text' at offset 0xf28 contains 11 entries:
+ Offset     Info    Type            Sym.Value  Sym. Name
+0000006a  00000902 R_386_PC32        00000000   sys_call
+00000088  00000902 R_386_PC32        00000000   sys_call
+000000af  00000902 R_386_PC32        00000000   sys_call
+000000cb  00000902 R_386_PC32        00000000   sys_call
+000000f8  00000902 R_386_PC32        00000000   sys_call
+00000113  00000902 R_386_PC32        00000000   sys_call
+0000013a  00000902 R_386_PC32        00000000   sys_call
+00000167  00000902 R_386_PC32        00000000   sys_call
+00000194  00000902 R_386_PC32        00000000   sys_call
+000001b5  00000902 R_386_PC32        00000000   sys_call
+000001e2  00000902 R_386_PC32        00000000   sys_call
+
+Relocation section '.rel.debug_info' at offset 0xf80 contains 71 entries:
+ Offset     Info    Type            Sym.Value  Sym. Name
+00000008  00000401 R_386_32          00000000   .debug_abbrev
+0000000d  00000601 R_386_32          00000000   .debug_str
+00000012  00000701 R_386_32          00000000   .debug_line_str
+00000016  00000701 R_386_32          00000000   .debug_line_str
+0000001a  00000201 R_386_32          00000000   .text
+00000022  00000501 R_386_32          00000000   .debug_line
+00000029  00000601 R_386_32          00000000   .debug_str
+00000030  00000601 R_386_32          00000000   .debug_str
+00000035  00000601 R_386_32          00000000   .debug_str
+00000043  00000601 R_386_32          00000000   .debug_str
+00000051  00000601 R_386_32          00000000   .debug_str
+00000058  00000601 R_386_32          00000000   .debug_str
+0000005f  00000601 R_386_32          00000000   .debug_str
+00000066  00000601 R_386_32          00000000   .debug_str
+0000006d  00000601 R_386_32          00000000   .debug_str
+00000074  00000601 R_386_32          00000000   .debug_str
+0000007b  00000601 R_386_32          00000000   .debug_str
+00000082  00000601 R_386_32          00000000   .debug_str
+00000089  00000601 R_386_32          00000000   .debug_str
+000000a2  00000601 R_386_32          00000000   .debug_str
+000000bb  00000601 R_386_32          00000000   .debug_str
+000000c6  00000601 R_386_32          00000000   .debug_str
+000000d1  00000601 R_386_32          00000000   .debug_str
+000000dc  00000601 R_386_32          00000000   .debug_str
+000000e8  00000601 R_386_32          00000000   .debug_str
+000000f4  00000601 R_386_32          00000000   .debug_str
+000000fd  00000201 R_386_32          00000000   .text
+0000010c  00000601 R_386_32          00000000   .debug_str
+0000011a  00000601 R_386_32          00000000   .debug_str
+00000136  00000601 R_386_32          00000000   .debug_str
+00000145  00000601 R_386_32          00000000   .debug_str
+0000014e  00000201 R_386_32          00000000   .text
+0000015d  00000601 R_386_32          00000000   .debug_str
+0000016b  00000601 R_386_32          00000000   .debug_str
+0000017a  00000601 R_386_32          00000000   .debug_str
+00000183  00000201 R_386_32          00000000   .text
+00000192  00000601 R_386_32          00000000   .debug_str
+000001bc  00000601 R_386_32          00000000   .debug_str
+000001cb  00000601 R_386_32          00000000   .debug_str
+000001d4  00000201 R_386_32          00000000   .text
+000001e3  00000601 R_386_32          00000000   .debug_str
+0000020d  00000601 R_386_32          00000000   .debug_str
+0000021c  00000601 R_386_32          00000000   .debug_str
+00000225  00000201 R_386_32          00000000   .text
+00000234  00000601 R_386_32          00000000   .debug_str
+00000242  00000601 R_386_32          00000000   .debug_str
+00000251  00000601 R_386_32          00000000   .debug_str
+00000260  00000601 R_386_32          00000000   .debug_str
+00000269  00000201 R_386_32          00000000   .text
+00000278  00000601 R_386_32          00000000   .debug_str
+00000287  00000601 R_386_32          00000000   .debug_str
+00000290  00000201 R_386_32          00000000   .text
+0000029f  00000601 R_386_32          00000000   .debug_str
+000002ad  00000601 R_386_32          00000000   .debug_str
+000002c9  00000601 R_386_32          00000000   .debug_str
+000002dd  00000601 R_386_32          00000000   .debug_str
+000002e6  00000201 R_386_32          00000000   .text
+000002f5  00000601 R_386_32          00000000   .debug_str
+00000304  00000601 R_386_32          00000000   .debug_str
+00000309  00000201 R_386_32          00000000   .text
+00000334  00000601 R_386_32          00000000   .debug_str
+00000343  00000601 R_386_32          00000000   .debug_str
+0000034c  00000201 R_386_32          00000000   .text
+0000035b  00000601 R_386_32          00000000   .debug_str
+0000036a  00000601 R_386_32          00000000   .debug_str
+0000036f  00000201 R_386_32          00000000   .text
+0000038b  00000601 R_386_32          00000000   .debug_str
+0000039a  00000601 R_386_32          00000000   .debug_str
+000003a5  00000201 R_386_32          00000000   .text
+000003b4  00000601 R_386_32          00000000   .debug_str
+000003c2  00000601 R_386_32          00000000   .debug_str
+
+Relocation section '.rel.debug_aranges' at offset 0x11b8 contains 2 entries:
+ Offset     Info    Type            Sym.Value  Sym. Name
+00000006  00000301 R_386_32          00000000   .debug_info
+00000010  00000201 R_386_32          00000000   .text
+
+Relocation section '.rel.debug_line' at offset 0x11c8 contains 8 entries:
+ Offset     Info    Type            Sym.Value  Sym. Name
+00000022  00000701 R_386_32          00000000   .debug_line_str
+00000026  00000701 R_386_32          00000000   .debug_line_str
+0000002a  00000701 R_386_32          00000000   .debug_line_str
+00000034  00000701 R_386_32          00000000   .debug_line_str
+00000039  00000701 R_386_32          00000000   .debug_line_str
+0000003e  00000701 R_386_32          00000000   .debug_line_str
+00000043  00000701 R_386_32          00000000   .debug_line_str
+0000004d  00000201 R_386_32          00000000   .text
+
+Relocation section '.rel.debug_frame' at offset 0x1208 contains 24 entries:
+ Offset     Info    Type            Sym.Value  Sym. Name
+00000018  00000801 R_386_32          00000000   .debug_frame
+0000001c  00000201 R_386_32          00000000   .text
+00000044  00000801 R_386_32          00000000   .debug_frame
+00000048  00000201 R_386_32          00000000   .text
+00000064  00000801 R_386_32          00000000   .debug_frame
+00000068  00000201 R_386_32          00000000   .text
+00000084  00000801 R_386_32          00000000   .debug_frame
+00000088  00000201 R_386_32          00000000   .text
+000000a4  00000801 R_386_32          00000000   .debug_frame
+000000a8  00000201 R_386_32          00000000   .text
+000000c4  00000801 R_386_32          00000000   .debug_frame
+000000c8  00000201 R_386_32          00000000   .text
+000000e4  00000801 R_386_32          00000000   .debug_frame
+000000e8  00000201 R_386_32          00000000   .text
+00000104  00000801 R_386_32          00000000   .debug_frame
+00000108  00000201 R_386_32          00000000   .text
+00000124  00000801 R_386_32          00000000   .debug_frame
+00000128  00000201 R_386_32          00000000   .text
+00000144  00000801 R_386_32          00000000   .debug_frame
+00000148  00000201 R_386_32          00000000   .text
+00000164  00000801 R_386_32          00000000   .debug_frame
+00000168  00000201 R_386_32          00000000   .text
+00000184  00000801 R_386_32          00000000   .debug_frame
+00000188  00000201 R_386_32          00000000   .text
+No processor specific unwind information to decode
+
+Symbol table '.symtab' contains 21 entries:
+   Num:    Value  Size Type    Bind   Vis      Ndx Name
+     0: 00000000     0 NOTYPE  LOCAL  DEFAULT  UND 
+     1: 00000000     0 FILE    LOCAL  DEFAULT  ABS lib_syscall.c
+     2: 00000000     0 SECTION LOCAL  DEFAULT    1 .text
+     3: 00000000     0 SECTION LOCAL  DEFAULT    5 .debug_info
+     4: 00000000     0 SECTION LOCAL  DEFAULT    7 .debug_abbrev
+     5: 00000000     0 SECTION LOCAL  DEFAULT   10 .debug_line
+     6: 00000000     0 SECTION LOCAL  DEFAULT   12 .debug_str
+     7: 00000000     0 SECTION LOCAL  DEFAULT   13 .debug_line_str
+     8: 00000000     0 SECTION LOCAL  DEFAULT   16 .debug_frame
+     9: 00000000    76 FUNC    GLOBAL DEFAULT    1 sys_call
+    10: 0000004c    42 FUNC    GLOBAL DEFAULT    1 msleep
+    11: 00000076    27 FUNC    GLOBAL DEFAULT    1 getpid
+    12: 00000091    40 FUNC    GLOBAL DEFAULT    1 print_msg
+    13: 000000b9    27 FUNC    GLOBAL DEFAULT    1 fork
+    14: 000000d4    45 FUNC    GLOBAL DEFAULT    1 execve
+    15: 00000101    27 FUNC    GLOBAL DEFAULT    1 yield
+    16: 0000011c    39 FUNC    GLOBAL DEFAULT    1 open
+    17: 00000143    45 FUNC    GLOBAL DEFAULT    1 read
+    18: 00000170    45 FUNC    GLOBAL DEFAULT    1 write
+    19: 0000019d    33 FUNC    GLOBAL DEFAULT    1 close
+    20: 000001be    45 FUNC    GLOBAL DEFAULT    1 lseek
 
 No version information found in this file.

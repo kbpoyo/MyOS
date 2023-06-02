@@ -12,9 +12,10 @@
 #ifndef LIB_SYSCALL_H
 #define LIB_SYSCALL_H
 
-#include    "common/types.h"
-#include    "cpu/syscall.h"
-#include    "os_cfg.h"
+#include "common/types.h"
+#include "cpu/syscall.h"
+#include "os_cfg.h"
+#include <sys/stat.h>  
 
 /**
  * @brief 系统调用的参数结构体
@@ -29,15 +30,24 @@ typedef struct _syscall_args_t {
     int arg3;
 }syscall_args_t;
 
-
-void msleep(int ms);
 void print_msg(const char *fmt, int arg);
+
+//进程相关系统调用
+int getpid(void);
+void msleep(int ms);
 int fork (void);
 int execve(const char *name, char * const * argv, char * const * env);
 int yield (void);
+
+//文件操作相关系统调用
 int open(const char *name, int flags, ...);
 int read(int file, char *ptr, int len);
 int write(int file, char *ptr, int len);
 int close(int file);
 int lseek(int file, int offset, int dir);
+
+//提供给newlib库的系统调用
+int isatty(int file);
+int fstat(int file, struct stat *st);
+void *sbrk(ptrdiff_t incr);
 #endif

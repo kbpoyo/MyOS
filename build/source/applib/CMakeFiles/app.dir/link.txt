@@ -1,2 +1,2 @@
-/usr/bin/ar qc libapp.a CMakeFiles/app.dir/crt0.S.o CMakeFiles/app.dir/cstart.c.o
+/usr/bin/ar qc libapp.a CMakeFiles/app.dir/crt0.S.o CMakeFiles/app.dir/cstart.c.o CMakeFiles/app.dir/lib_syscall.c.o
 /usr/bin/ranlib libapp.a

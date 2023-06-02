@@ -2,7 +2,8 @@ project(kernel LANGUAGES C)
 
 # 使用自定义的链接器,将内核加载到内存中0x100000处，即1M处
 # set(CMAKE_EXE_LINKER_FLAGS "-m elf_i386 -Ttext=0x100000")
-set(CMAKE_EXE_LINKER_FLAGS "-m elf_i386 -T ${PROJECT_SOURCE_DIR}/kernel.lds") #用脚本文件的方式加载
+set(LIBS_FLAGS "-L ${CMAKE_BINARY_DIR}/source/applib -lapp")
+set(CMAKE_EXE_LINKER_FLAGS "-m elf_i386 -T ${PROJECT_SOURCE_DIR}/kernel.lds ${LIBS_FLAGS}") #用脚本文件的方式加载
 set(CMAKE_C_LINK_EXECUTABLE "${LINKER_TOOL} <OBJECTS> ${CMAKE_EXE_LINKER_FLAGS} -o ${PROJECT_BINARY_DIR}/${PROJECT_NAME}.elf")
 
 # 将所有的汇编、C文件加入工程

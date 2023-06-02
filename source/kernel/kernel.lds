@@ -21,12 +21,12 @@ SECTIONS {/*SECTIONS必须大写*/
      .text : {   /*冒号前必须有空格 */
         /*格式为： 文件名(段名) ，*为通配符，方便查找到文件 */
         /* *() 为通配符，表示所有文件，*(.text)表示将所有编译好的目标文件的.text段放在一起组成一个大段*/
-        *(EXCLUDE_FILE(*first_task*) .text)    
+        *(EXCLUDE_FILE(*first_task* *lib_syscall*) .text)    
         /* EXCLUDE_FILE(文件名) 表示排除该文件*/
     }
 
     .rodata : {
-        *(EXCLUDE_FILE(*first_task*) .rodata)
+        *(EXCLUDE_FILE(*first_task* *lib_syscall*) .rodata)
     }
     /* 记录只读段的结束地址 */
     /* 段结束地址为真正结束位置的下一个字节 */
@@ -40,11 +40,11 @@ SECTIONS {/*SECTIONS必须大写*/
     /*直接将.data vaddr表示将.data的虚拟地址设为vaddr, AT(paddr)表示将.data段的物理地址设为paddr*/
     /* .data 0x20000: AT(0){     */
     .data : {    
-        *(EXCLUDE_FILE(*first_task*) .data)
+        *(EXCLUDE_FILE(*first_task* *lib_syscall*) .data) /*将first_task与lib_syscall的各个段排除*/
     }
 
     .bss : {
-        *(EXCLUDE_FILE(*first_task*) .bss)
+        *(EXCLUDE_FILE(*first_task* *lib_syscall*) .bss)
     }
 
     /*记录紧邻内核四个段的末尾地址的下一个4kb对齐的可用地址*/
@@ -56,8 +56,10 @@ SECTIONS {/*SECTIONS必须大写*/
     /*将进程的各个结放到一个大段 .first_task中*/
     .first_task 0x80000000 : AT(e_data) {
         /*格式为： 文件名(段名) ，*为通配符，方便查找到文件 */
+        /*将以下待重定向文件的各个段放在0x80000000开始的地址空间中*/
         *first_task_entry*(.text .rodata .data .bss)
         *first_task*(.text .rodata .data .bss)
+        *lib_syscall*(.text .rodata .data .bss)
     }
     /*LOADADDR(段名)：获取该段所在的物理地址paddr*/
     PROVIDE(s_first_task = LOADADDR(.first_task));

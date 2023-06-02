@@ -20,7 +20,9 @@
         "os_cfg.h": "c",
         "syscall.h": "c",
         "fs.h": "c",
-        "boot.h": "c"
+        "boot.h": "c",
+        "stdio.h": "c",
+        "stat.h": "c"
     },
     "todo-tree.tree.scanMode": "workspace only",
     "editor.fontSize": 16,

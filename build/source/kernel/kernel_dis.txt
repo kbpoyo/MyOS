@@ -7,11 +7,11 @@ start address 0x00010000
 
 Program Header:
     LOAD off    0x00001000 vaddr 0x00010000 paddr 0x00010000 align 2**12
-         filesz 0x000058b0 memsz 0x000058b0 flags r-x
+         filesz 0x00005960 memsz 0x00005960 flags r-x
     LOAD off    0x00007000 vaddr 0x00016000 paddr 0x00016000 align 2**12
          filesz 0x00000044 memsz 0x00024a20 flags rw-
     LOAD off    0x00008000 vaddr 0x80000000 paddr 0x0003b000 align 2**12
-         filesz 0x000001ab memsz 0x000001ab flags rwx
+         filesz 0x000002c8 memsz 0x000002c8 flags rwx
    STACK off    0x00000000 vaddr 0x00000000 paddr 0x00000000 align 2**4
          filesz 0x00000000 memsz 0x00000000 flags rwx
 
@@ -19,31 +19,31 @@ Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
   0 .text         000048a5  00010000  00010000  00001000  2**0
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  1 .rodata       00000ff0  000148c0  000148c0  000058c0  2**5
+  1 .rodata       000010a0  000148c0  000148c0  000058c0  2**5
                   CONTENTS, ALLOC, LOAD, READONLY, DATA
   2 .data         00000044  00016000  00016000  00007000  2**5
                   CONTENTS, ALLOC, LOAD, DATA
   3 .bss          00023a20  00017000  00017000  00007044  2**12
                   ALLOC
-  4 .first_task   000001ab  80000000  0003b000  00008000  2**0
+  4 .first_task   000002c8  80000000  0003b000  00008000  2**0
                   CONTENTS, ALLOC, LOAD, CODE
-  5 .debug_line   0000276b  00000000  00000000  000081ab  2**0
+  5 .debug_line   00002847  00000000  00000000  000082c8  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
-  6 .debug_line_str 0000081c  00000000  00000000  0000a916  2**0
+  6 .debug_line_str 00000882  00000000  00000000  0000ab0f  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
-  7 .debug_info   00006d93  00000000  00000000  0000b132  2**0
+  7 .debug_info   0000715f  00000000  00000000  0000b391  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
-  8 .debug_abbrev 00001eac  00000000  00000000  00011ec5  2**0
+  8 .debug_abbrev 00001f6c  00000000  00000000  000124f0  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
-  9 .debug_aranges 00000280  00000000  00000000  00013d78  2**3
+  9 .debug_aranges 000002a0  00000000  00000000  00014460  2**3
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 10 .debug_str    00001622  00000000  00000000  00013ff8  2**0
+ 10 .debug_str    0000166e  00000000  00000000  00014700  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 11 .debug_rnglists 0000004e  00000000  00000000  0001561a  2**0
+ 11 .debug_rnglists 0000004e  00000000  00000000  00015d6e  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 12 .comment      00000058  00000000  00000000  00015668  2**0
+ 12 .comment      0000002d  00000000  00000000  00015dbc  2**0
                   CONTENTS, READONLY
- 13 .debug_frame  00001990  00000000  00000000  000156c0  2**2
+ 13 .debug_frame  00001a84  00000000  00000000  00015dec  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
 SYMBOL TABLE:
 00000000 l    df *ABS*	00000000 start.S.o
@@ -135,7 +135,7 @@ SYMBOL TABLE:
 00012a46 l     F .text	00000093 init_pic
 00000000 l    df *ABS*	00000000 mmu.c
 00000000 l    df *ABS*	00000000 syscall.c
-00015280 l     O .rodata	0000002c sys_table
+00015280 l     O .rodata	000000dc sys_table
 00000000 l    df *ABS*	00000000 time.c
 00012edb l     F .text	00000021 outb
 00038a00 l     O .bss	00000004 sys_tick
@@ -147,63 +147,60 @@ SYMBOL TABLE:
 00038a04 l     O .bss	00000004 temp_pos
 00012ffb l     F .text	0000013d read_disk
 00000000 l    df *ABS*	00000000 init.c
-0001536c l     O .rodata	0000000c __func__.1
-00015378 l     O .rodata	00000013 __func__.0
+0001541c l     O .rodata	0000000c __func__.1
+00015428 l     O .rodata	00000013 __func__.0
 00000000 l    df *ABS*	00000000 mutex.c
 000132d8 l     F .text	00000047 list_init
-00015438 l     O .rodata	0000000a __func__.1
+000154e8 l     O .rodata	0000000a __func__.1
 0001331f l     F .text	00000035 list_is_empty
-00015444 l     O .rodata	0000000e __func__.0
-0001542c l     O .rodata	0000000b __func__.2
+000154f4 l     O .rodata	0000000e __func__.0
+000154dc l     O .rodata	0000000b __func__.2
 00000000 l    df *ABS*	00000000 sem.c
 000134ea l     F .text	00000047 list_init
-000154f8 l     O .rodata	0000000a __func__.1
+000155a8 l     O .rodata	0000000a __func__.1
 00013531 l     F .text	00000035 list_is_empty
-00015504 l     O .rodata	0000000e __func__.0
-000154ec l     O .rodata	00000009 __func__.2
+000155b4 l     O .rodata	0000000e __func__.0
+0001559c l     O .rodata	00000009 __func__.2
 00000000 l    df *ABS*	00000000 test.c
 000136ba l     F .text	00000047 list_init
-00015618 l     O .rodata	0000000a __func__.3
+000156c8 l     O .rodata	0000000a __func__.3
 00013701 l     F .text	0000002d list_get_size
-00015624 l     O .rodata	0000000e __func__.2
+000156d4 l     O .rodata	0000000e __func__.2
 0001372e l     F .text	0000002c list_get_first
-00015644 l     O .rodata	0000000f __func__.0
+000156f4 l     O .rodata	0000000f __func__.0
 0001375a l     F .text	0000002d list_get_last
-00015634 l     O .rodata	0000000e __func__.1
+000156e4 l     O .rodata	0000000e __func__.1
 00000000 l    df *ABS*	00000000 assert.c
 00013a62 l     F .text	00000007 hlt
 00000000 l    df *ABS*	00000000 bitmap.c
-00015714 l     O .rodata	0000000c __func__.3
-00015720 l     O .rodata	0000000f __func__.2
-00015730 l     O .rodata	0000000f __func__.1
-00015740 l     O .rodata	00000013 __func__.0
+000157c4 l     O .rodata	0000000c __func__.3
+000157d0 l     O .rodata	0000000f __func__.2
+000157e0 l     O .rodata	0000000f __func__.1
+000157f0 l     O .rodata	00000013 __func__.0
 00000000 l    df *ABS*	00000000 klib.c
 00016040 l     O .data	00000004 num_to_char.0
 00000000 l    df *ABS*	00000000 list.c
 0001433a l     F .text	00000035 list_is_empty
-00015848 l     O .rodata	0000000e __func__.5
+000158f8 l     O .rodata	0000000e __func__.5
 0001436f l     F .text	0000002d list_get_size
-00015880 l     O .rodata	0000000e __func__.2
-00015834 l     O .rodata	00000012 __func__.6
-00015858 l     O .rodata	00000011 __func__.4
-0001586c l     O .rodata	00000012 __func__.3
-00015890 l     O .rodata	00000011 __func__.1
-000158a4 l     O .rodata	0000000c __func__.0
+00015930 l     O .rodata	0000000e __func__.2
+000158e4 l     O .rodata	00000012 __func__.6
+00015908 l     O .rodata	00000011 __func__.4
+0001591c l     O .rodata	00000012 __func__.3
+00015940 l     O .rodata	00000011 __func__.1
+00015954 l     O .rodata	0000000c __func__.0
 00000000 l    df *ABS*	00000000 log.c
 000146e5 l     F .text	0000001d inb
 00014702 l     F .text	00000021 outb
 00038a08 l     O .bss	00000014 mutex
 00000000 l    df *ABS*	00000000 first_task.c
-80000010 l     F .first_task	0000004c sys_call
-8000005c l     F .first_task	0000001b getpid
-80000077 l     F .first_task	00000028 print_msg
-8000009f l     F .first_task	0000001b fork
-800000ba l     F .first_task	0000002d execve
+00000000 l    df *ABS*	00000000 lib_syscall.c
 00013b49 g     F .text	00000078 bitmap_get_bit
 00013f1c g     F .text	0000004f kernel_memcpy
 000131da g     F .text	0000000a sys_close
 00012c8e g     F .text	00000098 idt_enable
 0001174d g     F .text	0000000a task_current
+800001de g     F .first_task	0000001b yield
 00014427 g     F .text	0000008f list_insert_last
 00011bf4 g     F .text	00000061 sys_yield
 000127a2 g     F .text	0000001c do_handler_segment_not_present
@@ -224,8 +221,10 @@ SYMBOL TABLE:
 00013de5 g     F .text	00000047 kernel_strcpy
 00012dba g     F .text	0000000b idt_disable_global
 00016000 g       .data	00000000 s_data
-800000e7 g     F .first_task	0000008b first_main
+80000010 g     F .first_task	00000094 first_main
 00012a03 g     F .text	00000043 idt_install
+800001b1 g     F .first_task	0000002d execve
+80000153 g     F .first_task	0000001b getpid
 0001002a g       .text	00000000 exception_handler_unknown
 0001009e g       .text	00000000 exception_handler_breakpoint
 000126fa g     F .text	0000001c do_handler_overflow
@@ -252,6 +251,7 @@ SYMBOL TABLE:
 000129cb g     F .text	0000001c do_handler_virtual_exception
 000100bb g       .text	00000000 exception_handler_overflow
 00010298 g       .text	00000000 simple_switch
+8000029b g     F .first_task	0000002d lseek
 0001027b g       .text	00000000 exception_handler_time
 000126a6 g     F .text	0000001c do_handler_debug
 00038a20 g     O .bss	00002000 stack
@@ -272,15 +272,17 @@ SYMBOL TABLE:
 0001295b g     F .text	0000001c do_handler_fpu_error
 0001158d g     F .text	000000f2 task_first_init
 00012993 g     F .text	0000001c do_handler_machine_check
+8000024d g     F .first_task	0000002d write
 00013138 g     F .text	00000039 sys_open
 0001439c g     F .text	0000008b list_insert_first
 00011926 g     F .text	0000004b task_set_wakeup
 0001171f g     F .text	0000002e task_ready_first
 00010047 g       .text	00000000 exception_handler_divider
+800000dd g     F .first_task	0000004c sys_call
 00010943 g     F .text	00000085 memory_creat_uvm
 00013e2c g     F .text	00000051 kernel_strncpy
 000131b0 g     F .text	00000006 sys_write
-0003b1ab g       *ABS*	00000000 mem_free_start
+0003b2c8 g       *ABS*	00000000 mem_free_start
 000131e4 g     F .text	00000053 kernel_init
 00013566 g     F .text	00000043 sem_init
 00010000 g       .text	00000000 _start
@@ -289,14 +291,16 @@ SYMBOL TABLE:
 00010112 g       .text	00000000 exception_handler_device_unavailable
 000100f5 g       .text	00000000 exception_handler_invalid_opcode
 0003b000 g       .first_task	00000000 e_data
+80000220 g     F .first_task	0000002d read
 000133a1 g     F .text	00000091 mutex_lock
 00010209 g       .text	00000000 exception_handler_machine_check
 00012786 g     F .text	0000001c do_handler_invalid_tss
 00012d26 g     F .text	00000094 idt_disable
-0003b1ab g       *ABS*	00000000 e_first_task
+0003b2c8 g       *ABS*	00000000 e_first_task
 000118ca g     F .text	0000005c task_set_sleep
 000107d9 g     F .text	000000b6 memory_creat_map
 000126c2 g     F .text	0000001c do_handler_nmi
+80000196 g     F .first_task	0000001b fork
 00013354 g     F .text	0000004d mutex_init
 00010226 g       .text	00000000 exception_handler_smd_exception
 00010b55 g     F .text	000000e7 memory_destroy_uvm
@@ -316,6 +320,7 @@ SYMBOL TABLE:
 00011178 g     F .text	0000001b task_switch_from_to
 00013432 g     F .text	000000b8 mutex_unlock
 00011757 g     F .text	00000068 task_switch
+8000016e g     F .first_task	00000028 print_msg
 00013ee7 g     F .text	00000035 kernel_strlen
 000116d4 g     F .text	0000004b task_set_unready
 00010064 g       .text	00000000 exception_handler_debug
@@ -323,7 +328,7 @@ SYMBOL TABLE:
 00012716 g     F .text	0000001c do_handler_bound_range
 000102ad g       .text	00000000 exception_handler_syscall
 000144b6 g     F .text	000000b1 list_remove_first
-000158b0 g       .rodata	00000000 e_text
+00015960 g       .rodata	00000000 e_text
 00013e7d g     F .text	0000006a kernel_strncmp
 00013ab5 g     F .text	00000094 bitmap_init
 00010165 g       .text	00000000 exception_handler_segment_not_present
@@ -338,13 +343,16 @@ SYMBOL TABLE:
 000126de g     F .text	0000001c do_handler_breakpoint
 000147ab g     F .text	000000fa log_printf
 00011349 g     F .text	000000dd task_init
+800001f9 g     F .first_task	00000027 open
 00014030 g     F .text	00000024 kernel_sprintf
 00011a6c g     F .text	0000000d sys_getpid
 000123de g     F .text	00000075 gdt_alloc_desc
 000141f1 g     F .text	000000d6 kernel_itoa
 0001461c g     F .text	000000c9 list_remove
 000121fd g     F .text	00000047 gate_desc_set
+80000129 g     F .first_task	0000002a msleep
 00012e21 g     F .text	00000011 idt_leave_protection
+8000027a g     F .first_task	00000021 close
 00010729 g     F .text	000000b0 find_pte
 00012efc g     F .text	00000028 do_handler_time
 00012f86 g     F .text	00000018 time_init
@@ -2306,7 +2314,7 @@ void memory_init(boot_info_t *boot_info) {
 
     log_printf("mem_free_start: 0x%x", &mem_free_start);
    10c52:	83 ec 08             	sub    $0x8,%esp
-   10c55:	68 ab b1 03 00       	push   $0x3b1ab
+   10c55:	68 c8 b2 03 00       	push   $0x3b2c8
    10c5a:	68 4f 49 01 00       	push   $0x1494f
    10c5f:	e8 47 3b 00 00       	call   147ab <log_printf>
    10c64:	83 c4 10             	add    $0x10,%esp
@@ -2345,7 +2353,7 @@ void memory_init(boot_info_t *boot_info) {
 
     //mem_free_start被分配的地址在链接文件中定义，紧邻着first_task段
     uint8_t *mem_free = (uint8_t*)&mem_free_start;
-   10cb9:	c7 45 f0 ab b1 03 00 	movl   $0x3b1ab,-0x10(%ebp)
+   10cb9:	c7 45 f0 c8 b2 03 00 	movl   $0x3b2c8,-0x10(%ebp)
 
     //用paddr_alloc，内存页分配对象管理1mb以上的所有空闲空间，页大小为MEM_PAGE_SIZE=4kb
     addr_alloc_init(&paddr_alloc, mem_free, MEM_EXT_START, mem_up1MB_free, MEM_PAGE_SIZE);
@@ -3582,7 +3590,7 @@ void task_first_init(void) {
     //2.确定第一个任务进程需要的空间大小
     extern char s_first_task, e_first_task;
     uint32_t copy_size = (uint32_t)(&e_first_task - &s_first_task);   //进程所需空间大小
-   11593:	b8 ab b1 03 00       	mov    $0x3b1ab,%eax
+   11593:	b8 c8 b2 03 00       	mov    $0x3b2c8,%eax
    11598:	2d 00 b0 03 00       	sub    $0x3b000,%eax
    1159d:	89 45 f4             	mov    %eax,-0xc(%ebp)
     uint32_t alloc_size = up2(copy_size, MEM_PAGE_SIZE) + 10 * MEM_PAGE_SIZE;   //需要为进程分配的内存大小，按4kb对齐,并多拿五页当作栈空间
@@ -6933,7 +6941,7 @@ void do_handler_syscall(syscall_frame_t* frame) {
     if (frame->function_id < sizeof(sys_table) / sizeof(sys_table[0])) {    //当前系统调用存在
    12e53:	8b 45 08             	mov    0x8(%ebp),%eax
    12e56:	8b 40 3c             	mov    0x3c(%eax),%eax
-   12e59:	83 f8 0a             	cmp    $0xa,%eax
+   12e59:	83 f8 36             	cmp    $0x36,%eax
    12e5c:	77 48                	ja     12ea6 <do_handler_syscall+0x5a>
         sys_handler_t handler = sys_table[frame->function_id];
    12e5e:	8b 45 08             	mov    0x8(%ebp),%eax
@@ -6986,7 +6994,7 @@ void do_handler_syscall(syscall_frame_t* frame) {
    12eba:	83 ec 04             	sub    $0x4,%esp
    12ebd:	50                   	push   %eax
    12ebe:	52                   	push   %edx
-   12ebf:	68 ac 52 01 00       	push   $0x152ac
+   12ebf:	68 5c 53 01 00       	push   $0x1535c
    12ec4:	e8 e2 18 00 00       	call   147ab <log_printf>
    12ec9:	83 c4 10             	add    $0x10,%esp
     frame->eax = -1;
@@ -7461,10 +7469,10 @@ void kernel_init(boot_info_t* boot_info) {
    131ed:	8b 40 50             	mov    0x50(%eax),%eax
    131f0:	85 c0                	test   %eax,%eax
    131f2:	75 19                	jne    1320d <kernel_init+0x29>
-   131f4:	68 d0 52 01 00       	push   $0x152d0
-   131f9:	68 6c 53 01 00       	push   $0x1536c
+   131f4:	68 80 53 01 00       	push   $0x15380
+   131f9:	68 1c 54 01 00       	push   $0x1541c
    131fe:	6a 22                	push   $0x22
-   13200:	68 f4 52 01 00       	push   $0x152f4
+   13200:	68 a4 53 01 00       	push   $0x153a4
    13205:	e8 5f 08 00 00       	call   13a69 <pannic>
    1320a:	83 c4 10             	add    $0x10,%esp
     
@@ -7520,10 +7528,10 @@ void move_to_first_task(void) {
     ASSERT(curr != 0);
    13247:	83 7d f4 00          	cmpl   $0x0,-0xc(%ebp)
    1324b:	75 19                	jne    13266 <move_to_first_task+0x2f>
-   1324d:	68 29 53 01 00       	push   $0x15329
-   13252:	68 78 53 01 00       	push   $0x15378
+   1324d:	68 d9 53 01 00       	push   $0x153d9
+   13252:	68 28 54 01 00       	push   $0x15428
    13257:	6a 42                	push   $0x42
-   13259:	68 f4 52 01 00       	push   $0x152f4
+   13259:	68 a4 53 01 00       	push   $0x153a4
    1325e:	e8 06 08 00 00       	call   13a69 <pannic>
    13263:	83 c4 10             	add    $0x10,%esp
 
@@ -7576,14 +7584,14 @@ void init_main(void) {
     
     log_printf("Kernel is running......");
    132a1:	83 ec 0c             	sub    $0xc,%esp
-   132a4:	68 33 53 01 00       	push   $0x15333
+   132a4:	68 e3 53 01 00       	push   $0x153e3
    132a9:	e8 fd 14 00 00       	call   147ab <log_printf>
    132ae:	83 c4 10             	add    $0x10,%esp
     log_printf("Name: %s, Version: %s", "KbOS", OS_VERSION);
    132b1:	83 ec 04             	sub    $0x4,%esp
-   132b4:	68 4b 53 01 00       	push   $0x1534b
-   132b9:	68 51 53 01 00       	push   $0x15351
-   132be:	68 56 53 01 00       	push   $0x15356
+   132b4:	68 fb 53 01 00       	push   $0x153fb
+   132b9:	68 01 54 01 00       	push   $0x15401
+   132be:	68 06 54 01 00       	push   $0x15406
    132c3:	e8 e3 14 00 00       	call   147ab <log_printf>
    132c8:	83 c4 10             	add    $0x10,%esp
 
@@ -7607,10 +7615,10 @@ static inline void list_init(list_t *list) {
     ASSERT(list != (list_t*)0);
    132de:	83 7d 08 00          	cmpl   $0x0,0x8(%ebp)
    132e2:	75 19                	jne    132fd <list_init+0x25>
-   132e4:	68 8c 53 01 00       	push   $0x1538c
-   132e9:	68 38 54 01 00       	push   $0x15438
+   132e4:	68 3c 54 01 00       	push   $0x1543c
+   132e9:	68 e8 54 01 00       	push   $0x154e8
    132ee:	6a 31                	push   $0x31
-   132f0:	68 a0 53 01 00       	push   $0x153a0
+   132f0:	68 50 54 01 00       	push   $0x15450
    132f5:	e8 6f 07 00 00       	call   13a69 <pannic>
    132fa:	83 c4 10             	add    $0x10,%esp
     list->first = list->last = (list_node_t*)0;
@@ -7636,10 +7644,10 @@ static inline int list_is_empty(list_t *list) {
     ASSERT(list != (list_t*)0);
    13325:	83 7d 08 00          	cmpl   $0x0,0x8(%ebp)
    13329:	75 19                	jne    13344 <list_is_empty+0x25>
-   1332b:	68 8c 53 01 00       	push   $0x1538c
-   13330:	68 44 54 01 00       	push   $0x15444
+   1332b:	68 3c 54 01 00       	push   $0x1543c
+   13330:	68 f4 54 01 00       	push   $0x154f4
    13335:	6a 38                	push   $0x38
-   13337:	68 a0 53 01 00       	push   $0x153a0
+   13337:	68 50 54 01 00       	push   $0x15450
    1333c:	e8 28 07 00 00       	call   13a69 <pannic>
    13341:	83 c4 10             	add    $0x10,%esp
     return list->size == 0;
@@ -7665,10 +7673,10 @@ void mutex_init(mutex_t *mutex) {
   ASSERT(mutex != (mutex_t *)0);
    1335a:	83 7d 08 00          	cmpl   $0x0,0x8(%ebp)
    1335e:	75 19                	jne    13379 <mutex_init+0x25>
-   13360:	68 de 53 01 00       	push   $0x153de
-   13365:	68 2c 54 01 00       	push   $0x1542c
+   13360:	68 8e 54 01 00       	push   $0x1548e
+   13365:	68 dc 54 01 00       	push   $0x154dc
    1336a:	6a 15                	push   $0x15
-   1336c:	68 f4 53 01 00       	push   $0x153f4
+   1336c:	68 a4 54 01 00       	push   $0x154a4
    13371:	e8 f3 06 00 00       	call   13a69 <pannic>
    13376:	83 c4 10             	add    $0x10,%esp
 
@@ -7872,10 +7880,10 @@ static inline void list_init(list_t *list) {
     ASSERT(list != (list_t*)0);
    134f0:	83 7d 08 00          	cmpl   $0x0,0x8(%ebp)
    134f4:	75 19                	jne    1350f <list_init+0x25>
-   134f6:	68 54 54 01 00       	push   $0x15454
-   134fb:	68 f8 54 01 00       	push   $0x154f8
+   134f6:	68 04 55 01 00       	push   $0x15504
+   134fb:	68 a8 55 01 00       	push   $0x155a8
    13500:	6a 31                	push   $0x31
-   13502:	68 68 54 01 00       	push   $0x15468
+   13502:	68 18 55 01 00       	push   $0x15518
    13507:	e8 5d 05 00 00       	call   13a69 <pannic>
    1350c:	83 c4 10             	add    $0x10,%esp
     list->first = list->last = (list_node_t*)0;
@@ -7901,10 +7909,10 @@ static inline int list_is_empty(list_t *list) {
     ASSERT(list != (list_t*)0);
    13537:	83 7d 08 00          	cmpl   $0x0,0x8(%ebp)
    1353b:	75 19                	jne    13556 <list_is_empty+0x25>
-   1353d:	68 54 54 01 00       	push   $0x15454
-   13542:	68 04 55 01 00       	push   $0x15504
+   1353d:	68 04 55 01 00       	push   $0x15504
+   13542:	68 b4 55 01 00       	push   $0x155b4
    13547:	6a 38                	push   $0x38
-   13549:	68 68 54 01 00       	push   $0x15468
+   13549:	68 18 55 01 00       	push   $0x15518
    1354e:	e8 16 05 00 00       	call   13a69 <pannic>
    13553:	83 c4 10             	add    $0x10,%esp
     return list->size == 0;
@@ -7930,10 +7938,10 @@ void sem_init(sem_t *sem, int init_count) {
     ASSERT(sem != (sem_t*)0);
    1356c:	83 7d 08 00          	cmpl   $0x0,0x8(%ebp)
    13570:	75 19                	jne    1358b <sem_init+0x25>
-   13572:	68 a6 54 01 00       	push   $0x154a6
-   13577:	68 ec 54 01 00       	push   $0x154ec
+   13572:	68 56 55 01 00       	push   $0x15556
+   13577:	68 9c 55 01 00       	push   $0x1559c
    1357c:	6a 18                	push   $0x18
-   1357e:	68 b8 54 01 00       	push   $0x154b8
+   1357e:	68 68 55 01 00       	push   $0x15568
    13583:	e8 e1 04 00 00       	call   13a69 <pannic>
    13588:	83 c4 10             	add    $0x10,%esp
     sem->count = 0;
@@ -8112,10 +8120,10 @@ static inline void list_init(list_t *list) {
     ASSERT(list != (list_t*)0);
    136c0:	83 7d 08 00          	cmpl   $0x0,0x8(%ebp)
    136c4:	75 19                	jne    136df <list_init+0x25>
-   136c6:	68 14 55 01 00       	push   $0x15514
-   136cb:	68 18 56 01 00       	push   $0x15618
+   136c6:	68 c4 55 01 00       	push   $0x155c4
+   136cb:	68 c8 56 01 00       	push   $0x156c8
    136d0:	6a 31                	push   $0x31
-   136d2:	68 28 55 01 00       	push   $0x15528
+   136d2:	68 d8 55 01 00       	push   $0x155d8
    136d7:	e8 8d 03 00 00       	call   13a69 <pannic>
    136dc:	83 c4 10             	add    $0x10,%esp
     list->first = list->last = (list_node_t*)0;
@@ -8141,10 +8149,10 @@ static inline int list_get_size(list_t *list) {
     ASSERT(list != (list_t*)0);
    13707:	83 7d 08 00          	cmpl   $0x0,0x8(%ebp)
    1370b:	75 19                	jne    13726 <list_get_size+0x25>
-   1370d:	68 14 55 01 00       	push   $0x15514
-   13712:	68 24 56 01 00       	push   $0x15624
+   1370d:	68 c4 55 01 00       	push   $0x155c4
+   13712:	68 d4 56 01 00       	push   $0x156d4
    13717:	6a 3e                	push   $0x3e
-   13719:	68 28 55 01 00       	push   $0x15528
+   13719:	68 d8 55 01 00       	push   $0x155d8
    1371e:	e8 46 03 00 00       	call   13a69 <pannic>
    13723:	83 c4 10             	add    $0x10,%esp
     return list->size;
@@ -8162,10 +8170,10 @@ static inline list_node_t *list_get_first(list_t *list) {
     ASSERT(list != (list_t*)0);
    13734:	83 7d 08 00          	cmpl   $0x0,0x8(%ebp)
    13738:	75 19                	jne    13753 <list_get_first+0x25>
-   1373a:	68 14 55 01 00       	push   $0x15514
-   1373f:	68 44 56 01 00       	push   $0x15644
+   1373a:	68 c4 55 01 00       	push   $0x155c4
+   1373f:	68 f4 56 01 00       	push   $0x156f4
    13744:	6a 44                	push   $0x44
-   13746:	68 28 55 01 00       	push   $0x15528
+   13746:	68 d8 55 01 00       	push   $0x155d8
    1374b:	e8 19 03 00 00       	call   13a69 <pannic>
    13750:	83 c4 10             	add    $0x10,%esp
     return list->first;
@@ -8184,10 +8192,10 @@ static inline list_node_t *list_get_last(list_t *list) {
     ASSERT(list != (list_t*)0);
    13760:	83 7d 08 00          	cmpl   $0x0,0x8(%ebp)
    13764:	75 19                	jne    1377f <list_get_last+0x25>
-   13766:	68 14 55 01 00       	push   $0x15514
-   1376b:	68 34 56 01 00       	push   $0x15634
+   13766:	68 c4 55 01 00       	push   $0x155c4
+   1376b:	68 e4 56 01 00       	push   $0x156e4
    13770:	6a 4a                	push   $0x4a
-   13772:	68 28 55 01 00       	push   $0x15528
+   13772:	68 d8 55 01 00       	push   $0x155d8
    13777:	e8 ed 02 00 00       	call   13a69 <pannic>
    1377c:	83 c4 10             	add    $0x10,%esp
 
@@ -8240,7 +8248,7 @@ void list_test(void) {
    137cf:	56                   	push   %esi
    137d0:	53                   	push   %ebx
    137d1:	50                   	push   %eax
-   137d2:	68 68 55 01 00       	push   $0x15568
+   137d2:	68 18 56 01 00       	push   $0x15618
    137d7:	e8 cf 0f 00 00       	call   147ab <log_printf>
    137dc:	83 c4 10             	add    $0x10,%esp
     list_get_first(&list), list_get_last(&list), list_get_size(&list));
@@ -8261,7 +8269,7 @@ void list_test(void) {
    137fd:	83 ec 04             	sub    $0x4,%esp
    13800:	50                   	push   %eax
    13801:	ff 75 f4             	push   -0xc(%ebp)
-   13804:	68 90 55 01 00       	push   $0x15590
+   13804:	68 40 56 01 00       	push   $0x15640
    13809:	e8 9d 0f 00 00       	call   147ab <log_printf>
    1380e:	83 c4 10             	add    $0x10,%esp
         list_insert_first(&list, node);
@@ -8298,7 +8306,7 @@ void list_test(void) {
    1385e:	56                   	push   %esi
    1385f:	53                   	push   %ebx
    13860:	50                   	push   %eax
-   13861:	68 68 55 01 00       	push   $0x15568
+   13861:	68 18 56 01 00       	push   $0x15618
    13866:	e8 40 0f 00 00       	call   147ab <log_printf>
    1386b:	83 c4 10             	add    $0x10,%esp
     list_get_first(&list), list_get_last(&list), list_get_size(&list));
@@ -8320,7 +8328,7 @@ void list_test(void) {
    1388c:	83 ec 04             	sub    $0x4,%esp
    1388f:	50                   	push   %eax
    13890:	ff 75 f0             	push   -0x10(%ebp)
-   13893:	68 af 55 01 00       	push   $0x155af
+   13893:	68 5f 56 01 00       	push   $0x1565f
    13898:	e8 0e 0f 00 00       	call   147ab <log_printf>
    1389d:	83 c4 10             	add    $0x10,%esp
     for (int i = 0; i < 5; ++i) {
@@ -8350,7 +8358,7 @@ void list_test(void) {
    138db:	56                   	push   %esi
    138dc:	53                   	push   %ebx
    138dd:	50                   	push   %eax
-   138de:	68 68 55 01 00       	push   $0x15568
+   138de:	68 18 56 01 00       	push   $0x15618
    138e3:	e8 c3 0e 00 00       	call   147ab <log_printf>
    138e8:	83 c4 10             	add    $0x10,%esp
     list_get_first(&list), list_get_last(&list), list_get_size(&list));
@@ -8372,7 +8380,7 @@ void list_test(void) {
    13909:	83 ec 04             	sub    $0x4,%esp
    1390c:	50                   	push   %eax
    1390d:	ff 75 ec             	push   -0x14(%ebp)
-   13910:	68 c6 55 01 00       	push   $0x155c6
+   13910:	68 76 56 01 00       	push   $0x15676
    13915:	e8 91 0e 00 00       	call   147ab <log_printf>
    1391a:	83 c4 10             	add    $0x10,%esp
         list_insert_last(&list, node);
@@ -8409,7 +8417,7 @@ void list_test(void) {
    1396a:	56                   	push   %esi
    1396b:	53                   	push   %ebx
    1396c:	50                   	push   %eax
-   1396d:	68 68 55 01 00       	push   $0x15568
+   1396d:	68 18 56 01 00       	push   $0x15618
    13972:	e8 34 0e 00 00       	call   147ab <log_printf>
    13977:	83 c4 10             	add    $0x10,%esp
     list_get_first(&list), list_get_last(&list), list_get_size(&list));
@@ -8430,7 +8438,7 @@ void list_test(void) {
    13998:	83 ec 04             	sub    $0x4,%esp
    1399b:	50                   	push   %eax
    1399c:	ff 75 e8             	push   -0x18(%ebp)
-   1399f:	68 e4 55 01 00       	push   $0x155e4
+   1399f:	68 94 56 01 00       	push   $0x15694
    139a4:	e8 02 0e 00 00       	call   147ab <log_printf>
    139a9:	83 c4 10             	add    $0x10,%esp
     for (int i = 0; i < 5; ++i) {
@@ -8460,7 +8468,7 @@ void list_test(void) {
    139e7:	56                   	push   %esi
    139e8:	53                   	push   %ebx
    139e9:	50                   	push   %eax
-   139ea:	68 68 55 01 00       	push   $0x15568
+   139ea:	68 18 56 01 00       	push   $0x15618
    139ef:	e8 b7 0d 00 00       	call   147ab <log_printf>
    139f4:	83 c4 10             	add    $0x10,%esp
     list_get_first(&list), list_get_last(&list), list_get_size(&list));
@@ -8491,14 +8499,14 @@ void list_test(void) {
    13a32:	8d 45 90             	lea    -0x70(%ebp),%eax
    13a35:	83 ec 08             	sub    $0x8,%esp
    13a38:	50                   	push   %eax
-   13a39:	68 fa 55 01 00       	push   $0x155fa
+   13a39:	68 aa 56 01 00       	push   $0x156aa
    13a3e:	e8 68 0d 00 00       	call   147ab <log_printf>
    13a43:	83 c4 10             	add    $0x10,%esp
     log_printf("p addr = 0x%x", (uint32_t)p);  
    13a46:	8b 45 e0             	mov    -0x20(%ebp),%eax
    13a49:	83 ec 08             	sub    $0x8,%esp
    13a4c:	50                   	push   %eax
-   13a4d:	68 08 56 01 00       	push   $0x15608
+   13a4d:	68 b8 56 01 00       	push   $0x156b8
    13a52:	e8 54 0d 00 00       	call   147ab <log_printf>
    13a57:	83 c4 10             	add    $0x10,%esp
 
@@ -8532,14 +8540,14 @@ void pannic(const char *file, int line, const char *func, const char *reason) {
     log_printf("assert faild! %s", reason);
    13a6f:	83 ec 08             	sub    $0x8,%esp
    13a72:	ff 75 14             	push   0x14(%ebp)
-   13a75:	68 53 56 01 00       	push   $0x15653
+   13a75:	68 03 57 01 00       	push   $0x15703
    13a7a:	e8 2c 0d 00 00       	call   147ab <log_printf>
    13a7f:	83 c4 10             	add    $0x10,%esp
     log_printf("file:\t%s\nline:\t%d\nfunc:\t%s", file, line, func);
    13a82:	ff 75 10             	push   0x10(%ebp)
    13a85:	ff 75 0c             	push   0xc(%ebp)
    13a88:	ff 75 08             	push   0x8(%ebp)
-   13a8b:	68 64 56 01 00       	push   $0x15664
+   13a8b:	68 14 57 01 00       	push   $0x15714
    13a90:	e8 16 0d 00 00       	call   147ab <log_printf>
    13a95:	83 c4 10             	add    $0x10,%esp
     for (;;) {
@@ -8580,19 +8588,19 @@ void bitmap_init(bitmap_t *bitmap, uint8_t *bits, int count, int init_bit) {
     ASSERT(bitmap != (bitmap_t*)0);
    13abb:	83 7d 08 00          	cmpl   $0x0,0x8(%ebp)
    13abf:	75 19                	jne    13ada <bitmap_init+0x25>
-   13ac1:	68 80 56 01 00       	push   $0x15680
-   13ac6:	68 14 57 01 00       	push   $0x15714
+   13ac1:	68 30 57 01 00       	push   $0x15730
+   13ac6:	68 c4 57 01 00       	push   $0x157c4
    13acb:	6a 24                	push   $0x24
-   13acd:	68 98 56 01 00       	push   $0x15698
+   13acd:	68 48 57 01 00       	push   $0x15748
    13ad2:	e8 92 ff ff ff       	call   13a69 <pannic>
    13ad7:	83 c4 10             	add    $0x10,%esp
     ASSERT(bits != (uint8_t*)0);
    13ada:	83 7d 0c 00          	cmpl   $0x0,0xc(%ebp)
    13ade:	75 19                	jne    13af9 <bitmap_init+0x44>
-   13ae0:	68 d0 56 01 00       	push   $0x156d0
-   13ae5:	68 14 57 01 00       	push   $0x15714
+   13ae0:	68 80 57 01 00       	push   $0x15780
+   13ae5:	68 c4 57 01 00       	push   $0x157c4
    13aea:	6a 25                	push   $0x25
-   13aec:	68 98 56 01 00       	push   $0x15698
+   13aec:	68 48 57 01 00       	push   $0x15748
    13af1:	e8 73 ff ff ff       	call   13a69 <pannic>
    13af6:	83 c4 10             	add    $0x10,%esp
 
@@ -8649,19 +8657,19 @@ uint8_t bitmap_get_bit(bitmap_t *bitmap, int index) {
     ASSERT(bitmap != (bitmap_t*)0);
    13b50:	83 7d 08 00          	cmpl   $0x0,0x8(%ebp)
    13b54:	75 19                	jne    13b6f <bitmap_get_bit+0x26>
-   13b56:	68 80 56 01 00       	push   $0x15680
-   13b5b:	68 20 57 01 00       	push   $0x15720
+   13b56:	68 30 57 01 00       	push   $0x15730
+   13b5b:	68 d0 57 01 00       	push   $0x157d0
    13b60:	6a 39                	push   $0x39
-   13b62:	68 98 56 01 00       	push   $0x15698
+   13b62:	68 48 57 01 00       	push   $0x15748
    13b67:	e8 fd fe ff ff       	call   13a69 <pannic>
    13b6c:	83 c4 10             	add    $0x10,%esp
     ASSERT(index >= 0);
    13b6f:	83 7d 0c 00          	cmpl   $0x0,0xc(%ebp)
    13b73:	79 19                	jns    13b8e <bitmap_get_bit+0x45>
-   13b75:	68 e4 56 01 00       	push   $0x156e4
-   13b7a:	68 20 57 01 00       	push   $0x15720
+   13b75:	68 94 57 01 00       	push   $0x15794
+   13b7a:	68 d0 57 01 00       	push   $0x157d0
    13b7f:	6a 3a                	push   $0x3a
-   13b81:	68 98 56 01 00       	push   $0x15698
+   13b81:	68 48 57 01 00       	push   $0x15748
    13b86:	e8 de fe ff ff       	call   13a69 <pannic>
    13b8b:	83 c4 10             	add    $0x10,%esp
 
@@ -8703,10 +8711,10 @@ void bitmap_set_bit(bitmap_t *bitmap, int index, int count, int bit) {
     ASSERT(bitmap != (bitmap_t*)0);
    13bc9:	83 7d 08 00          	cmpl   $0x0,0x8(%ebp)
    13bcd:	75 19                	jne    13be8 <bitmap_set_bit+0x27>
-   13bcf:	68 80 56 01 00       	push   $0x15680
-   13bd4:	68 30 57 01 00       	push   $0x15730
+   13bcf:	68 30 57 01 00       	push   $0x15730
+   13bd4:	68 e0 57 01 00       	push   $0x157e0
    13bd9:	6a 48                	push   $0x48
-   13bdb:	68 98 56 01 00       	push   $0x15698
+   13bdb:	68 48 57 01 00       	push   $0x15748
    13be0:	e8 84 fe ff ff       	call   13a69 <pannic>
    13be5:	83 c4 10             	add    $0x10,%esp
     ASSERT(index >= 0 && count >= 0);
@@ -8714,10 +8722,10 @@ void bitmap_set_bit(bitmap_t *bitmap, int index, int count, int bit) {
    13bec:	78 06                	js     13bf4 <bitmap_set_bit+0x33>
    13bee:	83 7d 10 00          	cmpl   $0x0,0x10(%ebp)
    13bf2:	79 19                	jns    13c0d <bitmap_set_bit+0x4c>
-   13bf4:	68 ef 56 01 00       	push   $0x156ef
-   13bf9:	68 30 57 01 00       	push   $0x15730
+   13bf4:	68 9f 57 01 00       	push   $0x1579f
+   13bf9:	68 e0 57 01 00       	push   $0x157e0
    13bfe:	6a 49                	push   $0x49
-   13c00:	68 98 56 01 00       	push   $0x15698
+   13c00:	68 48 57 01 00       	push   $0x15748
    13c05:	e8 5f fe ff ff       	call   13a69 <pannic>
    13c0a:	83 c4 10             	add    $0x10,%esp
     for (int i = 0; i < count && index < bitmap->bit_count; ++i, ++index) {
@@ -8837,19 +8845,19 @@ int bitmap_alloc_nbits(bitmap_t *bitmap, int bit, int count) {
     ASSERT(bitmap != (bitmap_t*)0);
    13cf0:	83 7d 08 00          	cmpl   $0x0,0x8(%ebp)
    13cf4:	75 19                	jne    13d0f <bitmap_alloc_nbits+0x25>
-   13cf6:	68 80 56 01 00       	push   $0x15680
-   13cfb:	68 40 57 01 00       	push   $0x15740
+   13cf6:	68 30 57 01 00       	push   $0x15730
+   13cfb:	68 f0 57 01 00       	push   $0x157f0
    13d00:	6a 68                	push   $0x68
-   13d02:	68 98 56 01 00       	push   $0x15698
+   13d02:	68 48 57 01 00       	push   $0x15748
    13d07:	e8 5d fd ff ff       	call   13a69 <pannic>
    13d0c:	83 c4 10             	add    $0x10,%esp
     ASSERT(count >= 0);
    13d0f:	83 7d 10 00          	cmpl   $0x0,0x10(%ebp)
    13d13:	79 19                	jns    13d2e <bitmap_alloc_nbits+0x44>
-   13d15:	68 08 57 01 00       	push   $0x15708
-   13d1a:	68 40 57 01 00       	push   $0x15740
+   13d15:	68 b8 57 01 00       	push   $0x157b8
+   13d1a:	68 f0 57 01 00       	push   $0x157f0
    13d1f:	6a 69                	push   $0x69
-   13d21:	68 98 56 01 00       	push   $0x15698
+   13d21:	68 48 57 01 00       	push   $0x15748
    13d26:	e8 3e fd ff ff       	call   13a69 <pannic>
    13d2b:	83 c4 10             	add    $0x10,%esp
 
@@ -9674,11 +9682,11 @@ int strings_count(char *const *strs) {
  * @param path
  * @return char*
  */
-char *get_file_name(const char *path) {
+const char *get_file_name(const char *path) {
    142f4:	55                   	push   %ebp
    142f5:	89 e5                	mov    %esp,%ebp
    142f7:	83 ec 10             	sub    $0x10,%esp
-  char *s = path;
+  const char *s = path;
    142fa:	8b 45 08             	mov    0x8(%ebp),%eax
    142fd:	89 45 fc             	mov    %eax,-0x4(%ebp)
   while (*s != '\0') {
@@ -9724,10 +9732,10 @@ static inline int list_is_empty(list_t *list) {
     ASSERT(list != (list_t*)0);
    14340:	83 7d 08 00          	cmpl   $0x0,0x8(%ebp)
    14344:	75 19                	jne    1435f <list_is_empty+0x25>
-   14346:	68 64 57 01 00       	push   $0x15764
-   1434b:	68 48 58 01 00       	push   $0x15848
+   14346:	68 14 58 01 00       	push   $0x15814
+   1434b:	68 f8 58 01 00       	push   $0x158f8
    14350:	6a 38                	push   $0x38
-   14352:	68 78 57 01 00       	push   $0x15778
+   14352:	68 28 58 01 00       	push   $0x15828
    14357:	e8 0d f7 ff ff       	call   13a69 <pannic>
    1435c:	83 c4 10             	add    $0x10,%esp
     return list->size == 0;
@@ -9748,10 +9756,10 @@ static inline int list_get_size(list_t *list) {
     ASSERT(list != (list_t*)0);
    14375:	83 7d 08 00          	cmpl   $0x0,0x8(%ebp)
    14379:	75 19                	jne    14394 <list_get_size+0x25>
-   1437b:	68 64 57 01 00       	push   $0x15764
-   14380:	68 80 58 01 00       	push   $0x15880
+   1437b:	68 14 58 01 00       	push   $0x15814
+   14380:	68 30 59 01 00       	push   $0x15930
    14385:	6a 3e                	push   $0x3e
-   14387:	68 78 57 01 00       	push   $0x15778
+   14387:	68 28 58 01 00       	push   $0x15828
    1438c:	e8 d8 f6 ff ff       	call   13a69 <pannic>
    14391:	83 c4 10             	add    $0x10,%esp
     return list->size;
@@ -9776,10 +9784,10 @@ void list_insert_first(list_t *list, list_node_t *node) {
    143a6:	74 06                	je     143ae <list_insert_first+0x12>
    143a8:	83 7d 0c 00          	cmpl   $0x0,0xc(%ebp)
    143ac:	75 19                	jne    143c7 <list_insert_first+0x2b>
-   143ae:	68 b8 57 01 00       	push   $0x157b8
-   143b3:	68 34 58 01 00       	push   $0x15834
+   143ae:	68 68 58 01 00       	push   $0x15868
+   143b3:	68 e4 58 01 00       	push   $0x158e4
    143b8:	6a 0f                	push   $0xf
-   143ba:	68 e8 57 01 00       	push   $0x157e8
+   143ba:	68 98 58 01 00       	push   $0x15898
    143bf:	e8 a5 f6 ff ff       	call   13a69 <pannic>
    143c4:	83 c4 10             	add    $0x10,%esp
 
@@ -9842,10 +9850,10 @@ void list_insert_last(list_t *list, list_node_t *node) {
    14431:	74 06                	je     14439 <list_insert_last+0x12>
    14433:	83 7d 0c 00          	cmpl   $0x0,0xc(%ebp)
    14437:	75 19                	jne    14452 <list_insert_last+0x2b>
-   14439:	68 b8 57 01 00       	push   $0x157b8
-   1443e:	68 58 58 01 00       	push   $0x15858
+   14439:	68 68 58 01 00       	push   $0x15868
+   1443e:	68 08 59 01 00       	push   $0x15908
    14443:	6a 1f                	push   $0x1f
-   14445:	68 e8 57 01 00       	push   $0x157e8
+   14445:	68 98 58 01 00       	push   $0x15898
    1444a:	e8 1a f6 ff ff       	call   13a69 <pannic>
    1444f:	83 c4 10             	add    $0x10,%esp
 
@@ -9908,10 +9916,10 @@ list_node_t* list_remove_first(list_t *list){
     ASSERT(list != (list_t *)0);
    144bc:	83 7d 08 00          	cmpl   $0x0,0x8(%ebp)
    144c0:	75 19                	jne    144db <list_remove_first+0x25>
-   144c2:	68 1e 58 01 00       	push   $0x1581e
-   144c7:	68 6c 58 01 00       	push   $0x1586c
+   144c2:	68 ce 58 01 00       	push   $0x158ce
+   144c7:	68 1c 59 01 00       	push   $0x1591c
    144cc:	6a 31                	push   $0x31
-   144ce:	68 e8 57 01 00       	push   $0x157e8
+   144ce:	68 98 58 01 00       	push   $0x15898
    144d3:	e8 91 f5 ff ff       	call   13a69 <pannic>
    144d8:	83 c4 10             	add    $0x10,%esp
     if (list_is_empty(list)) {
@@ -9988,10 +9996,10 @@ list_node_t* list_remove_last(list_t *list) {
     ASSERT(list != (list_t *)0);
    1456d:	83 7d 08 00          	cmpl   $0x0,0x8(%ebp)
    14571:	75 19                	jne    1458c <list_remove_last+0x25>
-   14573:	68 1e 58 01 00       	push   $0x1581e
-   14578:	68 90 58 01 00       	push   $0x15890
+   14573:	68 ce 58 01 00       	push   $0x158ce
+   14578:	68 40 59 01 00       	push   $0x15940
    1457d:	6a 46                	push   $0x46
-   1457f:	68 e8 57 01 00       	push   $0x157e8
+   1457f:	68 98 58 01 00       	push   $0x15898
    14584:	e8 e0 f4 ff ff       	call   13a69 <pannic>
    14589:	83 c4 10             	add    $0x10,%esp
      if (list_is_empty(list)) {
@@ -10070,10 +10078,10 @@ list_node_t* list_remove(list_t *list, list_node_t *node) {
    14626:	74 06                	je     1462e <list_remove+0x12>
    14628:	83 7d 0c 00          	cmpl   $0x0,0xc(%ebp)
    1462c:	75 19                	jne    14647 <list_remove+0x2b>
-   1462e:	68 b8 57 01 00       	push   $0x157b8
-   14633:	68 a4 58 01 00       	push   $0x158a4
+   1462e:	68 68 58 01 00       	push   $0x15868
+   14633:	68 54 59 01 00       	push   $0x15954
    14638:	6a 5b                	push   $0x5b
-   1463a:	68 e8 57 01 00       	push   $0x157e8
+   1463a:	68 98 58 01 00       	push   $0x15898
    1463f:	e8 25 f4 ff ff       	call   13a69 <pannic>
    14644:	83 c4 10             	add    $0x10,%esp
 
@@ -10378,255 +10386,465 @@ first_task_entry:
 80000009:	8e e8                	mov    %eax,%gs
 
     //因为cs寄存器已由操作系统分配，所以直接跳转即可
-8000000b:	e9 d7 00 00 00       	jmp    800000e7 <first_main>
+8000000b:	e9 00 00 00 00       	jmp    80000010 <first_main>
 
-80000010 <sys_call>:
-}syscall_args_t;
-
-
-
-
-static inline int sys_call(syscall_args_t *args) {
-80000010:	55                   	push   %ebp
-80000011:	89 e5                	mov    %esp,%ebp
-80000013:	57                   	push   %edi
-80000014:	56                   	push   %esi
-80000015:	53                   	push   %ebx
-80000016:	83 ec 10             	sub    $0x10,%esp
-    // 传入远跳转需要的参数, 即cs = selector, eip = offset 
-    //为调用门选择子赋予0特权级,调用门的 cpl 和 RPL <= 系统调用段描述符的DPL
-    //门描述符中目标选择子的 CPL <= 门描述符的 DPL
-    uint32_t addr[] = {0, SYSCALL_SELECTOR | 0};  
-80000019:	c7 45 e8 00 00 00 00 	movl   $0x0,-0x18(%ebp)
-80000020:	c7 45 ec 18 00 00 00 	movl   $0x18,-0x14(%ebp)
-        "push %[arg1]\n\t"
-        "push %[arg0]\n\t"
-        "push %[id]\n\t"
-        "lcalll *(%[addr])\n\t"
-        :"=a"(ret)
-        :[arg3]"r"(args->arg3), 
-80000027:	8b 45 08             	mov    0x8(%ebp),%eax
-8000002a:	8b 40 10             	mov    0x10(%eax),%eax
-         [arg2]"r"(args->arg2), 
-8000002d:	8b 55 08             	mov    0x8(%ebp),%edx
-80000030:	8b 52 0c             	mov    0xc(%edx),%edx
-         [arg1]"r"(args->arg1),
-80000033:	8b 4d 08             	mov    0x8(%ebp),%ecx
-80000036:	8b 49 08             	mov    0x8(%ecx),%ecx
-         [arg0]"r"(args->arg0), 
-80000039:	8b 5d 08             	mov    0x8(%ebp),%ebx
-8000003c:	8b 5b 04             	mov    0x4(%ebx),%ebx
-         [id]"r"(args->id), 
-8000003f:	8b 75 08             	mov    0x8(%ebp),%esi
-80000042:	8b 36                	mov    (%esi),%esi
-     __asm__ __volatile__(
-80000044:	8d 7d e8             	lea    -0x18(%ebp),%edi
-80000047:	50                   	push   %eax
-80000048:	52                   	push   %edx
-80000049:	51                   	push   %ecx
-8000004a:	53                   	push   %ebx
-8000004b:	56                   	push   %esi
-8000004c:	ff 1f                	lcall  *(%edi)
-8000004e:	89 45 f0             	mov    %eax,-0x10(%ebp)
-         [addr]"r"(addr)
-    );
-
-    return ret;
-80000051:	8b 45 f0             	mov    -0x10(%ebp),%eax
-}
-80000054:	83 c4 10             	add    $0x10,%esp
-80000057:	5b                   	pop    %ebx
-80000058:	5e                   	pop    %esi
-80000059:	5f                   	pop    %edi
-8000005a:	5d                   	pop    %ebp
-8000005b:	c3                   	ret    
-
-8000005c <getpid>:
-/**
- * @brief 获取用户进程id
- * 
- * @return int 
- */
-static inline int getpid(void) {
-8000005c:	55                   	push   %ebp
-8000005d:	89 e5                	mov    %esp,%ebp
-8000005f:	83 ec 20             	sub    $0x20,%esp
-    syscall_args_t args;
-    args.id = SYS_getpid;
-80000062:	c7 45 ec 01 00 00 00 	movl   $0x1,-0x14(%ebp)
-
-    return sys_call(&args);
-80000069:	8d 45 ec             	lea    -0x14(%ebp),%eax
-8000006c:	50                   	push   %eax
-8000006d:	e8 9e ff ff ff       	call   80000010 <sys_call>
-80000072:	83 c4 04             	add    $0x4,%esp
-}
-80000075:	c9                   	leave  
-80000076:	c3                   	ret    
-
-80000077 <print_msg>:
-
-static inline void print_msg(const char *fmt, int arg) {
-80000077:	55                   	push   %ebp
-80000078:	89 e5                	mov    %esp,%ebp
-8000007a:	83 ec 20             	sub    $0x20,%esp
-    syscall_args_t args;
-    args.id = SYS_printmsg;
-8000007d:	c7 45 ec 0a 00 00 00 	movl   $0xa,-0x14(%ebp)
-    args.arg0 = (int)fmt;
-80000084:	8b 45 08             	mov    0x8(%ebp),%eax
-80000087:	89 45 f0             	mov    %eax,-0x10(%ebp)
-    args.arg1 = arg;
-8000008a:	8b 45 0c             	mov    0xc(%ebp),%eax
-8000008d:	89 45 f4             	mov    %eax,-0xc(%ebp)
-
-    sys_call(&args);
-80000090:	8d 45 ec             	lea    -0x14(%ebp),%eax
-80000093:	50                   	push   %eax
-80000094:	e8 77 ff ff ff       	call   80000010 <sys_call>
-80000099:	83 c4 04             	add    $0x4,%esp
-}
-8000009c:	90                   	nop
-8000009d:	c9                   	leave  
-8000009e:	c3                   	ret    
-
-8000009f <fork>:
-
-static inline int fork (void) {
-8000009f:	55                   	push   %ebp
-800000a0:	89 e5                	mov    %esp,%ebp
-800000a2:	83 ec 20             	sub    $0x20,%esp
-    syscall_args_t args;
-    args.id = SYS_fork;
-800000a5:	c7 45 ec 02 00 00 00 	movl   $0x2,-0x14(%ebp)
-
-    return sys_call(&args);
-800000ac:	8d 45 ec             	lea    -0x14(%ebp),%eax
-800000af:	50                   	push   %eax
-800000b0:	e8 5b ff ff ff       	call   80000010 <sys_call>
-800000b5:	83 c4 04             	add    $0x4,%esp
-}
-800000b8:	c9                   	leave  
-800000b9:	c3                   	ret    
-
-800000ba <execve>:
- * @param name 外部程序名
- * @param argv 外部程序的参数，字符串常量指针，即字符串数组，数组中的char*值为常量
- * @param env  所加载程序的环境变量
- * @return int 
- */
-static inline int execve(const char *name, char * const * argv, char * const * env) {
-800000ba:	55                   	push   %ebp
-800000bb:	89 e5                	mov    %esp,%ebp
-800000bd:	83 ec 20             	sub    $0x20,%esp
-    syscall_args_t args;
-    args.id = SYS_execve;
-800000c0:	c7 45 ec 03 00 00 00 	movl   $0x3,-0x14(%ebp)
-    args.arg0 = (int)name;
-800000c7:	8b 45 08             	mov    0x8(%ebp),%eax
-800000ca:	89 45 f0             	mov    %eax,-0x10(%ebp)
-    args.arg1 = (int)argv;
-800000cd:	8b 45 0c             	mov    0xc(%ebp),%eax
-800000d0:	89 45 f4             	mov    %eax,-0xc(%ebp)
-    args.arg2 = (int)env;
-800000d3:	8b 45 10             	mov    0x10(%ebp),%eax
-800000d6:	89 45 f8             	mov    %eax,-0x8(%ebp)
-
-
-    return sys_call(&args);
-800000d9:	8d 45 ec             	lea    -0x14(%ebp),%eax
-800000dc:	50                   	push   %eax
-800000dd:	e8 2e ff ff ff       	call   80000010 <sys_call>
-800000e2:	83 c4 04             	add    $0x4,%esp
-}
-800000e5:	c9                   	leave  
-800000e6:	c3                   	ret    
-
-800000e7 <first_main>:
+80000010 <first_main>:
 
 #include "tools/log.h"
 #include "core/task.h"
 #include  "applib/lib_syscall.h"
 
 int first_main(void) {
-800000e7:	55                   	push   %ebp
-800000e8:	89 e5                	mov    %esp,%ebp
-800000ea:	83 ec 20             	sub    $0x20,%esp
+80000010:	55                   	push   %ebp
+80000011:	89 e5                	mov    %esp,%ebp
+80000013:	83 ec 28             	sub    $0x28,%esp
     //     //msleep(100);
     // }
     
     int pid;
     int i;
     for (i = 0; i < 1; ++i) {
-800000ed:	c7 45 f8 00 00 00 00 	movl   $0x0,-0x8(%ebp)
-800000f4:	eb 12                	jmp    80000108 <first_main+0x21>
+80000016:	c7 45 f0 00 00 00 00 	movl   $0x0,-0x10(%ebp)
+8000001d:	eb 12                	jmp    80000031 <first_main+0x21>
         pid = fork();
-800000f6:	e8 a4 ff ff ff       	call   8000009f <fork>
-800000fb:	89 45 fc             	mov    %eax,-0x4(%ebp)
+8000001f:	e8 72 01 00 00       	call   80000196 <fork>
+80000024:	89 45 f4             	mov    %eax,-0xc(%ebp)
         if (pid == 0)
-800000fe:	83 7d fc 00          	cmpl   $0x0,-0x4(%ebp)
-80000102:	74 0c                	je     80000110 <first_main+0x29>
+80000027:	83 7d f4 00          	cmpl   $0x0,-0xc(%ebp)
+8000002b:	74 0c                	je     80000039 <first_main+0x29>
     for (i = 0; i < 1; ++i) {
-80000104:	83 45 f8 01          	addl   $0x1,-0x8(%ebp)
-80000108:	83 7d f8 00          	cmpl   $0x0,-0x8(%ebp)
-8000010c:	7e e8                	jle    800000f6 <first_main+0xf>
-8000010e:	eb 01                	jmp    80000111 <first_main+0x2a>
+8000002d:	83 45 f0 01          	addl   $0x1,-0x10(%ebp)
+80000031:	83 7d f0 00          	cmpl   $0x0,-0x10(%ebp)
+80000035:	7e e8                	jle    8000001f <first_main+0xf>
+80000037:	eb 01                	jmp    8000003a <first_main+0x2a>
             break;
-80000110:	90                   	nop
+80000039:	90                   	nop
     }
 
-    char const *argv[] = {"arg0", "arg1", "arg2", "arg3", 0};
-80000111:	c7 45 e4 72 01 00 80 	movl   $0x80000172,-0x1c(%ebp)
-80000118:	c7 45 e8 77 01 00 80 	movl   $0x80000177,-0x18(%ebp)
-8000011f:	c7 45 ec 7c 01 00 80 	movl   $0x8000017c,-0x14(%ebp)
-80000126:	c7 45 f0 81 01 00 80 	movl   $0x80000181,-0x10(%ebp)
-8000012d:	c7 45 f4 00 00 00 00 	movl   $0x0,-0xc(%ebp)
+    char * const argv[] = {"arg0", "arg1", "arg2", "arg3", 0};
+8000003a:	c7 45 dc a4 00 00 80 	movl   $0x800000a4,-0x24(%ebp)
+80000041:	c7 45 e0 a9 00 00 80 	movl   $0x800000a9,-0x20(%ebp)
+80000048:	c7 45 e4 ae 00 00 80 	movl   $0x800000ae,-0x1c(%ebp)
+8000004f:	c7 45 e8 b3 00 00 80 	movl   $0x800000b3,-0x18(%ebp)
+80000056:	c7 45 ec 00 00 00 00 	movl   $0x0,-0x14(%ebp)
     print_msg("i = %d", i);
-80000134:	ff 75 f8             	push   -0x8(%ebp)
-80000137:	68 86 01 00 80       	push   $0x80000186
-8000013c:	e8 36 ff ff ff       	call   80000077 <print_msg>
-80000141:	83 c4 08             	add    $0x8,%esp
+8000005d:	83 ec 08             	sub    $0x8,%esp
+80000060:	ff 75 f0             	push   -0x10(%ebp)
+80000063:	68 b8 00 00 80       	push   $0x800000b8
+80000068:	e8 01 01 00 00       	call   8000016e <print_msg>
+8000006d:	83 c4 10             	add    $0x10,%esp
     print_msg("fist task pid = %d", getpid());
-80000144:	e8 13 ff ff ff       	call   8000005c <getpid>
-80000149:	50                   	push   %eax
-8000014a:	68 8d 01 00 80       	push   $0x8000018d
-8000014f:	e8 23 ff ff ff       	call   80000077 <print_msg>
-80000154:	83 c4 08             	add    $0x8,%esp
+80000070:	e8 de 00 00 00       	call   80000153 <getpid>
+80000075:	83 ec 08             	sub    $0x8,%esp
+80000078:	50                   	push   %eax
+80000079:	68 bf 00 00 80       	push   $0x800000bf
+8000007e:	e8 eb 00 00 00       	call   8000016e <print_msg>
+80000083:	83 c4 10             	add    $0x10,%esp
     if (pid != 0) execve("/shell.elf", argv, 0);
-80000157:	83 7d fc 00          	cmpl   $0x0,-0x4(%ebp)
-8000015b:	74 13                	je     80000170 <first_main+0x89>
-8000015d:	6a 00                	push   $0x0
-8000015f:	8d 45 e4             	lea    -0x1c(%ebp),%eax
-80000162:	50                   	push   %eax
-80000163:	68 a0 01 00 80       	push   $0x800001a0
-80000168:	e8 4d ff ff ff       	call   800000ba <execve>
-8000016d:	83 c4 0c             	add    $0xc,%esp
+80000086:	83 7d f4 00          	cmpl   $0x0,-0xc(%ebp)
+8000008a:	74 16                	je     800000a2 <first_main+0x92>
+8000008c:	83 ec 04             	sub    $0x4,%esp
+8000008f:	6a 00                	push   $0x0
+80000091:	8d 45 dc             	lea    -0x24(%ebp),%eax
+80000094:	50                   	push   %eax
+80000095:	68 d2 00 00 80       	push   $0x800000d2
+8000009a:	e8 12 01 00 00       	call   800001b1 <execve>
+8000009f:	83 c4 10             	add    $0x10,%esp
     
     for (;;)
-80000170:	eb fe                	jmp    80000170 <first_main+0x89>
-80000172:	61                   	popa   
-80000173:	72 67                	jb     800001dc <first_main+0xf5>
-80000175:	30 00                	xor    %al,(%eax)
-80000177:	61                   	popa   
-80000178:	72 67                	jb     800001e1 <first_main+0xfa>
-8000017a:	31 00                	xor    %eax,(%eax)
-8000017c:	61                   	popa   
-8000017d:	72 67                	jb     800001e6 <first_main+0xff>
-8000017f:	32 00                	xor    (%eax),%al
-80000181:	61                   	popa   
-80000182:	72 67                	jb     800001eb <first_main+0x104>
-80000184:	33 00                	xor    (%eax),%eax
-80000186:	69 20 3d 20 25 64    	imul   $0x6425203d,(%eax),%esp
-8000018c:	00 66 69             	add    %ah,0x69(%esi)
-8000018f:	73 74                	jae    80000205 <first_main+0x11e>
-80000191:	20 74 61 73          	and    %dh,0x73(%ecx,%eiz,2)
-80000195:	6b 20 70             	imul   $0x70,(%eax),%esp
-80000198:	69 64 20 3d 20 25 64 	imul   $0x642520,0x3d(%eax,%eiz,1),%esp
-8000019f:	00 
-800001a0:	2f                   	das    
-800001a1:	73 68                	jae    8000020b <first_main+0x124>
-800001a3:	65 6c                	gs insb (%dx),%es:(%edi)
-800001a5:	6c                   	insb   (%dx),%es:(%edi)
-800001a6:	2e 65 6c             	cs gs insb (%dx),%es:(%edi)
-800001a9:	66                   	data16
+800000a2:	eb fe                	jmp    800000a2 <first_main+0x92>
+800000a4:	61                   	popa   
+800000a5:	72 67                	jb     8000010e <sys_call+0x31>
+800000a7:	30 00                	xor    %al,(%eax)
+800000a9:	61                   	popa   
+800000aa:	72 67                	jb     80000113 <sys_call+0x36>
+800000ac:	31 00                	xor    %eax,(%eax)
+800000ae:	61                   	popa   
+800000af:	72 67                	jb     80000118 <sys_call+0x3b>
+800000b1:	32 00                	xor    (%eax),%al
+800000b3:	61                   	popa   
+800000b4:	72 67                	jb     8000011d <sys_call+0x40>
+800000b6:	33 00                	xor    (%eax),%eax
+800000b8:	69 20 3d 20 25 64    	imul   $0x6425203d,(%eax),%esp
+800000be:	00 66 69             	add    %ah,0x69(%esi)
+800000c1:	73 74                	jae    80000137 <msleep+0xe>
+800000c3:	20 74 61 73          	and    %dh,0x73(%ecx,%eiz,2)
+800000c7:	6b 20 70             	imul   $0x70,(%eax),%esp
+800000ca:	69 64 20 3d 20 25 64 	imul   $0x642520,0x3d(%eax,%eiz,1),%esp
+800000d1:	00 
+800000d2:	2f                   	das    
+800000d3:	73 68                	jae    8000013d <msleep+0x14>
+800000d5:	65 6c                	gs insb (%dx),%es:(%edi)
+800000d7:	6c                   	insb   (%dx),%es:(%edi)
+800000d8:	2e 65 6c             	cs gs insb (%dx),%es:(%edi)
+800000db:	66                   	data16
 	...
+
+800000dd <sys_call>:
+#include    "cpu/syscall.h"
+#include    "os_cfg.h"
+#include    "lib_syscall.h"
+
+
+int sys_call(syscall_args_t *args) {
+800000dd:	55                   	push   %ebp
+800000de:	89 e5                	mov    %esp,%ebp
+800000e0:	57                   	push   %edi
+800000e1:	56                   	push   %esi
+800000e2:	53                   	push   %ebx
+800000e3:	83 ec 10             	sub    $0x10,%esp
+    // 传入远跳转需要的参数, 即cs = selector, eip = offset 
+    //为调用门选择子赋予0特权级,调用门的 cpl 和 RPL <= 系统调用段描述符的DPL
+    //门描述符中目标选择子的 CPL <= 门描述符的 DPL
+    uint32_t addr[] = {0, SYSCALL_SELECTOR | 0};  
+800000e6:	c7 45 e8 00 00 00 00 	movl   $0x0,-0x18(%ebp)
+800000ed:	c7 45 ec 18 00 00 00 	movl   $0x18,-0x14(%ebp)
+        "push %[arg1]\n\t"
+        "push %[arg0]\n\t"
+        "push %[id]\n\t"
+        "lcalll *(%[addr])\n\t"
+        :"=a"(ret)
+        :[arg3]"r"(args->arg3), 
+800000f4:	8b 45 08             	mov    0x8(%ebp),%eax
+800000f7:	8b 40 10             	mov    0x10(%eax),%eax
+         [arg2]"r"(args->arg2), 
+800000fa:	8b 55 08             	mov    0x8(%ebp),%edx
+800000fd:	8b 52 0c             	mov    0xc(%edx),%edx
+         [arg1]"r"(args->arg1),
+80000100:	8b 4d 08             	mov    0x8(%ebp),%ecx
+80000103:	8b 49 08             	mov    0x8(%ecx),%ecx
+         [arg0]"r"(args->arg0), 
+80000106:	8b 5d 08             	mov    0x8(%ebp),%ebx
+80000109:	8b 5b 04             	mov    0x4(%ebx),%ebx
+         [id]"r"(args->id), 
+8000010c:	8b 75 08             	mov    0x8(%ebp),%esi
+8000010f:	8b 36                	mov    (%esi),%esi
+     __asm__ __volatile__(
+80000111:	8d 7d e8             	lea    -0x18(%ebp),%edi
+80000114:	50                   	push   %eax
+80000115:	52                   	push   %edx
+80000116:	51                   	push   %ecx
+80000117:	53                   	push   %ebx
+80000118:	56                   	push   %esi
+80000119:	ff 1f                	lcall  *(%edi)
+8000011b:	89 45 f0             	mov    %eax,-0x10(%ebp)
+         [addr]"r"(addr)
+    );
+
+    return ret;
+8000011e:	8b 45 f0             	mov    -0x10(%ebp),%eax
+}
+80000121:	83 c4 10             	add    $0x10,%esp
+80000124:	5b                   	pop    %ebx
+80000125:	5e                   	pop    %esi
+80000126:	5f                   	pop    %edi
+80000127:	5d                   	pop    %ebp
+80000128:	c3                   	ret    
+
+80000129 <msleep>:
+/**
+ * @brief 以ms为单位进行延时
+ * 
+ * @param ms 
+ */
+void msleep(int ms) {
+80000129:	55                   	push   %ebp
+8000012a:	89 e5                	mov    %esp,%ebp
+8000012c:	83 ec 20             	sub    $0x20,%esp
+    if (ms <= 0) return;
+8000012f:	83 7d 08 00          	cmpl   $0x0,0x8(%ebp)
+80000133:	7e 1b                	jle    80000150 <msleep+0x27>
+
+    syscall_args_t args;
+    args.id = SYS_sleep;
+80000135:	c7 45 ec 00 00 00 00 	movl   $0x0,-0x14(%ebp)
+    args.arg0 = ms;
+8000013c:	8b 45 08             	mov    0x8(%ebp),%eax
+8000013f:	89 45 f0             	mov    %eax,-0x10(%ebp)
+
+    sys_call(&args);
+80000142:	8d 45 ec             	lea    -0x14(%ebp),%eax
+80000145:	50                   	push   %eax
+80000146:	e8 92 ff ff ff       	call   800000dd <sys_call>
+8000014b:	83 c4 04             	add    $0x4,%esp
+8000014e:	eb 01                	jmp    80000151 <msleep+0x28>
+    if (ms <= 0) return;
+80000150:	90                   	nop
+
+}
+80000151:	c9                   	leave  
+80000152:	c3                   	ret    
+
+80000153 <getpid>:
+/**
+ * @brief 获取用户进程id
+ * 
+ * @return int 
+ */
+int getpid(void) {
+80000153:	55                   	push   %ebp
+80000154:	89 e5                	mov    %esp,%ebp
+80000156:	83 ec 20             	sub    $0x20,%esp
+    syscall_args_t args;
+    args.id = SYS_getpid;
+80000159:	c7 45 ec 01 00 00 00 	movl   $0x1,-0x14(%ebp)
+
+    return sys_call(&args);
+80000160:	8d 45 ec             	lea    -0x14(%ebp),%eax
+80000163:	50                   	push   %eax
+80000164:	e8 74 ff ff ff       	call   800000dd <sys_call>
+80000169:	83 c4 04             	add    $0x4,%esp
+}
+8000016c:	c9                   	leave  
+8000016d:	c3                   	ret    
+
+8000016e <print_msg>:
+
+void print_msg(const char *fmt, int arg) {
+8000016e:	55                   	push   %ebp
+8000016f:	89 e5                	mov    %esp,%ebp
+80000171:	83 ec 20             	sub    $0x20,%esp
+    syscall_args_t args;
+    args.id = SYS_printmsg;
+80000174:	c7 45 ec 0a 00 00 00 	movl   $0xa,-0x14(%ebp)
+    args.arg0 = (int)fmt;
+8000017b:	8b 45 08             	mov    0x8(%ebp),%eax
+8000017e:	89 45 f0             	mov    %eax,-0x10(%ebp)
+    args.arg1 = arg;
+80000181:	8b 45 0c             	mov    0xc(%ebp),%eax
+80000184:	89 45 f4             	mov    %eax,-0xc(%ebp)
+
+    sys_call(&args);
+80000187:	8d 45 ec             	lea    -0x14(%ebp),%eax
+8000018a:	50                   	push   %eax
+8000018b:	e8 4d ff ff ff       	call   800000dd <sys_call>
+80000190:	83 c4 04             	add    $0x4,%esp
+}
+80000193:	90                   	nop
+80000194:	c9                   	leave  
+80000195:	c3                   	ret    
+
+80000196 <fork>:
+
+int fork (void) {
+80000196:	55                   	push   %ebp
+80000197:	89 e5                	mov    %esp,%ebp
+80000199:	83 ec 20             	sub    $0x20,%esp
+    syscall_args_t args;
+    args.id = SYS_fork;
+8000019c:	c7 45 ec 02 00 00 00 	movl   $0x2,-0x14(%ebp)
+
+    return sys_call(&args);
+800001a3:	8d 45 ec             	lea    -0x14(%ebp),%eax
+800001a6:	50                   	push   %eax
+800001a7:	e8 31 ff ff ff       	call   800000dd <sys_call>
+800001ac:	83 c4 04             	add    $0x4,%esp
+}
+800001af:	c9                   	leave  
+800001b0:	c3                   	ret    
+
+800001b1 <execve>:
+ * @param name 外部程序名
+ * @param argv 外部程序的参数，字符串常量指针，即字符串数组，数组中的char*值为常量
+ * @param env  所加载程序的环境变量
+ * @return int 
+ */
+int execve(const char *name, char * const * argv, char * const * env) {
+800001b1:	55                   	push   %ebp
+800001b2:	89 e5                	mov    %esp,%ebp
+800001b4:	83 ec 20             	sub    $0x20,%esp
+    syscall_args_t args;
+    args.id = SYS_execve;
+800001b7:	c7 45 ec 03 00 00 00 	movl   $0x3,-0x14(%ebp)
+    args.arg0 = (int)name;
+800001be:	8b 45 08             	mov    0x8(%ebp),%eax
+800001c1:	89 45 f0             	mov    %eax,-0x10(%ebp)
+    args.arg1 = (int)argv;
+800001c4:	8b 45 0c             	mov    0xc(%ebp),%eax
+800001c7:	89 45 f4             	mov    %eax,-0xc(%ebp)
+    args.arg2 = (int)env;
+800001ca:	8b 45 10             	mov    0x10(%ebp),%eax
+800001cd:	89 45 f8             	mov    %eax,-0x8(%ebp)
+
+
+    return sys_call(&args);
+800001d0:	8d 45 ec             	lea    -0x14(%ebp),%eax
+800001d3:	50                   	push   %eax
+800001d4:	e8 04 ff ff ff       	call   800000dd <sys_call>
+800001d9:	83 c4 04             	add    $0x4,%esp
+}
+800001dc:	c9                   	leave  
+800001dd:	c3                   	ret    
+
+800001de <yield>:
+/**
+ * @brief 进程主动放弃cpu
+ * 
+ * @return int 
+ */
+int yield (void) {
+800001de:	55                   	push   %ebp
+800001df:	89 e5                	mov    %esp,%ebp
+800001e1:	83 ec 20             	sub    $0x20,%esp
+    syscall_args_t args;
+    args.id = SYS_yield;
+800001e4:	c7 45 ec 04 00 00 00 	movl   $0x4,-0x14(%ebp)
+
+    return sys_call(&args);
+800001eb:	8d 45 ec             	lea    -0x14(%ebp),%eax
+800001ee:	50                   	push   %eax
+800001ef:	e8 e9 fe ff ff       	call   800000dd <sys_call>
+800001f4:	83 c4 04             	add    $0x4,%esp
+}
+800001f7:	c9                   	leave  
+800001f8:	c3                   	ret    
+
+800001f9 <open>:
+ * @param name 
+ * @param flags 
+ * @param ... 
+ * @return int 
+ */
+int open(const char *name, int flags, ...) {
+800001f9:	55                   	push   %ebp
+800001fa:	89 e5                	mov    %esp,%ebp
+800001fc:	83 ec 20             	sub    $0x20,%esp
+    syscall_args_t args;
+    args.id = SYS_open;
+800001ff:	c7 45 ec 32 00 00 00 	movl   $0x32,-0x14(%ebp)
+    args.arg0 = (int)name;
+80000206:	8b 45 08             	mov    0x8(%ebp),%eax
+80000209:	89 45 f0             	mov    %eax,-0x10(%ebp)
+    args.arg1 = flags;
+8000020c:	8b 45 0c             	mov    0xc(%ebp),%eax
+8000020f:	89 45 f4             	mov    %eax,-0xc(%ebp)
+
+    return sys_call(&args);
+80000212:	8d 45 ec             	lea    -0x14(%ebp),%eax
+80000215:	50                   	push   %eax
+80000216:	e8 c2 fe ff ff       	call   800000dd <sys_call>
+8000021b:	83 c4 04             	add    $0x4,%esp
+}
+8000021e:	c9                   	leave  
+8000021f:	c3                   	ret    
+
+80000220 <read>:
+ * @param file 
+ * @param ptr 
+ * @param len 
+ * @return int 
+ */
+int read(int file, char *ptr, int len) {
+80000220:	55                   	push   %ebp
+80000221:	89 e5                	mov    %esp,%ebp
+80000223:	83 ec 20             	sub    $0x20,%esp
+    syscall_args_t args;
+    args.id = SYS_read;
+80000226:	c7 45 ec 33 00 00 00 	movl   $0x33,-0x14(%ebp)
+    args.arg0 = file;
+8000022d:	8b 45 08             	mov    0x8(%ebp),%eax
+80000230:	89 45 f0             	mov    %eax,-0x10(%ebp)
+    args.arg1 = (int)ptr;
+80000233:	8b 45 0c             	mov    0xc(%ebp),%eax
+80000236:	89 45 f4             	mov    %eax,-0xc(%ebp)
+    args.arg2 = len;
+80000239:	8b 45 10             	mov    0x10(%ebp),%eax
+8000023c:	89 45 f8             	mov    %eax,-0x8(%ebp)
+
+    return sys_call(&args);
+8000023f:	8d 45 ec             	lea    -0x14(%ebp),%eax
+80000242:	50                   	push   %eax
+80000243:	e8 95 fe ff ff       	call   800000dd <sys_call>
+80000248:	83 c4 04             	add    $0x4,%esp
+}
+8000024b:	c9                   	leave  
+8000024c:	c3                   	ret    
+
+8000024d <write>:
+ * @param file 
+ * @param ptr 
+ * @param len 
+ * @return int 
+ */
+int write(int file, char *ptr, int len) {
+8000024d:	55                   	push   %ebp
+8000024e:	89 e5                	mov    %esp,%ebp
+80000250:	83 ec 20             	sub    $0x20,%esp
+    syscall_args_t args;
+    args.id = SYS_write;
+80000253:	c7 45 ec 34 00 00 00 	movl   $0x34,-0x14(%ebp)
+    args.arg0 = file;
+8000025a:	8b 45 08             	mov    0x8(%ebp),%eax
+8000025d:	89 45 f0             	mov    %eax,-0x10(%ebp)
+    args.arg1 = (int)ptr;
+80000260:	8b 45 0c             	mov    0xc(%ebp),%eax
+80000263:	89 45 f4             	mov    %eax,-0xc(%ebp)
+    args.arg2 = len;
+80000266:	8b 45 10             	mov    0x10(%ebp),%eax
+80000269:	89 45 f8             	mov    %eax,-0x8(%ebp)
+
+    return sys_call(&args);
+8000026c:	8d 45 ec             	lea    -0x14(%ebp),%eax
+8000026f:	50                   	push   %eax
+80000270:	e8 68 fe ff ff       	call   800000dd <sys_call>
+80000275:	83 c4 04             	add    $0x4,%esp
+}
+80000278:	c9                   	leave  
+80000279:	c3                   	ret    
+
+8000027a <close>:
+ * @brief 关闭文件描述符
+ * 
+ * @param file 
+ * @return int 
+ */
+int close(int file) {
+8000027a:	55                   	push   %ebp
+8000027b:	89 e5                	mov    %esp,%ebp
+8000027d:	83 ec 20             	sub    $0x20,%esp
+    syscall_args_t args;
+    args.id = SYS_close;
+80000280:	c7 45 ec 35 00 00 00 	movl   $0x35,-0x14(%ebp)
+    args.arg0 = file;
+80000287:	8b 45 08             	mov    0x8(%ebp),%eax
+8000028a:	89 45 f0             	mov    %eax,-0x10(%ebp)
+
+    return sys_call(&args);
+8000028d:	8d 45 ec             	lea    -0x14(%ebp),%eax
+80000290:	50                   	push   %eax
+80000291:	e8 47 fe ff ff       	call   800000dd <sys_call>
+80000296:	83 c4 04             	add    $0x4,%esp
+}
+80000299:	c9                   	leave  
+8000029a:	c3                   	ret    
+
+8000029b <lseek>:
+ * @param file 
+ * @param offset 
+ * @param dir 
+ * @return int 
+ */
+int lseek(int file, int offset, int dir) {
+8000029b:	55                   	push   %ebp
+8000029c:	89 e5                	mov    %esp,%ebp
+8000029e:	83 ec 20             	sub    $0x20,%esp
+    syscall_args_t args;
+    args.id = SYS_lseek;
+800002a1:	c7 45 ec 36 00 00 00 	movl   $0x36,-0x14(%ebp)
+    args.arg0 = file;
+800002a8:	8b 45 08             	mov    0x8(%ebp),%eax
+800002ab:	89 45 f0             	mov    %eax,-0x10(%ebp)
+    args.arg1 = offset;
+800002ae:	8b 45 0c             	mov    0xc(%ebp),%eax
+800002b1:	89 45 f4             	mov    %eax,-0xc(%ebp)
+    args.arg2 = dir;
+800002b4:	8b 45 10             	mov    0x10(%ebp),%eax
+800002b7:	89 45 f8             	mov    %eax,-0x8(%ebp)
+
+    return sys_call(&args);
+800002ba:	8d 45 ec             	lea    -0x14(%ebp),%eax
+800002bd:	50                   	push   %eax
+800002be:	e8 1a fe ff ff       	call   800000dd <sys_call>
+800002c3:	83 c4 04             	add    $0x4,%esp
+800002c6:	c9                   	leave  
+800002c7:	c3                   	ret    

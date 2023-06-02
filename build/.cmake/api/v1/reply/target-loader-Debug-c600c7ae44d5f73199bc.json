@@ -2,7 +2,7 @@
 	"artifacts" : 
 	[
 		{
-			"path" : "source/boot/boot"
+			"path" : "source/loader/loader"
 		}
 	],
 	"backtrace" : 1,
@@ -15,7 +15,7 @@
 		],
 		"files" : 
 		[
-			"source/boot/CMakeLists.txt",
+			"source/loader/CMakeLists.txt",
 			"CMakeLists.txt"
 		],
 		"nodes" : 
@@ -26,7 +26,7 @@
 			{
 				"command" : 0,
 				"file" : 0,
-				"line" : 14,
+				"line" : 11,
 				"parent" : 0
 			},
 			{
@@ -58,6 +58,10 @@
 				{
 					"backtrace" : 3,
 					"path" : "/home/kbpoyo/code/cpp/MyOs/source/kernel/include"
+				},
+				{
+					"backtrace" : 3,
+					"path" : "/home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/include"
 				}
 			],
 			"language" : "ASM",
@@ -82,16 +86,21 @@
 				{
 					"backtrace" : 3,
 					"path" : "/home/kbpoyo/code/cpp/MyOs/source/kernel/include"
+				},
+				{
+					"backtrace" : 3,
+					"path" : "/home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/include"
 				}
 			],
 			"language" : "C",
 			"sourceIndexes" : 
 			[
-				1
+				2,
+				3
 			]
 		}
 	],
-	"id" : "boot::@a4fbfdde3044a49ad01d",
+	"id" : "loader::@346703cd72729101d3c6",
 	"link" : 
 	{
 		"commandFragments" : 
@@ -101,18 +110,18 @@
 				"role" : "flags"
 			},
 			{
-				"fragment" : "-m elf_i386 -Ttext=0x7c00 --section-start=boot_end=0x7dfe   -rdynamic",
+				"fragment" : "-m elf_i386  -Ttext=0x8000   -rdynamic",
 				"role" : "flags"
 			}
 		],
 		"language" : "C"
 	},
-	"name" : "boot",
-	"nameOnDisk" : "boot",
+	"name" : "loader",
+	"nameOnDisk" : "loader",
 	"paths" : 
 	{
-		"build" : "source/boot",
-		"source" : "source/boot"
+		"build" : "source/loader",
+		"source" : "source/loader"
 	},
 	"sourceGroups" : 
 	[
@@ -124,17 +133,18 @@
 			]
 		},
 		{
-			"name" : "Source Files",
+			"name" : "Header Files",
 			"sourceIndexes" : 
 			[
 				1
 			]
 		},
 		{
-			"name" : "Header Files",
+			"name" : "Source Files",
 			"sourceIndexes" : 
 			[
-				2
+				2,
+				3
 			]
 		}
 	],
@@ -143,18 +153,24 @@
 		{
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
-			"path" : "source/boot/start.S",
+			"path" : "source/loader/start.S",
 			"sourceGroupIndex" : 0
 		},
 		{
 			"backtrace" : 1,
-			"compileGroupIndex" : 1,
-			"path" : "source/boot/boot.c",
+			"path" : "source/loader/loader.h",
 			"sourceGroupIndex" : 1
 		},
 		{
 			"backtrace" : 1,
-			"path" : "source/boot/boot.h",
+			"compileGroupIndex" : 1,
+			"path" : "source/loader/loader_16.c",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 1,
+			"path" : "source/loader/loader_32.c",
 			"sourceGroupIndex" : 2
 		}
 	],

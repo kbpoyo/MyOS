@@ -11,6 +11,7 @@
 		"commands" : 
 		[
 			"add_executable",
+			"add_dependencies",
 			"include_directories"
 		],
 		"files" : 
@@ -26,7 +27,7 @@
 			{
 				"command" : 0,
 				"file" : 0,
-				"line" : 11,
+				"line" : 12,
 				"parent" : 0
 			},
 			{
@@ -34,6 +35,12 @@
 			},
 			{
 				"command" : 1,
+				"file" : 1,
+				"line" : 59,
+				"parent" : 2
+			},
+			{
+				"command" : 2,
 				"file" : 1,
 				"line" : 40,
 				"parent" : 2
@@ -52,12 +59,16 @@
 			"includes" : 
 			[
 				{
-					"backtrace" : 3,
+					"backtrace" : 4,
 					"path" : "/home/kbpoyo/code/cpp/MyOs/source"
 				},
 				{
-					"backtrace" : 3,
+					"backtrace" : 4,
 					"path" : "/home/kbpoyo/code/cpp/MyOs/source/kernel/include"
+				},
+				{
+					"backtrace" : 4,
+					"path" : "/home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/include"
 				}
 			],
 			"language" : "ASM",
@@ -77,12 +88,16 @@
 			"includes" : 
 			[
 				{
-					"backtrace" : 3,
+					"backtrace" : 4,
 					"path" : "/home/kbpoyo/code/cpp/MyOs/source"
 				},
 				{
-					"backtrace" : 3,
+					"backtrace" : 4,
 					"path" : "/home/kbpoyo/code/cpp/MyOs/source/kernel/include"
+				},
+				{
+					"backtrace" : 4,
+					"path" : "/home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/include"
 				}
 			],
 			"language" : "C",
@@ -110,6 +125,13 @@
 			]
 		}
 	],
+	"dependencies" : 
+	[
+		{
+			"backtrace" : 3,
+			"id" : "app::@2ef8eb2e4770df38f87f"
+		}
+	],
 	"id" : "kernel::@483af936ae9a949d521e",
 	"link" : 
 	{
@@ -120,7 +142,7 @@
 				"role" : "flags"
 			},
 			{
-				"fragment" : "-m elf_i386 -T /home/kbpoyo/code/cpp/MyOs/source/kernel/kernel.lds   -rdynamic",
+				"fragment" : "-m elf_i386 -T /home/kbpoyo/code/cpp/MyOs/source/kernel/kernel.lds -L /home/kbpoyo/code/cpp/MyOs/build/source/applib -lapp   -rdynamic",
 				"role" : "flags"
 			}
 		],

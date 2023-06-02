@@ -73,6 +73,10 @@
 					"path" : "/home/kbpoyo/code/cpp/MyOs/source/kernel/include"
 				},
 				{
+					"backtrace" : 4,
+					"path" : "/home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/include"
+				},
+				{
 					"backtrace" : 5,
 					"path" : "/home/kbpoyo/code/cpp/MyOs/source/shell/../applib"
 				}

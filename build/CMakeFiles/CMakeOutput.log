@@ -1,4 +1,4 @@
-The system is: Linux - 5.19.0-41-generic - x86_64
+The system is: Linux - 5.19.0-43-generic - x86_64
 Compiling the C compiler identification source file "CMakeCCompilerId.c" succeeded.
 Compiler: /usr/bin/gcc 
 Build flags: -g;-c;-O0;-m32;-fno-pie;-fno-stack-protector;-fno-asynchronous-unwind-tables
@@ -15,20 +15,20 @@ The C compiler identification is GNU, found in "/home/kbpoyo/code/cpp/MyOs/build
 Determining if the C compiler works passed with the following output:
 Change Dir: /home/kbpoyo/code/cpp/MyOs/build/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_02bd4/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_02bd4.dir/build.make CMakeFiles/cmTC_02bd4.dir/build
+Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_cab82/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_cab82.dir/build.make CMakeFiles/cmTC_cab82.dir/build
 gmake[1]: Entering directory '/home/kbpoyo/code/cpp/MyOs/build/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_02bd4.dir/testCCompiler.c.o
-/usr/bin/gcc   -g -c -O0 -m32 -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables  -o CMakeFiles/cmTC_02bd4.dir/testCCompiler.c.o -c /home/kbpoyo/code/cpp/MyOs/build/CMakeFiles/CMakeTmp/testCCompiler.c
-Linking C executable cmTC_02bd4
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_02bd4.dir/link.txt --verbose=1
-/usr/bin/gcc -g -c -O0 -m32 -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables  -rdynamic CMakeFiles/cmTC_02bd4.dir/testCCompiler.c.o -o cmTC_02bd4 
-gcc: warning: CMakeFiles/cmTC_02bd4.dir/testCCompiler.c.o: linker input file unused because linking not done
+Building C object CMakeFiles/cmTC_cab82.dir/testCCompiler.c.o
+/usr/bin/gcc   -g -c -O0 -m32 -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables  -o CMakeFiles/cmTC_cab82.dir/testCCompiler.c.o -c /home/kbpoyo/code/cpp/MyOs/build/CMakeFiles/CMakeTmp/testCCompiler.c
+Linking C executable cmTC_cab82
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_cab82.dir/link.txt --verbose=1
+/usr/bin/gcc -g -c -O0 -m32 -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables  -rdynamic CMakeFiles/cmTC_cab82.dir/testCCompiler.c.o -o cmTC_cab82 
+gcc: warning: CMakeFiles/cmTC_cab82.dir/testCCompiler.c.o: linker input file unused because linking not done
 gmake[1]: Leaving directory '/home/kbpoyo/code/cpp/MyOs/build/CMakeFiles/CMakeTmp'
 
 
 
 Checking whether the ASM compiler is GNU using "--version" matched "(GNU assembler)|(GCC)|(Free Software Foundation)":
-gcc (Ubuntu 11.3.0-1ubuntu1~22.04) 11.3.0
+gcc (Ubuntu 11.3.0-1ubuntu1~22.04.1) 11.3.0
 Copyright (C) 2021 Free Software Foundation, Inc.
 This is free software; see the source for copying conditions.  There is NO
 warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.

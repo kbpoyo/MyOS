@@ -51,7 +51,7 @@ void kernel_sprintf(char *buf, const char *formate, ...);
 void kernel_vsprintf(char *buf, const char *formate, va_list args);
 
 int strings_count(char * const *str);
-char* get_file_name(const char *ame);
+const char* get_file_name(const char *ame);
 
 
 #endif

@@ -99,19 +99,35 @@ source/applib/CMakeFiles/app.dir/cstart.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/app.dir/cstart.c.s"
 	cd /home/kbpoyo/code/cpp/MyOs/build/source/applib && /usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/kbpoyo/code/cpp/MyOs/source/applib/cstart.c -o CMakeFiles/app.dir/cstart.c.s
 
+source/applib/CMakeFiles/app.dir/lib_syscall.c.o: source/applib/CMakeFiles/app.dir/flags.make
+source/applib/CMakeFiles/app.dir/lib_syscall.c.o: ../source/applib/lib_syscall.c
+source/applib/CMakeFiles/app.dir/lib_syscall.c.o: source/applib/CMakeFiles/app.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/kbpoyo/code/cpp/MyOs/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building C object source/applib/CMakeFiles/app.dir/lib_syscall.c.o"
+	cd /home/kbpoyo/code/cpp/MyOs/build/source/applib && /usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT source/applib/CMakeFiles/app.dir/lib_syscall.c.o -MF CMakeFiles/app.dir/lib_syscall.c.o.d -o CMakeFiles/app.dir/lib_syscall.c.o -c /home/kbpoyo/code/cpp/MyOs/source/applib/lib_syscall.c
+
+source/applib/CMakeFiles/app.dir/lib_syscall.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/app.dir/lib_syscall.c.i"
+	cd /home/kbpoyo/code/cpp/MyOs/build/source/applib && /usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/kbpoyo/code/cpp/MyOs/source/applib/lib_syscall.c > CMakeFiles/app.dir/lib_syscall.c.i
+
+source/applib/CMakeFiles/app.dir/lib_syscall.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/app.dir/lib_syscall.c.s"
+	cd /home/kbpoyo/code/cpp/MyOs/build/source/applib && /usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/kbpoyo/code/cpp/MyOs/source/applib/lib_syscall.c -o CMakeFiles/app.dir/lib_syscall.c.s
+
 # Object files for target app
 app_OBJECTS = \
 "CMakeFiles/app.dir/crt0.S.o" \
-"CMakeFiles/app.dir/cstart.c.o"
+"CMakeFiles/app.dir/cstart.c.o" \
+"CMakeFiles/app.dir/lib_syscall.c.o"
 
 # External object files for target app
 app_EXTERNAL_OBJECTS =
 
 source/applib/libapp.a: source/applib/CMakeFiles/app.dir/crt0.S.o
 source/applib/libapp.a: source/applib/CMakeFiles/app.dir/cstart.c.o
+source/applib/libapp.a: source/applib/CMakeFiles/app.dir/lib_syscall.c.o
 source/applib/libapp.a: source/applib/CMakeFiles/app.dir/build.make
 source/applib/libapp.a: source/applib/CMakeFiles/app.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/kbpoyo/code/cpp/MyOs/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking C static library libapp.a"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/kbpoyo/code/cpp/MyOs/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking C static library libapp.a"
 	cd /home/kbpoyo/code/cpp/MyOs/build/source/applib && $(CMAKE_COMMAND) -P CMakeFiles/app.dir/cmake_clean_target.cmake
 	cd /home/kbpoyo/code/cpp/MyOs/build/source/applib && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/app.dir/link.txt --verbose=$(VERBOSE)
 	cd /home/kbpoyo/code/cpp/MyOs/build/source/applib && objdump -x -d -S -m i386 /home/kbpoyo/code/cpp/MyOs/build/source/applib/libapp.a > app_dis.txt

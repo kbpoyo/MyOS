@@ -16,11 +16,13 @@ set(CMAKE_ASM_COMPILER_ID "GNU")
 set(CMAKE_ASM_TARGET_INCLUDE_PATH
   "../source"
   "../source/kernel/include"
+  "../source/newlib/i686-elf/include"
   )
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/home/kbpoyo/code/cpp/MyOs/source/applib/cstart.c" "source/applib/CMakeFiles/app.dir/cstart.c.o" "gcc" "source/applib/CMakeFiles/app.dir/cstart.c.o.d"
+  "/home/kbpoyo/code/cpp/MyOs/source/applib/lib_syscall.c" "source/applib/CMakeFiles/app.dir/lib_syscall.c.o" "gcc" "source/applib/CMakeFiles/app.dir/lib_syscall.c.o.d"
   )
 
 # Targets to which this target links.

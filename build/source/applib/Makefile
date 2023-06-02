@@ -165,6 +165,30 @@ cstart.c.s:
 	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/applib/CMakeFiles/app.dir/build.make source/applib/CMakeFiles/app.dir/cstart.c.s
 .PHONY : cstart.c.s
 
+lib_syscall.o: lib_syscall.c.o
+.PHONY : lib_syscall.o
+
+# target to build an object file
+lib_syscall.c.o:
+	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/applib/CMakeFiles/app.dir/build.make source/applib/CMakeFiles/app.dir/lib_syscall.c.o
+.PHONY : lib_syscall.c.o
+
+lib_syscall.i: lib_syscall.c.i
+.PHONY : lib_syscall.i
+
+# target to preprocess a source file
+lib_syscall.c.i:
+	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/applib/CMakeFiles/app.dir/build.make source/applib/CMakeFiles/app.dir/lib_syscall.c.i
+.PHONY : lib_syscall.c.i
+
+lib_syscall.s: lib_syscall.c.s
+.PHONY : lib_syscall.s
+
+# target to generate assembly for a file
+lib_syscall.c.s:
+	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/applib/CMakeFiles/app.dir/build.make source/applib/CMakeFiles/app.dir/lib_syscall.c.s
+.PHONY : lib_syscall.c.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -178,6 +202,9 @@ help:
 	@echo "... cstart.o"
 	@echo "... cstart.i"
 	@echo "... cstart.s"
+	@echo "... lib_syscall.o"
+	@echo "... lib_syscall.i"
+	@echo "... lib_syscall.s"
 .PHONY : help
 
 

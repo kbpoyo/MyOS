@@ -276,8 +276,8 @@ int strings_count(char *const *strs) {
  * @param path
  * @return char*
  */
-char *get_file_name(const char *path) {
-  char *s = path;
+const char *get_file_name(const char *path) {
+  const char *s = path;
   while (*s != '\0') {
     s++;
   }
