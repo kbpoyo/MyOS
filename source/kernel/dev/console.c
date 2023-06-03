@@ -48,6 +48,21 @@ static inline void show_char(console_t *console, char c) {
 }
 
 /**
+ * @brief 清空屏幕
+ * 
+ * @param console 
+ */
+static inline void clear_display(console_t *console) {
+    int size = console->display_cols * console->display_rows;
+    disp_char_t *start = console->disp_base;
+    for (int i = 0; i < size; ++i, ++start) {
+        start->c = ' ';
+        start->foreground = console->foreground;
+        start->background = console->background;
+    }
+}
+
+/**
  * @brief 初始化控制台
  * 
  * @return int 
@@ -57,11 +72,16 @@ int console_init(void) {
         console_t *console = console_buf + i;
         console->display_rows = CONSOLE_ROW_MAX;
         console->display_cols = CONSOLE_CLO_MAX;
+        console->cursor_col = 0;
+        console->cursor_row = 0;
         console->foreground = COLOR_White;
         console->background = COLOR_Black;
-        
+
         //计算每个终端在现存中的起始地址
         console->disp_base = (disp_char_t*)CONSOLE_DISP_START_ADDR + (i * CONSOLE_CLO_MAX * CONSOLE_ROW_MAX);
+
+        //清屏
+        clear_display(console);
     }
 
     return 0;

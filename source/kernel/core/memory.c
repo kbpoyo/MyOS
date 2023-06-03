@@ -14,6 +14,7 @@
 #include "tools/klib.h"
 #include "tools/assert.h"
 #include "cpu/mmu.h"
+#include "dev/console.h"
 
 //定义全局内存页分配对象
 static addr_alloc_t paddr_alloc;
@@ -308,6 +309,7 @@ void create_kernal_table(void) {
     {0, &s_text, 0, PTE_W},                             //低64kb的空间映射关系，即0x10000(内核起始地址)以下部分的空间
     {&s_text, &e_text, &s_text, 0},                 //只读段的映射关系(内核.text和.rodata段)
     {&s_data, (void*)MEM_EBDA_START, &s_data, PTE_W},    //可读写段的映射关系，一直到bios的拓展数据区(内核.data与.bss段再加上剩余的可用数据区域)
+    {(void*)CONSOLE_DISP_START_ADDR, (void*)CONSOLE_DISP_END_ADDR, (void*)CONSOLE_DISP_START_ADDR, PTE_W},//显存区域的映射关系
     {(void*)MEM_EXT_START, (void*)MEM_EXT_END, (void*)MEM_EXT_START, PTE_W}, //将1mb到127mb都映射给操作系统使用
 
   };

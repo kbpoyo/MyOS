@@ -17,7 +17,8 @@ source/kernel/CMakeFiles/kernel.dir/core/memory.c.o: ../source/kernel/core/memor
   ../source/kernel/include/tools/klib.h \
   /usr/lib/gcc/x86_64-linux-gnu/11/include/stdarg.h \
   ../source/kernel/include/cpu/mmu.h \
-  ../source/common/cpu_instr.h
+  ../source/common/cpu_instr.h \
+  ../source/kernel/include/dev/console.h
 
 source/kernel/CMakeFiles/kernel.dir/core/task.c.o: ../source/kernel/core/task.c \
   /usr/include/stdc-predef.h \
@@ -121,6 +122,7 @@ source/kernel/CMakeFiles/kernel.dir/fs/fs.c.o: ../source/kernel/fs/fs.c \
   ../source/common/cpu_instr.h \
   ../source/common/types.h \
   ../source/common/boot_info.h \
+  ../source/kernel/include/dev/console.h \
   ../source/kernel/include/tools/log.h
 
 source/kernel/CMakeFiles/kernel.dir/init/first_task.c.o: ../source/kernel/init/first_task.c \
@@ -279,10 +281,6 @@ source/kernel/CMakeFiles/kernel.dir/tools/log.c.o: ../source/kernel/tools/log.c 
 
 ../source/newlib/i686-elf/include/sys/_timespec.h:
 
-../source/kernel/cpu/mmu.c:
-
-../source/common/elf.h:
-
 ../source/kernel/tools/list.c:
 
 ../source/common/exc_frame.h:
@@ -290,6 +288,12 @@ source/kernel/CMakeFiles/kernel.dir/tools/log.c.o: ../source/kernel/tools/log.c 
 ../source/kernel/include/cpu/idt.h:
 
 ../source/newlib/i686-elf/include/sys/reent.h:
+
+../source/kernel/include/cpu/syscall.h:
+
+../source/kernel/include/core/memory.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/11/include/stddef.h:
 
 ../source/newlib/i686-elf/include/machine/types.h:
 
@@ -302,10 +306,6 @@ source/kernel/CMakeFiles/kernel.dir/tools/log.c.o: ../source/kernel/tools/log.c 
 ../source/common/types.h:
 
 /usr/lib/gcc/x86_64-linux-gnu/11/include/stdarg.h:
-
-../source/newlib/i686-elf/include/time.h:
-
-../source/kernel/cpu/idt.c:
 
 ../source/kernel/include/tools/log.h:
 
@@ -331,17 +331,19 @@ source/kernel/CMakeFiles/kernel.dir/tools/log.c.o: ../source/kernel/tools/log.c 
 
 ../source/kernel/core/task.c:
 
-../source/kernel/include/cpu/syscall.h:
-
-../source/kernel/include/core/memory.h:
-
-/usr/lib/gcc/x86_64-linux-gnu/11/include/stddef.h:
-
 ../source/kernel/include/cpu/mmu.h:
 
 ../source/kernel/include/fs/fs.h:
 
 ../source/kernel/include/ipc/mutex.h:
+
+../source/common/elf.h:
+
+../source/kernel/cpu/mmu.c:
+
+../source/kernel/cpu/idt.c:
+
+../source/newlib/i686-elf/include/time.h:
 
 ../source/applib/lib_syscall.h:
 
