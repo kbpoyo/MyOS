@@ -230,21 +230,28 @@ void kernel_itoa(char *buf, int num, int base) {
     return;
   }
 
-  if (num < 0) {
-    *(p++) = '-';
-    num = -num;
-  } else if (num == 0) {
-    *(p++) = '0';
-    *p = '\0';
-    return;
+  uint32_t u_num = 0;
+
+  if (base == 10) {
+    u_num = num;
+    if (num < 0) {
+      *(p++) = '-';
+      u_num = -1 * num;
+    } else if (num == 0) {
+      *(p++) = '0';
+      *p = '\0';
+      return;
+    }
+  } else {
+    u_num = *((uint32_t *)&num);
   }
 
   static const char *num_to_char = {"0123456789abcdef"};
   char arr[128];
   int len = 0;
-  while (num > 0) {
-    arr[len++] = num_to_char[num % base];
-    num /= base;
+  while (u_num > 0) {
+    arr[len++] = num_to_char[u_num % base];
+    u_num /= base;
   }
 
   for (int i = len - 1; i >= 0; --i) {
@@ -286,5 +293,5 @@ const char *get_file_name(const char *path) {
     s--;
   }
 
-  return s + 1;  
+  return s + 1;
 }

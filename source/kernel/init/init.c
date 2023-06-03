@@ -24,6 +24,7 @@
 #include "tools/klib.h"
 #include  "ipc/sem.h"
 #include "core/memory.h"
+#include "dev/console.h"
 
 /**
  * @brief  对内核进行初始化操作
@@ -36,6 +37,9 @@ void kernel_init(boot_info_t* boot_info) {
     //2.初始化日志程序,便于后期调用
     log_init();
 
+    //3.初始化控制台
+    console_init();
+    
     //3.初始化内存管理
     memory_init(boot_info);  
 

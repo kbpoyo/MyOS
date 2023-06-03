@@ -93,6 +93,11 @@ source/kernel/CMakeFiles/kernel.dir/cpu/syscall.c.o: ../source/kernel/cpu/syscal
   ../source/kernel/include/tools/log.h \
   ../source/kernel/include/fs/fs.h
 
+source/kernel/CMakeFiles/kernel.dir/dev/console.c.o: ../source/kernel/dev/console.c \
+  /usr/include/stdc-predef.h \
+  ../source/kernel/include/dev/console.h \
+  ../source/common/types.h
+
 source/kernel/CMakeFiles/kernel.dir/dev/time.c.o: ../source/kernel/dev/time.c \
   /usr/include/stdc-predef.h \
   ../source/kernel/include/dev/time.h \
@@ -115,7 +120,8 @@ source/kernel/CMakeFiles/kernel.dir/fs/fs.c.o: ../source/kernel/fs/fs.c \
   ../source/common/types.h \
   ../source/common/cpu_instr.h \
   ../source/common/types.h \
-  ../source/common/boot_info.h
+  ../source/common/boot_info.h \
+  ../source/kernel/include/tools/log.h
 
 source/kernel/CMakeFiles/kernel.dir/init/first_task.c.o: ../source/kernel/init/first_task.c \
   /usr/include/stdc-predef.h \
@@ -181,7 +187,8 @@ source/kernel/CMakeFiles/kernel.dir/init/init.c.o: ../source/kernel/init/init.c 
   ../source/kernel/include/ipc/sem.h \
   ../source/kernel/include/core/memory.h \
   ../source/kernel/include/tools/bitmap.h \
-  ../source/kernel/include/ipc/mutex.h
+  ../source/kernel/include/ipc/mutex.h \
+  ../source/kernel/include/dev/console.h
 
 source/kernel/CMakeFiles/kernel.dir/ipc/mutex.c.o: ../source/kernel/ipc/mutex.c \
   /usr/include/stdc-predef.h \
@@ -342,6 +349,8 @@ source/kernel/CMakeFiles/kernel.dir/tools/log.c.o: ../source/kernel/tools/log.c 
 
 ../source/kernel/include/core/task.h:
 
+../source/kernel/include/dev/console.h:
+
 ../source/newlib/i686-elf/include/sys/select.h:
 
 ../source/kernel/include/cpu/tss.h:
@@ -359,6 +368,8 @@ source/kernel/CMakeFiles/kernel.dir/tools/log.c.o: ../source/kernel/tools/log.c 
 ../source/newlib/i686-elf/include/sys/cdefs.h:
 
 ../source/kernel/init/init.c:
+
+../source/kernel/dev/console.c:
 
 ../source/newlib/i686-elf/include/machine/time.h:
 

@@ -13,7 +13,7 @@
 #include "tools/klib.h"
 #include "common/cpu_instr.h"
 #include "common/boot_info.h"
-
+#include "dev/console.h"
 
 //定义缓冲区位置，用于暂存从磁盘中读取的文件内容
 #define TEMP_ADDR   (120*1024*1024)
@@ -101,7 +101,6 @@ int sys_read(int file, char *ptr, int len) {
         temp_pos += len;
         return len;
     }
-
     return -1;
 }
 
@@ -113,8 +112,14 @@ int sys_read(int file, char *ptr, int len) {
  * @param len 写入字节数
  * @return int 成功写入字节数
  */
+#include "tools/log.h"
 int sys_write(int file, char *ptr, int len) {
-
+    if (file == 1) {
+        //ptr[len] = '\0';
+        //log_printf("%s", ptr);
+        console_write(0, ptr, len);
+    }
+    return -1;
 }
 
 /**

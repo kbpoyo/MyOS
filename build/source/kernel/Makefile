@@ -298,6 +298,30 @@ cpu/syscall.c.s:
 	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/cpu/syscall.c.s
 .PHONY : cpu/syscall.c.s
 
+dev/console.o: dev/console.c.o
+.PHONY : dev/console.o
+
+# target to build an object file
+dev/console.c.o:
+	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/dev/console.c.o
+.PHONY : dev/console.c.o
+
+dev/console.i: dev/console.c.i
+.PHONY : dev/console.i
+
+# target to preprocess a source file
+dev/console.c.i:
+	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/dev/console.c.i
+.PHONY : dev/console.c.i
+
+dev/console.s: dev/console.c.s
+.PHONY : dev/console.s
+
+# target to generate assembly for a file
+dev/console.c.s:
+	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/dev/console.c.s
+.PHONY : dev/console.c.s
+
 dev/time.o: dev/time.c.o
 .PHONY : dev/time.o
 
@@ -632,6 +656,9 @@ help:
 	@echo "... cpu/syscall.o"
 	@echo "... cpu/syscall.i"
 	@echo "... cpu/syscall.s"
+	@echo "... dev/console.o"
+	@echo "... dev/console.i"
+	@echo "... dev/console.s"
 	@echo "... dev/time.o"
 	@echo "... dev/time.i"
 	@echo "... dev/time.s"

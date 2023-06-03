@@ -13,6 +13,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/kernel.dir/cpu/mmu.c.o.d"
   "CMakeFiles/kernel.dir/cpu/syscall.c.o"
   "CMakeFiles/kernel.dir/cpu/syscall.c.o.d"
+  "CMakeFiles/kernel.dir/dev/console.c.o"
+  "CMakeFiles/kernel.dir/dev/console.c.o.d"
   "CMakeFiles/kernel.dir/dev/time.c.o"
   "CMakeFiles/kernel.dir/dev/time.c.o.d"
   "CMakeFiles/kernel.dir/fs/fs.c.o"

@@ -13,7 +13,16 @@
 #include <stdio.h>
 
 int main(int argc, char** argv) {
+    sbrk(0);
+    sbrk(100);
+    sbrk(200);
+    sbrk(4096*2 + 200);
+    sbrk(4096*5 + 1234);
+
     printf("hello from shell\n");
+    printf("os version: %s\n", "1.0.0");
+    printf("os version: %f\n", 15.1234);
+    printf("%05d, %-5d, %d\n", 1, 2, 3);
 
     print_msg("main pid %d", getpid());
     for (int i = 0; i < argc; ++i) {

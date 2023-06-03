@@ -22,7 +22,8 @@
         "fs.h": "c",
         "boot.h": "c",
         "stdio.h": "c",
-        "stat.h": "c"
+        "stat.h": "c",
+        "console.h": "c"
     },
     "todo-tree.tree.scanMode": "workspace only",
     "editor.fontSize": 16,

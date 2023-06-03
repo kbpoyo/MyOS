@@ -675,9 +675,48 @@ int memory_copy_uvm_data(uint32_t to_vaddr, uint32_t to_page_dir, uint32_t from_
 /**
  * @brief 拓展堆区内存
  * 
- * @param incr 
+ * @param incr 增长指定字节
  * @return char* 
  */
 char *sys_sbrk(int incr) {
-  return (char*)0;
+  ASSERT(incr >= 0); //只处理堆区内存增加的情况
+  task_t *task = task_current();
+  char * pre_heap_end = (char *)task->heap_end;
+  int pre_incr = incr;
+
+  if (incr == 0) {
+    log_printf("sbrk(0): end=0x%x", pre_heap_end);
+    return pre_heap_end;
+  }
+
+  uint32_t start = task->heap_end;  //堆区原始末尾位置
+  uint32_t end = start + incr;  //需要拓展到的末尾位置
+
+  uint32_t start_offset = start % MEM_PAGE_SIZE;  //获取末尾位置在当前页内的偏移量
+  if (start_offset) { //先将当前页的剩余空间分配出去
+    if (start_offset + incr <= MEM_PAGE_SIZE) { //当前页剩余内存可供分配
+      task->heap_end = end; 
+      incr = 0;
+    } else {  //当前页剩余内存不够分配
+      uint32_t curr_size = MEM_PAGE_SIZE - start_offset;  //获取当前页剩余大小
+      //将当前页剩余内存全部分配出
+      start += curr_size;
+      incr -= curr_size;
+    }
+  }
+
+  if (incr) { //还需要继续拓展
+    uint32_t curr_size = end - start; //还需拓展的大小
+    int err = memory_alloc_page_for(start, curr_size, PTE_P | PTE_U |  PTE_W);  //为该部分内存创建映射关系
+    if (err < 0) {
+      log_printf("sbrk: alloc mem failed.");
+      return (char*)-1;
+    }
+
+  }
+
+  log_printf("sbrk(%d): end=0x%x", pre_incr, end);
+  task->heap_end = end;
+
+  return (char*)end;
 }
