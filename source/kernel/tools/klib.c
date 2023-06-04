@@ -223,13 +223,19 @@ void kernel_vsprintf(char *buf, const char *formate, va_list args) {
  * @param base 转换的进制规则
  */
 void kernel_itoa(char *buf, int num, int base) {
-  char *p = buf;
 
   if (base != 2 && base != 8 && base != 10 && base != 16) {
     *buf = '\0';
     return;
   }
 
+  if (num == 0) {
+    *(buf++) = '0';
+    *buf = '\0';
+    return;
+  }
+
+  char *p = buf;
   uint32_t u_num = 0;
 
   if (base == 10) {

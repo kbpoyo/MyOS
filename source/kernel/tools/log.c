@@ -16,6 +16,10 @@
 #include "tools/klib.h"
 #include "cpu/idt.h"
 #include "ipc/mutex.h"
+#include "dev/console.h"
+
+//宏配置，是否使用串口输出日志信息
+#define LOG_USE_COM 0
 
 //定义互斥锁保护输出资源，确保输出为原子操作
 static mutex_t mutex;
@@ -25,6 +29,8 @@ static mutex_t mutex;
  * 
  */
 void log_init(void) {
+
+#if LOG_USE_COM
     outb(COM1_PORT + 1, 0x00);
     outb(COM1_PORT + 3, 0x80);
     outb(COM1_PORT + 0, 0x3);
@@ -33,6 +39,7 @@ void log_init(void) {
     outb(COM1_PORT + 2, 0xc7);
     outb(COM1_PORT + 4, 0x0f);
 
+#endif 
     //初始化互斥锁
     mutex_init(&mutex);
 }
@@ -59,6 +66,7 @@ void log_printf(const char *formate, ...) {
     //将以下资源放入临界资源包含区，防止在运行时发生进程切换（cpu关中断）
     mutex_lock(&mutex); //TODO:加锁
 
+#if USE_LOG_COM
     //3.将字符串输出到串口
     while (*p != '\0') {
         //4.判断串口是否正在忙碌，是则阻塞等待
@@ -72,6 +80,12 @@ void log_printf(const char *formate, ...) {
     //5.换行
     outb(COM1_PORT, '\r');
     outb(COM1_PORT, '\n');
+
+#else
+    console_write(0, str_buf, kernel_strlen(str_buf));
+    char c = '\n';
+    console_write(0, &c, 1); 
+#endif
 
     //执行完毕，将资源离开临界资源保护区，(cpu开中断)
     mutex_unlock(&mutex); //TODO:解锁

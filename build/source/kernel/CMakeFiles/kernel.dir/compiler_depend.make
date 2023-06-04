@@ -97,7 +97,11 @@ source/kernel/CMakeFiles/kernel.dir/cpu/syscall.c.o: ../source/kernel/cpu/syscal
 source/kernel/CMakeFiles/kernel.dir/dev/console.c.o: ../source/kernel/dev/console.c \
   /usr/include/stdc-predef.h \
   ../source/kernel/include/dev/console.h \
-  ../source/common/types.h
+  ../source/common/types.h \
+  ../source/common/cpu_instr.h \
+  ../source/common/types.h \
+  ../source/kernel/include/tools/klib.h \
+  /usr/lib/gcc/x86_64-linux-gnu/11/include/stdarg.h
 
 source/kernel/CMakeFiles/kernel.dir/dev/time.c.o: ../source/kernel/dev/time.c \
   /usr/include/stdc-predef.h \
@@ -258,7 +262,8 @@ source/kernel/CMakeFiles/kernel.dir/tools/log.c.o: ../source/kernel/tools/log.c 
   ../source/kernel/include/tools/list.h \
   ../source/kernel/include/tools/assert.h \
   ../source/kernel/include/core/task.h \
-  ../source/kernel/include/cpu/tss.h
+  ../source/kernel/include/cpu/tss.h \
+  ../source/kernel/include/dev/console.h
 
 
 ../source/kernel/tools/log.c:

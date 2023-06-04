@@ -251,5 +251,5 @@ char *sbrk(ptrdiff_t incr) {
     args.id = SYS_sbrk;
     args.arg0 = (int)incr;
 
-    return sys_call(&args);
+    return (char*)sys_call(&args);
 }

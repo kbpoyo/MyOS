@@ -21,21 +21,20 @@ int main(int argc, char** argv) {
 
     printf("hello from shell\n");
     printf("os version: %s\n", "1.0.0");
-    printf("os version: %f\n", 15.1234);
     printf("%05d, %-5d, %d\n", 1, 2, 3);
 
-    print_msg("main pid %d", getpid());
+    printf("main pid %d", getpid());
     for (int i = 0; i < argc; ++i) {
-        print_msg("arg: %s", argv[i]);
+        printf("arg: %s\n", argv[i]);
     }
 
     int pid = fork();
     yield();
-    if (pid > 0) print_msg("parent pid=%d", pid);
-    else print_msg("chiled pid=%d", pid);
+    if (pid > 0) printf("parent pid=%d\n", pid);
+    else printf("chiled pid=%d\n", pid);
 
     for (;;) {
-        print_msg("shell pid=%d", getpid());
+        printf("shell pid=%d\n", getpid());
         msleep(1000);
     }
     

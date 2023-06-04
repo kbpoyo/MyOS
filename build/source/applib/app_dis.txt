@@ -666,7 +666,7 @@ char *sbrk(ptrdiff_t incr) {
  240:	8b 45 08             	mov    0x8(%ebp),%eax
  243:	89 45 f0             	mov    %eax,-0x10(%ebp)
 
-    return sys_call(&args);
+    return (char*)sys_call(&args);
  246:	8d 45 ec             	lea    -0x14(%ebp),%eax
  249:	50                   	push   %eax
  24a:	e8 fc ff ff ff       	call   24b <sbrk+0x18>
