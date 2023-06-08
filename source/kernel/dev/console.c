@@ -18,6 +18,7 @@
 
 static console_t console_buf[CONSOLE_NR];  // 控制台对象数组
 
+
 /**
  * @brief 获取光标位置
  *
@@ -161,6 +162,44 @@ static inline void show_char(console_t *console, char c) {
 }
 
 /**
+ * @brief 将光标左移n位
+ * 
+ * @param console 
+ * @param n 
+ * @return int 
+ */
+static inline int move_backword(console_t *console, int n) {
+  int status = -1;
+  for (int i = 0; i < n; ++i) {
+    if (console->cursor_col > 0) {  //当前光标在行中，直接左移
+      console->cursor_col--;
+      status = 0;
+    } else if (console->cursor_row > 0) { //当前光标在行开头，若当前行不为第一行则可移动到上一行末尾
+      console->cursor_row--;
+      console->cursor_col = console->display_cols - 1;
+      status = 0;
+    }
+  }
+
+  return status;
+}
+
+
+/**
+ * @brief 往左擦除一个字符
+ * 
+ * @param console 
+ */
+static inline void erase_backword(console_t *console) {
+  if (move_backword(console, 1) == 0) { //左移成功
+    show_char(console, ' ');    //用空格覆盖需要擦除的字符
+    move_backword(console, 1);  //再左移一位实现擦除
+  }
+}
+
+
+
+/**
  * @brief 清空屏幕
  *
  * @param console
@@ -192,6 +231,11 @@ int console_init(void) {
     int cursor_pos = read_cursor_pos();
     console->cursor_row = cursor_pos / console->display_cols;
     console->cursor_col = cursor_pos % console->display_cols;
+    console->old_cursor_col = console->cursor_col;
+    console->old_cursor_row = console->cursor_row;
+
+    //初始化终端写入的状态
+    console->write_state = CONSOLE_WRITE_NORMAL;
 
     // 计算每个终端在现存中的起始地址
     console->disp_base = (disp_char_t *)CONSOLE_DISP_START_ADDR +
@@ -199,6 +243,83 @@ int console_init(void) {
   }
 
   return 0;
+}
+
+
+
+/**
+ * @brief 终端写普通字符的策略
+ * 
+ * @param console 
+ * @param c 
+ */
+static inline void write_normal(console_t *console, char c) {
+   switch (c) {
+      case ASCII_ESC:
+        console->write_state = CONSOLE_WRITE_ESC;
+        break;
+      case 0x7f:  //退格
+        erase_backword(console);
+        break;
+      case '\b':  //光标左移一位
+        move_backword(console, 1);
+        break;
+      
+      case '\r':  //回车
+        move_to_col0(console);
+        break;
+      case '\n':  //换行
+        move_to_col0(console);
+        move_to_next_line(console);
+        break;
+      default:
+        if (c >= ' ' && c <= '~') {// 可显示字符的范围
+          show_char(console, c);
+        }
+        break;
+    }
+}
+
+
+/**
+ * @brief 保存光标当前位置
+ * 
+ * @param console 
+ */
+static inline void save_cursor(console_t *console) {
+  console->old_cursor_col = console->cursor_col;
+  console->old_cursor_row = console->cursor_row;
+}
+
+/**
+ * @brief 恢复光标位置
+ * 
+ * @param console 
+ */
+static inline void restore_cursor(console_t *console) {
+  console->cursor_col = console->old_cursor_col;
+  console->cursor_row = console->old_cursor_row;
+}
+
+/**
+ * @brief 终端写ESC字符的策略
+ * 
+ * @param console 
+ * @param c 
+ */
+static inline void write_esc(console_t *console, char c) {
+  switch (c) {
+  case '7':
+    save_cursor(console);
+    console->write_state = CONSOLE_WRITE_NORMAL;
+    break;
+  case '8':
+    restore_cursor(console);
+    console->write_state = CONSOLE_WRITE_NORMAL;
+  default:
+    console->write_state = CONSOLE_WRITE_NORMAL;
+    break;
+  }
 }
 
 /**
@@ -215,16 +336,17 @@ int console_write(int console, char *data, int size) {
   int len;
   for (len = 0; len < size; ++len) {
     char ch = *(data++);
-    switch (ch) {
-      case '\n':
-        move_to_col0(c);
-        move_to_next_line(c);
-        break;
-
-      default:
-        show_char(c, ch);
-        break;
+    switch (c->write_state) {
+    case CONSOLE_WRITE_NORMAL:
+      write_normal(c, ch);
+      break;
+    case CONSOLE_WRITE_ESC:
+      write_esc(c, ch);
+      break; 
+    default:
+      break;
     }
+   
   }
 
   // 更新光标的位置

@@ -19,6 +19,10 @@ int main(int argc, char** argv) {
     sbrk(4096*2 + 200);
     sbrk(4096*5 + 1234);
 
+    printf("abef\b\b\b\bcd\n");
+    printf("abcd\x7f;fg\n");
+      printf("\0337HELLO,WORLD!\0338123\n");
+
     printf("hello from shell\n");
     printf("os version: %s\n", "1.0.0");
     printf("%05d, %-5d, %d\n", 1, 2, 3);
