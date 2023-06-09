@@ -18,8 +18,10 @@
 #define CONSOLE_ROW_MAX         25  //上电之后BIOS会初始化屏幕为25行80列
 #define CONSOLE_CLO_MAX         80
 
-//对printf的字符序列做处理所预定义的宏
+//对printf的字符序列做处理所预定义的宏，escape sequence：转义字符序列
 #define ASCII_ESC               0x1b //\033
+//ESC参数的最大个数
+#define ESC_PARAM_MAX           10
 
 //封装显示的字符结构
 typedef union  _disp_char_t {
@@ -58,6 +60,7 @@ typedef struct _console_t {
     enum {
         CONSOLE_WRITE_NORMAL,   //当前终端正在写入普通字符
         CONSOLE_WRITE_ESC,      //当前终端正在写入ESC字符
+        CONSOLE_WRITE_ESC_SQUARE,   //当前终端正在写入带'['的esc序列
     }write_state;   
     disp_char_t *disp_base; //该终端对应的第一个显示位，32kb的显存可供8个屏幕显示
     uint32_t display_rows;   //显示的行数
@@ -68,6 +71,8 @@ typedef struct _console_t {
     color_t background;     //背景色
     uint32_t old_cursor_col;    //保存的光标所在行
     uint32_t old_cursor_row;    //保存的光标所在列
+    int esc_param[ESC_PARAM_MAX];  //esc序列的缓冲数组
+    int curr_param_index;           //记录当前处理的esc字符的索引
 
 }console_t;
 

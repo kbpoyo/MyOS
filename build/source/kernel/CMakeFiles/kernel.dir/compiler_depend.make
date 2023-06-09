@@ -103,6 +103,16 @@ source/kernel/CMakeFiles/kernel.dir/dev/console.c.o: ../source/kernel/dev/consol
   ../source/kernel/include/tools/klib.h \
   /usr/lib/gcc/x86_64-linux-gnu/11/include/stdarg.h
 
+source/kernel/CMakeFiles/kernel.dir/dev/keyboard.c.o: ../source/kernel/dev/keyboard.c \
+  /usr/include/stdc-predef.h \
+  ../source/kernel/include/dev/keyboard.h \
+  ../source/kernel/include/cpu/idt.h \
+  ../source/common/types.h \
+  ../source/common/exc_frame.h \
+  ../source/common/types.h \
+  ../source/kernel/include/tools/log.h \
+  ../source/common/cpu_instr.h
+
 source/kernel/CMakeFiles/kernel.dir/dev/time.c.o: ../source/kernel/dev/time.c \
   /usr/include/stdc-predef.h \
   ../source/kernel/include/dev/time.h \
@@ -194,7 +204,8 @@ source/kernel/CMakeFiles/kernel.dir/init/init.c.o: ../source/kernel/init/init.c 
   ../source/kernel/include/core/memory.h \
   ../source/kernel/include/tools/bitmap.h \
   ../source/kernel/include/ipc/mutex.h \
-  ../source/kernel/include/dev/console.h
+  ../source/kernel/include/dev/console.h \
+  ../source/kernel/include/dev/keyboard.h
 
 source/kernel/CMakeFiles/kernel.dir/ipc/mutex.c.o: ../source/kernel/ipc/mutex.c \
   /usr/include/stdc-predef.h \
@@ -286,6 +297,8 @@ source/kernel/CMakeFiles/kernel.dir/tools/log.c.o: ../source/kernel/tools/log.c 
 
 ../source/newlib/i686-elf/include/sys/_timespec.h:
 
+../source/newlib/i686-elf/include/sys/_sigset.h:
+
 ../source/kernel/tools/list.c:
 
 ../source/common/exc_frame.h:
@@ -293,6 +306,10 @@ source/kernel/CMakeFiles/kernel.dir/tools/log.c.o: ../source/kernel/tools/log.c 
 ../source/kernel/include/cpu/idt.h:
 
 ../source/newlib/i686-elf/include/sys/reent.h:
+
+../source/newlib/i686-elf/include/sys/select.h:
+
+../source/kernel/include/dev/console.h:
 
 ../source/kernel/include/cpu/syscall.h:
 
@@ -356,15 +373,7 @@ source/kernel/CMakeFiles/kernel.dir/tools/log.c.o: ../source/kernel/tools/log.c 
 
 ../source/kernel/include/core/task.h:
 
-../source/kernel/include/dev/console.h:
-
-../source/newlib/i686-elf/include/sys/select.h:
-
 ../source/kernel/include/cpu/tss.h:
-
-../source/newlib/i686-elf/include/sys/timespec.h:
-
-../source/newlib/i686-elf/include/machine/_endian.h:
 
 ../source/common/boot_info.h:
 
@@ -380,13 +389,19 @@ source/kernel/CMakeFiles/kernel.dir/tools/log.c.o: ../source/kernel/tools/log.c 
 
 ../source/newlib/i686-elf/include/machine/time.h:
 
-../source/newlib/i686-elf/include/sys/_sigset.h:
-
 ../source/kernel/cpu/syscall.c:
+
+../source/newlib/i686-elf/include/sys/timespec.h:
+
+../source/newlib/i686-elf/include/machine/_endian.h:
+
+../source/kernel/dev/keyboard.c:
 
 ../source/kernel/include/test/test.h:
 
 ../source/kernel/include/dev/time.h:
+
+../source/kernel/include/dev/keyboard.h:
 
 ../source/kernel/init/first_task.c:
 

@@ -25,6 +25,7 @@
 #include  "ipc/sem.h"
 #include "core/memory.h"
 #include "dev/console.h"
+#include "dev/keyboard.h"
 
 /**
  * @brief  对内核进行初始化操作
@@ -55,6 +56,8 @@ void kernel_init(boot_info_t* boot_info) {
     //7.初始化任务管理器
     task_manager_init();
     //初始化完成后将在汇编里重新加载内核代码段与数据段的选择子，并为内核程序分配栈空间
+
+    kbd_init();
 
 }
 

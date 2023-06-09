@@ -18,7 +18,7 @@
 #define IDT_TABLE_SIZE 256
 
 
-
+//不可屏蔽中断，即cpu预订的软中断
 //定义中断类型与中断向量表的下标绑定, 这是在 Intel 手册里面指定的，是CPU已经预定的异常
 #define IDT0_DE     0   //除0异常
 #define IDT1_DB     1
@@ -41,8 +41,11 @@
 #define IDT20_VE    20
 #define IDT21_CP    21
 
+//可屏蔽中断，即外部中断
 //定义外部中断请求对应的处理程序在IDT中的下标
-#define IRQ0_TIMER 0x20 //定时器中断请求向量号
+#define IRQ0_TIMER      0x20    //定时器中断请求向量号
+#define IRQ1_KEYBOARD   0x21    //键盘中断请求向量号
+
 
 
 //定义8259A初始化需要的宏 绑定各个端口寄存器 书p311，p315

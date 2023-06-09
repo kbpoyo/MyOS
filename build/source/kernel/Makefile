@@ -31,9 +31,6 @@ default_target: all
 
 .SUFFIXES: .hpux_make_needs_suffix_list
 
-# Produce verbose output by default.
-VERBOSE = 1
-
 # Command-line flag to silence nested $(MAKE).
 $(VERBOSE)MAKESILENT = -s
 
@@ -324,6 +321,30 @@ dev/console.s: dev/console.c.s
 dev/console.c.s:
 	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/dev/console.c.s
 .PHONY : dev/console.c.s
+
+dev/keyboard.o: dev/keyboard.c.o
+.PHONY : dev/keyboard.o
+
+# target to build an object file
+dev/keyboard.c.o:
+	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/dev/keyboard.c.o
+.PHONY : dev/keyboard.c.o
+
+dev/keyboard.i: dev/keyboard.c.i
+.PHONY : dev/keyboard.i
+
+# target to preprocess a source file
+dev/keyboard.c.i:
+	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/dev/keyboard.c.i
+.PHONY : dev/keyboard.c.i
+
+dev/keyboard.s: dev/keyboard.c.s
+.PHONY : dev/keyboard.s
+
+# target to generate assembly for a file
+dev/keyboard.c.s:
+	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/dev/keyboard.c.s
+.PHONY : dev/keyboard.c.s
 
 dev/time.o: dev/time.c.o
 .PHONY : dev/time.o
@@ -662,6 +683,9 @@ help:
 	@echo "... dev/console.o"
 	@echo "... dev/console.i"
 	@echo "... dev/console.s"
+	@echo "... dev/keyboard.o"
+	@echo "... dev/keyboard.i"
+	@echo "... dev/keyboard.s"
 	@echo "... dev/time.o"
 	@echo "... dev/time.i"
 	@echo "... dev/time.s"

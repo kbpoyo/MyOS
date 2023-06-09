@@ -71,6 +71,11 @@
 },
 {
   "directory": "/home/kbpoyo/code/cpp/MyOs/build/source/kernel",
+  "command": "/usr/bin/gcc  -I/home/kbpoyo/code/cpp/MyOs/source -I/home/kbpoyo/code/cpp/MyOs/source/kernel/include -I/home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/include -g -c -O0 -m32 -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -g -o CMakeFiles/kernel.dir/dev/keyboard.c.o -c /home/kbpoyo/code/cpp/MyOs/source/kernel/dev/keyboard.c",
+  "file": "/home/kbpoyo/code/cpp/MyOs/source/kernel/dev/keyboard.c"
+},
+{
+  "directory": "/home/kbpoyo/code/cpp/MyOs/build/source/kernel",
   "command": "/usr/bin/gcc  -I/home/kbpoyo/code/cpp/MyOs/source -I/home/kbpoyo/code/cpp/MyOs/source/kernel/include -I/home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/include -g -c -O0 -m32 -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -g -o CMakeFiles/kernel.dir/dev/time.c.o -c /home/kbpoyo/code/cpp/MyOs/source/kernel/dev/time.c",
   "file": "/home/kbpoyo/code/cpp/MyOs/source/kernel/dev/time.c"
 },
