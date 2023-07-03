@@ -587,24 +587,24 @@ int sys_getpid(void) {
  */
 int sys_fork(void) {
 
-    //获取当前进程为fork进程的父进程
+    //1.获取当前进程为fork进程的父进程
     task_t *parent_task = task_current();
 
-    //分配子进程控制块
+    //2.分配子进程控制块
     task_t *child_task = alloc_task();
     if (child_task == (task_t*)0)
         goto fork_failed;
 
-    //获取系统调用的栈帧,因为每次通过调用门进入内核栈中都只会一帧该结构体的数据，
+    //3.获取系统调用的栈帧,因为每次通过调用门进入内核栈中都只会一帧该结构体的数据，
     //所以用最高地址减去大小即可获得该帧的起始地址
     syscall_frame_t *frame = (syscall_frame_t*)(parent_task->tss.esp0 - sizeof(syscall_frame_t));
 
-    //初始子进程控制块，直接用父进程进入调用门的下一条指令地址作为子进程的入口地址
+    //4.初始子进程控制块，直接用父进程进入调用门的下一条指令地址作为子进程的入口地址
     int err = task_init(child_task, parent_task->name, frame->eip, frame->esp + sizeof(uint32_t)*SYSCALL_PARAM_COUNT, TASK_FLAGS_USER);
     if (err < 0)
         goto fork_failed;
 
-    //恢复到父进程的上下文环境
+    //5.恢复到父进程的上下文环境
     tss_t *tss = &(child_task->tss);
     //子进程执行的第一条指令就是从eax中取出系统用的返回值，即进程id，子进程固定获取0
     tss->eax = 0;   
@@ -627,11 +627,11 @@ int sys_fork(void) {
     //记录父进程地址
     child_task->parent = parent_task;
 
-    //拷贝进程虚拟页目录表和页表，即拷贝其映射关系
+    //7.拷贝进程虚拟页目录表和页表，即拷贝其映射关系
     if (memory_copy_uvm(tss->cr3, parent_task->tss.cr3) < 0)
         goto fork_failed;
 
-    //子进程控制块初始化完毕，设为可被调度态
+    //8.子进程控制块初始化完毕，设为可被调度态
     task_start(child_task);
     //反回子进程id
     return child_task->pid;

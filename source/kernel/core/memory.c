@@ -366,7 +366,6 @@ uint32_t memory_creat_uvm() {
 
 /**
  * @brief 拷贝页目录表的映射关系
- *      //TODO:提供的读共享写复制的进程拷贝操作，只能供fork系统调用使用
  * 
  * @param to_page_dir 拷贝到的目标页目录表地址
  * @param from_page_dir 被拷贝的源页目录表地址
@@ -394,24 +393,24 @@ int memory_copy_uvm(uint32_t to_page_dir, uint32_t from_page_dir) {
       uint32_t vaddr = (i << 22) | (j << 12);
       
       //6.判断当前页表项指向的页是否支持写操作
-      if (pte->v & PTE_W) { //当前页支持写操作，需进行复制操作
-        //分配一个新的页，进行拷贝
+      if (pte->v & PTE_W) { //7当前页支持写操作，需进行复制操作
+        //7.1分配一个新的页，进行拷贝
         uint32_t page = addr_alloc_page(&paddr_alloc, 1);
         if (page == 0)  //分配失败
           goto copy_uvm_failed;
         
-        //记录映射关系
+        //7.2在目标进程空间中记录映射关系
         int err = memory_creat_map((pde_t*)to_page_dir, vaddr, page, 1, get_pte_privilege(pte));
         if (err < 0)
           goto copy_uvm_failed;
         
-        //拷贝该页内容
+        //7.3将该页内容拷贝到目标进程空间中
         kernel_memcpy((void*)page, (void*)vaddr, MEM_PAGE_SIZE);
 
-      } else {  //当前页为只读页，直接共享该页即可，即只复制页表项即可
-        //获取该页的地址
+      } else {  //8.当前页为只读页，直接共享该页即可，即只复制页表项即可
+        //8.1获取该页的物理地址
         uint32_t page = pte_to_pg_addr(pte);
-        //记录映射关系
+        //8.2直接在目标进程空间中记录映射关系
         int err = memory_creat_map((pde_t*)to_page_dir, vaddr, page, 1, get_pte_privilege(pte));
         if (err < 0)
           goto copy_uvm_failed;
@@ -424,7 +423,6 @@ int memory_copy_uvm(uint32_t to_page_dir, uint32_t from_page_dir) {
 
 
 copy_uvm_failed:
-  //copy虚拟空间映射失败，以开启读共享的方式清理对应资源
   memory_destroy_uvm(to_page_dir);
   return -1;
 }
@@ -432,7 +430,6 @@ copy_uvm_failed:
 
 /**
  * @brief 销毁该页目录表对应的所有虚拟空间资源，包括映射关系与内存空间
- *        //TODO:进行了读不释放写释放的处理操作，只能供memory_copy_uvm函数失败时调用
  * 
  * @param page_dir 页目录表的地址
  * @param is_read_share 是否开启了读共享策略，1开启，0未开启
