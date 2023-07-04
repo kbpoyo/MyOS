@@ -215,8 +215,8 @@ int idt_install(const int idt_num, const idt_handler_t handler) {
 
   // 2.在IDT表中设置下标为 idt_num 的中断门,中断门描述符的 DPL <= CPL, 
   //因为中断门是cpu自己从中断描述符表中索引，也可以用 int $中断号主动触发，
-  //int $ 主动触发需要中断门描述符的DPL >= CPL
-  //所以没有请求选择子即RPL用检查因为没有
+  //int $ 主动触发需要中断门描述符的DPL >= CPL，即只能在内核态触发
+  //所以没有请求选择子即RPL不用检查，因为没有
   //若目标代码段的特权级更高则发生特权级转换
   gate_desc_set(idt_table + idt_num, KERNEL_SELECTOR_CS, (uint32_t)handler,
                 GATE_TYPE_INT | GATE_ATTR_P | GATE_ATTR_DPL_0);

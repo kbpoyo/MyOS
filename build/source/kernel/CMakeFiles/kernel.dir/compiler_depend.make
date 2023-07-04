@@ -106,12 +106,14 @@ source/kernel/CMakeFiles/kernel.dir/dev/console.c.o: ../source/kernel/dev/consol
 source/kernel/CMakeFiles/kernel.dir/dev/keyboard.c.o: ../source/kernel/dev/keyboard.c \
   /usr/include/stdc-predef.h \
   ../source/kernel/include/dev/keyboard.h \
-  ../source/kernel/include/cpu/idt.h \
   ../source/common/types.h \
+  ../source/kernel/include/cpu/idt.h \
   ../source/common/exc_frame.h \
   ../source/common/types.h \
   ../source/kernel/include/tools/log.h \
-  ../source/common/cpu_instr.h
+  ../source/common/cpu_instr.h \
+  ../source/kernel/include/tools/klib.h \
+  /usr/lib/gcc/x86_64-linux-gnu/11/include/stdarg.h
 
 source/kernel/CMakeFiles/kernel.dir/dev/time.c.o: ../source/kernel/dev/time.c \
   /usr/include/stdc-predef.h \
