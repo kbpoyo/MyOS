@@ -103,6 +103,10 @@ source/kernel/CMakeFiles/kernel.dir/dev/console.c.o: ../source/kernel/dev/consol
   ../source/kernel/include/tools/klib.h \
   /usr/lib/gcc/x86_64-linux-gnu/11/include/stdarg.h
 
+source/kernel/CMakeFiles/kernel.dir/dev/dev.c.o: ../source/kernel/dev/dev.c \
+  /usr/include/stdc-predef.h \
+  ../source/kernel/include/dev/dev.h
+
 source/kernel/CMakeFiles/kernel.dir/dev/keyboard.c.o: ../source/kernel/dev/keyboard.c \
   /usr/include/stdc-predef.h \
   ../source/kernel/include/dev/keyboard.h \
@@ -128,6 +132,11 @@ source/kernel/CMakeFiles/kernel.dir/dev/time.c.o: ../source/kernel/dev/time.c \
   ../source/kernel/include/cpu/tss.h \
   ../source/kernel/include/tools/list.h \
   ../source/kernel/include/tools/assert.h
+
+source/kernel/CMakeFiles/kernel.dir/dev/tty.c.o: ../source/kernel/dev/tty.c \
+  /usr/include/stdc-predef.h \
+  ../source/kernel/include/dev/tty.h \
+  ../source/kernel/include/dev/dev.h
 
 source/kernel/CMakeFiles/kernel.dir/fs/fs.c.o: ../source/kernel/fs/fs.c \
   /usr/include/stdc-predef.h \
@@ -299,7 +308,11 @@ source/kernel/CMakeFiles/kernel.dir/tools/log.c.o: ../source/kernel/tools/log.c 
 
 ../source/newlib/i686-elf/include/sys/_timespec.h:
 
-../source/newlib/i686-elf/include/sys/_sigset.h:
+../source/newlib/i686-elf/include/sys/_stdint.h:
+
+../source/kernel/init/init.h:
+
+../source/newlib/i686-elf/include/sys/types.h:
 
 ../source/kernel/tools/list.c:
 
@@ -308,6 +321,10 @@ source/kernel/CMakeFiles/kernel.dir/tools/log.c.o: ../source/kernel/tools/log.c 
 ../source/kernel/include/cpu/idt.h:
 
 ../source/newlib/i686-elf/include/sys/reent.h:
+
+../source/newlib/i686-elf/include/sys/_sigset.h:
+
+../source/kernel/include/dev/tty.h:
 
 ../source/newlib/i686-elf/include/sys/select.h:
 
@@ -339,8 +356,6 @@ source/kernel/CMakeFiles/kernel.dir/tools/log.c.o: ../source/kernel/tools/log.c 
 
 ../source/kernel/include/tools/bitmap.h:
 
-../source/newlib/i686-elf/include/sys/_stdint.h:
-
 ../source/kernel/include/cpu/gate.h:
 
 ../source/kernel/include/os_cfg.h:
@@ -354,6 +369,8 @@ source/kernel/CMakeFiles/kernel.dir/tools/log.c.o: ../source/kernel/tools/log.c 
 ../source/kernel/tools/bitmap.c:
 
 ../source/kernel/core/task.c:
+
+../source/kernel/include/dev/dev.h:
 
 ../source/kernel/include/cpu/mmu.h:
 
@@ -369,6 +386,12 @@ source/kernel/CMakeFiles/kernel.dir/tools/log.c.o: ../source/kernel/tools/log.c 
 
 ../source/newlib/i686-elf/include/time.h:
 
+../source/newlib/i686-elf/include/machine/endian.h:
+
+../source/newlib/i686-elf/include/sys/lock.h:
+
+../source/kernel/include/tools/list.h:
+
 ../source/applib/lib_syscall.h:
 
 /usr/include/stdc-predef.h:
@@ -381,8 +404,6 @@ source/kernel/CMakeFiles/kernel.dir/tools/log.c.o: ../source/kernel/tools/log.c 
 
 ../source/kernel/cpu/gdt.c:
 
-../source/kernel/include/tools/klib.h:
-
 ../source/newlib/i686-elf/include/sys/cdefs.h:
 
 ../source/kernel/init/init.c:
@@ -392,6 +413,14 @@ source/kernel/CMakeFiles/kernel.dir/tools/log.c.o: ../source/kernel/tools/log.c 
 ../source/newlib/i686-elf/include/machine/time.h:
 
 ../source/kernel/cpu/syscall.c:
+
+../source/kernel/dev/dev.c:
+
+../source/newlib/i686-elf/include/sys/_timeval.h:
+
+../source/kernel/core/memory.c:
+
+../source/newlib/i686-elf/include/sys/stat.h:
 
 ../source/newlib/i686-elf/include/sys/timespec.h:
 
@@ -405,17 +434,15 @@ source/kernel/CMakeFiles/kernel.dir/tools/log.c.o: ../source/kernel/tools/log.c 
 
 ../source/kernel/include/dev/keyboard.h:
 
+../source/kernel/include/tools/klib.h:
+
+../source/kernel/dev/tty.c:
+
 ../source/kernel/init/first_task.c:
 
 ../source/kernel/dev/time.c:
 
 ../source/newlib/i686-elf/include/machine/ieeefp.h:
-
-../source/newlib/i686-elf/include/sys/_timeval.h:
-
-../source/kernel/core/memory.c:
-
-../source/newlib/i686-elf/include/sys/stat.h:
 
 ../source/newlib/i686-elf/include/_newlib_version.h:
 
@@ -428,13 +455,3 @@ source/kernel/CMakeFiles/kernel.dir/tools/log.c.o: ../source/kernel/tools/log.c 
 ../source/newlib/i686-elf/include/machine/_default_types.h:
 
 ../source/newlib/i686-elf/include/machine/_types.h:
-
-../source/kernel/init/init.h:
-
-../source/newlib/i686-elf/include/sys/types.h:
-
-../source/newlib/i686-elf/include/sys/lock.h:
-
-../source/kernel/include/tools/list.h:
-
-../source/newlib/i686-elf/include/machine/endian.h:

@@ -31,9 +31,6 @@ default_target: all
 
 .SUFFIXES: .hpux_make_needs_suffix_list
 
-# Produce verbose output by default.
-VERBOSE = 1
-
 # Command-line flag to silence nested $(MAKE).
 $(VERBOSE)MAKESILENT = -s
 
@@ -325,6 +322,30 @@ dev/console.c.s:
 	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/dev/console.c.s
 .PHONY : dev/console.c.s
 
+dev/dev.o: dev/dev.c.o
+.PHONY : dev/dev.o
+
+# target to build an object file
+dev/dev.c.o:
+	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/dev/dev.c.o
+.PHONY : dev/dev.c.o
+
+dev/dev.i: dev/dev.c.i
+.PHONY : dev/dev.i
+
+# target to preprocess a source file
+dev/dev.c.i:
+	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/dev/dev.c.i
+.PHONY : dev/dev.c.i
+
+dev/dev.s: dev/dev.c.s
+.PHONY : dev/dev.s
+
+# target to generate assembly for a file
+dev/dev.c.s:
+	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/dev/dev.c.s
+.PHONY : dev/dev.c.s
+
 dev/keyboard.o: dev/keyboard.c.o
 .PHONY : dev/keyboard.o
 
@@ -372,6 +393,30 @@ dev/time.s: dev/time.c.s
 dev/time.c.s:
 	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/dev/time.c.s
 .PHONY : dev/time.c.s
+
+dev/tty.o: dev/tty.c.o
+.PHONY : dev/tty.o
+
+# target to build an object file
+dev/tty.c.o:
+	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/dev/tty.c.o
+.PHONY : dev/tty.c.o
+
+dev/tty.i: dev/tty.c.i
+.PHONY : dev/tty.i
+
+# target to preprocess a source file
+dev/tty.c.i:
+	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/dev/tty.c.i
+.PHONY : dev/tty.c.i
+
+dev/tty.s: dev/tty.c.s
+.PHONY : dev/tty.s
+
+# target to generate assembly for a file
+dev/tty.c.s:
+	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/dev/tty.c.s
+.PHONY : dev/tty.c.s
 
 fs/fs.o: fs/fs.c.o
 .PHONY : fs/fs.o
@@ -686,12 +731,18 @@ help:
 	@echo "... dev/console.o"
 	@echo "... dev/console.i"
 	@echo "... dev/console.s"
+	@echo "... dev/dev.o"
+	@echo "... dev/dev.i"
+	@echo "... dev/dev.s"
 	@echo "... dev/keyboard.o"
 	@echo "... dev/keyboard.i"
 	@echo "... dev/keyboard.s"
 	@echo "... dev/time.o"
 	@echo "... dev/time.i"
 	@echo "... dev/time.s"
+	@echo "... dev/tty.o"
+	@echo "... dev/tty.i"
+	@echo "... dev/tty.s"
 	@echo "... fs/fs.o"
 	@echo "... fs/fs.i"
 	@echo "... fs/fs.s"

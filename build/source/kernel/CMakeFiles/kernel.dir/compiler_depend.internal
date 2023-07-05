@@ -111,6 +111,11 @@ source/kernel/CMakeFiles/kernel.dir/dev/console.c.o
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/tools/klib.h
  /usr/lib/gcc/x86_64-linux-gnu/11/include/stdarg.h
 
+source/kernel/CMakeFiles/kernel.dir/dev/dev.c.o
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/dev/dev.c
+ /usr/include/stdc-predef.h
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/include/dev/dev.h
+
 source/kernel/CMakeFiles/kernel.dir/dev/keyboard.c.o
  /home/kbpoyo/code/cpp/MyOs/source/kernel/dev/keyboard.c
  /usr/include/stdc-predef.h
@@ -138,6 +143,12 @@ source/kernel/CMakeFiles/kernel.dir/dev/time.c.o
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/cpu/tss.h
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/tools/list.h
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/tools/assert.h
+
+source/kernel/CMakeFiles/kernel.dir/dev/tty.c.o
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/dev/tty.c
+ /usr/include/stdc-predef.h
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/include/dev/tty.h
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/include/dev/dev.h
 
 source/kernel/CMakeFiles/kernel.dir/fs/fs.c.o
  /home/kbpoyo/code/cpp/MyOs/source/kernel/fs/fs.c

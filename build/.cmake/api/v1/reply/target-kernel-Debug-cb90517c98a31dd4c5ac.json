@@ -75,7 +75,7 @@
 			"sourceIndexes" : 
 			[
 				0,
-				34
+				38
 			]
 		},
 		{
@@ -114,16 +114,18 @@
 				9,
 				10,
 				11,
-				33,
-				35,
+				12,
+				13,
 				37,
-				38,
 				39,
-				40,
 				41,
 				42,
 				43,
-				44
+				44,
+				45,
+				46,
+				47,
+				48
 			]
 		}
 	],
@@ -164,7 +166,7 @@
 			"sourceIndexes" : 
 			[
 				0,
-				34
+				38
 			]
 		},
 		{
@@ -182,24 +184,24 @@
 				9,
 				10,
 				11,
-				33,
-				35,
+				12,
+				13,
 				37,
-				38,
 				39,
-				40,
 				41,
 				42,
 				43,
-				44
+				44,
+				45,
+				46,
+				47,
+				48
 			]
 		},
 		{
 			"name" : "Header Files",
 			"sourceIndexes" : 
 			[
-				12,
-				13,
 				14,
 				15,
 				16,
@@ -219,7 +221,11 @@
 				30,
 				31,
 				32,
-				36
+				33,
+				34,
+				35,
+				36,
+				40
 			]
 		}
 	],
@@ -282,6 +288,12 @@
 		{
 			"backtrace" : 1,
 			"compileGroupIndex" : 1,
+			"path" : "source/kernel/dev/dev.c",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 1,
 			"path" : "source/kernel/dev/keyboard.c",
 			"sourceGroupIndex" : 1
 		},
@@ -289,6 +301,12 @@
 			"backtrace" : 1,
 			"compileGroupIndex" : 1,
 			"path" : "source/kernel/dev/time.c",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 1,
+			"path" : "source/kernel/dev/tty.c",
 			"sourceGroupIndex" : 1
 		},
 		{
@@ -344,12 +362,22 @@
 		},
 		{
 			"backtrace" : 1,
+			"path" : "source/kernel/include/dev/dev.h",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 1,
 			"path" : "source/kernel/include/dev/keyboard.h",
 			"sourceGroupIndex" : 2
 		},
 		{
 			"backtrace" : 1,
 			"path" : "source/kernel/include/dev/time.h",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 1,
+			"path" : "source/kernel/include/dev/tty.h",
 			"sourceGroupIndex" : 2
 		},
 		{

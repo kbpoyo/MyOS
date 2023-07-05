@@ -154,6 +154,6 @@ void pic_send_eoi(int irq_num);
 typedef uint32_t idt_state_t;
 
 idt_state_t idt_enter_protection(void);
-idt_state_t idt_leave_protection(idt_state_t state);
+void idt_leave_protection(idt_state_t state);
 
 #endif

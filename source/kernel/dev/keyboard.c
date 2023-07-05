@@ -108,6 +108,7 @@ static void do_normal_key(uint8_t key_code) {
     char key = get_key(key_code);
     int is_make = is_make_code(key_code);
 
+    //处理对应按键
     switch (key) {
         case KEY_RSHIFT:
             kbd_state.rshift_press = is_make ? 1 : 0;
@@ -154,7 +155,7 @@ static void do_normal_key(uint8_t key_code) {
         case KEY_F12:
             break;
 
-        default:    //key的值可被映射
+        default:    //处理可被映射的非功能键
             if (is_make) {
                     if (kbd_state.rshift_press || kbd_state.lshift_press) {
                         //shift功能键已被按下，获取该键的对应值
@@ -233,13 +234,13 @@ void do_handler_kbd(exception_frame_t *frame) {
     //2.端口数据已准备好，读取数据端口
     uint8_t key_code = inb(KBD_PORT_DATA);
 
-    //因为ICW4的EOI位为0，所以要手动发送EOI即中断结束信号
+    //3.因为ICW4的EOI位为0，所以要手动发送EOI即中断结束信号
     pic_send_eoi(IRQ1_KEYBOARD);
 
-    //根据接受的键值原码的第一个字节，判断当前接收的原码的状态
-    if (key_code == KEY_E0) {
+    //4.根据接受的键值原码的第一个字节，判断当前接收的原码的状态
+    if (key_code == KEY_E0) {   //第一个字节为0xE0,代表还有后续字节
         recv_state = BEGIN_E0;
-    } else if (key_code == KEY_E1) {
+    } else if (key_code == KEY_E1) {    //第一个字节为0xE1，代表还有后续字节
         recv_state = BEGIN_E1;
     } else {
         switch (recv_state) {
