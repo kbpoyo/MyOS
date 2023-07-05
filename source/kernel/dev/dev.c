@@ -10,7 +10,7 @@
  */
 
 #include "dev/dev.h"
-#include "idt.h"
+#include "cpu/idt.h"
 #define DEV_TABLE_SIZE  128
 
 //声明外部的tty设备描述结构
@@ -73,6 +73,13 @@ int dev_open(int dev_type, int dev_code, void *data) {
 
         //用该设备描述结构打开该设备
         int err = desc->open(free_dev);
+        if (err == 0) { //打开成功
+            free_dev->open_count = 1;
+            idt_leave_protection(state);
+            //返回设备描述符
+            return free_dev - dev_table;
+
+        }
     }
 
     idt_leave_protection(state);

@@ -105,7 +105,9 @@ source/kernel/CMakeFiles/kernel.dir/dev/console.c.o: ../source/kernel/dev/consol
 
 source/kernel/CMakeFiles/kernel.dir/dev/dev.c.o: ../source/kernel/dev/dev.c \
   /usr/include/stdc-predef.h \
-  ../source/kernel/include/dev/dev.h
+  ../source/kernel/include/dev/dev.h \
+  ../source/kernel/include/cpu/idt.h \
+  ../source/common/types.h
 
 source/kernel/CMakeFiles/kernel.dir/dev/keyboard.c.o: ../source/kernel/dev/keyboard.c \
   /usr/include/stdc-predef.h \
