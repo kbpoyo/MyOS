@@ -9,4 +9,9 @@ source/kernel/CMakeFiles/kernel.dir/fs/fs.c.o: \
  /home/kbpoyo/code/cpp/MyOs/source/common/types.h \
  /home/kbpoyo/code/cpp/MyOs/source/common/boot_info.h \
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/dev/console.h \
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/include/dev/tty.h \
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/include/ipc/sem.h \
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/include/tools/list.h \
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/include/tools/assert.h \
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/include/dev/dev.h \
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/tools/log.h

@@ -12,12 +12,12 @@
 #include "dev/console.h"
 
 #include "common/cpu_instr.h"
+#include "dev/tty.h"
 #include "tools/klib.h"
 
-#define CONSOLE_NR 1  // 控制台个数
+#define CONSOLE_NR 8  // 控制台个数
 
 static console_t console_buf[CONSOLE_NR];  // 控制台对象数组
-
 
 /**
  * @brief 获取光标位置
@@ -43,9 +43,10 @@ static inline int read_cursor_pos(void) {
  * @return int
  */
 static inline int update_cursor_pos(console_t *console) {
-  uint16_t pos =
-      console->cursor_row * console->display_cols + console->cursor_col + 
-      ((uint32_t)console->disp_base - CONSOLE_DISP_START_ADDR) / sizeof(disp_char_t);
+  uint16_t pos = console->cursor_row * console->display_cols +
+                 console->cursor_col +
+                 ((uint32_t)console->disp_base - CONSOLE_DISP_START_ADDR) /
+                     sizeof(disp_char_t);
 
   // 光标位置由两个字节组成
   outb(0x3d4, 0xf);  // 访问低8位
@@ -164,18 +165,19 @@ static inline void show_char(console_t *console, char c) {
 
 /**
  * @brief 将光标左移n位
- * 
- * @param console 
- * @param n 
- * @return int 
+ *
+ * @param console
+ * @param n
+ * @return int
  */
 static inline int move_backword(console_t *console, int n) {
   int status = -1;
   for (int i = 0; i < n; ++i) {
-    if (console->cursor_col > 0) {  //当前光标在行中，直接左移
+    if (console->cursor_col > 0) {  // 当前光标在行中，直接左移
       console->cursor_col--;
       status = 0;
-    } else if (console->cursor_row > 0) { //当前光标在行开头，若当前行不为第一行则可移动到上一行末尾
+    } else if (console->cursor_row >
+               0) {  // 当前光标在行开头，若当前行不为第一行则可移动到上一行末尾
       console->cursor_row--;
       console->cursor_col = console->display_cols - 1;
       status = 0;
@@ -185,20 +187,17 @@ static inline int move_backword(console_t *console, int n) {
   return status;
 }
 
-
 /**
  * @brief 往左擦除一个字符
- * 
- * @param console 
+ *
+ * @param console
  */
 static inline void erase_backword(console_t *console) {
-  if (move_backword(console, 1) == 0) { //左移成功
-    show_char(console, ' ');    //用空格覆盖需要擦除的字符
-    move_backword(console, 1);  //再左移一位实现擦除
+  if (move_backword(console, 1) == 0) {  // 左移成功
+    show_char(console, ' ');             // 用空格覆盖需要擦除的字符
+    move_backword(console, 1);           // 再左移一位实现擦除
   }
 }
-
-
 
 /**
  * @brief 清空屏幕
@@ -221,84 +220,80 @@ static inline void clear_display(console_t *console) {
  * @return int
  */
 int console_init(int index) {
+  // 获取对应console，并进行初始化
+  console_t *console = console_buf + index;
+  console->display_rows = CONSOLE_ROW_MAX;
+  console->display_cols = CONSOLE_CLO_MAX;
+  console->foreground = COLOR_White;
+  console->background = COLOR_Black;
 
-    //获取对应console，并进行初始化
-    console_t *console = console_buf + index;
-    console->display_rows = CONSOLE_ROW_MAX;
-    console->display_cols = CONSOLE_CLO_MAX;
-    console->foreground = COLOR_White;
-    console->background = COLOR_Black;
+  // 初始化光标位置
+  if (index == 0) {  // 保留bios在第一个console的输出信息
+    int cursor_pos = read_cursor_pos();
+    console->cursor_row = cursor_pos / console->display_cols;
+    console->cursor_col = cursor_pos % console->display_cols;
+  } else {  // 清空其它console，并将光标放在起始位置
+    console->cursor_col = 0;
+    console->cursor_row = 0;
+    clear_display(console);
+    update_cursor_pos(console);
+  }
 
-    // 初始化光标位置
-    if (index == 0) {//保留bios在第一个console的输出信息
-      int cursor_pos = read_cursor_pos();
-      console->cursor_row = cursor_pos / console->display_cols;
-      console->cursor_col = cursor_pos % console->display_cols;
-    } else {//清空其它console，并将光标放在起始位置
-      console->cursor_col = 0;
-      console->cursor_row = 0;
-      clear_display(console);
-      update_cursor_pos(console);
-    }
-  
-    //初始化上一次光标位置
-    console->old_cursor_col = console->cursor_col;
-    console->old_cursor_row = console->cursor_row;
+  // 初始化上一次光标位置
+  console->old_cursor_col = console->cursor_col;
+  console->old_cursor_row = console->cursor_row;
 
-    //初始化esc序列的参数数组
-    kernel_memset(console->esc_param, 0, sizeof(int) * ESC_PARAM_MAX);
-    console->curr_param_index = 0;
+  // 初始化esc序列的参数数组
+  kernel_memset(console->esc_param, 0, sizeof(int) * ESC_PARAM_MAX);
+  console->curr_param_index = 0;
 
-    //初始化终端写入的状态
-    console->write_state = CONSOLE_WRITE_NORMAL;
+  // 初始化终端写入的状态
+  console->write_state = CONSOLE_WRITE_NORMAL;
 
-    // 计算每个终端在现存中的起始地址
-    console->disp_base = (disp_char_t *)CONSOLE_DISP_START_ADDR +
-                         (index * CONSOLE_CLO_MAX * CONSOLE_ROW_MAX);
+  // 计算每个终端在现存中的起始地址
+  console->disp_base = (disp_char_t *)CONSOLE_DISP_START_ADDR +
+                       (index * CONSOLE_CLO_MAX * CONSOLE_ROW_MAX);
 
   return 0;
 }
 
-
-
 /**
  * @brief 终端写普通字符的策略
- * 
- * @param console 
- * @param c 
+ *
+ * @param console
+ * @param c
  */
 static inline void write_normal(console_t *console, char c) {
-   switch (c) {
-      case ASCII_ESC:
-        console->write_state = CONSOLE_WRITE_ESC;
-        break;
-      case 0x7f:  //退格
-        erase_backword(console);
-        break;
-      case '\b':  //光标左移一位
-        move_backword(console, 1);
-        break;
-      
-      case '\r':  //回车
-        move_to_col0(console);
-        break;
-      case '\n':  //换行
-        move_to_col0(console);
-        move_to_next_line(console);
-        break;
-      default:
-        if (c >= ' ' && c <= '~') {// 可显示字符的范围
-          show_char(console, c);
-        }
-        break;
-    }
-}
+  switch (c) {
+    case ASCII_ESC:
+      console->write_state = CONSOLE_WRITE_ESC;
+      break;
+    case 0x7f:  // 退格
+      erase_backword(console);
+      break;
+    case '\b':  // 光标左移一位
+      move_backword(console, 1);
+      break;
 
+    case '\r':  // 回车
+      move_to_col0(console);
+      break;
+    case '\n':  // 换行
+      move_to_col0(console);
+      move_to_next_line(console);
+      break;
+    default:
+      if (c >= ' ' && c <= '~') {  // 可显示字符的范围
+        show_char(console, c);
+      }
+      break;
+  }
+}
 
 /**
  * @brief 保存光标当前位置
- * 
- * @param console 
+ *
+ * @param console
  */
 static inline void save_cursor(console_t *console) {
   console->old_cursor_col = console->cursor_col;
@@ -307,8 +302,8 @@ static inline void save_cursor(console_t *console) {
 
 /**
  * @brief 恢复光标位置
- * 
- * @param console 
+ *
+ * @param console
  */
 static inline void restore_cursor(console_t *console) {
   console->cursor_col = console->old_cursor_col;
@@ -317,8 +312,8 @@ static inline void restore_cursor(console_t *console) {
 
 /**
  * @brief 清空esc参数缓冲数组
- * 
- * @param console 
+ *
+ * @param console
  */
 static inline void clear_esc_param(console_t *console) {
   kernel_memset(console->esc_param, 0, sizeof(int) * ESC_PARAM_MAX);
@@ -327,40 +322,38 @@ static inline void clear_esc_param(console_t *console) {
 
 /**
  * @brief 终端写ESC字符的策略
- * 
- * @param console 
- * @param c 
+ *
+ * @param console
+ * @param c
  */
 static inline void write_esc(console_t *console, char c) {
   switch (c) {
-  case '[':
-    clear_esc_param(console);
-    console->write_state = CONSOLE_WRITE_ESC_SQUARE;
-    break;
-  case '7':
-    save_cursor(console);
-    console->write_state = CONSOLE_WRITE_NORMAL;
-    break;
-  case '8':
-    restore_cursor(console);
-    console->write_state = CONSOLE_WRITE_NORMAL;
-  default:
-    console->write_state = CONSOLE_WRITE_NORMAL;
-    break;
+    case '[':
+      clear_esc_param(console);
+      console->write_state = CONSOLE_WRITE_ESC_SQUARE;
+      break;
+    case '7':
+      save_cursor(console);
+      console->write_state = CONSOLE_WRITE_NORMAL;
+      break;
+    case '8':
+      restore_cursor(console);
+      console->write_state = CONSOLE_WRITE_NORMAL;
+    default:
+      console->write_state = CONSOLE_WRITE_NORMAL;
+      break;
   }
 }
 
-
 /**
  * @brief 根据esc参数设置字符的风格
- * 
- * @param console 
+ *
+ * @param console
  */
 static inline void set_font_style(console_t *console) {
-  static const color_t color_table[] = {
-    COLOR_Black, COLOR_Red, COLOR_Green, COLOR_Yellow,
-    COLOR_Blue, COLOR_Magenta, COLOR_Cyan, COLOR_White
-  };
+  static const color_t color_table[] = {COLOR_Black,  COLOR_Red,  COLOR_Green,
+                                        COLOR_Yellow, COLOR_Blue, COLOR_Magenta,
+                                        COLOR_Cyan,   COLOR_White};
   for (int i = 0; i <= console->curr_param_index; ++i) {
     int param = console->esc_param[i];
     if (param >= 30 && param <= 37) {
@@ -372,22 +365,21 @@ static inline void set_font_style(console_t *console) {
     } else if (param == 49) {
       console->background = COLOR_Black;
     }
-
   }
 }
 
 /**
  * @brief 擦除屏幕指定区域
- * 
- * @param console 
+ *
+ * @param console
  */
-static inline void erase_in_display(console_t * console) {
+static inline void erase_in_display(console_t *console) {
   if (console->curr_param_index < 0) {
     return;
   }
 
   int param = console->esc_param[0];
-  if (param == 2) { //擦除整个屏幕
+  if (param == 2) {  // 擦除整个屏幕
     erase_rows(console, 0, console->display_rows - 1);
     console->cursor_col = 0;
     console->cursor_row = 0;
@@ -396,23 +388,22 @@ static inline void erase_in_display(console_t * console) {
 
 /**
  * @brief 移动光标到指定位置
- * 
- * @param console 
+ *
+ * @param console
  */
 static inline void move_cursor(console_t *console) {
   console->cursor_row = console->esc_param[0];
   console->cursor_col = console->esc_param[1];
 }
 
-
 /**
  * @brief 将光标左移n位
- * 
- * @param console 
- * @param n 
+ *
+ * @param console
+ * @param n
  */
 static inline void move_left(console_t *console, int n) {
-  if (n == 0) { //默认至少移动一位
+  if (n == 0) {  // 默认至少移动一位
     n = 1;
   }
 
@@ -422,58 +413,57 @@ static inline void move_left(console_t *console, int n) {
 
 /**
  * @brief 将光标右移n位
- * 
- * @param console 
- * @param n 
+ *
+ * @param console
+ * @param n
  */
 static inline void move_right(console_t *console, int n) {
-  if (n == 0) { //默认至少移动一位
+  if (n == 0) {  // 默认至少移动一位
     n = 1;
   }
 
   int col = console->cursor_col + n;
-  console->cursor_col = (col >= console->display_cols) ? console->display_cols - 1 : col;
+  console->cursor_col =
+      (col >= console->display_cols) ? console->display_cols - 1 : col;
 }
 
 /**
  * @brief 在终端console中写入esc序列
- * 
- * @param console 
- * @param c 
+ *
+ * @param console
+ * @param c
  */
 static inline void write_esc_square(console_t *console, char c) {
-
-  if (c >= '0' && c <= '9') { //解析出序列的参数
+  if (c >= '0' && c <= '9') {  // 解析出序列的参数
     int *param = &console->esc_param[console->curr_param_index];
-    *param = (*param)*10 + c - '0';
-  } else if (c == ';' && console->curr_param_index < ESC_PARAM_MAX){ //解析完一个参数，索引加1
+    *param = (*param) * 10 + c - '0';
+  } else if (c == ';' && console->curr_param_index <
+                             ESC_PARAM_MAX) {  // 解析完一个参数，索引加1
     console->curr_param_index++;
-  } else {  //用序列结束符判断需要进行的操作
+  } else {  // 用序列结束符判断需要进行的操作
     switch (c) {
-    case 'm': //设置字体的风格
-      set_font_style(console);
-      break;
-    case 'D': //光标左移
-      move_left(console, console->esc_param[0]);
-      break;
-    case 'C': //光标右移
-      move_right(console, console->esc_param[0]);
-      break;
-    case 'H': //移动光标到指定位置
-      move_cursor(console);
-      break;
-    case 'J': //擦除屏幕指定区域
-      erase_in_display(console);
-    default:
-      break;
+      case 'm':  // 设置字体的风格
+        set_font_style(console);
+        break;
+      case 'D':  // 光标左移
+        move_left(console, console->esc_param[0]);
+        break;
+      case 'C':  // 光标右移
+        move_right(console, console->esc_param[0]);
+        break;
+      case 'H':  // 移动光标到指定位置
+        move_cursor(console);
+        break;
+      case 'J':  // 擦除屏幕指定区域
+        erase_in_display(console);
+      default:
+        break;
     }
 
-    //执行完操作，将状态机切换回写普通字符模式
+    // 执行完操作，将状态机切换回写普通字符模式
     console->write_state = CONSOLE_WRITE_NORMAL;
   }
 }
-
-
 
 /**
  * @brief 向console控制台写入data字符串
@@ -483,30 +473,42 @@ static inline void write_esc_square(console_t *console, char c) {
  * @param size 字符串大小
  * @return int
  */
-int console_write(int console, char *data, int size) {
+int console_write(tty_t *tty) {
   // 获取需要需要写入的终端
-  console_t *c = console_buf + console;
-  int len;
-  for (len = 0; len < size; ++len) {
-    char ch = *(data++);
-    switch (c->write_state) {
-    case CONSOLE_WRITE_NORMAL:
-      write_normal(c, ch);
-      break;
-    case CONSOLE_WRITE_ESC:
-      write_esc(c, ch);
-      break; 
-    case CONSOLE_WRITE_ESC_SQUARE:
-      write_esc_square(c, ch);
-      break;
-    default:
+  console_t *console = console_buf + tty->console_index;
+  int len = 0;
+
+  //在tty的缓冲队列中读取一个字符写入终端
+  do {
+    char c;
+    int err = tty_fifo_get(&tty->in_fifo, &c);
+    if (err < 0) {
       break;
     }
-   
-  }
+
+    //成功消耗掉缓冲区一个字节资源后，对资源进行释放
+    sem_notify(&tty->out_sem);
+
+    //写入字符
+    switch (console->write_state) {
+      case CONSOLE_WRITE_NORMAL:  //写普通字符
+        write_normal(console, c);
+        break;
+      case CONSOLE_WRITE_ESC: //写ESC序列
+        write_esc(console, c);
+        break;
+      case CONSOLE_WRITE_ESC_SQUARE:  //写入带'['的esc序列
+        write_esc_square(console, c);
+        break;
+      default:
+        break;
+    }
+
+    len++;
+  } while (1);
 
   // 更新光标的位置
-  update_cursor_pos(c);
+  update_cursor_pos(console);
   return len;
 }
 

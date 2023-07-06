@@ -14,6 +14,7 @@
 #include "common/cpu_instr.h"
 #include "common/boot_info.h"
 #include "dev/console.h"
+#include "dev/dev.h"
 
 //定义缓冲区位置，用于暂存从磁盘中读取的文件内容
 #define TEMP_ADDR   (120*1024*1024)
@@ -117,7 +118,12 @@ int sys_write(int file, char *ptr, int len) {
     if (file == 1) {
         //ptr[len] = '\0';
         //log_printf("%s", ptr);
-        console_write(0, ptr, len);
+        //console_write(0, ptr, len);
+       
+        int dev_id = dev_open(DEV_TTY, 0, (void*)0);
+        dev_write(dev_id, 0, ptr, len);
+        dev_close(dev_id);
+
     }
     return -1;
 }

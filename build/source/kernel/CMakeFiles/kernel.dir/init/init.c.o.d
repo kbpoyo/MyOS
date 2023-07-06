@@ -23,4 +23,5 @@ source/kernel/CMakeFiles/kernel.dir/init/init.c.o: \
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/tools/bitmap.h \
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/ipc/mutex.h \
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/dev/console.h \
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/include/dev/tty.h \
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/dev/keyboard.h

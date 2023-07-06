@@ -20,6 +20,8 @@ source/kernel/CMakeFiles/kernel.dir/core/memory.c.o
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/cpu/mmu.h
  /home/kbpoyo/code/cpp/MyOs/source/common/cpu_instr.h
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/dev/console.h
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/include/dev/tty.h
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/include/ipc/sem.h
 
 source/kernel/CMakeFiles/kernel.dir/core/task.c.o
  /home/kbpoyo/code/cpp/MyOs/source/kernel/core/task.c
@@ -106,6 +108,10 @@ source/kernel/CMakeFiles/kernel.dir/dev/console.c.o
  /usr/include/stdc-predef.h
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/dev/console.h
  /home/kbpoyo/code/cpp/MyOs/source/common/types.h
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/include/dev/tty.h
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/include/ipc/sem.h
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/include/tools/list.h
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/include/tools/assert.h
  /home/kbpoyo/code/cpp/MyOs/source/common/cpu_instr.h
  /home/kbpoyo/code/cpp/MyOs/source/common/types.h
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/tools/klib.h
@@ -152,6 +158,9 @@ source/kernel/CMakeFiles/kernel.dir/dev/tty.c.o
  /home/kbpoyo/code/cpp/MyOs/source/kernel/dev/tty.c
  /usr/include/stdc-predef.h
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/dev/tty.h
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/include/ipc/sem.h
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/include/tools/list.h
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/include/tools/assert.h
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/dev/dev.h
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/tools/log.h
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/dev/keyboard.h
@@ -169,6 +178,11 @@ source/kernel/CMakeFiles/kernel.dir/fs/fs.c.o
  /home/kbpoyo/code/cpp/MyOs/source/common/types.h
  /home/kbpoyo/code/cpp/MyOs/source/common/boot_info.h
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/dev/console.h
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/include/dev/tty.h
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/include/ipc/sem.h
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/include/tools/list.h
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/include/tools/assert.h
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/include/dev/dev.h
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/tools/log.h
 
 source/kernel/CMakeFiles/kernel.dir/init/first_task.c.o
@@ -239,6 +253,7 @@ source/kernel/CMakeFiles/kernel.dir/init/init.c.o
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/tools/bitmap.h
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/ipc/mutex.h
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/dev/console.h
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/include/dev/tty.h
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/dev/keyboard.h
 
 source/kernel/CMakeFiles/kernel.dir/ipc/mutex.c.o
@@ -317,5 +332,7 @@ source/kernel/CMakeFiles/kernel.dir/tools/log.c.o
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/core/task.h
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/cpu/tss.h
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/dev/console.h
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/include/dev/tty.h
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/include/ipc/sem.h
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/dev/dev.h
 

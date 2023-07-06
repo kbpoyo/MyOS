@@ -14,4 +14,6 @@ source/kernel/CMakeFiles/kernel.dir/tools/log.c.o: \
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/core/task.h \
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/cpu/tss.h \
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/dev/console.h \
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/include/dev/tty.h \
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/include/ipc/sem.h \
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/dev/dev.h

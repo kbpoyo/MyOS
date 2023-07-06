@@ -35,17 +35,17 @@ void kernel_init(boot_info_t* boot_info) {
     //1.判断是否检测到可用内存
     ASSERT(boot_info->ram_region_count != 0);
     
-    //2.初始化日志程序,便于后期调用
-    log_init();
-
-    //3.初始化内存管理
-    memory_init(boot_info);  
-
-    //4.初始化并重新加载GDT表
+    //2.初始化并重新加载GDT表
     gdt_init();
 
-    //5.初始化并加载中断描述符表IDT
+    //3.初始化并加载中断描述符表IDT
     idt_init();
+
+    //4.初始化日志程序,便于后期调用
+    log_init();
+
+    //5.初始化内存管理
+    memory_init(boot_info);  
 
     //6.初始化定时器的中断处理
     time_init();

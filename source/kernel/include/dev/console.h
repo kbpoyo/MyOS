@@ -12,6 +12,7 @@
 #ifndef CONSOLE_H
 #define CONSOLE_H
 #include "common/types.h"
+#include "dev/tty.h"
 
 #define CONSOLE_DISP_START_ADDR 0xb8000 //现存空间的起始地址
 #define CONSOLE_DISP_END_ADDR   (0xb8000 + 32*1024)   //现存空间的结束地址
@@ -78,7 +79,7 @@ typedef struct _console_t {
 
 
 int console_init(int index);
-int console_write(int console, char *data, int size);
+int console_write(tty_t *tty);
 void console_close(int console);
 
 #endif
