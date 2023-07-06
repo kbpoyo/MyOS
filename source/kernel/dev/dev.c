@@ -11,6 +11,9 @@
 
 #include "dev/dev.h"
 #include "cpu/idt.h"
+#include "tools/klib.h"
+
+//定义设备表大小
 #define DEV_TABLE_SIZE  128
 
 //声明外部的tty设备描述结构
@@ -18,12 +21,32 @@ extern dev_desc_t dev_tty_desc;
 
 //设备描述结构表，用来获取某一类型设备的操作方法
 static dev_desc_t *dev_des_table[] = {
-    &dev_tty_desc,
+    [DEV_TTY] = &dev_tty_desc,
 };
 
 //设备表，用于获取特定设备
 static device_t dev_table[DEV_TABLE_SIZE];
 
+
+/**
+ * @brief 根据设备id判断设备是否存在
+ * 
+ * @param dev_id 
+ * @return int 
+ */
+static int is_dev_exist(int dev_id) {
+    //dev_id越界，设备不存在
+    if (dev_id < 0 || dev_id >= DEV_TABLE_SIZE) {
+        return 0;
+    }
+    
+    //设备空间未初始化，设备不存在
+    if (dev_table[dev_id].open_count == 0 || dev_table[dev_id].desc == (dev_desc_t*)0) {
+        return 0;
+    }
+
+    return 1;
+}
 
 
 /**
@@ -46,6 +69,7 @@ int dev_open(int dev_type, int dev_code, void *data) {
         if (dev->open_count == 0) { 
             //需要打开的设备未打开过，为该设备分配空间
             free_dev = dev;
+            break;
         } else if (dev->desc->dev_type == dev_type && dev->dev_code == dev->dev_code) {
             //设备已打开过,增加打开次数
             dev->open_count++;
@@ -87,6 +111,7 @@ int dev_open(int dev_type, int dev_code, void *data) {
 }
 
 
+
 /**
  * @brief 读取设备
  * 
@@ -97,7 +122,14 @@ int dev_open(int dev_type, int dev_code, void *data) {
  * @return int 成功读取大小
  */
 int dev_read(int dev_id, int addr, char *buf, int size) {
-    return size;
+    //设备不存在，直接返回-1
+    if (!is_dev_exist(dev_id)) {
+        return -1;
+    }
+
+    //获取设备，并通过其描述结构的操作接口进行真正的读操作
+    device_t *dev = dev_table + dev_id;
+    return dev->desc->read(dev, addr, buf, size);
 }
 
 /**
@@ -110,7 +142,14 @@ int dev_read(int dev_id, int addr, char *buf, int size) {
  * @return int 成功写入大小
  */
 int dev_write(int dev_id, int addr, char *buf, int size)  {
-    return size;
+    //设备不存在，直接返回-1
+    if (!is_dev_exist(dev_id)) {
+        return -1;
+    }
+
+    //获取设备，并通过其描述结构的操作接口进行真正的写操作
+    device_t *dev = dev_table + dev_id;
+    return dev->desc->write(dev, addr, buf, size);
 }
 
 /**
@@ -123,7 +162,14 @@ int dev_write(int dev_id, int addr, char *buf, int size)  {
  * @return int 
  */
 int dev_control(int dev_id, int cmd, int arg0, int arg1) {
-    return 0;
+    //设备不存在，直接返回-1
+    if (!is_dev_exist(dev_id)) {
+        return -1;
+    }
+
+    //获取设备，并通过其描述结构的操作接口进行真正的控制操作
+    device_t *dev = dev_table + dev_id;
+    return dev->desc->control(dev, cmd, arg0, arg1);
 }
 
 /**
@@ -132,5 +178,22 @@ int dev_control(int dev_id, int cmd, int arg0, int arg1) {
  * @param dev_id 设备描述符
  */
 void dev_close(int dev_id) {
+    //设备不存在，直接返回-1
+    if (!is_dev_exist(dev_id)) {
+        return;
+    }
 
+    //获取设备，并通过其描述结构的操作接口进行真正的关闭操作
+    device_t *dev = dev_table + dev_id;
+    
+    //释放资源
+    idt_state_t state = idt_enter_protection();
+    if (--dev->open_count == 0) {   //该设备已不被操作系统引用，可以关闭
+        //关闭设备
+        dev->desc->close(dev);
+        //释放设备空间资源
+        kernel_memset(dev, 0, sizeof(device_t));
+    }
+
+    idt_leave_protection(state);
 }

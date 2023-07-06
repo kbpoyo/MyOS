@@ -17,12 +17,16 @@
 #include "cpu/idt.h"
 #include "ipc/mutex.h"
 #include "dev/console.h"
+#include "dev/dev.h"
 
 //宏配置，是否使用串口输出日志信息
 #define LOG_USE_COM 0
 
 //定义互斥锁保护输出资源，确保输出为原子操作
 static mutex_t mutex;
+
+//日志打印需要的设备id
+static int log_dev_id;
 
 /**
  * @brief  初始化串行端口寄存器COM1
@@ -42,6 +46,9 @@ void log_init(void) {
 #endif 
     //初始化互斥锁
     mutex_init(&mutex);
+
+    //打开一个tty设备用于日志打印
+    log_dev_id = dev_open(DEV_TTY, 0, (void*)0);
 }
 
 /**
@@ -82,9 +89,12 @@ void log_printf(const char *formate, ...) {
     outb(COM1_PORT, '\n');
 
 #else
-    console_write(0, str_buf, kernel_strlen(str_buf));
+    //console_write(0, str_buf, kernel_strlen(str_buf));
+    //tty设备在显示器上写入时是根据当前光标位置来的，所以不需要传入addr参数
+    dev_write(log_dev_id, 0, str_buf, kernel_strlen(str_buf));
     char c = '\n';
-    console_write(0, &c, 1); 
+    dev_write(log_dev_id, 0, &c, 1);
+    //console_write(0, &c, 1); 
 #endif
 
     //执行完毕，将资源离开临界资源保护区，(cpu开中断)

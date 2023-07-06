@@ -107,7 +107,9 @@ source/kernel/CMakeFiles/kernel.dir/dev/dev.c.o: ../source/kernel/dev/dev.c \
   /usr/include/stdc-predef.h \
   ../source/kernel/include/dev/dev.h \
   ../source/kernel/include/cpu/idt.h \
-  ../source/common/types.h
+  ../source/common/types.h \
+  ../source/kernel/include/tools/klib.h \
+  /usr/lib/gcc/x86_64-linux-gnu/11/include/stdarg.h
 
 source/kernel/CMakeFiles/kernel.dir/dev/keyboard.c.o: ../source/kernel/dev/keyboard.c \
   /usr/include/stdc-predef.h \
@@ -287,7 +289,8 @@ source/kernel/CMakeFiles/kernel.dir/tools/log.c.o: ../source/kernel/tools/log.c 
   ../source/kernel/include/tools/assert.h \
   ../source/kernel/include/core/task.h \
   ../source/kernel/include/cpu/tss.h \
-  ../source/kernel/include/dev/console.h
+  ../source/kernel/include/dev/console.h \
+  ../source/kernel/include/dev/dev.h
 
 
 ../source/kernel/tools/log.c:
