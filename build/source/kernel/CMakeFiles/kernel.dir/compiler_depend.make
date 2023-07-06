@@ -140,7 +140,11 @@ source/kernel/CMakeFiles/kernel.dir/dev/time.c.o: ../source/kernel/dev/time.c \
 source/kernel/CMakeFiles/kernel.dir/dev/tty.c.o: ../source/kernel/dev/tty.c \
   /usr/include/stdc-predef.h \
   ../source/kernel/include/dev/tty.h \
-  ../source/kernel/include/dev/dev.h
+  ../source/kernel/include/dev/dev.h \
+  ../source/kernel/include/tools/log.h \
+  ../source/kernel/include/dev/keyboard.h \
+  ../source/common/types.h \
+  ../source/kernel/include/dev/console.h
 
 source/kernel/CMakeFiles/kernel.dir/fs/fs.c.o: ../source/kernel/fs/fs.c \
   /usr/include/stdc-predef.h \

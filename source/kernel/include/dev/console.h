@@ -77,7 +77,7 @@ typedef struct _console_t {
 }console_t;
 
 
-int console_init(void);
+int console_init(int index);
 int console_write(int console, char *data, int size);
 void console_close(int console);
 

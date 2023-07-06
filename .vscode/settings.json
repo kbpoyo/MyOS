@@ -23,7 +23,8 @@
         "boot.h": "c",
         "stdio.h": "c",
         "stat.h": "c",
-        "console.h": "c"
+        "console.h": "c",
+        "tty.h": "c"
     },
     "todo-tree.tree.scanMode": "workspace only",
     "editor.fontSize": 16,

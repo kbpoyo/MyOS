@@ -38,9 +38,6 @@ void kernel_init(boot_info_t* boot_info) {
     //2.初始化日志程序,便于后期调用
     log_init();
 
-    //3.初始化控制台
-    console_init();
-    
     //3.初始化内存管理
     memory_init(boot_info);  
 
@@ -56,9 +53,6 @@ void kernel_init(boot_info_t* boot_info) {
     //7.初始化任务管理器
     task_manager_init();
     //初始化完成后将在汇编里重新加载内核代码段与数据段的选择子，并为内核程序分配栈空间
-
-    kbd_init();
-
 }
 
 

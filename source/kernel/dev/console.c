@@ -44,7 +44,8 @@ static inline int read_cursor_pos(void) {
  */
 static inline int update_cursor_pos(console_t *console) {
   uint16_t pos =
-      console->cursor_row * console->display_cols + console->cursor_col;
+      console->cursor_row * console->display_cols + console->cursor_col + 
+      ((uint32_t)console->disp_base - CONSOLE_DISP_START_ADDR) / sizeof(disp_char_t);
 
   // 光标位置由两个字节组成
   outb(0x3d4, 0xf);  // 访问低8位
@@ -219,18 +220,28 @@ static inline void clear_display(console_t *console) {
  *
  * @return int
  */
-int console_init(void) {
-  for (int i = 0; i < CONSOLE_NR; ++i) {
-    console_t *console = console_buf + i;
+int console_init(int index) {
+
+    //获取对应console，并进行初始化
+    console_t *console = console_buf + index;
     console->display_rows = CONSOLE_ROW_MAX;
     console->display_cols = CONSOLE_CLO_MAX;
     console->foreground = COLOR_White;
     console->background = COLOR_Black;
 
     // 初始化光标位置
-    int cursor_pos = read_cursor_pos();
-    console->cursor_row = cursor_pos / console->display_cols;
-    console->cursor_col = cursor_pos % console->display_cols;
+    if (index == 0) {//保留bios在第一个console的输出信息
+      int cursor_pos = read_cursor_pos();
+      console->cursor_row = cursor_pos / console->display_cols;
+      console->cursor_col = cursor_pos % console->display_cols;
+    } else {//清空其它console，并将光标放在起始位置
+      console->cursor_col = 0;
+      console->cursor_row = 0;
+      clear_display(console);
+      update_cursor_pos(console);
+    }
+  
+    //初始化上一次光标位置
     console->old_cursor_col = console->cursor_col;
     console->old_cursor_row = console->cursor_row;
 
@@ -243,8 +254,7 @@ int console_init(void) {
 
     // 计算每个终端在现存中的起始地址
     console->disp_base = (disp_char_t *)CONSOLE_DISP_START_ADDR +
-                         (i * CONSOLE_CLO_MAX * CONSOLE_ROW_MAX);
-  }
+                         (index * CONSOLE_CLO_MAX * CONSOLE_ROW_MAX);
 
   return 0;
 }

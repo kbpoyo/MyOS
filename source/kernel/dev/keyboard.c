@@ -205,10 +205,13 @@ static void do_e0_key(uint8_t key_code) {
  * 
  */
 void kbd_init(void) {
-    idt_install(IRQ1_KEYBOARD, (idt_handler_t)exception_handler_kbd);
-    idt_enable(IRQ1_KEYBOARD);
-    kernel_memset(&kbd_state, 0, sizeof(kbd_state));
-    
+    static uint8_t is_inited = 0;
+    if (!is_inited)  {
+        idt_install(IRQ1_KEYBOARD, (idt_handler_t)exception_handler_kbd);
+        idt_enable(IRQ1_KEYBOARD);
+        kernel_memset(&kbd_state, 0, sizeof(kbd_state));
+        is_inited = 1;
+    }
 }
 
 /**
