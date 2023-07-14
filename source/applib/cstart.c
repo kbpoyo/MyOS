@@ -22,7 +22,7 @@ void cstart(int argc, char **argv) {
     //对程序的bss段进行清零操作
     char *start = __bss_start__;
     while (start < __bss_end__) {
-        *(start++);
+        *(start++) = 0;
     }
     
     main(argc, argv);

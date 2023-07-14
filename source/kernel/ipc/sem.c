@@ -22,7 +22,7 @@
  */
 void sem_init(sem_t *sem, int init_count) {
     ASSERT(sem != (sem_t*)0);
-    sem->count = 0;
+    sem->count = init_count;
     list_init(&sem->wait_list);
 }
 
@@ -68,6 +68,7 @@ void sem_notify(sem_t *sem) {
         list_node_t *node = list_remove_first(&sem->wait_list);
         task_t *task = list_node_parent(node, task_t, wait_node);
         task_set_ready(task);
+        task_switch();
     } else {
         sem->count++;
     }

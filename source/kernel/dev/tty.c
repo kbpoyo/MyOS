@@ -105,11 +105,12 @@ int tty_open(device_t *dev) {
 
     tty_t *tty = tty_table + index;
     //初始化输入输出缓冲队列
-    tty_fifo_init(&tty->in_fifo, tty->in_buf, TTY_IBUF_SIZE);
     tty_fifo_init(&tty->out_fifo, tty->out_buf, TTY_OBUF_SIZE);
+    tty_fifo_init(&tty->in_fifo, tty->in_buf, 0);
 
     //初始化缓冲区的信号量, 缓冲区的每一个字节都视为资源
     sem_init(&tty->out_sem, TTY_OBUF_SIZE);
+    sem_init(&tty->in_sem, 0);
 
     //为tty设备绑定输出终端
     tty->console_index = index;

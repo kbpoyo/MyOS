@@ -40,7 +40,7 @@ void kernel_init(boot_info_t* boot_info) {
 
     //3.初始化并加载中断描述符表IDT
     idt_init();
-
+ 
     //4.初始化日志程序,便于后期调用
     log_init();
 
@@ -49,9 +49,10 @@ void kernel_init(boot_info_t* boot_info) {
 
     //6.初始化定时器的中断处理
     time_init();
-
+    
     //7.初始化任务管理器
     task_manager_init();
+   
     //初始化完成后将在汇编里重新加载内核代码段与数据段的选择子，并为内核程序分配栈空间
 }
 

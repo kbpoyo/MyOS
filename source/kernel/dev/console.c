@@ -481,7 +481,7 @@ int console_write(tty_t *tty) {
   //在tty的缓冲队列中读取一个字符写入终端
   do {
     char c;
-    int err = tty_fifo_get(&tty->in_fifo, &c);
+    int err = tty_fifo_get(&tty->out_fifo, &c);
     if (err < 0) {
       break;
     }

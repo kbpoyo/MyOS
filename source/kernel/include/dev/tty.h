@@ -32,7 +32,8 @@ typedef struct _tty_t {
     int console_index;  //tty对应的终端的索引
     tty_fifo_t out_fifo;    //输出缓存队列
     tty_fifo_t in_fifo;     //输入缓存队列
-    sem_t out_sem;  //输出信号量，这东西应该配合硬件的中断程序用，单进程不需要
+    sem_t out_sem;  //输出缓冲区信号量，这东西应该配合硬件的中断程序用，单进程不需要
+    sem_t in_sem;   //输入缓冲区信号量，
     char out_buf[TTY_OBUF_SIZE];    //输入缓存
     char in_buf[TTY_IBUF_SIZE];     //输出缓存
 }tty_t;

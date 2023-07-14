@@ -356,6 +356,7 @@ task_t *task_first_task(void) {
  */
 void task_set_ready(task_t *task) {
     ASSERT(task != (task_t*)0);
+    // if (task == (task_t*)0) return;
     //1.将任务插入到就绪队列的尾部
     list_insert_last(&task_manager.ready_list, &task->ready_node);
 
@@ -371,6 +372,7 @@ void task_set_ready(task_t *task) {
  */
 void task_set_unready(task_t *task) {
     ASSERT(task != (task_t*)0);
+    // if (task == (task_t*)0) return;
     list_remove(&task_manager.ready_list, &task->ready_node);
     task->state = TASK_CREATED;
 }

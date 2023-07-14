@@ -14,6 +14,8 @@
 void list_insert_first(list_t *list, list_node_t *node) {
     ASSERT(list != (list_t *)0 && node != (list_node_t*)0);
 
+    // if (node == (list_node_t*)0) return;
+
     node->next = list->first;
     node->pre = (list_node_t*)0;
 
@@ -29,6 +31,7 @@ void list_insert_first(list_t *list, list_node_t *node) {
 
 void list_insert_last(list_t *list, list_node_t *node) {
     ASSERT(list != (list_t *)0 && node != (list_node_t*)0);
+    // if (node == (list_node_t*)0) return;
 
     node->pre = list->last;
     node->next = (list_node_t*)0;
@@ -47,6 +50,7 @@ void list_insert_last(list_t *list, list_node_t *node) {
 
 list_node_t* list_remove_first(list_t *list){
     ASSERT(list != (list_t *)0);
+
     if (list_is_empty(list)) {
         return (list_node_t*)0;
     }
@@ -68,6 +72,7 @@ list_node_t* list_remove_first(list_t *list){
 
 list_node_t* list_remove_last(list_t *list) {
     ASSERT(list != (list_t *)0);
+
      if (list_is_empty(list)) {
         return (list_node_t*)0;
     }

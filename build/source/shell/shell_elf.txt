@@ -10,7 +10,7 @@ ELF Header:
   Version:                           0x1
   Entry point address:               0x810001d5
   Start of program headers:          52 (bytes into file)
-  Start of section headers:          165328 (bytes into file)
+  Start of section headers:          165332 (bytes into file)
   Flags:                             0x0
   Size of this header:               52 (bytes)
   Size of program headers:           32 (bytes)
@@ -29,15 +29,15 @@ Section Headers:
   [ 5] .debug_info       PROGBITS        00000000 0065cc 01594b 00      0   0  1
   [ 6] .debug_abbrev     PROGBITS        00000000 01bf17 004ca2 00      0   0  1
   [ 7] .debug_aranges    PROGBITS        00000000 020bc0 000530 00      0   0  8
-  [ 8] .debug_line       PROGBITS        00000000 0210f0 0031ac 00      0   0  1
-  [ 9] .debug_str        PROGBITS        00000000 02429c 001121 01  MS  0   0  1
-  [10] .debug_line_str   PROGBITS        00000000 0253bd 000efb 01  MS  0   0  1
-  [11] .comment          PROGBITS        00000000 0262b8 00003f 01  MS  0   0  1
-  [12] .debug_frame      PROGBITS        00000000 0262f8 000fe8 00      0   0  4
-  [13] .debug_rnglists   PROGBITS        00000000 0272e0 00004e 00      0   0  1
-  [14] .symtab           SYMTAB          00000000 027330 000b30 10     15  69  4
-  [15] .strtab           STRTAB          00000000 027e60 0006c3 00      0   0  1
-  [16] .shstrtab         STRTAB          00000000 028523 0000aa 00      0   0  1
+  [ 8] .debug_line       PROGBITS        00000000 0210f0 0031af 00      0   0  1
+  [ 9] .debug_str        PROGBITS        00000000 02429f 001121 01  MS  0   0  1
+  [10] .debug_line_str   PROGBITS        00000000 0253c0 000efb 01  MS  0   0  1
+  [11] .comment          PROGBITS        00000000 0262bb 00003f 01  MS  0   0  1
+  [12] .debug_frame      PROGBITS        00000000 0262fc 000fe8 00      0   0  4
+  [13] .debug_rnglists   PROGBITS        00000000 0272e4 00004e 00      0   0  1
+  [14] .symtab           SYMTAB          00000000 027334 000b30 10     15  69  4
+  [15] .strtab           STRTAB          00000000 027e64 0006c3 00      0   0  1
+  [16] .shstrtab         STRTAB          00000000 028527 0000aa 00      0   0  1
 Key to Flags:
   W (write), A (alloc), X (execute), M (merge), S (strings), I (info),
   L (link order), O (extra OS processing required), G (group), T (TLS),
@@ -134,10 +134,10 @@ Symbol table '.symtab' contains 179 entries:
     68: 00000000     0 FILE    LOCAL  DEFAULT  ABS isattyr.c
     69: 8100472e    64 FUNC    GLOBAL DEFAULT    1 _isatty_r
     70: 8100432a    55 FUNC    GLOBAL DEFAULT    1 cleanup_glue
-    71: 810004d0   214 FUNC    GLOBAL DEFAULT    1 _puts_r
+    71: 810004d3   214 FUNC    GLOBAL DEFAULT    1 _puts_r
     72: 81004088    70 FUNC    GLOBAL DEFAULT    1 _lseek_r
-    73: 8100031b    27 FUNC    GLOBAL DEFAULT    1 yield
-    74: 8100049b    53 FUNC    GLOBAL DEFAULT    1 printf
+    73: 8100031e    27 FUNC    GLOBAL DEFAULT    1 yield
+    74: 8100049e    53 FUNC    GLOBAL DEFAULT    1 printf
     75: 8100457a   119 FUNC    GLOBAL DEFAULT    1 _wcrtomb_r
     76: 81003193    74 FUNC    GLOBAL DEFAULT    1 __sseek
     77: 8100093e   153 FUNC    GLOBAL DEFAULT    1 __sinit
@@ -150,13 +150,13 @@ Symbol table '.symtab' contains 179 entries:
     84: 810046eb    67 FUNC    GLOBAL DEFAULT    1 _fstat_r
     85: 81005650     4 OBJECT  GLOBAL DEFAULT    4 errno
     86: 8100312e    10 FUNC    GLOBAL DEFAULT    1 __seofread
-    87: 810002ee    45 FUNC    GLOBAL DEFAULT    1 execve
-    88: 81000290    27 FUNC    GLOBAL DEFAULT    1 getpid
+    87: 810002f1    45 FUNC    GLOBAL DEFAULT    1 execve
+    88: 81000293    27 FUNC    GLOBAL DEFAULT    1 getpid
     89: 81001b18     0 NOTYPE  GLOBAL DEFAULT    1 memcpy
     90: 81000903    33 FUNC    GLOBAL DEFAULT    1 _cleanup_r
-    91: 810005a6    28 FUNC    GLOBAL DEFAULT    1 puts
-    92: 8100046e    45 FUNC    GLOBAL DEFAULT    1 _printf_r
-    93: 81000405    33 FUNC    GLOBAL DEFAULT    1 isatty
+    91: 810005a9    28 FUNC    GLOBAL DEFAULT    1 puts
+    92: 81000471    45 FUNC    GLOBAL DEFAULT    1 _printf_r
+    93: 81000408    33 FUNC    GLOBAL DEFAULT    1 isatty
     94: 81005600     4 OBJECT  GLOBAL DEFAULT    4 __malloc_top_pad
     95: 810055e0     0 NOTYPE  GLOBAL DEFAULT    4 __bss_start__
     96: 81000a4b  1182 FUNC    GLOBAL DEFAULT    1 __sfvwrite_r
@@ -165,15 +165,15 @@ Symbol table '.symtab' contains 179 entries:
     99: 81003516   263 FUNC    GLOBAL DEFAULT    1 _fclose_r
    100: 810038b8    57 FUNC    GLOBAL DEFAULT    1 fflush
    101: 81005604     4 OBJECT  GLOBAL DEFAULT    4 __malloc_max_sbr[...]
-   102: 810003d8    45 FUNC    GLOBAL DEFAULT    1 lseek
+   102: 810003db    45 FUNC    GLOBAL DEFAULT    1 lseek
    103: 8100488c     4 OBJECT  GLOBAL DEFAULT    2 _global_impure_ptr
    104: 810027d0  2266 FUNC    GLOBAL DEFAULT    1 _realloc_r
    105: 81003a07    87 FUNC    GLOBAL DEFAULT    1 _fputwc_r
    106: 81000a03    36 FUNC    GLOBAL DEFAULT    1 __fp_lock_all
    107: 81004361   352 FUNC    GLOBAL DEFAULT    1 _reclaim_reent
-   108: 8100038a    45 FUNC    GLOBAL DEFAULT    1 write
-   109: 81000426    39 FUNC    GLOBAL DEFAULT    1 fstat
-   110: 8100021a    76 FUNC    GLOBAL DEFAULT    1 sys_call
+   108: 8100038d    45 FUNC    GLOBAL DEFAULT    1 write
+   109: 81000429    39 FUNC    GLOBAL DEFAULT    1 fstat
+   110: 8100021d    76 FUNC    GLOBAL DEFAULT    1 sys_call
    111: 81001dc3   168 FUNC    GLOBAL DEFAULT    1 __sfputs_r
    112: 810009d7     6 FUNC    GLOBAL DEFAULT    1 __sfp_lock_acquire
    113: 81001a80     0 NOTYPE  GLOBAL DEFAULT    1 memchr
@@ -183,20 +183,20 @@ Symbol table '.symtab' contains 179 entries:
    117: 81004055    20 FUNC    GLOBAL DEFAULT    1 __locale_mb_cur_max
    118: 8100544c     4 OBJECT  GLOBAL DEFAULT    3 __malloc_sbrk_base
    119: 810001d5     0 NOTYPE  GLOBAL DEFAULT    1 _start
-   120: 8100035d    45 FUNC    GLOBAL DEFAULT    1 read
+   120: 81000360    45 FUNC    GLOBAL DEFAULT    1 read
    121: 81005620    40 OBJECT  GLOBAL DEFAULT    4 __malloc_current[...]
-   122: 8100046e    45 FUNC    GLOBAL DEFAULT    1 _iprintf_r
+   122: 81000471    45 FUNC    GLOBAL DEFAULT    1 _iprintf_r
    123: 810034d6    64 FUNC    GLOBAL DEFAULT    1 _close_r
-   124: 810002d3    27 FUNC    GLOBAL DEFAULT    1 fork
+   124: 810002d6    27 FUNC    GLOBAL DEFAULT    1 fork
    125: 8100337b   347 FUNC    GLOBAL DEFAULT    1 __swsetup_r
    126: 810007b6   333 FUNC    GLOBAL DEFAULT    1 __sfp
    127: 81005040  1032 OBJECT  GLOBAL DEFAULT    3 __malloc_av_
    128: 810009e9     6 FUNC    GLOBAL DEFAULT    1 __sinit_lock_release
    129: 810030ea    68 FUNC    GLOBAL DEFAULT    1 __sread
    130: 81001c75     6 FUNC    GLOBAL DEFAULT    1 __malloc_lock
-   131: 8100044d    33 FUNC    GLOBAL DEFAULT    1 sbrk
+   131: 81000450    33 FUNC    GLOBAL DEFAULT    1 sbrk
    132: 81003860    88 FUNC    GLOBAL DEFAULT    1 _fflush_r
-   133: 810001e5    53 FUNC    GLOBAL DEFAULT    1 cstart
+   133: 810001e5    56 FUNC    GLOBAL DEFAULT    1 cstart
    134: 81001bed     0 NOTYPE  GLOBAL DEFAULT    1 memset
    135: 81000000   469 FUNC    GLOBAL DEFAULT    1 main
    136: 81005608     4 OBJECT  GLOBAL DEFAULT    4 __malloc_max_tot[...]
@@ -210,7 +210,7 @@ Symbol table '.symtab' contains 179 entries:
    144: 81003e81   353 FUNC    GLOBAL DEFAULT    1 _malloc_trim_r
    145: 810044c1   165 FUNC    GLOBAL DEFAULT    1 strcmp
    146: 81001e6b    37 FUNC    GLOBAL DEFAULT    1 vfiprintf
-   147: 8100049b    53 FUNC    GLOBAL DEFAULT    1 iprintf
+   147: 8100049e    53 FUNC    GLOBAL DEFAULT    1 iprintf
    148: 8100564c     4 OBJECT  GLOBAL DEFAULT    4 _PathLocale
    149: 81003335    70 FUNC    GLOBAL DEFAULT    1 _write_r
    150: 81004069    31 FUNC    GLOBAL DEFAULT    1 setlocale
@@ -219,7 +219,7 @@ Symbol table '.symtab' contains 179 entries:
    153: 8100363a   550 FUNC    GLOBAL DEFAULT    1 __sflush_r
    154: 8100428c    88 FUNC    GLOBAL DEFAULT    1 __ascii_mbtowc
    155: 81000a27    36 FUNC    GLOBAL DEFAULT    1 __fp_unlock_all
-   156: 810002ab    40 FUNC    GLOBAL DEFAULT    1 print_msg
+   156: 810002ae    40 FUNC    GLOBAL DEFAULT    1 print_msg
    157: 810041bb   147 FUNC    GLOBAL DEFAULT    1 __swhatbuf_r
    158: 81003957   176 FUNC    GLOBAL DEFAULT    1 __fputwc
    159: 81003138    91 FUNC    GLOBAL DEFAULT    1 __swrite
@@ -231,13 +231,13 @@ Symbol table '.symtab' contains 179 entries:
    165: 810040ce   237 FUNC    GLOBAL DEFAULT    1 __smakebuf_r
    166: 810005d0     0 NOTYPE  GLOBAL DEFAULT    1 strlen
    167: 81002381  1103 FUNC    GLOBAL DEFAULT    1 _printf_i
-   168: 81000336    39 FUNC    GLOBAL DEFAULT    1 open
+   168: 81000339    39 FUNC    GLOBAL DEFAULT    1 open
    169: 81001c81   220 FUNC    GLOBAL DEFAULT    1 __sprint_r
    170: 81004684    36 FUNC    GLOBAL DEFAULT    1 _wctomb_r
    171: 81001e90   854 FUNC    GLOBAL DEFAULT    1 _vfprintf_r
-   172: 81000266    42 FUNC    GLOBAL DEFAULT    1 msleep
+   172: 81000269    42 FUNC    GLOBAL DEFAULT    1 msleep
    173: 810045f1   127 FUNC    GLOBAL DEFAULT    1 wcrtomb
-   174: 810003b7    33 FUNC    GLOBAL DEFAULT    1 close
+   174: 810003ba    33 FUNC    GLOBAL DEFAULT    1 close
    175: 81005460   364 OBJECT  GLOBAL DEFAULT    3 __global_locale
    176: 81001e6b    37 FUNC    GLOBAL DEFAULT    1 vfprintf
    177: 81003a5e    72 FUNC    GLOBAL DEFAULT    1 fputwc

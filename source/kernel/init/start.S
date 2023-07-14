@@ -67,6 +67,7 @@ gdt_reload:
     .bss
 //comm命令支持其他程序访问该空间，lcommo不支持
 //指定stack标号在运行时的内存空间大小为KERNEL_STACK_SIZE
+//相当于为stack变量分配KERNEL_STACK_SIZE大小的内存
 .comm stack, KERNEL_STACK_SIZE 
 
 
