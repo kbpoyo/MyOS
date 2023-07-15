@@ -30,7 +30,7 @@ typedef struct  _file_t {
     int ref;    //文件打开次数
     int dev_id; //文件对应的设备id
     int pos;    //记录当前文件读取的位置
-    int mod;    //文件的读写模式
+    int mode;    //文件的读写模式
 }file_t;
 
 

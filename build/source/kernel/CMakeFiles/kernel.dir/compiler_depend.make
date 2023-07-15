@@ -11,6 +11,7 @@ source/kernel/CMakeFiles/kernel.dir/core/memory.c.o: ../source/kernel/core/memor
   ../source/kernel/include/tools/assert.h \
   ../source/kernel/include/core/task.h \
   ../source/kernel/include/cpu/tss.h \
+  ../source/kernel/include/fs/file.h \
   ../source/common/boot_info.h \
   ../source/common/types.h \
   ../source/kernel/include/tools/log.h \
@@ -29,6 +30,7 @@ source/kernel/CMakeFiles/kernel.dir/core/task.c.o: ../source/kernel/core/task.c 
   ../source/kernel/include/cpu/tss.h \
   ../source/kernel/include/tools/list.h \
   ../source/kernel/include/tools/assert.h \
+  ../source/kernel/include/fs/file.h \
   ../source/kernel/include/tools/klib.h \
   /usr/lib/gcc/x86_64-linux-gnu/11/include/stdarg.h \
   ../source/kernel/include/tools/log.h \
@@ -64,6 +66,7 @@ source/kernel/CMakeFiles/kernel.dir/cpu/gdt.c.o: ../source/kernel/cpu/gdt.c \
   ../source/kernel/include/tools/assert.h \
   ../source/kernel/include/core/task.h \
   ../source/kernel/include/cpu/tss.h \
+  ../source/kernel/include/fs/file.h \
   ../source/kernel/include/os_cfg.h
 
 source/kernel/CMakeFiles/kernel.dir/cpu/idt.c.o: ../source/kernel/cpu/idt.c \
@@ -91,6 +94,7 @@ source/kernel/CMakeFiles/kernel.dir/cpu/syscall.c.o: ../source/kernel/cpu/syscal
   ../source/kernel/include/tools/assert.h \
   ../source/kernel/include/core/task.h \
   ../source/kernel/include/cpu/tss.h \
+  ../source/kernel/include/fs/file.h \
   ../source/common/boot_info.h \
   ../source/common/types.h \
   ../source/kernel/include/tools/log.h \
@@ -141,7 +145,8 @@ source/kernel/CMakeFiles/kernel.dir/dev/time.c.o: ../source/kernel/dev/time.c \
   ../source/kernel/include/core/task.h \
   ../source/kernel/include/cpu/tss.h \
   ../source/kernel/include/tools/list.h \
-  ../source/kernel/include/tools/assert.h
+  ../source/kernel/include/tools/assert.h \
+  ../source/kernel/include/fs/file.h
 
 source/kernel/CMakeFiles/kernel.dir/dev/tty.c.o: ../source/kernel/dev/tty.c \
   /usr/include/stdc-predef.h \
@@ -183,6 +188,8 @@ source/kernel/CMakeFiles/kernel.dir/fs/fs.c.o: ../source/kernel/fs/fs.c \
   ../source/kernel/include/tools/list.h \
   ../source/kernel/include/tools/assert.h \
   ../source/kernel/include/dev/dev.h \
+  ../source/kernel/include/core/task.h \
+  ../source/kernel/include/cpu/tss.h \
   ../source/kernel/include/tools/log.h
 
 source/kernel/CMakeFiles/kernel.dir/init/first_task.c.o: ../source/kernel/init/first_task.c \
@@ -193,6 +200,7 @@ source/kernel/CMakeFiles/kernel.dir/init/first_task.c.o: ../source/kernel/init/f
   ../source/kernel/include/cpu/tss.h \
   ../source/kernel/include/tools/list.h \
   ../source/kernel/include/tools/assert.h \
+  ../source/kernel/include/fs/file.h \
   ../source/applib/lib_syscall.h \
   ../source/kernel/include/cpu/syscall.h \
   ../source/kernel/include/os_cfg.h \
@@ -242,6 +250,7 @@ source/kernel/CMakeFiles/kernel.dir/init/init.c.o: ../source/kernel/init/init.c 
   ../source/kernel/include/core/task.h \
   ../source/kernel/include/cpu/tss.h \
   ../source/kernel/include/tools/list.h \
+  ../source/kernel/include/fs/file.h \
   ../source/kernel/include/os_cfg.h \
   ../source/kernel/include/test/test.h \
   ../source/kernel/include/tools/klib.h \
@@ -263,6 +272,7 @@ source/kernel/CMakeFiles/kernel.dir/ipc/mutex.c.o: ../source/kernel/ipc/mutex.c 
   ../source/kernel/include/core/task.h \
   ../source/common/types.h \
   ../source/kernel/include/cpu/tss.h \
+  ../source/kernel/include/fs/file.h \
   ../source/kernel/include/cpu/idt.h
 
 source/kernel/CMakeFiles/kernel.dir/ipc/sem.c.o: ../source/kernel/ipc/sem.c \
@@ -273,6 +283,7 @@ source/kernel/CMakeFiles/kernel.dir/ipc/sem.c.o: ../source/kernel/ipc/sem.c \
   ../source/kernel/include/core/task.h \
   ../source/common/types.h \
   ../source/kernel/include/cpu/tss.h \
+  ../source/kernel/include/fs/file.h \
   ../source/kernel/include/cpu/idt.h
 
 source/kernel/CMakeFiles/kernel.dir/test/test.c.o: ../source/kernel/test/test.c \
@@ -322,6 +333,7 @@ source/kernel/CMakeFiles/kernel.dir/tools/log.c.o: ../source/kernel/tools/log.c 
   ../source/kernel/include/tools/assert.h \
   ../source/kernel/include/core/task.h \
   ../source/kernel/include/cpu/tss.h \
+  ../source/kernel/include/fs/file.h \
   ../source/kernel/include/dev/console.h \
   ../source/kernel/include/dev/tty.h \
   ../source/kernel/include/ipc/sem.h \
@@ -380,9 +392,9 @@ source/kernel/CMakeFiles/kernel.dir/tools/log.c.o: ../source/kernel/tools/log.c 
 
 ../source/kernel/include/cpu/gdt.h:
 
-../source/kernel/include/tools/assert.h:
-
 ../source/common/types.h:
+
+../source/kernel/include/tools/assert.h:
 
 /usr/lib/gcc/x86_64-linux-gnu/11/include/stdarg.h:
 
@@ -413,6 +425,8 @@ source/kernel/CMakeFiles/kernel.dir/tools/log.c.o: ../source/kernel/tools/log.c 
 ../source/kernel/include/fs/fs.h:
 
 ../source/kernel/include/ipc/mutex.h:
+
+../source/newlib/i686-elf/include/sys/cdefs.h:
 
 ../source/common/elf.h:
 
@@ -451,8 +465,6 @@ source/kernel/CMakeFiles/kernel.dir/tools/log.c.o: ../source/kernel/tools/log.c 
 ../source/newlib/i686-elf/include/machine/time.h:
 
 ../source/kernel/dev/console.c:
-
-../source/newlib/i686-elf/include/sys/cdefs.h:
 
 ../source/kernel/tools/list.c:
 

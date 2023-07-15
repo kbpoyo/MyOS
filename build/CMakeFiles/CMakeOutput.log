@@ -15,14 +15,14 @@ The C compiler identification is GNU, found in "/home/kbpoyo/code/cpp/MyOs/build
 Determining if the C compiler works passed with the following output:
 Change Dir: /home/kbpoyo/code/cpp/MyOs/build/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_4f968/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_4f968.dir/build.make CMakeFiles/cmTC_4f968.dir/build
+Run Build Command(s):/usr/bin/gmake -f Makefile cmTC_aec14/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_aec14.dir/build.make CMakeFiles/cmTC_aec14.dir/build
 gmake[1]: Entering directory '/home/kbpoyo/code/cpp/MyOs/build/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_4f968.dir/testCCompiler.c.o
-/usr/bin/gcc   -g -c -O0 -m32 -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables  -o CMakeFiles/cmTC_4f968.dir/testCCompiler.c.o -c /home/kbpoyo/code/cpp/MyOs/build/CMakeFiles/CMakeTmp/testCCompiler.c
-Linking C executable cmTC_4f968
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_4f968.dir/link.txt --verbose=1
-/usr/bin/gcc -g -c -O0 -m32 -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables  -rdynamic CMakeFiles/cmTC_4f968.dir/testCCompiler.c.o -o cmTC_4f968 
-gcc: warning: CMakeFiles/cmTC_4f968.dir/testCCompiler.c.o: linker input file unused because linking not done
+Building C object CMakeFiles/cmTC_aec14.dir/testCCompiler.c.o
+/usr/bin/gcc   -g -c -O0 -m32 -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables  -o CMakeFiles/cmTC_aec14.dir/testCCompiler.c.o -c /home/kbpoyo/code/cpp/MyOs/build/CMakeFiles/CMakeTmp/testCCompiler.c
+Linking C executable cmTC_aec14
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_aec14.dir/link.txt --verbose=1
+/usr/bin/gcc -g -c -O0 -m32 -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables  -rdynamic CMakeFiles/cmTC_aec14.dir/testCCompiler.c.o -o cmTC_aec14 
+gcc: warning: CMakeFiles/cmTC_aec14.dir/testCCompiler.c.o: linker input file unused because linking not done
 gmake[1]: Leaving directory '/home/kbpoyo/code/cpp/MyOs/build/CMakeFiles/CMakeTmp'
 
 

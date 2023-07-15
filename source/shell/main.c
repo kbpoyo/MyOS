@@ -13,6 +13,8 @@
 #include <stdio.h>
 
 int main(int argc, char** argv) {
+
+#ifdef SWITCH
     sbrk(0);
     sbrk(100);
     sbrk(200);
@@ -44,6 +46,12 @@ int main(int argc, char** argv) {
     yield();
     if (pid > 0) printf("parent pid=%d\n", pid);
     else printf("chiled pid=%d\n", pid);
+
+#endif
+
+    open("tty:0", 0);
+
+    printf("hello from shell\n");
 
     for (;;) {
         printf("shell pid=%d\n", getpid());
