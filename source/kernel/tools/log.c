@@ -92,8 +92,6 @@ void log_printf(const char *formate, ...) {
     //console_write(0, str_buf, kernel_strlen(str_buf));
     //tty设备在显示器上写入时是根据当前光标位置来的，所以不需要传入addr参数
     dev_write(log_dev_id, 0, str_buf, kernel_strlen(str_buf));
-    char c = '\n';
-    dev_write(log_dev_id, 0, &c, 1);
     //console_write(0, &c, 1); 
 #endif
 

@@ -23,8 +23,8 @@
  * @param reason 异常的原因
  */
 void pannic(const char *file, int line, const char *func, const char *reason) {
-    log_printf("assert faild! %s", reason);
-    log_printf("file:\t%s\nline:\t%d\nfunc:\t%s", file, line, func);
+    log_printf("assert faild! %s\n", reason);
+    log_printf("file:\t%s\nline:\t%d\nfunc:\t%s\n", file, line, func);
     for (;;) {
         hlt();
     }

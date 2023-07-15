@@ -65,7 +65,7 @@ void do_handler_syscall(syscall_frame_t* frame) {
     
     //打印系统调用失败的异常日志
     task_t *task = task_current();
-    log_printf("task: %s, Unknown syscall_id: %d", task->name, frame->function_id);
+    log_printf("task: %s, Unknown syscall_id: %d\n", task->name, frame->function_id);
     frame->eax = -1;
 
 }

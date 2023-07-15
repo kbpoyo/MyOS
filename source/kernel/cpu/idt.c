@@ -34,9 +34,9 @@ static void print_exception_fram(const exception_frame_t *frame) {
     esp = frame->esp;
   }
 
-  log_printf("------------------------stack frame info---------------------");
-  log_printf("IRQ:\t\t%d\nerror code:\t%d", frame->num, frame->error_code);
-  log_printf("CS:\t\t%d\nDS:\t\t%d\nSS:\t\t%d\nES:\t\t%d\nFS:\t\t%d\nGS:\t\t%d", 
+  log_printf("------------------------stack frame info---------------------\n");
+  log_printf("IRQ:\t\t%d\nerror code:\t%d\n", frame->num, frame->error_code);
+  log_printf("CS:\t\t%d\nDS:\t\t%d\nSS:\t\t%d\nES:\t\t%d\nFS:\t\t%d\nGS:\t\t%d\n", 
     //TODO:SS暂时没法获取，先用ds替代，之后再进行获取
     frame->cs, frame->ds, ss, frame->es, frame->fs, frame->gs
   );
@@ -49,12 +49,12 @@ static void print_exception_fram(const exception_frame_t *frame) {
               "ESI:\t\t0x%x\n"
               "EDI:\t\t0x%x\n"
               "EBP:\t\t0x%x\n"
-              "ESP:\t\t0x%x", 
+              "ESP:\t\t0x%x\n", 
               frame->eax, frame->ebx, frame->ecx, frame->edx,
               frame->esi, frame->edi, frame->ebp, esp 
               );
 
-  log_printf("EIP:\t\t0x%x\nEFLAGS:\t\t0x%x", frame->eip, frame->eflags);
+  log_printf("EIP:\t\t0x%x\nEFLAGS:\t\t0x%x\n", frame->eip, frame->eflags);
 }
 
 
@@ -67,8 +67,8 @@ static void print_exception_fram(const exception_frame_t *frame) {
 static void do_default_handler(const exception_frame_t *frame,
                                const char *message) {
 
-  log_printf("---------------------------------------------------");
-  log_printf("IRQ/Exception happend: %s", message);
+  log_printf("---------------------------------------------------\n");
+  log_printf("IRQ/Exception happend: %s\n", message);
   print_exception_fram(frame);
                               
   
@@ -131,25 +131,25 @@ void do_handler_stack_segment_fault(const exception_frame_t *frame) {
   do_default_handler(frame, "stack_segment_fault exception");
 }
 void do_handler_general_protection(const exception_frame_t *frame) {
-    log_printf("--------------------------------");
-    log_printf("IRQ/Exception happend: General Protection.");
+    log_printf("--------------------------------\n");
+    log_printf("IRQ/Exception happend: General Protection.\n");
     if (frame->error_code & ERR_EXT) {
         log_printf("the exception occurred during delivery of an "
                 "event external to the program, such as an interrupt"
-                "or an earlier exception.");
+                "or an earlier exception.\n");
     } else {
         log_printf("the exception occurred during delivery of a"
-                    "software interrupt (INT n, INT3, or INTO).");
+                    "software interrupt (INT n, INT3, or INTO).\n");
     }
     
     if (frame->error_code & ERR_IDT) {
         log_printf("the index portion of the error code refers "
-                    "to a gate descriptor in the IDT");
+                    "to a gate descriptor in the IDT\n");
     } else {
-        log_printf("the index refers to a descriptor in the GDT");
+        log_printf("the index refers to a descriptor in the GDT\n");
     }
     
-    log_printf("segment index: %d", frame->error_code & 0xFFF8);
+    log_printf("segment index: %d\n", frame->error_code & 0xFFF8);
     print_exception_fram(frame);
 }
 /**
@@ -158,46 +158,46 @@ void do_handler_general_protection(const exception_frame_t *frame) {
  * @param frame 
  */
 void do_handler_page_fault(const exception_frame_t *frame) {
-    log_printf("--------------------------------");
-    log_printf("IRQ/Exception happend: Page fault.");
+    log_printf("--------------------------------\n");
+    log_printf("IRQ/Exception happend: Page fault.\n");
     if (frame->error_code & ERR_PAGE_P) {
-        log_printf("page-level protection violation: 0x%x.", read_cr2());
+        log_printf("page-level protection violation: 0x%x.\n", read_cr2());
     } else {
-        log_printf("Page doesn't present 0x%x", read_cr2());
+        log_printf("Page doesn't present 0x%x\n", read_cr2());
    }
     
     if (frame->error_code & ERR_PAGE_WR) {
-        log_printf("The access causing the fault was a write.");
+        log_printf("The access causing the fault was a write.\n");
     } else {
-        log_printf("The access causing the fault was a read.");
+        log_printf("The access causing the fault was a read.\n");
     }
     
     if (frame->error_code & ERR_PAGE_US) {
-        log_printf("A user-mode access caused the fault.");
+        log_printf("A user-mode access caused the fault.\n");
     } else {
-        log_printf("A supervisor-mode access caused the fault.");
+        log_printf("A supervisor-mode access caused the fault.\n");
     }
 
    print_exception_fram(frame);
 }
 
 void do_handler_fpu_error(const exception_frame_t *frame) {
-  do_default_handler(frame, "fpu_error exception");
+  do_default_handler(frame, "fpu_error exception\n");
 }
 void do_handler_alignment_check(const exception_frame_t *frame) {
-  do_default_handler(frame, "alignment_check exception");
+  do_default_handler(frame, "alignment_check exception\n");
 }
 void do_handler_machine_check(const exception_frame_t *frame) {
-  do_default_handler(frame, "machine_check exception");
+  do_default_handler(frame, "machine_check exception\n");
 }
 void do_handler_smd_exception(const exception_frame_t *frame) {
-  do_default_handler(frame, "smd_exception exception");
+  do_default_handler(frame, "smd_exception exception\n");
 }
 void do_handler_virtual_exception(const exception_frame_t *frame) {
-  do_default_handler(frame, "virtual_exception exception");
+  do_default_handler(frame, "virtual_exception exception\n");
 }
 void do_handler_control_exception(const exception_frame_t *frame) {
-  do_default_handler(frame, "control_exception exception");
+  do_default_handler(frame, "control_exception exception\n");
 }
 //==============================真正进行异常处理的c程序==================================
 

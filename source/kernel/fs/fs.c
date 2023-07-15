@@ -116,13 +116,13 @@ int sys_read(int file, char *ptr, int len) {
 #include "tools/log.h"
 int sys_write(int file, char *ptr, int len) {
     if (file == 1) {
-        //ptr[len] = '\0';
-        //log_printf("%s", ptr);
+        ptr[len] = '\0';
+        log_printf("%s", ptr);
         //console_write(0, ptr, len);
        
-        int dev_id = dev_open(DEV_TTY, 0, (void*)0);
-        dev_write(dev_id, 0, ptr, len);
-        dev_close(dev_id);
+        // int dev_id = dev_open(DEV_TTY, 0, (void*)0);
+        // dev_write(dev_id, 0, ptr, len);
+        // dev_close(dev_id);
 
     }
     return -1;

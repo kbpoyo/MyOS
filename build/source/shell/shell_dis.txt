@@ -332,7 +332,7 @@ int main(int argc, char** argv) {
 8100011e:	e8 7b 03 00 00       	call   8100049e <iprintf>
 81000123:	83 c4 10             	add    $0x10,%esp
 
-    printf("main pid %d", getpid());
+    printf("main pid %d\n", getpid());
 81000126:	e8 68 01 00 00       	call   81000293 <getpid>
 8100012b:	83 ec 08             	sub    $0x8,%esp
 8100012e:	50                   	push   %eax
@@ -350,7 +350,7 @@ int main(int argc, char** argv) {
 81000154:	8b 00                	mov    (%eax),%eax
 81000156:	83 ec 08             	sub    $0x8,%esp
 81000159:	50                   	push   %eax
-8100015a:	68 54 48 00 81       	push   $0x81004854
+8100015a:	68 55 48 00 81       	push   $0x81004855
 8100015f:	e8 3a 03 00 00       	call   8100049e <iprintf>
 81000164:	83 c4 10             	add    $0x10,%esp
     for (int i = 0; i < argc; ++i) {
@@ -370,14 +370,14 @@ int main(int argc, char** argv) {
 81000183:	7e 15                	jle    8100019a <main+0x19a>
 81000185:	83 ec 08             	sub    $0x8,%esp
 81000188:	ff 75 f0             	push   -0x10(%ebp)
-8100018b:	68 5d 48 00 81       	push   $0x8100485d
+8100018b:	68 5e 48 00 81       	push   $0x8100485e
 81000190:	e8 09 03 00 00       	call   8100049e <iprintf>
 81000195:	83 c4 10             	add    $0x10,%esp
 81000198:	eb 13                	jmp    810001ad <main+0x1ad>
     else printf("chiled pid=%d\n", pid);
 8100019a:	83 ec 08             	sub    $0x8,%esp
 8100019d:	ff 75 f0             	push   -0x10(%ebp)
-810001a0:	68 6c 48 00 81       	push   $0x8100486c
+810001a0:	68 6d 48 00 81       	push   $0x8100486d
 810001a5:	e8 f4 02 00 00       	call   8100049e <iprintf>
 810001aa:	83 c4 10             	add    $0x10,%esp
 
@@ -386,7 +386,7 @@ int main(int argc, char** argv) {
 810001ad:	e8 e1 00 00 00       	call   81000293 <getpid>
 810001b2:	83 ec 08             	sub    $0x8,%esp
 810001b5:	50                   	push   %eax
-810001b6:	68 7b 48 00 81       	push   $0x8100487b
+810001b6:	68 7c 48 00 81       	push   $0x8100487c
 810001bb:	e8 de 02 00 00       	call   8100049e <iprintf>
 810001c0:	83 c4 10             	add    $0x10,%esp
         msleep(1000);
@@ -959,7 +959,7 @@ char *sbrk(ptrdiff_t incr) {
 810004ed:	89 45 cc             	mov    %eax,-0x34(%ebp)
 810004f0:	8b 45 f4             	mov    -0xc(%ebp),%eax
 810004f3:	89 45 d0             	mov    %eax,-0x30(%ebp)
-810004f6:	c7 45 d4 89 48 00 81 	movl   $0x81004889,-0x2c(%ebp)
+810004f6:	c7 45 d4 8a 48 00 81 	movl   $0x8100488a,-0x2c(%ebp)
 810004fd:	c7 45 d8 01 00 00 00 	movl   $0x1,-0x28(%ebp)
 81000504:	8b 45 f4             	mov    -0xc(%ebp),%eax
 81000507:	83 c0 01             	add    $0x1,%eax

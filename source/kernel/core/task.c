@@ -60,7 +60,7 @@ static int tss_init(task_t *task, uint32_t entry, uint32_t esp, uint32_t flag) {
    //1.将该TSS段绑定到GDT中的某个段描述符
     uint32_t tss_selector = gdt_alloc_desc();
     if (tss_selector < 0) {
-        log_printf("alloc tss failed!");
+        log_printf("alloc tss failed!\n");
         return -1;
     }
     segment_desc_set(tss_selector, (uint32_t)&task->tss, sizeof(task->tss), 
@@ -693,13 +693,13 @@ static int load_phdr(int file, Elf32_Phdr *elf_phdr, uint32_t page_dir) {
     //为该段分配页空间并创建映射关系
     int err = memory_alloc_for_page_dir(page_dir, elf_phdr->p_vaddr, elf_phdr->p_memsz, privilege);
     if (err < 0) {
-        log_printf("no memory");
+        log_printf("no memory\n");
         return -1;
     }
 
     //使文件的读取位置偏移到该程序段的起始位置
     if (sys_lseek(file, elf_phdr->p_offset, 0) < 0) {
-        log_printf("lseek file failed");
+        log_printf("lseek file failed\n");
         return -1;
     }
 
@@ -715,7 +715,7 @@ static int load_phdr(int file, Elf32_Phdr *elf_phdr, uint32_t page_dir) {
 
         //拷贝curr_size大小的内容到paddr对应的页中
         if (sys_read(file, (char*)paddr, curr_size) < curr_size) {
-            log_printf("read file failed");
+            log_printf("read file failed\n");
             return -1;
         }
 
@@ -743,34 +743,34 @@ static uint32_t load_elf_file(task_t *task, const char * name, uint32_t page_dir
     //2.打开文件
     int file = sys_open(name, 0);
     if (file < 0) {
-        log_printf("open failed %s", name);
+        log_printf("open failed %s\n", name);
         goto load_failed;
     }
 
     //3.读取elf文件的elf头部分
     int cnt = sys_read(file, (char*)&elf_hdr, sizeof(Elf32_Ehdr));
     if (cnt < sizeof(Elf32_Ehdr)) {
-        log_printf("elf hdr too small. size=%d", cnt);
+        log_printf("elf hdr too small. size=%d\n", cnt);
         goto load_failed;
     }
 
     //4.判断是否为ELF文件
     if (elf_hdr.e_ident[0] != 0x7F || elf_hdr.e_ident[1] != 'E' 
         || elf_hdr.e_ident[2] != 'L' || elf_hdr.e_ident[3] != 'F') {
-            log_printf("check elf ident failed.");
+            log_printf("check elf ident failed.\n");
             goto load_failed;
     }
 
     
     //5.必须是可执行文件和针对386处理器的类型，且有入口
     if ((elf_hdr.e_type != ET_EXEC) || (elf_hdr.e_machine != EM_386) || (elf_hdr.e_entry == 0)) {
-        log_printf("check elf type or entry failed.");
+        log_printf("check elf type or entry failed.\n");
         goto load_failed;
     }
 
     //6.必须有程序头部
     if ((elf_hdr.e_phentsize == 0) || (elf_hdr.e_phoff == 0)) {
-        log_printf("none programe header");
+        log_printf("none programe header\n");
         goto load_failed;
     }
 
@@ -778,13 +778,13 @@ static uint32_t load_elf_file(task_t *task, const char * name, uint32_t page_dir
     uint32_t e_phoff = elf_hdr.e_phoff; //获取程序段表的偏移地址
     for (int i = 0; i < elf_hdr.e_phnum; ++i, e_phoff += elf_hdr.e_phentsize) {
         if (sys_lseek(file, e_phoff, 0) < 0) {
-            log_printf("read file failed");
+            log_printf("read file failed\n");
             goto load_failed;
         }
 
         cnt = sys_read(file, (char*)&elf_phdr, sizeof(Elf32_Phdr));
         if (cnt < sizeof(Elf32_Phdr)) {
-            log_printf("read file failed");
+            log_printf("read file failed\n");
             goto load_failed;
         }
 
@@ -796,7 +796,7 @@ static uint32_t load_elf_file(task_t *task, const char * name, uint32_t page_dir
         //加载该程序段
         int err = load_phdr(file, &elf_phdr, page_dir);
         if (err < 0) {
-            log_printf("load program failed");
+            log_printf("load program failed\n");
             goto load_failed;
         }
 

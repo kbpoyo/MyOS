@@ -35,7 +35,7 @@ int main(int argc, char** argv) {
     printf("os version: %s\n", "1.0.0");
     printf("%05d, %-5d, %d\n", 1, 2, 3);
 
-    printf("main pid %d", getpid());
+    printf("main pid %d\n", getpid());
     for (int i = 0; i < argc; ++i) {
         printf("arg: %s\n", argv[i]);
     }

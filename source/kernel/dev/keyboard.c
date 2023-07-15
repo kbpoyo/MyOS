@@ -171,8 +171,8 @@ static void do_normal_key(uint8_t key_code) {
                             key = key -'a' + 'A';
                         }
                     }
-                log_printf("key: %c", key);
-                log_printf("sizeof(kbd_state_t) = %d", sizeof(kbd_state_t));
+                log_printf("key: %c\n", key);
+                log_printf("sizeof(kbd_state_t) = %d\n", sizeof(kbd_state_t));
             }
             break;
     }

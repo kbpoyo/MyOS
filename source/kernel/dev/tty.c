@@ -26,7 +26,7 @@ static tty_t tty_table[TTY_TABLE_SIZE];
 static tty_t* get_tty(device_t *dev) {
     int tty_index = dev->dev_code;
     if (tty_index < 0 || tty_index >= TTY_TABLE_SIZE || !dev->open_count) {
-        log_printf("tty is not opened. tty = %d", tty_index);
+        log_printf("tty is not opened. tty = %d\n", tty_index);
         return (tty_t*)0;
     }
 
@@ -99,7 +99,7 @@ int tty_fifo_get(tty_fifo_t *fifo, char *c) {
 int tty_open(device_t *dev) {
     int index = dev->dev_code;
     if (index < 0 || index >= TTY_TABLE_SIZE) {
-        log_printf("open tty failed. incorrect tty num = %d", index);
+        log_printf("open tty failed. incorrect tty num = %d\n", index);
         return -1;
     }
 
