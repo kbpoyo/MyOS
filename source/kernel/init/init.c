@@ -26,6 +26,7 @@
 #include "core/memory.h"
 #include "dev/console.h"
 #include "dev/keyboard.h"
+#include "fs/fs.h"
 
 /**
  * @brief  对内核进行初始化操作
@@ -46,6 +47,9 @@ void kernel_init(boot_info_t* boot_info) {
 
     //5.初始化内存管理
     memory_init(boot_info);  
+
+    //6.初始化文件系统
+    fs_init();
 
     //6.初始化定时器的中断处理
     time_init();

@@ -31,9 +31,6 @@ default_target: all
 
 .SUFFIXES: .hpux_make_needs_suffix_list
 
-# Produce verbose output by default.
-VERBOSE = 1
-
 # Command-line flag to silence nested $(MAKE).
 $(VERBOSE)MAKESILENT = -s
 
@@ -421,6 +418,30 @@ dev/tty.c.s:
 	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/dev/tty.c.s
 .PHONY : dev/tty.c.s
 
+fs/file.o: fs/file.c.o
+.PHONY : fs/file.o
+
+# target to build an object file
+fs/file.c.o:
+	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/fs/file.c.o
+.PHONY : fs/file.c.o
+
+fs/file.i: fs/file.c.i
+.PHONY : fs/file.i
+
+# target to preprocess a source file
+fs/file.c.i:
+	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/fs/file.c.i
+.PHONY : fs/file.c.i
+
+fs/file.s: fs/file.c.s
+.PHONY : fs/file.s
+
+# target to generate assembly for a file
+fs/file.c.s:
+	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/fs/file.c.s
+.PHONY : fs/file.c.s
+
 fs/fs.o: fs/fs.c.o
 .PHONY : fs/fs.o
 
@@ -746,6 +767,9 @@ help:
 	@echo "... dev/tty.o"
 	@echo "... dev/tty.i"
 	@echo "... dev/tty.s"
+	@echo "... fs/file.o"
+	@echo "... fs/file.i"
+	@echo "... fs/file.s"
 	@echo "... fs/fs.o"
 	@echo "... fs/fs.i"
 	@echo "... fs/fs.s"

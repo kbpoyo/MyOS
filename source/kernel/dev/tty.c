@@ -114,6 +114,7 @@ int tty_open(device_t *dev) {
 
     //为tty设备绑定输出终端
     tty->console_index = index;
+    tty->oflags = TTY_OCRLF;    //默认开启'\n'转换为'\r\n'的模式
 
     //初始化tty设备需要的键盘与终端
     kbd_init();
@@ -150,11 +151,23 @@ int tty_write(device_t *dev, int addr, char *buf, int size) {
 
     int len = 0;
     while (size) {
+
+        //获取待写入字符
+        char c = *(buf++);
+
+        //当前输出为"\r\n"换行模式，
+        if (c == '\n' && (tty->oflags & TTY_OCRLF)) {
+            sem_wait(&tty->out_sem);
+            int err = tty_fifo_put(&tty->out_fifo, '\r');
+            if (err < 0) {
+                break;
+            }
+        }
+
         //先获取到访问缓冲区一个字节资源的资格
         //若缓冲区写满就阻塞住，等待中断程序将缓冲区消耗掉再写
         sem_wait(&tty->out_sem);
 
-        char c = *(buf++);
         int err = tty_fifo_put(&tty->out_fifo, c);
         if (err < 0) {
             break;

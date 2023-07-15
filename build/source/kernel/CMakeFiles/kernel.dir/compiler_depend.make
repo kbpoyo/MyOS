@@ -155,12 +155,25 @@ source/kernel/CMakeFiles/kernel.dir/dev/tty.c.o: ../source/kernel/dev/tty.c \
   ../source/common/types.h \
   ../source/kernel/include/dev/console.h
 
+source/kernel/CMakeFiles/kernel.dir/fs/file.c.o: ../source/kernel/fs/file.c \
+  /usr/include/stdc-predef.h \
+  ../source/kernel/include/fs/file.h \
+  ../source/common/types.h \
+  ../source/kernel/include/ipc/mutex.h \
+  ../source/kernel/include/tools/list.h \
+  ../source/kernel/include/tools/assert.h \
+  ../source/kernel/include/core/task.h \
+  ../source/kernel/include/cpu/tss.h \
+  ../source/kernel/include/tools/klib.h \
+  /usr/lib/gcc/x86_64-linux-gnu/11/include/stdarg.h
+
 source/kernel/CMakeFiles/kernel.dir/fs/fs.c.o: ../source/kernel/fs/fs.c \
   /usr/include/stdc-predef.h \
   ../source/kernel/include/fs/fs.h \
+  ../source/kernel/include/fs/file.h \
+  ../source/common/types.h \
   ../source/kernel/include/tools/klib.h \
   /usr/lib/gcc/x86_64-linux-gnu/11/include/stdarg.h \
-  ../source/common/types.h \
   ../source/common/cpu_instr.h \
   ../source/common/types.h \
   ../source/common/boot_info.h \
@@ -239,7 +252,8 @@ source/kernel/CMakeFiles/kernel.dir/init/init.c.o: ../source/kernel/init/init.c 
   ../source/kernel/include/ipc/mutex.h \
   ../source/kernel/include/dev/console.h \
   ../source/kernel/include/dev/tty.h \
-  ../source/kernel/include/dev/keyboard.h
+  ../source/kernel/include/dev/keyboard.h \
+  ../source/kernel/include/fs/fs.h
 
 source/kernel/CMakeFiles/kernel.dir/ipc/mutex.c.o: ../source/kernel/ipc/mutex.c \
   /usr/include/stdc-predef.h \
@@ -338,6 +352,8 @@ source/kernel/CMakeFiles/kernel.dir/tools/log.c.o: ../source/kernel/tools/log.c 
 
 ../source/newlib/i686-elf/include/sys/types.h:
 
+../source/newlib/i686-elf/include/machine/_types.h:
+
 ../source/kernel/include/cpu/idt.h:
 
 ../source/newlib/i686-elf/include/sys/reent.h:
@@ -345,6 +361,8 @@ source/kernel/CMakeFiles/kernel.dir/tools/log.c.o: ../source/kernel/tools/log.c 
 ../source/newlib/i686-elf/include/sys/_sigset.h:
 
 ../source/kernel/include/dev/tty.h:
+
+../source/kernel/fs/file.c:
 
 ../source/newlib/i686-elf/include/sys/select.h:
 
@@ -384,8 +402,6 @@ source/kernel/CMakeFiles/kernel.dir/tools/log.c.o: ../source/kernel/tools/log.c 
 
 ../source/newlib/i686-elf/include/_ansi.h:
 
-../source/newlib/i686-elf/include/sys/_types.h:
-
 ../source/kernel/tools/bitmap.c:
 
 ../source/kernel/core/task.c:
@@ -417,6 +433,10 @@ source/kernel/CMakeFiles/kernel.dir/tools/log.c.o: ../source/kernel/tools/log.c 
 ../source/applib/lib_syscall.h:
 
 /usr/include/stdc-predef.h:
+
+../source/newlib/i686-elf/include/sys/_types.h:
+
+../source/kernel/include/fs/file.h:
 
 ../source/kernel/include/core/task.h:
 
@@ -479,5 +499,3 @@ source/kernel/CMakeFiles/kernel.dir/tools/log.c.o: ../source/kernel/tools/log.c 
 ../source/newlib/i686-elf/include/sys/features.h:
 
 ../source/newlib/i686-elf/include/machine/_default_types.h:
-
-../source/newlib/i686-elf/include/machine/_types.h:

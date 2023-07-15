@@ -14,6 +14,7 @@
 #include "common/types.h"
 #include "cpu/tss.h"
 #include "tools/list.h"
+#include "fs/file.h"
 
 // 定义任务名称缓冲区大小
 #define TASK_NAME_SIZE 32
@@ -23,6 +24,9 @@
 
 //定义空闲进程的栈空间大小
 #define EMPTY_TASK_STACK_SIZE 128
+
+//定义进程可打开的文件数量大小
+#define TASK_OFILE_SIZE 128
 
 //设置任务进程的特权级标志位
 #define TASK_FLAGS_SYSTEM   (1 << 0)  //内核特权级即最高特权级
@@ -42,17 +46,24 @@ typedef struct _task_t {
   state_t state;            //任务状态
   struct _task_t *parent;   //父进程控制块的地址
   int pid;                  //进程id
+
   uint32_t heap_start;      //进程堆空间的起始地址
   uint32_t heap_end;        //进程堆空间的结束地址
+
   int slice_max;            //任务所能拥有的最大时间分片数
   int slice_curr;           //任务当前的所拥有的时间分片数
   int sleep;                //当前任务延时的时间片数
+
   char name[TASK_NAME_SIZE];//任务名称
+
   list_node_t ready_node;   // 用于插入就绪队列的节点，标记task在就绪队列中的位置
   list_node_t task_node;    // 用于插入任务队列的节点，标记task在任务队列中的位置
   list_node_t wait_node;   //用于插入信号量对象的等待队列的节点，标记task正在等待信号量
+  
   tss_t tss;                // 任务对应的TSS描述符
   uint32_t tss_selector;    // 任务对应的TSS选择子
+
+  file_t *file_table[TASK_OFILE_SIZE];  //任务进程所拥有的文件表
 } task_t;
 
 int task_init(task_t *task, const char *name, uint32_t entry, uint32_t esp, uint32_t flag);
@@ -96,11 +107,18 @@ void task_slice_end(void);
 void task_switch(void);
 task_t* task_current(void);
 
-//系统调用函数
 
+//系统调用函数
 void sys_sleep(uint32_t ms);
 int sys_yield(void);
 int sys_getpid(void);
 int sys_fork(void);
 int sys_execve(char *name, char * const *argv, char * const *env );
+
+
+//文件系统函数
+file_t *task_file(int fd);
+int task_alloc_fd(file_t *file);
+void task_remove_fd(int fd);
+
 #endif

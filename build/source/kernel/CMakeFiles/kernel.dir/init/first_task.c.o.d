@@ -7,6 +7,7 @@ source/kernel/CMakeFiles/kernel.dir/init/first_task.c.o: \
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/cpu/tss.h \
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/tools/list.h \
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/tools/assert.h \
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/include/fs/file.h \
  /home/kbpoyo/code/cpp/MyOs/source/applib/lib_syscall.h \
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/cpu/syscall.h \
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/os_cfg.h \

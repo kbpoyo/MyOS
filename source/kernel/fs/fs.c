@@ -10,6 +10,7 @@
  */
 
 #include "fs/fs.h"
+#include "fs/file.h"
 #include "tools/klib.h"
 #include "common/cpu_instr.h"
 #include "common/boot_info.h"
@@ -175,4 +176,12 @@ int sys_isatty(int file) {
  */
 int sys_fstat(int file, struct stat *st) {
     return -1;
+}
+
+/**
+ * @brief 初始化文件系统
+ * 
+ */
+void fs_init(void) {
+    file_table_init();
 }

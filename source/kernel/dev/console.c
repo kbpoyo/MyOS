@@ -279,7 +279,7 @@ static inline void write_normal(console_t *console, char c) {
       move_to_col0(console);
       break;
     case '\n':  // 换行
-      move_to_col0(console);
+      // move_to_col0(console);
       move_to_next_line(console);
       break;
     default:

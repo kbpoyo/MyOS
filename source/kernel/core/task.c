@@ -31,6 +31,57 @@ static task_t task_table[TASK_COUNT];
 static mutex_t task_table_lock;
 
 
+
+/**
+ * @brief 根据文件描述符从当前任务进程的打开文件表中返回对应的文件结构指针
+ * 
+ * @param fd 文件描述符
+ * @return file_t* 
+ */
+file_t *task_file(int fd) {
+    if (fd >= 0 && fd < TASK_OFILE_SIZE) {
+        file_t *file = task_current()->file_table[fd];
+        return file;
+    }
+
+    return (file_t*)0;
+}
+
+/**
+ * @brief 将已分配的文件结构指针放入当前进程的打开文件表中，并返回文件描述符
+ * 
+ * @param file 已从系统file_table中分配的文件结构指针
+ * @return int 文件描述符
+ */
+int task_alloc_fd(file_t *file) {
+    task_t *task = task_current();
+    for (int i = 0; i < TASK_OFILE_SIZE; ++i) {
+        file_t *p = task->file_table[i];
+        if (p == (file_t*)0) {  //打开文件表中的第i项未分配，对其进行分配操作
+            task->file_table[i] = file;
+            return i;
+        }
+    }
+
+    return -1;
+}
+
+/**
+ * @brief 从当前进程的打开文件表中移除文件描述符对应的文件结构指针
+ * 
+ * @param fd 
+ */
+void task_remove_fd(int fd) {
+
+    //清空文件描述符对应的内存资源即可
+    if (fd >= 0 && fd < TASK_OFILE_SIZE) {
+        task_current()->file_table[fd] = (file_t*)0;
+    }
+
+}
+
+
+
 static void switch_to_tss(uint16_t tss_selector) {
     //进行远跳转，让cpu访问该tss段的描述符，cpu将重启到之前运行该tss对应的任务的状态继续运行该任务
     far_jump(tss_selector, 0);
@@ -178,7 +229,9 @@ int task_init(task_t *task, const char* name, uint32_t entry, uint32_t esp, uint
     task->pid = (uint32_t)task;
     task->parent = (task_t*)0;
     task->heap_start = task->heap_end = 0;
-   
+
+    //5.初始化文件表
+    kernel_memset(&task->file_table, 0, sizeof(task->file_table));
 
     return 1;
 }

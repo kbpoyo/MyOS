@@ -27,8 +27,10 @@ typedef struct _tty_fifo_t {
 #define TTY_TABLE_SIZE  8   //tty设备表的大小
 #define TTY_OBUF_SIZE   512 //输出缓存大小
 #define TTY_IBUF_SIZE   512 //输入缓存大小
+#define TTY_OCRLF       (1 << 0)    //换行符为"\r\n"
 //tty设备结构
 typedef struct _tty_t {
+    int oflags; //设备标志位
     int console_index;  //tty对应的终端的索引
     tty_fifo_t out_fifo;    //输出缓存队列
     tty_fifo_t in_fifo;     //输入缓存队列
