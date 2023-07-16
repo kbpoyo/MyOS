@@ -52,7 +52,7 @@ int main(int argc, char** argv) {
 
     open("tty:0", 0);
 
-    printf("hello from shell\n");
+    // printf("hello from shell\n");
 
     for (;;) {
         // printf("shell pid=%d\n", getpid());

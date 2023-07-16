@@ -125,50 +125,6 @@ int tty_open(device_t *dev) {
     return index;
 }
 
-/**
- * @brief 读取读取设备
- * 
- */
-int tty_read(device_t *dev, int addr, char *buf, int size) {
-    if (size < 0) {
-        return -1;
-    }
-
-    //1.获取操作的tty设备
-    tty_t *tty = get_tty(dev);
-    
-    char *pbuf = buf;
-    int len = 0;
-    
-    //2.从输入缓冲队列中读取字符到缓冲区buf中
-    while (len < size) {
-        //2.1等待资源就绪
-        sem_wait(&tty->in_sem);
-
-        //2.2资源已就绪，读取一个字符
-        char ch;
-        tty_fifo_get(&tty->in_fifo, &ch);
-        switch (ch) {
-        case '\n':
-            if ((tty->iflags & TTY_INCLR) && len < size - 1) {
-                //开启了换行转换
-                *(pbuf++) = '\r';
-                len++;
-            }
-            *(pbuf++) = '\n';
-            len++;
-            break;
-        default:
-            *(pbuf++) = ch;
-            len++;
-            break;
-        }
-
-
-    }
-
-    return len;
-}
 
 /**
  * @brief 写入tty设备
@@ -223,6 +179,62 @@ int tty_write(device_t *dev, int addr, char *buf, int size) {
 
     return 0;
 } 
+
+
+/**
+ * @brief 读取读取设备
+ * 
+ */
+int tty_read(device_t *dev, int addr, char *buf, int size) {
+    if (size < 0) {
+        return -1;
+    }
+
+    //1.获取操作的tty设备
+    tty_t *tty = get_tty(dev);
+    
+    char *pbuf = buf;
+    int len = 0;
+    
+    //2.从输入缓冲队列中读取字符到缓冲区buf中
+    while (len < size) {
+        //2.1等待资源就绪
+        sem_wait(&tty->in_sem);
+
+        //2.2资源已就绪，读取一个字符
+        char ch;
+        tty_fifo_get(&tty->in_fifo, &ch);
+        switch (ch) {
+        case '\n':
+            if ((tty->iflags & TTY_INCLR) && len < size - 1) {
+                //开启了换行转换
+                *(pbuf++) = '\r';
+                len++;
+            }
+            *(pbuf++) = '\n';
+            len++;
+            break;
+        default:
+            *(pbuf++) = ch;
+            len++;
+            break;
+        }
+
+        //若tty设备开启了回显模式，则将输入回显到设备上
+        if (tty->iflags & TTY_IECHO) {
+            tty_write(dev, 0, &ch, 1);
+        }
+
+        //若输入回车或者换行则直接停止读取
+        if (ch == '\n' || ch == '\r') {
+            break;
+        }
+
+    }
+
+    return len;
+}
+
 /**
  * @brief 向tty设备发送控制指令
  * 
