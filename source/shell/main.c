@@ -12,8 +12,9 @@
 #include "lib_syscall.h"
 #include <stdio.h>
 
-int main(int argc, char** argv) {
+static char cmd_buf[512];
 
+int main(int argc, char** argv) {
 #ifdef SWITCH
     sbrk(0);
     sbrk(100);
@@ -54,8 +55,10 @@ int main(int argc, char** argv) {
     printf("hello from shell\n");
 
     for (;;) {
-        printf("shell pid=%d\n", getpid());
-        msleep(1000);
+        // printf("shell pid=%d\n", getpid());
+        // msleep(1000);
+        gets(cmd_buf);
+        puts(cmd_buf);
     }
     
 }

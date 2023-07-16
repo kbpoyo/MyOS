@@ -172,6 +172,17 @@ int sys_read(int file, char *ptr, int len) {
         kernel_memcpy(ptr, temp_pos, len);
         temp_pos += len;
         return len;
+    } else {
+        //TODO:先将文件描述符file改为0,暂时打开的是0
+        file = 0;
+        //根据文件描述符从当前进程的打开文件表中获取文件指针
+        file_t *p_file = task_file(file);
+        if (!p_file) {//获取失败
+            log_printf("file not opened!\n");
+            return -1;
+        }
+        //2.对文件结构所对应的设备进行真实的读操作
+        return dev_read(p_file->dev_id, 0, ptr, len);
     }
     return -1;
 }
@@ -185,8 +196,10 @@ int sys_read(int file, char *ptr, int len) {
  * @return int 成功写入字节数
  */
 int sys_write(int file, char *ptr, int len) {
+    //TODO:先将file文件描述符设为0,因为stdout为1，而我这里先打开了0描述符
+    file = 0;
     //1.根据文件描述符从当前进程的打开文件表中获取文件结构指针
-    file_t *p_file = task_file(file);
+     file_t *p_file = task_file(file);
 
     if (!p_file) {//获取失败
         log_printf("file not opened!\n");

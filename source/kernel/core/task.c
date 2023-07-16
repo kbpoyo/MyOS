@@ -39,12 +39,13 @@ static mutex_t task_table_lock;
  * @return file_t* 
  */
 file_t *task_file(int fd) {
+    file_t *file = (file_t*)0;
+
     if (fd >= 0 && fd < TASK_OFILE_SIZE) {
-        file_t *file = task_current()->file_table[fd];
-        return file;
+        file = task_current()->file_table[fd];
     }
 
-    return (file_t*)0;
+    return file;
 }
 
 /**

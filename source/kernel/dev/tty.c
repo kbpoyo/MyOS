@@ -24,7 +24,7 @@ static tty_t tty_table[TTY_TABLE_SIZE];
  * @return tty_t* 
  */
 static tty_t* get_tty(device_t *dev) {
-    int tty_index = dev->dev_code;
+    int tty_index = dev->dev_index;
     if (tty_index < 0 || tty_index >= TTY_TABLE_SIZE || !dev->open_count) {
         log_printf("tty is not opened. tty = %d\n", tty_index);
         return (tty_t*)0;
@@ -97,7 +97,7 @@ int tty_fifo_get(tty_fifo_t *fifo, char *c) {
  * 
  */
 int tty_open(device_t *dev) {
-    int index = dev->dev_code;
+    int index = dev->dev_index;
     if (index < 0 || index >= TTY_TABLE_SIZE) {
         log_printf("open tty failed. incorrect tty num = %d\n", index);
         return -1;
@@ -106,15 +106,16 @@ int tty_open(device_t *dev) {
     tty_t *tty = tty_table + index;
     //初始化输入输出缓冲队列
     tty_fifo_init(&tty->out_fifo, tty->out_buf, TTY_OBUF_SIZE);
-    tty_fifo_init(&tty->in_fifo, tty->in_buf, 0);
+    tty_fifo_init(&tty->in_fifo, tty->in_buf, TTY_IBUF_SIZE);
 
     //初始化缓冲区的信号量, 缓冲区的每一个字节都视为资源
-    sem_init(&tty->out_sem, TTY_OBUF_SIZE);
-    sem_init(&tty->in_sem, 0);
+    sem_init(&tty->out_sem, TTY_OBUF_SIZE); //输出缓冲区一开始有TTY_OBUF_SIZE大小的资源可写
+    sem_init(&tty->in_sem, 0);  //输入缓冲区一开始无资源可读
 
     //为tty设备绑定输出终端
     tty->console_index = index;
-    tty->oflags = TTY_OCRLF;    //默认开启'\n'转换为'\r\n'的模式
+    tty->oflags = TTY_OCRLF;    //默认开启输出模式下'\n'转换为'\r\n'的模式
+    tty->iflags = TTY_INCLR | TTY_IECHO; //默认开启输入模式下的换行转换和字符回显
 
     //初始化tty设备需要的键盘与终端
     kbd_init();
@@ -129,9 +130,44 @@ int tty_open(device_t *dev) {
  * 
  */
 int tty_read(device_t *dev, int addr, char *buf, int size) {
+    if (size < 0) {
+        return -1;
+    }
+
+    //1.获取操作的tty设备
+    tty_t *tty = get_tty(dev);
+    
+    char *pbuf = buf;
+    int len = 0;
+    
+    //2.从输入缓冲队列中读取字符到缓冲区buf中
+    while (len < size) {
+        //2.1等待资源就绪
+        sem_wait(&tty->in_sem);
+
+        //2.2资源已就绪，读取一个字符
+        char ch;
+        tty_fifo_get(&tty->in_fifo, &ch);
+        switch (ch) {
+        case '\n':
+            if ((tty->iflags & TTY_INCLR) && len < size - 1) {
+                //开启了换行转换
+                *(pbuf++) = '\r';
+                len++;
+            }
+            *(pbuf++) = '\n';
+            len++;
+            break;
+        default:
+            *(pbuf++) = ch;
+            len++;
+            break;
+        }
 
 
-    return 0;
+    }
+
+    return len;
 }
 
 /**
@@ -202,6 +238,30 @@ int tty_control(device_t *dev, int cmd, int arg0, int arg1) {
  */
 void tty_close(device_t *dev) {
 
+}
+
+
+/**
+ * @brief 将字符放入对应索引的tty设备的输入缓冲队列中
+ * 
+ * @param dev_index 
+ * @param ch 
+ */
+void tty_in(int tty_index, char ch) {
+    //1.获取tty设备
+    tty_t *tty = tty_table + tty_index;
+
+    //2.判断输入缓冲区资源是否已准备满
+    if (sem_count(&tty->in_sem) >= TTY_IBUF_SIZE) {
+        //输入缓冲区已写满，放弃写入
+        return;
+    }
+
+    //3.将字符写入输入缓冲队列
+    tty_fifo_put(&tty->in_fifo, ch);
+    
+    //4.准备好一份可读资源，唤醒等待的进程或添加可获取资源
+    sem_notify(&tty->in_sem);
 }
 
 //描述一个tty设备类型

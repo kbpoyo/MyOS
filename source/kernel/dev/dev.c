@@ -53,11 +53,11 @@ static int is_dev_exist(int dev_id) {
  * @brief 打开一个设备
  * 
  * @param dev_type 打开的设备类型
- * @param dev_code 打开的对应类型设备中的具体设备号
+ * @param dev_index 打开的对应类型设备中的具体设备号
  * @param data 设备需要的参数数据
  * @return int 返回dev_id，该设备的描述符
  */
-int dev_open(int dev_type, int dev_code, void *data) {
+int dev_open(int dev_type, int dev_index, void *data) {
     //1.关中断，确保线程成功获取到设备描述符
     idt_state_t state = idt_enter_protection();
     
@@ -70,7 +70,7 @@ int dev_open(int dev_type, int dev_code, void *data) {
             //需要打开的设备未打开过，为该设备分配空间
             free_dev = dev;
             break;
-        } else if (dev->desc->dev_type == dev_type && dev->dev_code == dev->dev_code) {
+        } else if (dev->desc->dev_type == dev_type && dev->dev_index == dev_index) {
             //设备已打开过,增加打开次数
             dev->open_count++;
             idt_leave_protection(state);
@@ -93,7 +93,7 @@ int dev_open(int dev_type, int dev_code, void *data) {
     if (desc && free_dev) {
         free_dev->desc = desc;
         free_dev->data = data;
-        free_dev->dev_code = dev_code;
+        free_dev->dev_index = dev_index;
 
         //用该设备描述结构打开该设备
         int err = desc->open(free_dev);

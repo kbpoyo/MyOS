@@ -15,6 +15,7 @@
 #include "tools/log.h"
 #include "common/cpu_instr.h"
 #include "tools/klib.h"
+#include "dev/tty.h"
 /**
  * 键盘映射表，分3类
  * normal是没有shift键按下，或者没有numlock按下时默认的键值
@@ -171,8 +172,10 @@ static void do_normal_key(uint8_t key_code) {
                             key = key -'a' + 'A';
                         }
                     }
-                log_printf("key: %c\n", key);
-                log_printf("sizeof(kbd_state_t) = %d\n", sizeof(kbd_state_t));
+                // log_printf("key: %c\n", key);
+                // log_printf("sizeof(kbd_state_t) = %d\n", sizeof(kbd_state_t));
+                //将读取的键值放入tty设备的输入缓冲区
+                tty_in(0, key);
             }
             break;
     }
@@ -226,12 +229,11 @@ void do_handler_kbd(exception_frame_t *frame) {
         BEGIN_E1, //E1开始的键值码，占6个字节
     }recv_state = NORMAL;
 
-    //1.读取状态状态
+    //1.获取键盘的读取状态
     uint32_t status = inb(KBD_PORT_STAT);
     if (!(status & KBD_STAT_RECV_READY)) {  //端口没有准备好的数据，直接结束中断
         pic_send_eoi(IRQ1_KEYBOARD);
         return;
-
     }
 
     //2.端口数据已准备好，读取数据端口

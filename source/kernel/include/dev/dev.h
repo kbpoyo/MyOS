@@ -25,7 +25,7 @@ struct _dev_desc_t;
 typedef struct _device_t {
     struct _dev_desc_t *desc;   //设备类型描述结构
     int mode;
-    int dev_code;          //设备号，指定某特定类型的设备中的某一个具体设备
+    int dev_index;          //设备号，指定某特定类型的设备中的某一个具体设备即作为具体的设备表中的索引
     void * data;        //存放设备相关参数
     int open_count;     //设备打开次数
 

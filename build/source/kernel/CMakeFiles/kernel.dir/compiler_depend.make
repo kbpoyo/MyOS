@@ -131,7 +131,11 @@ source/kernel/CMakeFiles/kernel.dir/dev/keyboard.c.o: ../source/kernel/dev/keybo
   ../source/kernel/include/tools/log.h \
   ../source/common/cpu_instr.h \
   ../source/kernel/include/tools/klib.h \
-  /usr/lib/gcc/x86_64-linux-gnu/11/include/stdarg.h
+  /usr/lib/gcc/x86_64-linux-gnu/11/include/stdarg.h \
+  ../source/kernel/include/dev/tty.h \
+  ../source/kernel/include/ipc/sem.h \
+  ../source/kernel/include/tools/list.h \
+  ../source/kernel/include/tools/assert.h
 
 source/kernel/CMakeFiles/kernel.dir/dev/time.c.o: ../source/kernel/dev/time.c \
   /usr/include/stdc-predef.h \
