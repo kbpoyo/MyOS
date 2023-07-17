@@ -51,4 +51,6 @@ int lseek(int file, int offset, int dir);
 int isatty(int file);
 int fstat(int file, struct stat *st);
 char *sbrk(ptrdiff_t incr);
+
+int dup(int file);
 #endif

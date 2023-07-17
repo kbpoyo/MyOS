@@ -32,6 +32,7 @@
 #define SYS_fstat       56
 //内存分配系统调用
 #define SYS_sbrk        57
+#define SYS_dup         58
 
 #define SYS_printmsg    10   //临时使用的打印函数
 

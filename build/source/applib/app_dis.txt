@@ -152,36 +152,36 @@ void cstart(int argc, char **argv) {
   37:	c3                   	ret    
 
 lib_syscall.c.o:     file format elf32-i386
-rw-r--r-- 0/0   8108 Jan  1 08:00 1970 lib_syscall.c.o
+rw-r--r-- 0/0   8380 Jan  1 08:00 1970 lib_syscall.c.o
 architecture: i386, flags 0x00000011:
 HAS_RELOC, HAS_SYMS
 start address 0x00000000
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .text         00000254  00000000  00000000  00000034  2**0
+  0 .text         00000275  00000000  00000000  00000034  2**0
                   CONTENTS, ALLOC, LOAD, RELOC, READONLY, CODE
-  1 .data         00000000  00000000  00000000  00000288  2**0
+  1 .data         00000000  00000000  00000000  000002a9  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  2 .bss          00000000  00000000  00000000  00000288  2**0
+  2 .bss          00000000  00000000  00000000  000002a9  2**0
                   ALLOC
-  3 .debug_info   000006c4  00000000  00000000  00000288  2**0
+  3 .debug_info   00000700  00000000  00000000  000002a9  2**0
                   CONTENTS, RELOC, READONLY, DEBUGGING, OCTETS
-  4 .debug_abbrev 0000013b  00000000  00000000  0000094c  2**0
+  4 .debug_abbrev 0000017a  00000000  00000000  000009a9  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
-  5 .debug_aranges 00000020  00000000  00000000  00000a87  2**0
+  5 .debug_aranges 00000020  00000000  00000000  00000b23  2**0
                   CONTENTS, RELOC, READONLY, DEBUGGING, OCTETS
-  6 .debug_line   000001ad  00000000  00000000  00000aa7  2**0
+  6 .debug_line   000001bc  00000000  00000000  00000b43  2**0
                   CONTENTS, RELOC, READONLY, DEBUGGING, OCTETS
-  7 .debug_str    0000034d  00000000  00000000  00000c54  2**0
+  7 .debug_str    0000034d  00000000  00000000  00000cff  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
-  8 .debug_line_str 0000020b  00000000  00000000  00000fa1  2**0
+  8 .debug_line_str 0000020b  00000000  00000000  0000104c  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
-  9 .comment      0000002e  00000000  00000000  000011ac  2**0
+  9 .comment      0000002e  00000000  00000000  00001257  2**0
                   CONTENTS, READONLY
- 10 .note.GNU-stack 00000000  00000000  00000000  000011da  2**0
+ 10 .note.GNU-stack 00000000  00000000  00000000  00001285  2**0
                   CONTENTS, READONLY
- 11 .debug_frame  00000200  00000000  00000000  000011dc  2**2
+ 11 .debug_frame  00000220  00000000  00000000  00001288  2**2
                   CONTENTS, RELOC, READONLY, DEBUGGING, OCTETS
 SYMBOL TABLE:
 00000000 l    df *ABS*	00000000 lib_syscall.c
@@ -207,6 +207,7 @@ SYMBOL TABLE:
 000001eb g     F .text	00000021 isatty
 0000020c g     F .text	00000027 fstat
 00000233 g     F .text	00000021 sbrk
+00000254 g     F .text	00000021 dup
 
 
 
@@ -673,5 +674,32 @@ char *sbrk(ptrdiff_t incr) {
  24a:	e8 fc ff ff ff       	call   24b <sbrk+0x18>
 			24b: R_386_PC32	sys_call
  24f:	83 c4 04             	add    $0x4,%esp
+}
  252:	c9                   	leave  
  253:	c3                   	ret    
+
+00000254 <dup>:
+ * @brief 在当前进程的打开文件表中分配新的一项指向该文件描述符对应的文件指针
+ * 
+ * @param file 需要被多次引用的文件指针的文件描述符
+ * @return int 新的文件描述符
+ */
+int dup(int file) {
+ 254:	55                   	push   %ebp
+ 255:	89 e5                	mov    %esp,%ebp
+ 257:	83 ec 20             	sub    $0x20,%esp
+    syscall_args_t args;
+    args.id = SYS_dup;
+ 25a:	c7 45 ec 3a 00 00 00 	movl   $0x3a,-0x14(%ebp)
+    args.arg0 = file;
+ 261:	8b 45 08             	mov    0x8(%ebp),%eax
+ 264:	89 45 f0             	mov    %eax,-0x10(%ebp)
+
+    return sys_call(&args);
+ 267:	8d 45 ec             	lea    -0x14(%ebp),%eax
+ 26a:	50                   	push   %eax
+ 26b:	e8 fc ff ff ff       	call   26c <dup+0x18>
+			26c: R_386_PC32	sys_call
+ 270:	83 c4 04             	add    $0x4,%esp
+ 273:	c9                   	leave  
+ 274:	c3                   	ret    

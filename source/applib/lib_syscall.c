@@ -253,3 +253,17 @@ char *sbrk(ptrdiff_t incr) {
 
     return (char*)sys_call(&args);
 }
+
+/**
+ * @brief 在当前进程的打开文件表中分配新的一项指向该文件描述符对应的文件指针
+ * 
+ * @param file 需要被多次引用的文件指针的文件描述符
+ * @return int 新的文件描述符
+ */
+int dup(int file) {
+    syscall_args_t args;
+    args.id = SYS_dup;
+    args.arg0 = file;
+
+    return sys_call(&args);
+}

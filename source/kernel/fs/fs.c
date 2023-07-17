@@ -173,8 +173,6 @@ int sys_read(int file, char *ptr, int len) {
         temp_pos += len;
         return len;
     } else {
-        //TODO:先将文件描述符file改为0,暂时打开的是0
-        file = 0;
         //根据文件描述符从当前进程的打开文件表中获取文件指针
         file_t *p_file = task_file(file);
         if (!p_file) {//获取失败
@@ -196,8 +194,6 @@ int sys_read(int file, char *ptr, int len) {
  * @return int 成功写入字节数
  */
 int sys_write(int file, char *ptr, int len) {
-    //TODO:先将file文件描述符设为0,因为stdout为1，而我这里先打开了0描述符
-    file = 0;
     //1.根据文件描述符从当前进程的打开文件表中获取文件结构指针
      file_t *p_file = task_file(file);
 
@@ -269,6 +265,36 @@ int sys_isatty(int file) {
  */
 int sys_fstat(int file, struct stat *st) {
     return -1;
+}
+
+/**
+ * @brief 在当前进程的打开文件表中分配新的一项指向该文件描述符对应的文件指针
+ * 
+ * @param file 需要被多次引用的文件指针的文件描述符
+ * @return int 新的文件描述符
+ */
+int sys_dup(int file) {
+    if (file < 0 || file >= TASK_OFILE_SIZE) {
+        log_printf("file %d is not valid.", file);
+        return -1;
+    }
+
+    //1.获取需要重复引用的文件指针
+    file_t *p_file = task_file(file);
+    if (!p_file) {
+        log_printf("file not opend!\n");
+        return -1;
+    }
+
+    //2.在打开文件表中新分配一项给该文件指针
+    int fd = task_alloc_fd(p_file);
+    if (fd < 0) {
+        log_printf("no task file avaliable\n");
+        return -1;
+    }
+
+    p_file->ref++;  //分配成功，该文件引用次数加一
+    return fd;
 }
 
 /**
