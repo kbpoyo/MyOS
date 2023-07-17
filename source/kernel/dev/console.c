@@ -17,8 +17,8 @@
 #include "cpu/idt.h"
 
 #define CONSOLE_NR 8  // 控制台个数
-
 static console_t console_table[CONSOLE_NR];  // 控制台对象数组
+static int curr_console_index = 0;
 
 /**
  * @brief 获取光标位置
@@ -248,7 +248,7 @@ int console_init(int index) {
     console->cursor_col = 0;
     console->cursor_row = 0;
     clear_display(console);
-    update_cursor_pos(console);
+    //update_cursor_pos(console);
   }
 
   // 初始化上一次光标位置
@@ -520,7 +520,10 @@ int console_write(tty_t *tty) {
   } while (1);
 
   // 更新光标的位置
-  update_cursor_pos(console);
+  if (tty->console_index == curr_console_index) {
+    //若当前tty设备是正在显示的设备，则更新对应的光标位置
+    update_cursor_pos(console);
+  }
   return len;
 }
 
@@ -551,6 +554,9 @@ void console_select(int console_index) {
     outb(0x3d5, (uint8_t)((pos >> 8) & 0xff));  
     outb(0x3d4, 0xd);//告诉端口要写屏幕起始索引的低8位
     outb(0x3d5, (uint8_t)(pos & 0xff));  
+
+    //更新当前使用控制台
+    curr_console_index = console_index;
 
     //更新光标位置
     update_cursor_pos(console);
