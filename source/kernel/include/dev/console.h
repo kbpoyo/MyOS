@@ -81,5 +81,5 @@ typedef struct _console_t {
 int console_init(int index);
 int console_write(tty_t *tty);
 void console_close(int console);
-
+void console_select(int console_index);
 #endif

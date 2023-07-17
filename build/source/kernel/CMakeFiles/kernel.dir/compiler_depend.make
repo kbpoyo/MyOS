@@ -111,7 +111,8 @@ source/kernel/CMakeFiles/kernel.dir/dev/console.c.o: ../source/kernel/dev/consol
   ../source/common/cpu_instr.h \
   ../source/common/types.h \
   ../source/kernel/include/tools/klib.h \
-  /usr/lib/gcc/x86_64-linux-gnu/11/include/stdarg.h
+  /usr/lib/gcc/x86_64-linux-gnu/11/include/stdarg.h \
+  ../source/kernel/include/cpu/idt.h
 
 source/kernel/CMakeFiles/kernel.dir/dev/dev.c.o: ../source/kernel/dev/dev.c \
   /usr/include/stdc-predef.h \
@@ -162,7 +163,8 @@ source/kernel/CMakeFiles/kernel.dir/dev/tty.c.o: ../source/kernel/dev/tty.c \
   ../source/kernel/include/tools/log.h \
   ../source/kernel/include/dev/keyboard.h \
   ../source/common/types.h \
-  ../source/kernel/include/dev/console.h
+  ../source/kernel/include/dev/console.h \
+  ../source/kernel/include/cpu/idt.h
 
 source/kernel/CMakeFiles/kernel.dir/fs/file.c.o: ../source/kernel/fs/file.c \
   /usr/include/stdc-predef.h \
@@ -237,7 +239,9 @@ source/kernel/CMakeFiles/kernel.dir/init/first_task.c.o: ../source/kernel/init/f
   ../source/newlib/i686-elf/include/sys/_pthreadtypes.h \
   ../source/newlib/i686-elf/include/sys/sched.h \
   ../source/newlib/i686-elf/include/machine/types.h \
-  ../source/newlib/i686-elf/include/sys/_locale.h
+  ../source/newlib/i686-elf/include/sys/_locale.h \
+  ../source/kernel/include/dev/tty.h \
+  ../source/kernel/include/ipc/sem.h
 
 source/kernel/CMakeFiles/kernel.dir/init/init.c.o: ../source/kernel/init/init.c \
   /usr/include/stdc-predef.h \

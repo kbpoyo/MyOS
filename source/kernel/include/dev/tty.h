@@ -50,7 +50,8 @@ typedef struct _tty_t {
 int tty_fifo_put(tty_fifo_t *fifo, char c);
 int tty_fifo_get(tty_fifo_t *fifo, char *c);
 
-void tty_in(int tty_index, char ch);
+void tty_in(char ch);
+void tty_select(int tty_index);
 
 
 #endif

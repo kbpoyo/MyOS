@@ -100,6 +100,20 @@ static inline int get_key(uint8_t key_code) {
     return key_code & 0x7f; //key_code的低7位为键值码
 }
 
+
+/**
+ * @brief 对F1~F8功能键进行处理
+ * 
+ * @param key 
+ */
+static void do_fx_key(char key) {
+    int index = key - KEY_F1;
+    //在ctr键按下的情况下才进行处理
+    if (kbd_state.lctrl_press || kbd_state.rctrl_press) {
+        tty_select(index);
+    }
+}
+
 /**
  * @brief 处理键盘按键按下时得到的原码
  *  
@@ -132,20 +146,14 @@ static void do_normal_key(uint8_t key_code) {
             break;
         
         case KEY_F1:
-            break;
         case KEY_F2:
-            break;
         case KEY_F3:
-            break;
         case KEY_F4:
-            break;
         case KEY_F5:
-            break;
         case KEY_F6:
-            break;
         case KEY_F7:
-            break;
         case KEY_F8:
+            do_fx_key(key);
             break;
         case KEY_F9:
             break;
@@ -175,7 +183,7 @@ static void do_normal_key(uint8_t key_code) {
                 // log_printf("key: %c\n", key);
                 // log_printf("sizeof(kbd_state_t) = %d\n", sizeof(kbd_state_t));
                 //将读取的键值放入tty设备的输入缓冲区
-                tty_in(0, key);
+                tty_in(key);
             }
             break;
     }

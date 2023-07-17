@@ -120,6 +120,7 @@ source/kernel/CMakeFiles/kernel.dir/dev/console.c.o
  /home/kbpoyo/code/cpp/MyOs/source/common/types.h
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/tools/klib.h
  /usr/lib/gcc/x86_64-linux-gnu/11/include/stdarg.h
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/include/cpu/idt.h
 
 source/kernel/CMakeFiles/kernel.dir/dev/dev.c.o
  /home/kbpoyo/code/cpp/MyOs/source/kernel/dev/dev.c
@@ -175,6 +176,7 @@ source/kernel/CMakeFiles/kernel.dir/dev/tty.c.o
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/dev/keyboard.h
  /home/kbpoyo/code/cpp/MyOs/source/common/types.h
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/dev/console.h
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/include/cpu/idt.h
 
 source/kernel/CMakeFiles/kernel.dir/fs/file.c.o
  /home/kbpoyo/code/cpp/MyOs/source/kernel/fs/file.c
@@ -253,6 +255,8 @@ source/kernel/CMakeFiles/kernel.dir/init/first_task.c.o
  /home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/include/sys/sched.h
  /home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/include/machine/types.h
  /home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/include/sys/_locale.h
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/include/dev/tty.h
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/include/ipc/sem.h
 
 source/kernel/CMakeFiles/kernel.dir/init/init.c.o
  /home/kbpoyo/code/cpp/MyOs/source/kernel/init/init.c

@@ -40,4 +40,6 @@ source/kernel/CMakeFiles/kernel.dir/init/first_task.c.o: \
  /home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/include/sys/_pthreadtypes.h \
  /home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/include/sys/sched.h \
  /home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/include/machine/types.h \
- /home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/include/sys/_locale.h
+ /home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/include/sys/_locale.h \
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/include/dev/tty.h \
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/include/ipc/sem.h

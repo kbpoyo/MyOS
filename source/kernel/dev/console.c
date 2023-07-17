@@ -14,10 +14,11 @@
 #include "common/cpu_instr.h"
 #include "dev/tty.h"
 #include "tools/klib.h"
+#include "cpu/idt.h"
 
 #define CONSOLE_NR 8  // 控制台个数
 
-static console_t console_buf[CONSOLE_NR];  // 控制台对象数组
+static console_t console_table[CONSOLE_NR];  // 控制台对象数组
 
 /**
  * @brief 获取光标位置
@@ -25,6 +26,9 @@ static console_t console_buf[CONSOLE_NR];  // 控制台对象数组
  * @return int
  */
 static inline int read_cursor_pos(void) {
+  //TODO:加锁
+  idt_state_t state = idt_enter_protection();
+
   int pos;
   // 光标位置由两个字节组成
   outb(0x3d4, 0xf);  // 访问低8位
@@ -33,6 +37,8 @@ static inline int read_cursor_pos(void) {
   outb(0x3d4, 0xe);  // 访问高8位
   pos |= inb(0x3d5) << 8;
 
+  //TODO:解锁
+  idt_leave_protection(state);
   return pos;
 }
 
@@ -43,6 +49,10 @@ static inline int read_cursor_pos(void) {
  * @return int
  */
 static inline int update_cursor_pos(console_t *console) {
+  //TODO:加锁
+  idt_state_t state = idt_enter_protection();
+
+  //计算以当前控制台为屏幕显示区域时的光标位置
   uint16_t pos = console->cursor_row * console->display_cols +
                  console->cursor_col +
                  ((uint32_t)console->disp_base - CONSOLE_DISP_START_ADDR) /
@@ -55,6 +65,8 @@ static inline int update_cursor_pos(console_t *console) {
   outb(0x3d4, 0xe);  // 访问高8位
   outb(0x3d5, (uint8_t)((pos >> 8) & 0xff));
 
+  //TODO:解锁
+  idt_leave_protection(state);
   return pos;
 }
 
@@ -221,7 +233,7 @@ static inline void clear_display(console_t *console) {
  */
 int console_init(int index) {
   // 获取对应console，并进行初始化
-  console_t *console = console_buf + index;
+  console_t *console = console_table + index;
   console->display_rows = CONSOLE_ROW_MAX;
   console->display_cols = CONSOLE_CLO_MAX;
   console->foreground = COLOR_White;
@@ -475,7 +487,7 @@ static inline void write_esc_square(console_t *console, char c) {
  */
 int console_write(tty_t *tty) {
   // 获取需要需要写入的终端
-  console_t *console = console_buf + tty->console_index;
+  console_t *console = console_table + tty->console_index;
   int len = 0;
 
   //在tty的缓冲队列中读取一个字符写入终端
@@ -519,3 +531,31 @@ int console_write(tty_t *tty) {
  * @return int
  */
 void console_close(int console) {}
+
+/**
+ * @brief 通过索引号更改当前系统使用的终端
+ * 
+ * @param console 
+ */
+void console_select(int console_index) {
+    console_t *console = console_table + console_index;
+    if (console->disp_base == 0) {  //当前控制台还未被初始化，进行初始化操作
+      console_init(console_index);
+    }
+
+    //计算屏幕显示的起始位置
+    uint16_t pos = console_index * console->display_rows * console->display_cols;
+
+    //向端口写入起始位置
+    outb(0x3d4, 0xc); //告诉端口要写屏幕起始索引的高8位
+    outb(0x3d5, (uint8_t)((pos >> 8) & 0xff));  
+    outb(0x3d4, 0xd);//告诉端口要写屏幕起始索引的低8位
+    outb(0x3d5, (uint8_t)(pos & 0xff));  
+
+    //更新光标位置
+    update_cursor_pos(console);
+
+    //在控制台显示终端设备号
+    show_char(console, console_index + '0');
+
+}

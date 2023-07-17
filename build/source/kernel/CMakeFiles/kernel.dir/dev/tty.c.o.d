@@ -9,4 +9,5 @@ source/kernel/CMakeFiles/kernel.dir/dev/tty.c.o: \
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/tools/log.h \
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/dev/keyboard.h \
  /home/kbpoyo/code/cpp/MyOs/source/common/types.h \
- /home/kbpoyo/code/cpp/MyOs/source/kernel/include/dev/console.h
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/include/dev/console.h \
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/include/cpu/idt.h

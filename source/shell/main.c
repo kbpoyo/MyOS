@@ -51,12 +51,12 @@ int main(int argc, char** argv) {
 
 #endif
 
-    open("tty:0", 0);
+    open(argv[0], 0);
     dup(0);
     dup(0);
 
     fprintf(stderr, "error\n");
-    
+
 
     // printf("hello from shell\n");
 

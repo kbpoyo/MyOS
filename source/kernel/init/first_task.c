@@ -12,6 +12,7 @@
 #include "tools/log.h"
 #include "core/task.h"
 #include  "applib/lib_syscall.h"
+#include "dev/tty.h"
 
 int first_main(void) {
     // int count = 3;
@@ -33,21 +34,42 @@ int first_main(void) {
     //     //msleep(100);
     // }
     
-    int pid;
-    int i;
-    for (i = 0; i < 1; ++i) {
-        pid = fork();
-        if (pid == 0)
-            break;
-    }
+    // int pid;
+    // int i;
+    // for (i = 0; i < 1; ++i) {
+    //     pid = fork();
+    //     if (pid == 0)
+    //         break;
+    // }
 
-    char * const argv[] = {"arg0", "arg1", "arg2", "arg3", 0};
-    if (pid != 0) execve("/shell.elf", argv, 0);
+    // char * const argv[] = {"arg0", "arg1", "arg2", "arg3", 0};
+    // if (pid != 0) execve("/shell.elf", argv, 0);
     
-    for (;;)
-    {
+    // for (;;)
+    // {
+    // }
+
+    //为每个tty设备创建一个进程
+    for (int i = 0; i < TTY_TABLE_SIZE; ++i) {
+        int pid = fork();
+        if (pid < 0) {
+            print_msg("create shell failed.", 0);
+            break;
+        } else if (pid == 0) {
+            char tty_num[5] = "tty:?";
+            tty_num[4] = i + '0';
+            char * const argv[] = {tty_num, 0};
+            execve("/sehll.elf", argv, 0);
+            while (1)   {
+                msleep(1000);
+            }
+            
+        }
+    }    
+
+    for (;;) {
+        msleep(1000);
     }
-    
 
     return 0;
 }

@@ -14,8 +14,10 @@
 #include "tools/log.h"
 #include "dev/keyboard.h"
 #include "dev/console.h"
+#include "cpu/idt.h"
 
-static tty_t tty_table[TTY_TABLE_SIZE];
+static tty_t tty_table[TTY_TABLE_SIZE]; //全局tty设备表
+static int curr_tty_index = 0;    //系统当前使用tty设备索引
 
 /**
  * @brief 根据dev结构获取到对应的tty设备结构
@@ -55,8 +57,13 @@ static void tty_fifo_init(tty_fifo_t *fifo, char *buf, int size) {
  * @return int 
  */
 int tty_fifo_put(tty_fifo_t *fifo, char c) {
+    //TODO:加锁
+    idt_state_t state = idt_enter_protection();
+
     //fifo已满，不能再写入
     if (fifo->count >= fifo->size) {
+    //TODO:解锁
+        idt_leave_protection(state);
         return -1;
     }
 
@@ -66,6 +73,10 @@ int tty_fifo_put(tty_fifo_t *fifo, char c) {
     }
 
     fifo->count++;
+    
+    //开中断取消资源保护
+    //TODO:解锁
+    idt_leave_protection(state);
     return 0;
 }
 
@@ -77,7 +88,12 @@ int tty_fifo_put(tty_fifo_t *fifo, char c) {
  * @return int 
  */
 int tty_fifo_get(tty_fifo_t *fifo, char *c) {
+    //TODO:加锁关中断进行资源保护
+    idt_state_t state = idt_enter_protection();
+    
     if (fifo->count <= 0) {
+    //TODO:解锁
+        idt_leave_protection(state);
         return -1;
     }
 
@@ -88,6 +104,8 @@ int tty_fifo_get(tty_fifo_t *fifo, char *c) {
 
     fifo->count--;
 
+    //TODO:解锁
+    idt_leave_protection(state);
     return 0;
 }
 
@@ -122,7 +140,7 @@ int tty_open(device_t *dev) {
     console_init(index);
     
     
-    return index;
+    return 0;
 }
 
 
@@ -259,9 +277,9 @@ void tty_close(device_t *dev) {
  * @param dev_index 
  * @param ch 
  */
-void tty_in(int tty_index, char ch) {
+void tty_in(char ch) {
     //1.获取tty设备
-    tty_t *tty = tty_table + tty_index;
+    tty_t *tty = tty_table + curr_tty_index;
 
     //2.判断输入缓冲区资源是否已准备满
     if (sem_count(&tty->in_sem) >= TTY_IBUF_SIZE) {
@@ -274,6 +292,19 @@ void tty_in(int tty_index, char ch) {
     
     //4.准备好一份可读资源，唤醒等待的进程或添加可获取资源
     sem_notify(&tty->in_sem);
+}
+
+/**
+ * @brief 通过索引号更改当前系统使用的tty设备
+ * 
+ * @param tty_index 
+ */
+void tty_select(int tty_index) {
+    if (tty_index != curr_tty_index) {
+        //选择对应的终端设备
+       console_select(tty_index);
+       curr_tty_index = tty_index; 
+    }
 }
 
 //描述一个tty设备类型
