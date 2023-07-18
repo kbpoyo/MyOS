@@ -9,53 +9,71 @@
  * 
  */
 
-#include "lib_syscall.h"
 #include <stdio.h>
+#include <string.h>
+#include "lib_syscall.h"
+#include "main.h"
 
 
 static char cmd_buf[512];
+static const char *prompt = "sh >>";
+static cli_t cli;
+
+
+/**
+ * @brief 命令行help函数,打印所有命令名称以及用法
+ * 
+ * @param argc 
+ * @param arg 
+ * @return int 
+ */
+static int do_help(int argc, char **arg) {
+    const cli_cmd_t *start = cli.cmd_start;
+    while (start < cli.cmd_end) {
+        printf("%s --> %s\n", start->name, start->usage);
+        start++;
+    }
+    
+    
+    return  0;   
+}
+
+//终端命令表
+static const cli_cmd_t cmd_list[] = {
+    {
+        .name = "help",
+        .usage = "help --list supported command",
+        .do_func = do_help,   
+    }
+};
+
+/**
+ * @brief 初始化终端结构
+ * 
+ */
+static void cli_init() {
+    cli.prompt = prompt;
+    memset(cli.curr_input, 0, CLI_INPUT_SIZE);
+    cli.cmd_start = cmd_list;
+    cli.cmd_end = cmd_list + sizeof(cmd_list) / sizeof(cmd_list[0]);
+}
+
+/**
+ * @brief 打印终端每行固定的提示符
+ * 
+ */
+static void show_prompt(void) {
+    printf("%s", cli.prompt);
+    fflush(stdout);
+}
 
 int main(int argc, char** argv) {
-#ifdef SWITCH
-    sbrk(0);
-    sbrk(100);
-    sbrk(200);
-    sbrk(4096*2 + 200);
-    sbrk(4096*5 + 1234);
-
-    printf("\0337Hello,word!\0338123\n");  // ESC 7,8 输出123lo,word!
-    printf("\033[31;42mHello,word!\033[39;49m123\n");  // ESC [pn m, Hello,world红色，>其余绿色
-    printf("123\033[2DHello,word!\n");  // 光标左移2，1Hello,word!
-    printf("123\033[2CHello,word!\n");  // 光标右移2，123  Hello,word!
-
-    printf("\033[31m");  // ESC [pn m, Hello,world红色，其余绿色
-    printf("\033[10;10H test!\n");  // 定位到10, 10，test!
-    printf("\033[20;20H test!\n");  // 定位到20, 20，test!
-    printf("\033[32;25;39m123\n");  // 
-
-    printf("\033[2J");//清空屏幕
-
-    printf("hello from shell\n");
-    printf("os version: %s\n", "1.0.0");
-    printf("%05d, %-5d, %d\n", 1, 2, 3);
-
-    printf("main pid %d\n", getpid());
-    for (int i = 0; i < argc; ++i) {
-        printf("arg: %s\n", argv[i]);
-    }
-
-    int pid = fork();
-    yield();
-    if (pid > 0) printf("parent pid=%d\n", pid);
-    else printf("chiled pid=%d\n", pid);
-
-#endif
 
     open(argv[0], 0);
     dup(0);
     dup(0);
 
-    fprintf(stderr, "error\n");
+    cli_init();
 
 
     // printf("hello from shell\n");
@@ -63,8 +81,22 @@ int main(int argc, char** argv) {
     for (;;) {
         //printf("shell pid=%d\n", getpid());
         //msleep(1000);
-        gets(cmd_buf);
-        puts(cmd_buf);
+        show_prompt();
+        char * str = fgets(cli.curr_input, CLI_INPUT_SIZE, stdin);
+        if (!str) {
+            continue;
+        }
+        char *cr = strchr(cli.curr_input, '\n');
+        if (cr) {
+            *cr = '\0'; 
+        }
+        cr = strchr(cli.curr_input, '\r');
+        if (cr) {
+            *cr = '\0';
+        }
+
+        puts(str);
+        puts(cli.curr_input);
     }
     
 }

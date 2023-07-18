@@ -3,27 +3,22 @@
 
 source/shell/CMakeFiles/shell.dir/main.c.o: ../source/shell/main.c \
   /usr/include/stdc-predef.h \
-  ../source/applib/lib_syscall.h \
-  ../source/common/types.h \
-  ../source/kernel/include/cpu/syscall.h \
-  ../source/kernel/include/os_cfg.h \
-  ../source/newlib/i686-elf/include/sys/stat.h \
+  ../source/newlib/i686-elf/include/stdio.h \
   ../source/newlib/i686-elf/include/_ansi.h \
   ../source/newlib/i686-elf/include/newlib.h \
   ../source/newlib/i686-elf/include/_newlib_version.h \
   ../source/newlib/i686-elf/include/sys/config.h \
   ../source/newlib/i686-elf/include/machine/ieeefp.h \
   ../source/newlib/i686-elf/include/sys/features.h \
-  ../source/newlib/i686-elf/include/time.h \
-  ../source/newlib/i686-elf/include/_ansi.h \
   ../source/newlib/i686-elf/include/sys/cdefs.h \
   ../source/newlib/i686-elf/include/machine/_default_types.h \
   /usr/lib/gcc/x86_64-linux-gnu/11/include/stddef.h \
+  /usr/lib/gcc/x86_64-linux-gnu/11/include/stdarg.h \
   ../source/newlib/i686-elf/include/sys/reent.h \
+  ../source/newlib/i686-elf/include/_ansi.h \
   ../source/newlib/i686-elf/include/sys/_types.h \
   ../source/newlib/i686-elf/include/machine/_types.h \
   ../source/newlib/i686-elf/include/sys/lock.h \
-  ../source/newlib/i686-elf/include/machine/time.h \
   ../source/newlib/i686-elf/include/sys/types.h \
   ../source/newlib/i686-elf/include/sys/_stdint.h \
   ../source/newlib/i686-elf/include/machine/endian.h \
@@ -36,41 +31,48 @@ source/shell/CMakeFiles/shell.dir/main.c.o: ../source/shell/main.c \
   ../source/newlib/i686-elf/include/sys/_pthreadtypes.h \
   ../source/newlib/i686-elf/include/sys/sched.h \
   ../source/newlib/i686-elf/include/machine/types.h \
+  ../source/newlib/i686-elf/include/sys/stdio.h \
+  ../source/newlib/i686-elf/include/string.h \
   ../source/newlib/i686-elf/include/sys/_locale.h \
-  ../source/newlib/i686-elf/include/stdio.h \
-  /usr/lib/gcc/x86_64-linux-gnu/11/include/stdarg.h \
-  ../source/newlib/i686-elf/include/sys/stdio.h
+  ../source/newlib/i686-elf/include/strings.h \
+  ../source/newlib/i686-elf/include/sys/string.h \
+  ../source/applib/lib_syscall.h \
+  ../source/common/types.h \
+  ../source/kernel/include/cpu/syscall.h \
+  ../source/kernel/include/os_cfg.h \
+  ../source/newlib/i686-elf/include/sys/stat.h \
+  ../source/newlib/i686-elf/include/time.h \
+  ../source/newlib/i686-elf/include/machine/time.h \
+  ../source/shell/main.h
 
 
-/usr/lib/gcc/x86_64-linux-gnu/11/include/stdarg.h:
+../source/shell/main.h:
 
-../source/newlib/i686-elf/include/stdio.h:
-
-../source/newlib/i686-elf/include/machine/types.h:
-
-../source/newlib/i686-elf/include/sys/sched.h:
-
-../source/newlib/i686-elf/include/sys/_timespec.h:
-
-../source/newlib/i686-elf/include/sys/timespec.h:
-
-/usr/lib/gcc/x86_64-linux-gnu/11/include/stddef.h:
-
-../source/newlib/i686-elf/include/sys/features.h:
-
-../source/newlib/i686-elf/include/sys/stat.h:
-
-../source/newlib/i686-elf/include/sys/_locale.h:
-
-../source/applib/lib_syscall.h:
+../source/newlib/i686-elf/include/time.h:
 
 ../source/kernel/include/os_cfg.h:
-
-../source/newlib/i686-elf/include/newlib.h:
 
 ../source/kernel/include/cpu/syscall.h:
 
 ../source/common/types.h:
+
+../source/newlib/i686-elf/include/sys/string.h:
+
+../source/applib/lib_syscall.h:
+
+../source/newlib/i686-elf/include/sys/_locale.h:
+
+../source/newlib/i686-elf/include/sys/stat.h:
+
+../source/newlib/i686-elf/include/string.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/11/include/stdarg.h:
+
+../source/newlib/i686-elf/include/newlib.h:
+
+../source/newlib/i686-elf/include/machine/_default_types.h:
+
+../source/newlib/i686-elf/include/sys/features.h:
 
 ../source/newlib/i686-elf/include/machine/ieeefp.h:
 
@@ -78,25 +80,11 @@ source/shell/CMakeFiles/shell.dir/main.c.o: ../source/shell/main.c \
 
 ../source/newlib/i686-elf/include/sys/config.h:
 
-../source/newlib/i686-elf/include/_newlib_version.h:
-
-/usr/include/stdc-predef.h:
-
-../source/newlib/i686-elf/include/sys/_stdint.h:
-
-../source/newlib/i686-elf/include/time.h:
-
-../source/newlib/i686-elf/include/sys/select.h:
-
-../source/newlib/i686-elf/include/machine/_default_types.h:
-
-../source/shell/main.c:
-
-../source/newlib/i686-elf/include/machine/_types.h:
-
-../source/newlib/i686-elf/include/sys/_pthreadtypes.h:
+../source/newlib/i686-elf/include/strings.h:
 
 ../source/newlib/i686-elf/include/_ansi.h:
+
+../source/newlib/i686-elf/include/sys/_pthreadtypes.h:
 
 ../source/newlib/i686-elf/include/sys/_types.h:
 
@@ -104,16 +92,40 @@ source/shell/CMakeFiles/shell.dir/main.c.o: ../source/shell/main.c \
 
 ../source/newlib/i686-elf/include/sys/types.h:
 
+../source/newlib/i686-elf/include/_newlib_version.h:
+
+/usr/include/stdc-predef.h:
+
+../source/newlib/i686-elf/include/sys/_stdint.h:
+
+../source/newlib/i686-elf/include/machine/_types.h:
+
+../source/shell/main.c:
+
 ../source/newlib/i686-elf/include/sys/lock.h:
 
-../source/newlib/i686-elf/include/machine/_endian.h:
+../source/newlib/i686-elf/include/sys/_timespec.h:
 
 ../source/newlib/i686-elf/include/machine/endian.h:
 
-../source/newlib/i686-elf/include/sys/cdefs.h:
+../source/newlib/i686-elf/include/machine/_endian.h:
+
+../source/newlib/i686-elf/include/sys/sched.h:
+
+../source/newlib/i686-elf/include/sys/select.h:
 
 ../source/newlib/i686-elf/include/machine/time.h:
 
+../source/newlib/i686-elf/include/sys/cdefs.h:
+
 ../source/newlib/i686-elf/include/sys/_sigset.h:
 
+../source/newlib/i686-elf/include/stdio.h:
+
+../source/newlib/i686-elf/include/machine/types.h:
+
 ../source/newlib/i686-elf/include/sys/_timeval.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/11/include/stddef.h:
+
+../source/newlib/i686-elf/include/sys/timespec.h:
