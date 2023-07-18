@@ -223,6 +223,14 @@ int tty_read(device_t *dev, int addr, char *buf, int size) {
         char ch;
         tty_fifo_get(&tty->in_fifo, &ch);
         switch (ch) {
+        case 0x7f:  //退格键不读取并删除buf中上一个读取到的字符
+            if (len == 0) {
+                continue;
+            } else {
+                len--;
+                *(--pbuf) = '\0';
+            }
+            break;
         case '\n':
             if ((tty->iflags & TTY_INCLR) && len < size - 1) {
                 //开启了换行转换

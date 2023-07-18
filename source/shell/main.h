@@ -15,11 +15,14 @@
 //shell输入缓冲区的大小
 #define CLI_INPUT_SIZE  1024
 
+//定义shell终端一次性接收的参数数量
+#define CLI_MAX_ARG_COUNT   10
+
 //定义终端命令结构
 typedef struct _cli_cmd_t {
     const char *name;   //命令名称
     const char *usage;  //命令用法
-    int(*do_func)(int argc, char **arg);    //命令实现函数
+    int(*do_func)(int argc, const char **arg);    //命令实现函数
 }cli_cmd_t;
 
 
