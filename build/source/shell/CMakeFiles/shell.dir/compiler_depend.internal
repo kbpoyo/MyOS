@@ -4,19 +4,21 @@
 source/shell/CMakeFiles/shell.dir/main.c.o
  /home/kbpoyo/code/cpp/MyOs/source/shell/main.c
  /usr/include/stdc-predef.h
- /home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/include/stdio.h
+ /home/kbpoyo/code/cpp/MyOs/source/shell/main.h
+ /home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/include/getopt.h
  /home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/include/_ansi.h
  /home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/include/newlib.h
  /home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/include/_newlib_version.h
  /home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/include/sys/config.h
  /home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/include/machine/ieeefp.h
  /home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/include/sys/features.h
+ /home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/include/stdio.h
+ /home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/include/_ansi.h
  /home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/include/sys/cdefs.h
  /home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/include/machine/_default_types.h
  /usr/lib/gcc/x86_64-linux-gnu/11/include/stddef.h
  /usr/lib/gcc/x86_64-linux-gnu/11/include/stdarg.h
  /home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/include/sys/reent.h
- /home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/include/_ansi.h
  /home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/include/sys/_types.h
  /home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/include/machine/_types.h
  /home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/include/sys/lock.h
@@ -33,6 +35,9 @@ source/shell/CMakeFiles/shell.dir/main.c.o
  /home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/include/sys/sched.h
  /home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/include/machine/types.h
  /home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/include/sys/stdio.h
+ /home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/include/stdlib.h
+ /home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/include/machine/stdlib.h
+ /home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/include/alloca.h
  /home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/include/string.h
  /home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/include/sys/_locale.h
  /home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/include/strings.h
@@ -44,5 +49,4 @@ source/shell/CMakeFiles/shell.dir/main.c.o
  /home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/include/sys/stat.h
  /home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/include/time.h
  /home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/include/machine/time.h
- /home/kbpoyo/code/cpp/MyOs/source/shell/main.h
 

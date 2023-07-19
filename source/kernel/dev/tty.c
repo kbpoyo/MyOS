@@ -195,7 +195,7 @@ int tty_write(device_t *dev, int addr, char *buf, int size) {
     
 
 
-    return 0;
+    return len;
 } 
 
 

@@ -227,6 +227,21 @@ static inline void clear_display(console_t *console) {
 }
 
 /**
+ * @brief 打印一个制表符\t
+ * 
+ */
+static void print_table(console_t *console) {
+
+  int supplement_col = 4 - console->cursor_col % 4;
+
+  for (int i = 0; i < supplement_col; ++i) {
+    show_char(console, ' ');
+  }
+
+  update_cursor_pos(console);
+}
+
+/**
  * @brief 初始化控制台
  *
  * @return int
@@ -286,7 +301,9 @@ static inline void write_normal(console_t *console, char c) {
     case '\b':  // 光标左移一位
       move_backword(console, 1);
       break;
-
+    case '\t':  //制表符，4个空格大小
+      print_table(console);
+      break;
     case '\r':  // 回车
       move_to_col0(console);
       break;
@@ -558,10 +575,12 @@ void console_select(int console_index) {
     //更新当前使用控制台
     curr_console_index = console_index;
 
+    //在控制台显示终端设备号
+    show_char(console, console_index + '0');
+
     //更新光标位置
     update_cursor_pos(console);
 
-    //在控制台显示终端设备号
-    show_char(console, console_index + '0');
+   
 
 }
