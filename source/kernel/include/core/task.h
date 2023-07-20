@@ -19,6 +19,9 @@
 // 定义任务名称缓冲区大小
 #define TASK_NAME_SIZE 32
 
+//静态分配任务，定义任务数量
+#define TASK_COUNT 128
+
 //定义每个进程所能拥有的时间切片数量
 #define TASK_TIME_SLICE_DEFAULT 10
 
@@ -39,6 +42,7 @@ typedef enum _task_state_t {
   TASK_READY,     // 就绪态，可运行
   TASK_WAITTING,  // 等待态，只能等待其他线程唤醒
   TASK_BLOCKED,   // 阻塞态，等待外部资源或锁准备好
+  TASK_ZOMBIE,    // 僵尸态，进程已死掉，等待资源被父进程回收
 } state_t;
 
 // 定义可执行任务的数据结构,即PCB进程控制块，书p406
@@ -46,6 +50,7 @@ typedef struct _task_t {
   state_t state;            //任务状态
   struct _task_t *parent;   //父进程控制块的地址
   int pid;                  //进程id
+  int status;               //进程退出的状态值
 
   uint32_t heap_start;      //进程堆空间的起始地址
   uint32_t heap_end;        //进程堆空间的结束地址
@@ -114,7 +119,8 @@ int sys_yield(void);
 int sys_getpid(void);
 int sys_fork(void);
 int sys_execve(char *name, char * const *argv, char * const *env );
-
+void sys_exit(int status);
+int sys_wait(int *status);
 
 //文件系统函数
 file_t *task_file(int fd);

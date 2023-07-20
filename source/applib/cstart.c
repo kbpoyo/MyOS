@@ -9,9 +9,11 @@
  *
  */
 
+#include <stdlib.h>
+#include "lib_syscall.h"
+
 int main(int argc, char **argv);
 extern char __bss_start__[], __bss_end__[];
-
 /**
  * @brief 执行调用main之前的初始化工作
  *
@@ -25,5 +27,5 @@ void cstart(int argc, char **argv) {
         *(start++) = 0;
     }
     
-    main(argc, argv);
+    exit(main(argc, argv));
 }

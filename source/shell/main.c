@@ -116,6 +116,18 @@ static int do_echo(int argc, const char **argv) {
   return 0;
 }
 
+/**
+ * @brief 退出shell程序
+ * 
+ * @param argc 
+ * @param argv 
+ * @return int 
+ */
+static int do_exit(int argc, const char ** argv) {
+  exit(0);
+  return 0;
+}
+
 // 终端命令表
 static const cli_cmd_t cmd_list[] = {
     {
@@ -133,6 +145,11 @@ static const cli_cmd_t cmd_list[] = {
         .usage = "echo [-n count] msg\t--echo msg [count] times",
         .do_func = do_echo,
     },
+    {
+      .name = "quit",
+      .usage = "quit\t--quit from shell",
+      .do_func = do_exit,
+    }
 };
 
 /**
@@ -182,7 +199,33 @@ static const cli_cmd_t *find_builtin(const char *name) {
 static void run_builtin(const cli_cmd_t *cmd, int argc, const char **argv) {
   int ret = cmd->do_func(argc, argv);
   if (ret < 0) {
-    fprintf(stderr, "%s error: %d\n", cmd->name, ret);
+    fprintf(stderr, ESC_COLOR_ERROR"%s error: %d\n"ESC_COLOR_DEFAULT, cmd->name, ret);
+  }
+}
+
+/**
+ * @brief 加载外部磁盘上的可执行程序运行
+ * 
+ * @param path 程序路径
+ * @param argc 参数个数
+ * @param argv 参数列表
+ */
+static void run_exec_file(const char *path, int argc, const char **argv) {
+  //1.创建子进程
+  int pid = fork();
+  if (pid < 0) {
+    fprintf(stderr, ESC_COLOR_ERROR"fork failed: %s"ESC_COLOR_DEFAULT, path);
+  } else if (pid == 0) {
+    //2.子进程加载外部程序
+    for (int i = 0; i < argc, ++i) {
+      printf("arg %d = %s\n", argc, argv[i]);
+    }
+    exit(-1);
+  } else {
+    int status;
+    //3.父进程等待任意子进程结束，并回收其资源
+    wait(&status);
+    fprintf(stderr, "cmd %s result: %d, pid=%d\n", path, status, pid);
   }
 }
 
@@ -236,6 +279,9 @@ int main(int argc, char **argv) {
       run_builtin(cmd, argc, argv);
       continue;
     }
+
+    //5.获取到的为磁盘上的可执行程序，需要进行加载运行
+    run_exec_file("", argc, argv);
 
     fprintf(stderr, ESC_COLOR_ERROR "Unknown command: %s\n" ESC_COLOR_DEFAULT,
             cli.curr_input);

@@ -267,3 +267,30 @@ int dup(int file) {
 
     return sys_call(&args);
 }
+
+/**
+ * @brief 进程退出的系统调用
+ * 
+ * @param status 
+ */
+void _exit(int status) {
+    syscall_args_t args;
+    args.id = SYS_exit;
+    args.arg0 = status;
+    
+    sys_call(&args);
+}
+
+/**
+ * @brief 回收进程资源
+ * 
+ * @param status 
+ * @return int 
+ */
+int wait(int *status) {
+    syscall_args_t args;
+    args.id = SYS_wait;
+    args.arg0 = (int)status;
+    
+    return sys_call(&args);
+}

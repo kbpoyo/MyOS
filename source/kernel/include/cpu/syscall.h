@@ -16,12 +16,15 @@
 //定义调用门描述符中，参数个数属性，即系统调用函数的参数个数
 #define SYSCALL_PARAM_COUNT 5
 
-//定义系统调用的id
+//定义进程相关系统调用的id
 #define SYS_sleep       0   //延时函数
 #define SYS_getpid      1   //获取pid
 #define SYS_fork        2   //fork子进程
 #define SYS_execve      3   //加载外部程序
 #define SYS_yield       4   //进程主动放弃cpu
+#define SYS_exit        5   //进程主动退出
+#define SYS_wait        6   //回收进程资源
+
 //文件相关系统调用
 #define SYS_open        50 
 #define SYS_read        51  

@@ -30,7 +30,4 @@
 //定义操作系统版本
 #define OS_VERSION "1.0.0"
 
-//静态分配任务，定义任务数量
-#define TASK_COUNT 128
-
 #endif

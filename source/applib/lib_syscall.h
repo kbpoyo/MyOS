@@ -38,6 +38,10 @@ void msleep(int ms);
 int fork (void);
 int execve(const char *name, char * const * argv, char * const * env);
 int yield (void);
+int wait(int *status);
+void _exit(int status);
+
+
 
 
 //提供给newlib库的系统调用
@@ -53,4 +57,5 @@ int fstat(int file, struct stat *st);
 char *sbrk(ptrdiff_t incr);
 
 int dup(int file);
+
 #endif
