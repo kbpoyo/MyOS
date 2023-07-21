@@ -217,15 +217,15 @@ static void run_exec_file(const char *path, int argc, const char **argv) {
     fprintf(stderr, ESC_COLOR_ERROR"fork failed: %s"ESC_COLOR_DEFAULT, path);
   } else if (pid == 0) {
     //2.子进程加载外部程序
-    for (int i = 0; i < argc, ++i) {
+    for (int i = 0; i < argc; ++i) {
       printf("arg %d = %s\n", argc, argv[i]);
     }
     exit(-1);
   } else {
     int status;
     //3.父进程等待任意子进程结束，并回收其资源
-    wait(&status);
-    fprintf(stderr, "cmd %s result: %d, pid=%d\n", path, status, pid);
+    int cpid = wait(&status);
+    fprintf(stderr, "cmd %s result: %d, pid=%d, cpid=%d\n", path, status, pid, cpid);
   }
 }
 

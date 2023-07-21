@@ -181,11 +181,9 @@ tss_init_failed:
 void task_start(task_t *task) {
   idt_state_t state = idt_enter_protection();  // TODO:加锁
 
-  // 5.将任务加入任务队列
-  list_insert_last(&task_manager.task_list, &task->task_node);
-
-  // 6.将任务设置为就绪态
+  //将任务设置为就绪态
   task_set_ready(task);
+  task->state = TASK_READY;
 
   idt_leave_protection(state);  // TODO:解锁
 }
@@ -226,28 +224,41 @@ int task_init(task_t *task, const char *name, uint32_t entry, uint32_t esp,
   // 5.初始化文件表
   kernel_memset(&task->file_table, 0, sizeof(task->file_table));
 
+  // 6.将任务加入任务队列
+  list_insert_last(&task_manager.task_list, &task->task_node);
+
   return 1;
 }
 
+
+static void free_task(task_t* task);
 /**
  * @brief 反初始化任务对象，释放对应的资源
  *
  * @param task
  */
 void task_uninit(task_t *task) {
-  if (task->tss_selector) {  // 释放已分配的选择子
+  //释放已分配的选择子
+  if (task->tss_selector) {  
     gdt_free(task->tss_selector);
   }
 
-  if (task->tss.esp0) {  // 释放已分配的内核栈空间
+  //释放已分配的内核栈空间
+  if (task->tss.esp0) {  
     memory_free_page((uint32_t)(task->tss.esp0 - MEM_PAGE_SIZE));
   }
-
-  if (task->tss.cr3) {  // 释放为页目录分配的页空间及其映射关系
+  
+  //释放为页目录分配的页空间及其映射关系
+  if (task->tss.cr3) {  
     memory_destroy_uvm(task->tss.cr3);
   }
 
-  kernel_memset(task, 0, sizeof(task_t));
+
+  //将任务结构从任务管理器的任务队列中取下
+  list_remove(&task_manager.task_list, &task->task_node);
+  
+  //释放全局任务表中的task结构资源
+  free_task(task);
 }
 
 // 空闲进程的栈空间
@@ -408,7 +419,7 @@ void task_set_ready(task_t *task) {
   list_insert_last(&task_manager.ready_list, &task->ready_node);
 
   // 2.将任务状态设置为就绪态
-  task->state = TASK_READY;
+  // task->state = TASK_READY;
 }
 
 /**
@@ -420,7 +431,6 @@ void task_set_unready(task_t *task) {
   ASSERT(task != (task_t *)0);
   // if (task == (task_t*)0) return;
   list_remove(&task_manager.ready_list, &task->ready_node);
-  task->state = TASK_CREATED;
 }
 
 /**
@@ -550,6 +560,7 @@ void task_set_wakeup(task_t *task) {
 static task_t *alloc_task(void) {
   task_t *task = 0;
 
+  //TODO:加锁
   mutex_lock(&task_table_lock);
 
   // 遍历静态任务表，取出未被分配的任务对象空间
@@ -561,6 +572,7 @@ static task_t *alloc_task(void) {
     }
   }
 
+  //TODO:解锁
   mutex_unlock(&task_table_lock);
 
   return task;
@@ -572,10 +584,12 @@ static task_t *alloc_task(void) {
  * @param task
  */
 static void free_task(task_t *task) {
+  //TODO:加锁
   mutex_lock(&task_table_lock);
 
   task->pid = 0;
 
+  //TODO:解锁
   mutex_unlock(&task_table_lock);
 }
 
@@ -984,10 +998,17 @@ void sys_exit(int status) {
   // TODO:加锁
   idt_state_t state = idt_enter_protection();
 
-  // 4.将任务进程从就绪队列中取下
+  // 4.获取父进程，判断父进程是否在等待回收子进程资源
+  task_t *parent = (task_t *)curr_task->parent;
+  if (parent->state ==
+      TASK_WAITTING) {  // 父进程处于阻塞并等待回收子进程资源的状态，需要唤醒父进程
+    task_set_ready(parent);
+  }
+
+  // 5.将任务进程从就绪队列中取下
   task_set_unready(curr_task);
 
-  // 5.切换任务进程
+  // 6.切换任务进程
   task_switch();
 
   // TODO:解锁
@@ -997,8 +1018,8 @@ void sys_exit(int status) {
 /**
  * @brief 回收进程资源
  *
- * @param status
- * @return int
+ * @param status 传入参数，记录被回收的进程状态值
+ * @return int  被回收的进程的pid
  */
 int sys_wait(int *status) {
   // 1.获取当前进程
@@ -1014,20 +1035,35 @@ int sys_wait(int *status) {
       if (task->parent != curr_task) {
         continue;
       }
-    }
-
-    // 3.找到一个子进程，判断是否为僵尸态
-    if (task->state = TASK_ZOMBIE) {  // 僵尸态，进行资源回收
+      // 3.找到一个子进程，判断是否为僵尸态
+      if (task->state == TASK_ZOMBIE) {  // 僵尸态，进行资源回收
         int pid = task->pid;
         *status = task->status;
 
-        //3.1 释放用户虚拟空间资源
-        memory_destroy_uvm(task->tss.cr3);
-        memory_free_page(task->tss.esp0 - MEM)
+        //释放任务
+        task_uninit(task);
+
+        // TODO:解锁
+        mutex_unlock(&task_table_lock);
+
+        // 3.4返回该进程的pid
+        return pid;
+      }
     }
 
     // TODO:解锁
     mutex_unlock(&task_table_lock);
+
+    // 4.未找到僵尸态的子进程，则当前进程进入阻塞状态
+    // TODO:加锁
+    idt_state_t state = idt_enter_protection();
+
+    task_set_unready(curr_task);
+    curr_task->state = TASK_WAITTING;
+    task_switch();
+
+    // TODO:解锁
+    idt_leave_protection(state);
   }
   return 0;
 }

@@ -31,22 +31,22 @@ source/kernel/CMakeFiles/kernel.dir/core/task.c.o: ../source/kernel/core/task.c 
   ../source/kernel/include/tools/list.h \
   ../source/kernel/include/tools/assert.h \
   ../source/kernel/include/fs/file.h \
-  ../source/kernel/include/tools/klib.h \
-  /usr/lib/gcc/x86_64-linux-gnu/11/include/stdarg.h \
-  ../source/kernel/include/tools/log.h \
   ../source/common/cpu_instr.h \
   ../source/common/types.h \
-  ../source/kernel/include/cpu/gdt.h \
-  ../source/kernel/include/os_cfg.h \
-  ../source/kernel/include/cpu/idt.h \
+  ../source/common/elf.h \
   ../source/kernel/include/core/memory.h \
   ../source/kernel/include/tools/bitmap.h \
   ../source/kernel/include/ipc/mutex.h \
   ../source/common/boot_info.h \
+  ../source/kernel/include/cpu/gdt.h \
+  ../source/kernel/include/cpu/idt.h \
   ../source/kernel/include/cpu/mmu.h \
   ../source/kernel/include/cpu/syscall.h \
-  ../source/common/elf.h \
-  ../source/kernel/include/fs/fs.h
+  ../source/kernel/include/fs/fs.h \
+  ../source/kernel/include/os_cfg.h \
+  ../source/kernel/include/tools/klib.h \
+  /usr/lib/gcc/x86_64-linux-gnu/11/include/stdarg.h \
+  ../source/kernel/include/tools/log.h
 
 source/kernel/CMakeFiles/kernel.dir/cpu/gate.c.o: ../source/kernel/cpu/gate.c \
   /usr/include/stdc-predef.h \
