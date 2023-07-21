@@ -43,6 +43,7 @@ typedef enum _task_state_t {
   TASK_WAITTING,  // 等待态，只能等待其他线程唤醒
   TASK_BLOCKED,   // 阻塞态，等待外部资源或锁准备好
   TASK_ZOMBIE,    // 僵尸态，进程已死掉，等待资源被父进程回收
+  TASK_ORPHAN,    //孤儿态，进程已死掉，并且其父进程提前死掉
 } state_t;
 
 // 定义可执行任务的数据结构,即PCB进程控制块，书p406

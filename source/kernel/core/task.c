@@ -991,19 +991,43 @@ void sys_exit(int status) {
     }
   }
 
-  // 3.设置进程状态标志为僵尸态并保存状态值
-  curr_task->state = TASK_ZOMBIE;
-  curr_task->status = status;
+  //3.将该进程的子进程的父进程设为first_task，由其进行统一回收
+  int move_child = 0; //标志位，判断是否当前进程已有子进程进入僵尸态
+  //TODO:加锁
+  mutex_lock(&task_table_lock);
+  for (int i = 0; i < TASK_COUNT; ++i) {
+    task_t *task = task_table + i;
+    if (task->parent == curr_task) {
+      task->parent = &task_manager.first_task;
+      if (task->state == TASK_ZOMBIE) { //已有子进程进入僵尸态，则设置标志位
+        move_child = 1;
+      }
+    }
+  }
+  //TODO:解锁
+  mutex_unlock(&task_table_lock);
+ 
 
   // TODO:加锁
   idt_state_t state = idt_enter_protection();
 
+
   // 4.获取父进程，判断父进程是否在等待回收子进程资源
   task_t *parent = (task_t *)curr_task->parent;
+  
+  if (move_child && (parent != &task_manager.first_task)) {  //当前父进程还
+
+  }
+  
+
   if (parent->state ==
       TASK_WAITTING) {  // 父进程处于阻塞并等待回收子进程资源的状态，需要唤醒父进程
     task_set_ready(parent);
   }
+
+  // 3.设置进程状态标志为僵尸态并保存状态值
+  curr_task->state = TASK_ZOMBIE;
+  curr_task->status = status;
 
   // 5.将任务进程从就绪队列中取下
   task_set_unready(curr_task);
@@ -1032,7 +1056,7 @@ int sys_wait(int *status) {
     // 2.遍历任务表,寻找子进程
     for (int i = 0; i < TASK_COUNT; ++i) {
       task_t *task = task_table + i;
-      if (task->parent != curr_task) {
+      if (task->pid != 0 && task->parent != curr_task) {
         continue;
       }
       // 3.找到一个子进程，判断是否为僵尸态

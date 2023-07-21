@@ -68,7 +68,9 @@ int first_main(void) {
     }    
 
     for (;;) {
-        msleep(1000);
+        //回收所有孤儿进程
+        int status = 0;
+        wait(&status);
     }
 
     return 0;
