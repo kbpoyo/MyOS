@@ -999,7 +999,7 @@ void sys_exit(int status) {
     task_t *task = task_table + i;
     if (task->parent == curr_task) {
       task->parent = &task_manager.first_task;
-      if (task->state == TASK_ZOMBIE) { //已有子进程进入僵尸态，则设置标志位
+      if (task->state == TASK_ZOMBIE) { //已有子进程提前退出进入僵尸态，则设置标志位
         move_child = 1;
       }
     }
@@ -1015,7 +1015,13 @@ void sys_exit(int status) {
   // 4.获取父进程，判断父进程是否在等待回收子进程资源
   task_t *parent = (task_t *)curr_task->parent;
   
-  if (move_child && (parent != &task_manager.first_task)) {  //当前父进程还
+  if (move_child && (parent != &task_manager.first_task)) {  
+    //当前进程的父进程不是first_task,
+    //需要对first_task进行唤醒，以使first_task
+    //对当前进程的提前死亡的子进程进行资源回收
+    if (task_manager.first_task.state == TASK_WAITTING) {
+      task_set_ready(&task_manager.first_task);
+    }
 
   }
   
