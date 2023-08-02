@@ -84,8 +84,8 @@ static inline void erase_rows(console_t *console, int start, int end) {
 
   while (disp_start < disp_end) {
     disp_start->c = ' ';
-    disp_start->foreground = console->foreground;
-    disp_start->background = console->background;
+    disp_start->foreground = COLOR_White;
+    disp_start->background = COLOR_Black;
 
     disp_start++;
   }
@@ -368,6 +368,7 @@ static inline void write_esc(console_t *console, char c) {
     case '8':
       restore_cursor(console);
       console->write_state = CONSOLE_WRITE_NORMAL;
+      break;
     default:
       console->write_state = CONSOLE_WRITE_NORMAL;
       break;
