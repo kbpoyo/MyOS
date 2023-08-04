@@ -293,7 +293,7 @@ int sys_dup(int file) {
         return -1;
     }
 
-    p_file->ref++;  //分配成功，该文件引用次数加一
+    file_inc_ref(p_file);  //分配成功，该文件引用次数加一
     return fd;
 }
 

@@ -13,6 +13,7 @@
 #define CONSOLE_H
 #include "common/types.h"
 #include "dev/tty.h"
+#include "ipc/mutex.h"
 
 #define CONSOLE_DISP_START_ADDR 0xb8000 //现存空间的起始地址
 #define CONSOLE_DISP_END_ADDR   (0xb8000 + 32*1024)   //现存空间的结束地址
@@ -74,6 +75,8 @@ typedef struct _console_t {
     uint32_t old_cursor_row;    //保存的光标所在列
     int esc_param[ESC_PARAM_MAX];  //esc序列的缓冲数组
     int curr_param_index;           //记录当前处理的esc字符的索引
+
+    mutex_t mutex;  //保护当前终端资源的互斥锁
 
 }console_t;
 

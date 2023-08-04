@@ -626,6 +626,23 @@ void sys_sleep(uint32_t ms) {
  */
 int sys_getpid(void) { return task_current()->pid; }
 
+
+/**
+ * @brief 将当前进程的打开文件表复制给传入进程
+ * 
+ * @param child_task 
+ */
+static void copy_opened_files(task_t *child_task) {
+  task_t *parent = task_current();
+  for (int i = 0; i < TASK_OFILE_SIZE; ++i) {
+    file_t *file = parent->file_table[i];
+    if (file) {
+      file_inc_ref(file);
+      child_task->file_table[i] = file;
+    }
+  }
+}
+
 /**
  * @brief 创建子进程
  *
@@ -649,6 +666,10 @@ int sys_fork(void) {
                       frame->esp + sizeof(uint32_t) * SYSCALL_PARAM_COUNT,
                       TASK_FLAGS_USER);
   if (err < 0) goto fork_failed;
+
+  //让子进程继承父进程的打开文件表
+  copy_opened_files(child_task);
+
 
   // 5.恢复到父进程的上下文环境
   tss_t *tss = &(child_task->tss);

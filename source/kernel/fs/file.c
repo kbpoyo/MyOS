@@ -71,3 +71,19 @@ void file_free(file_t *file) {
     //TODO:解锁
     mutex_unlock(&file_alloc_mutex);
 }
+
+/**
+ * @brief 增加文件file的引用计数
+ * 
+ * @param file 
+ */
+void file_inc_ref(file_t *file) {
+
+    //TODO:加锁
+    mutex_lock(&file_alloc_mutex);
+    
+    file->ref++;
+
+    //TODO:解锁
+    mutex_unlock(&file_alloc_mutex);
+}

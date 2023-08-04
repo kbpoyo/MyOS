@@ -218,7 +218,7 @@ static void run_exec_file(const char *path, int argc, const char **argv) {
   } else if (pid == 0) {
     //2.子进程加载外部程序
     for (int i = 0; i < argc; ++i) {
-      printf("arg %d = %s\n", argc, argv[i]);
+      printf("arg %d = %s\n", i, argv[i]);
     }
     exit(-1);
   } else {

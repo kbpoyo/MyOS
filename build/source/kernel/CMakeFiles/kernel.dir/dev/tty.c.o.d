@@ -10,4 +10,8 @@ source/kernel/CMakeFiles/kernel.dir/dev/tty.c.o: \
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/dev/keyboard.h \
  /home/kbpoyo/code/cpp/MyOs/source/common/types.h \
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/dev/console.h \
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/include/ipc/mutex.h \
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/include/core/task.h \
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/include/cpu/tss.h \
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/include/fs/file.h \
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/cpu/idt.h

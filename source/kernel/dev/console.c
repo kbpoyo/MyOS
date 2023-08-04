@@ -281,6 +281,8 @@ int console_init(int index) {
   console->disp_base = (disp_char_t *)CONSOLE_DISP_START_ADDR +
                        (index * CONSOLE_CLO_MAX * CONSOLE_ROW_MAX);
 
+  //初始化终端互斥锁
+  mutex_init(&console->mutex);
   return 0;
 }
 
@@ -508,6 +510,9 @@ int console_write(tty_t *tty) {
   console_t *console = console_table + tty->console_index;
   int len = 0;
 
+  //TODO:加锁
+  mutex_lock(&console->mutex);
+
   //在tty的缓冲队列中读取一个字符写入终端
   do {
     char c;
@@ -537,11 +542,17 @@ int console_write(tty_t *tty) {
     len++;
   } while (1);
 
+
+  //TODO:解锁
+  mutex_unlock(&console->mutex);
+
   // 更新光标的位置
   if (tty->console_index == curr_console_index) {
     //若当前tty设备是正在显示的设备，则更新对应的光标位置
     update_cursor_pos(console);
   }
+
+
   return len;
 }
 
