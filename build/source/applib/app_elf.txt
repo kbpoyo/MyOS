@@ -106,7 +106,7 @@ ELF Header:
   Version:                           0x1
   Entry point address:               0x0
   Start of program headers:          0 (bytes into file)
-  Start of section headers:          2248 (bytes into file)
+  Start of section headers:          2244 (bytes into file)
   Flags:                             0x0
   Size of this header:               52 (bytes)
   Size of program headers:           0 (bytes)
@@ -119,25 +119,25 @@ Section Headers:
   [Nr] Name              Type            Addr     Off    Size   ES Flg Lk Inf Al
   [ 0]                   NULL            00000000 000000 000000 00      0   0  0
   [ 1] .text             PROGBITS        00000000 000034 00003e 00  AX  0   0  1
-  [ 2] .rel.text         REL             00000000 0006c0 000020 08   I 18   1  4
+  [ 2] .rel.text         REL             00000000 0006bc 000020 08   I 18   1  4
   [ 3] .data             PROGBITS        00000000 000072 000000 00  WA  0   0  1
   [ 4] .bss              NOBITS          00000000 000072 000000 00  WA  0   0  1
   [ 5] .debug_info       PROGBITS        00000000 000072 000114 00      0   0  1
-  [ 6] .rel.debug_info   REL             00000000 0006e0 0000d8 08   I 18   5  4
+  [ 6] .rel.debug_info   REL             00000000 0006dc 0000d8 08   I 18   5  4
   [ 7] .debug_abbrev     PROGBITS        00000000 000186 0000ca 00      0   0  1
   [ 8] .debug_aranges    PROGBITS        00000000 000250 000020 00      0   0  1
-  [ 9] .rel.debug_a[...] REL             00000000 0007b8 000010 08   I 18   8  4
+  [ 9] .rel.debug_a[...] REL             00000000 0007b4 000010 08   I 18   8  4
   [10] .debug_line       PROGBITS        00000000 000270 000064 00      0   0  1
-  [11] .rel.debug_line   REL             00000000 0007c8 000038 08   I 18  10  4
+  [11] .rel.debug_line   REL             00000000 0007c4 000038 08   I 18  10  4
   [12] .debug_str        PROGBITS        00000000 0002d4 00016a 01  MS  0   0  1
   [13] .debug_line_str   PROGBITS        00000000 00043e 00010e 01  MS  0   0  1
-  [14] .comment          PROGBITS        00000000 00054c 00002e 01  MS  0   0  1
-  [15] .note.GNU-stack   PROGBITS        00000000 00057a 000000 00      0   0  1
-  [16] .debug_frame      PROGBITS        00000000 00057c 00002c 00      0   0  4
-  [17] .rel.debug_frame  REL             00000000 000800 000010 08   I 18  16  4
-  [18] .symtab           SYMTAB          00000000 0005a8 0000e0 10     19   9  4
-  [19] .strtab           STRTAB          00000000 000688 000035 00      0   0  1
-  [20] .shstrtab         STRTAB          00000000 000810 0000b6 00      0   0  1
+  [14] .comment          PROGBITS        00000000 00054c 00002c 01  MS  0   0  1
+  [15] .note.GNU-stack   PROGBITS        00000000 000578 000000 00      0   0  1
+  [16] .debug_frame      PROGBITS        00000000 000578 00002c 00      0   0  4
+  [17] .rel.debug_frame  REL             00000000 0007fc 000010 08   I 18  16  4
+  [18] .symtab           SYMTAB          00000000 0005a4 0000e0 10     19   9  4
+  [19] .strtab           STRTAB          00000000 000684 000035 00      0   0  1
+  [20] .shstrtab         STRTAB          00000000 00080c 0000b6 00      0   0  1
 Key to Flags:
   W (write), A (alloc), X (execute), M (merge), S (strings), I (info),
   L (link order), O (extra OS processing required), G (group), T (TLS),
@@ -150,14 +150,14 @@ There are no program headers in this file.
 
 There is no dynamic section in this file.
 
-Relocation section '.rel.text' at offset 0x6c0 contains 4 entries:
+Relocation section '.rel.text' at offset 0x6bc contains 4 entries:
  Offset     Info    Type            Sym.Value  Sym. Name
 00000009  00000a01 R_386_32          00000000   __bss_start__
 0000001e  00000b01 R_386_32          00000000   __bss_end__
 0000002e  00000c02 R_386_PC32        00000000   main
 0000003a  00000d02 R_386_PC32        00000000   exit
 
-Relocation section '.rel.debug_info' at offset 0x6e0 contains 27 entries:
+Relocation section '.rel.debug_info' at offset 0x6dc contains 27 entries:
  Offset     Info    Type            Sym.Value  Sym. Name
 00000008  00000401 R_386_32          00000000   .debug_abbrev
 0000000d  00000601 R_386_32          00000000   .debug_str
@@ -187,12 +187,12 @@ Relocation section '.rel.debug_info' at offset 0x6e0 contains 27 entries:
 000000f7  00000601 R_386_32          00000000   .debug_str
 00000104  00000601 R_386_32          00000000   .debug_str
 
-Relocation section '.rel.debug_aranges' at offset 0x7b8 contains 2 entries:
+Relocation section '.rel.debug_aranges' at offset 0x7b4 contains 2 entries:
  Offset     Info    Type            Sym.Value  Sym. Name
 00000006  00000301 R_386_32          00000000   .debug_info
 00000010  00000201 R_386_32          00000000   .text
 
-Relocation section '.rel.debug_line' at offset 0x7c8 contains 7 entries:
+Relocation section '.rel.debug_line' at offset 0x7c4 contains 7 entries:
  Offset     Info    Type            Sym.Value  Sym. Name
 00000022  00000701 R_386_32          00000000   .debug_line_str
 00000026  00000701 R_386_32          00000000   .debug_line_str
@@ -202,7 +202,7 @@ Relocation section '.rel.debug_line' at offset 0x7c8 contains 7 entries:
 0000003e  00000701 R_386_32          00000000   .debug_line_str
 00000048  00000201 R_386_32          00000000   .text
 
-Relocation section '.rel.debug_frame' at offset 0x800 contains 2 entries:
+Relocation section '.rel.debug_frame' at offset 0x7fc contains 2 entries:
  Offset     Info    Type            Sym.Value  Sym. Name
 00000018  00000801 R_386_32          00000000   .debug_frame
 0000001c  00000201 R_386_32          00000000   .text
@@ -240,7 +240,7 @@ ELF Header:
   Version:                           0x1
   Entry point address:               0x0
   Start of program headers:          0 (bytes into file)
-  Start of section headers:          8052 (bytes into file)
+  Start of section headers:          8048 (bytes into file)
   Flags:                             0x0
   Size of this header:               52 (bytes)
   Size of program headers:           0 (bytes)
@@ -253,25 +253,25 @@ Section Headers:
   [Nr] Name              Type            Addr     Off    Size   ES Flg Lk Inf Al
   [ 0]                   NULL            00000000 000000 000000 00      0   0  0
   [ 1] .text             PROGBITS        00000000 000034 0002b8 00  AX  0   0  1
-  [ 2] .rel.text         REL             00000000 00183c 000088 08   I 18   1  4
+  [ 2] .rel.text         REL             00000000 001838 000088 08   I 18   1  4
   [ 3] .data             PROGBITS        00000000 0002ec 000000 00  WA  0   0  1
   [ 4] .bss              NOBITS          00000000 0002ec 000000 00  WA  0   0  1
   [ 5] .debug_info       PROGBITS        00000000 0002ec 000770 00      0   0  1
-  [ 6] .rel.debug_info   REL             00000000 0018c4 000438 08   I 18   5  4
+  [ 6] .rel.debug_info   REL             00000000 0018c0 000438 08   I 18   5  4
   [ 7] .debug_abbrev     PROGBITS        00000000 000a5c 0001b8 00      0   0  1
   [ 8] .debug_aranges    PROGBITS        00000000 000c14 000020 00      0   0  1
-  [ 9] .rel.debug_a[...] REL             00000000 001cfc 000010 08   I 18   8  4
+  [ 9] .rel.debug_a[...] REL             00000000 001cf8 000010 08   I 18   8  4
   [10] .debug_line       PROGBITS        00000000 000c34 0001dd 00      0   0  1
-  [11] .rel.debug_line   REL             00000000 001d0c 000090 08   I 18  10  4
+  [11] .rel.debug_line   REL             00000000 001d08 000090 08   I 18  10  4
   [12] .debug_str        PROGBITS        00000000 000e11 00035f 01  MS  0   0  1
   [13] .debug_line_str   PROGBITS        00000000 001170 00020b 01  MS  0   0  1
-  [14] .comment          PROGBITS        00000000 00137b 00002e 01  MS  0   0  1
-  [15] .note.GNU-stack   PROGBITS        00000000 0013a9 000000 00      0   0  1
-  [16] .debug_frame      PROGBITS        00000000 0013ac 000260 00      0   0  4
-  [17] .rel.debug_frame  REL             00000000 001d9c 000120 08   I 18  16  4
-  [18] .symtab           SYMTAB          00000000 00160c 0001b0 10     19   9  4
-  [19] .strtab           STRTAB          00000000 0017bc 00007f 00      0   0  1
-  [20] .shstrtab         STRTAB          00000000 001ebc 0000b6 00      0   0  1
+  [14] .comment          PROGBITS        00000000 00137b 00002c 01  MS  0   0  1
+  [15] .note.GNU-stack   PROGBITS        00000000 0013a7 000000 00      0   0  1
+  [16] .debug_frame      PROGBITS        00000000 0013a8 000260 00      0   0  4
+  [17] .rel.debug_frame  REL             00000000 001d98 000120 08   I 18  16  4
+  [18] .symtab           SYMTAB          00000000 001608 0001b0 10     19   9  4
+  [19] .strtab           STRTAB          00000000 0017b8 00007f 00      0   0  1
+  [20] .shstrtab         STRTAB          00000000 001eb8 0000b6 00      0   0  1
 Key to Flags:
   W (write), A (alloc), X (execute), M (merge), S (strings), I (info),
   L (link order), O (extra OS processing required), G (group), T (TLS),
@@ -284,7 +284,7 @@ There are no program headers in this file.
 
 There is no dynamic section in this file.
 
-Relocation section '.rel.text' at offset 0x183c contains 17 entries:
+Relocation section '.rel.text' at offset 0x1838 contains 17 entries:
  Offset     Info    Type            Sym.Value  Sym. Name
 0000006a  00000902 R_386_PC32        00000000   sys_call
 00000088  00000902 R_386_PC32        00000000   sys_call
@@ -304,7 +304,7 @@ Relocation section '.rel.text' at offset 0x183c contains 17 entries:
 0000028d  00000902 R_386_PC32        00000000   sys_call
 000002af  00000902 R_386_PC32        00000000   sys_call
 
-Relocation section '.rel.debug_info' at offset 0x18c4 contains 135 entries:
+Relocation section '.rel.debug_info' at offset 0x18c0 contains 135 entries:
  Offset     Info    Type            Sym.Value  Sym. Name
 00000008  00000401 R_386_32          00000000   .debug_abbrev
 0000000d  00000601 R_386_32          00000000   .debug_str
@@ -442,12 +442,12 @@ Relocation section '.rel.debug_info' at offset 0x18c4 contains 135 entries:
 00000734  00000601 R_386_32          00000000   .debug_str
 00000742  00000601 R_386_32          00000000   .debug_str
 
-Relocation section '.rel.debug_aranges' at offset 0x1cfc contains 2 entries:
+Relocation section '.rel.debug_aranges' at offset 0x1cf8 contains 2 entries:
  Offset     Info    Type            Sym.Value  Sym. Name
 00000006  00000301 R_386_32          00000000   .debug_info
 00000010  00000201 R_386_32          00000000   .text
 
-Relocation section '.rel.debug_line' at offset 0x1d0c contains 18 entries:
+Relocation section '.rel.debug_line' at offset 0x1d08 contains 18 entries:
  Offset     Info    Type            Sym.Value  Sym. Name
 00000022  00000701 R_386_32          00000000   .debug_line_str
 00000026  00000701 R_386_32          00000000   .debug_line_str
@@ -468,7 +468,7 @@ Relocation section '.rel.debug_line' at offset 0x1d0c contains 18 entries:
 00000072  00000701 R_386_32          00000000   .debug_line_str
 0000007c  00000201 R_386_32          00000000   .text
 
-Relocation section '.rel.debug_frame' at offset 0x1d9c contains 36 entries:
+Relocation section '.rel.debug_frame' at offset 0x1d98 contains 36 entries:
  Offset     Info    Type            Sym.Value  Sym. Name
 00000018  00000801 R_386_32          00000000   .debug_frame
 0000001c  00000201 R_386_32          00000000   .text

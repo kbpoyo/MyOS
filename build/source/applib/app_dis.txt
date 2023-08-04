@@ -63,7 +63,7 @@ _start:
 			c: R_386_PC32	cstart
 
 cstart.c.o:     file format elf32-i386
-rw-r--r-- 0/0   3088 Jan  1 08:00 1970 cstart.c.o
+rw-r--r-- 0/0   3084 Jan  1 08:00 1970 cstart.c.o
 architecture: i386, flags 0x00000011:
 HAS_RELOC, HAS_SYMS
 start address 0x00000000
@@ -88,11 +88,11 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING, OCTETS
   8 .debug_line_str 0000010e  00000000  00000000  0000043e  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
-  9 .comment      0000002e  00000000  00000000  0000054c  2**0
+  9 .comment      0000002c  00000000  00000000  0000054c  2**0
                   CONTENTS, READONLY
- 10 .note.GNU-stack 00000000  00000000  00000000  0000057a  2**0
+ 10 .note.GNU-stack 00000000  00000000  00000000  00000578  2**0
                   CONTENTS, READONLY
- 11 .debug_frame  0000002c  00000000  00000000  0000057c  2**2
+ 11 .debug_frame  0000002c  00000000  00000000  00000578  2**2
                   CONTENTS, RELOC, READONLY, DEBUGGING, OCTETS
 SYMBOL TABLE:
 00000000 l    df *ABS*	00000000 cstart.c
@@ -153,7 +153,7 @@ void cstart(int argc, char **argv) {
 			3a: R_386_PC32	exit
 
 lib_syscall.c.o:     file format elf32-i386
-rw-r--r-- 0/0   8892 Jan  1 08:00 1970 lib_syscall.c.o
+rw-r--r-- 0/0   8888 Jan  1 08:00 1970 lib_syscall.c.o
 architecture: i386, flags 0x00000011:
 HAS_RELOC, HAS_SYMS
 start address 0x00000000
@@ -178,11 +178,11 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING, OCTETS
   8 .debug_line_str 0000020b  00000000  00000000  00001170  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
-  9 .comment      0000002e  00000000  00000000  0000137b  2**0
+  9 .comment      0000002c  00000000  00000000  0000137b  2**0
                   CONTENTS, READONLY
- 10 .note.GNU-stack 00000000  00000000  00000000  000013a9  2**0
+ 10 .note.GNU-stack 00000000  00000000  00000000  000013a7  2**0
                   CONTENTS, READONLY
- 11 .debug_frame  00000260  00000000  00000000  000013ac  2**2
+ 11 .debug_frame  00000260  00000000  00000000  000013a8  2**2
                   CONTENTS, RELOC, READONLY, DEBUGGING, OCTETS
 SYMBOL TABLE:
 00000000 l    df *ABS*	00000000 lib_syscall.c

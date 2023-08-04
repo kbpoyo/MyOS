@@ -121,7 +121,7 @@ int dev_open(int dev_type, int dev_index, void *data) {
  * @param size 读取字节大小
  * @return int 成功读取大小
  */
-int dev_read(int dev_id, int addr, char *buf, int size) {
+int dev_read(int dev_id, int addr, const char *buf, int size) {
     //设备不存在，直接返回-1
     if (!is_dev_exist(dev_id)) {
         return -1;
@@ -141,7 +141,7 @@ int dev_read(int dev_id, int addr, char *buf, int size) {
  * @param size 写入字节大小
  * @return int 成功写入大小
  */
-int dev_write(int dev_id, int addr, char *buf, int size)  {
+int dev_write(int dev_id, int addr, const char *buf, int size)  {
     //设备不存在，直接返回-1
     if (!is_dev_exist(dev_id)) {
         return -1;

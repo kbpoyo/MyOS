@@ -23,6 +23,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/kernel.dir/dev/time.c.o.d"
   "CMakeFiles/kernel.dir/dev/tty.c.o"
   "CMakeFiles/kernel.dir/dev/tty.c.o.d"
+  "CMakeFiles/kernel.dir/fs/devfs/devfs.c.o"
+  "CMakeFiles/kernel.dir/fs/devfs/devfs.c.o.d"
   "CMakeFiles/kernel.dir/fs/file.c.o"
   "CMakeFiles/kernel.dir/fs/file.c.o.d"
   "CMakeFiles/kernel.dir/fs/fs.c.o"

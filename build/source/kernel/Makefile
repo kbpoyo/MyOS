@@ -31,9 +31,6 @@ default_target: all
 
 .SUFFIXES: .hpux_make_needs_suffix_list
 
-# Produce verbose output by default.
-VERBOSE = 1
-
 # Command-line flag to silence nested $(MAKE).
 $(VERBOSE)MAKESILENT = -s
 
@@ -421,6 +418,30 @@ dev/tty.c.s:
 	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/dev/tty.c.s
 .PHONY : dev/tty.c.s
 
+fs/devfs/devfs.o: fs/devfs/devfs.c.o
+.PHONY : fs/devfs/devfs.o
+
+# target to build an object file
+fs/devfs/devfs.c.o:
+	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/fs/devfs/devfs.c.o
+.PHONY : fs/devfs/devfs.c.o
+
+fs/devfs/devfs.i: fs/devfs/devfs.c.i
+.PHONY : fs/devfs/devfs.i
+
+# target to preprocess a source file
+fs/devfs/devfs.c.i:
+	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/fs/devfs/devfs.c.i
+.PHONY : fs/devfs/devfs.c.i
+
+fs/devfs/devfs.s: fs/devfs/devfs.c.s
+.PHONY : fs/devfs/devfs.s
+
+# target to generate assembly for a file
+fs/devfs/devfs.c.s:
+	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/fs/devfs/devfs.c.s
+.PHONY : fs/devfs/devfs.c.s
+
 fs/file.o: fs/file.c.o
 .PHONY : fs/file.o
 
@@ -770,6 +791,9 @@ help:
 	@echo "... dev/tty.o"
 	@echo "... dev/tty.i"
 	@echo "... dev/tty.s"
+	@echo "... fs/devfs/devfs.o"
+	@echo "... fs/devfs/devfs.i"
+	@echo "... fs/devfs/devfs.s"
 	@echo "... fs/file.o"
 	@echo "... fs/file.i"
 	@echo "... fs/file.s"

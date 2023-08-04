@@ -10,7 +10,7 @@ ELF Header:
   Version:                           0x1
   Entry point address:               0x8100059a
   Start of program headers:          52 (bytes into file)
-  Start of section headers:          252344 (bytes into file)
+  Start of section headers:          252152 (bytes into file)
   Flags:                             0x0
   Size of this header:               52 (bytes)
   Size of program headers:           32 (bytes)
@@ -30,14 +30,14 @@ Section Headers:
   [ 6] .debug_abbrev     PROGBITS        00000000 02a912 007a82 00      0   0  1
   [ 7] .debug_aranges    PROGBITS        00000000 032398 000808 00      0   0  8
   [ 8] .debug_line       PROGBITS        00000000 032ba0 004bca 00      0   0  1
-  [ 9] .debug_str        PROGBITS        00000000 03776a 00162e 01  MS  0   0  1
-  [10] .debug_line_str   PROGBITS        00000000 038d98 00144f 01  MS  0   0  1
-  [11] .comment          PROGBITS        00000000 03a1e7 00006a 01  MS  0   0  1
-  [12] .debug_frame      PROGBITS        00000000 03a254 001968 00      0   0  4
-  [13] .debug_rnglists   PROGBITS        00000000 03bbbc 00004e 00      0   0  1
-  [14] .symtab           SYMTAB          00000000 03bc0c 001290 10     15 137  4
-  [15] .strtab           STRTAB          00000000 03ce9c 000a70 00      0   0  1
-  [16] .shstrtab         STRTAB          00000000 03d90c 0000aa 00      0   0  1
+  [ 9] .debug_str        PROGBITS        00000000 03776a 00159e 01  MS  0   0  1
+  [10] .debug_line_str   PROGBITS        00000000 038d08 00144f 01  MS  0   0  1
+  [11] .comment          PROGBITS        00000000 03a157 00003d 01  MS  0   0  1
+  [12] .debug_frame      PROGBITS        00000000 03a194 001968 00      0   0  4
+  [13] .debug_rnglists   PROGBITS        00000000 03bafc 00004e 00      0   0  1
+  [14] .symtab           SYMTAB          00000000 03bb4c 001290 10     15 137  4
+  [15] .strtab           STRTAB          00000000 03cddc 000a70 00      0   0  1
+  [16] .shstrtab         STRTAB          00000000 03d84c 0000aa 00      0   0  1
 Key to Flags:
   W (write), A (alloc), X (execute), M (merge), S (strings), I (info),
   L (link order), O (extra OS processing required), G (group), T (TLS),

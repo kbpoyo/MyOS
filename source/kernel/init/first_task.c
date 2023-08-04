@@ -50,7 +50,7 @@ int first_main(void) {
     // }
 
     //为每个tty设备创建一个进程
-    for (int i = 0; i < TTY_TABLE_SIZE; ++i) {
+    for (int i = 0; i < 1; ++i) {
         int pid = fork();
         if (pid < 0) {
             print_msg("create shell failed.", 0);
