@@ -12,7 +12,7 @@
 #ifndef FS_H
 #define FS_H
 
-#include "file.h"
+#include "fs/file.h"
 #include "tools/list.h"
 #include "ipc/mutex.h"
 

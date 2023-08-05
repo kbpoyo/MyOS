@@ -100,6 +100,11 @@ static int is_path_valid(const char *path) {
   return 1;
 }
 
+//TODO:
+static const char *path_next_child(const char * path) {
+
+}
+
 /**
  * @brief 打开文件
  *
@@ -109,7 +114,7 @@ static int is_path_valid(const char *path) {
  * @return int 文件描述符
  */
 int sys_open(const char *name, int flags, ...) {
-  if (kernel_strncmp(name, "tty", 3) == 0) {  // 打开tty设备文件
+  if (kernel_strncmp(name, "/dev", 3) == 0) {  // 打开tty设备文件
 
     // 1.判断路径是否有效
     if (!is_path_valid(name)) {  // 文件路径无效
@@ -131,21 +136,24 @@ int sys_open(const char *name, int flags, ...) {
       goto sys_open_failed;
     }
 
+    //获取下一级路径
+    name = path_next_child(name);
+
     // 4.打开对应具体设备号的tty设备
     // name的开头为"tty:0(设备号)"
-    int num = name[4] - '0';                 // 获取设备号
-    int dev_id = dev_open(DEV_TTY, num, 0);  // 打开设备并获取设备描述符
-    if (dev_id < 0) {
-      goto sys_open_failed;
-    }
 
     // 5.将打开的tty设备与分配的文件结构绑定
-    file->dev_id = dev_id;
+    file->dev_id = -1;
     file->mode = 0;
     file->pos = 0;
     file->ref = 1;
     file->type = FILE_TTY;
     kernel_strncpy(file->file_name, name, FILE_NAME_SIZE);
+
+    int err = devfs_op.open((fs_t*)0, name, file);
+    if (err < 0)  {
+      goto sys_open_failed;
+    }
 
     // 6.返回文件描述符
     return fd;
@@ -359,7 +367,7 @@ static fs_t *mount(fs_type_t type, const char *mount_point, int dev_major,
         curr = list_node_next(curr);
     }
 
-    //从空闲链表中取下一个待挂载的fs对象进行挂载
+    //2.从空闲链表中取下一个待挂载的fs对象进行挂载
     list_node_t *free_node = list_remove_first(&free_list);
     if (!free_node) {
         log_printf("no free fs, mount failed!");
@@ -369,7 +377,7 @@ static fs_t *mount(fs_type_t type, const char *mount_point, int dev_major,
     kernel_memset(fs, 0, sizeof(fs_t));
     kernel_strncpy(fs->mount_point, mount_point, FS_MOUNT_POINT_SIZE);
 
-    //获取该fs对象的操作函数表并交给该对象
+    //3.获取该fs对象的操作函数表并交给该对象
     fs_op_t *op = get_fs_op(type, dev_major);
     if (!op) {
         log_printf("unsupported fs type: %d", type);
@@ -377,13 +385,13 @@ static fs_t *mount(fs_type_t type, const char *mount_point, int dev_major,
     }
     fs->op = op;
 
-    //挂载该文件系统类型下具体的设备
+    //4.挂载该文件系统类型下具体的设备
     if (op->mount(fs, dev_major, dev_minor) < 0) {
         log_printf("mount fs %s failed!", mount_point);
         goto mount_failed;
     }
 
-    //将该文件系统挂载到mounted_list上
+    //5.将该文件系统挂载到mounted_list上
     list_insert_last(&mounted_list, &fs->node);
 
     return fs;

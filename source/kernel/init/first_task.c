@@ -56,8 +56,8 @@ int first_main(void) {
             print_msg("create shell failed.", 0);
             break;
         } else if (pid == 0) {
-            char tty_num[5] = "tty:?";
-            tty_num[4] = i + '0';
+            char tty_num[] = "/dev/tty?";
+            tty_num[sizeof(tty_num) - 2] = i + '0';
             char * const argv[] = {tty_num, 0};
             execve("/sehll.elf", argv, 0);
             while (1)   {

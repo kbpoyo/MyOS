@@ -26,5 +26,4 @@ source/kernel/CMakeFiles/kernel.dir/init/init.c.o: \
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/dev/console.h \
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/dev/tty.h \
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/dev/keyboard.h \
- /home/kbpoyo/code/cpp/MyOs/source/kernel/include/fs/fs.h \
- /home/kbpoyo/code/cpp/MyOs/source/kernel/include/fs/file.h
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/include/fs/fs.h

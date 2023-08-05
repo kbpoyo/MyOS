@@ -19,7 +19,6 @@ source/kernel/CMakeFiles/kernel.dir/core/task.c.o: \
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/cpu/mmu.h \
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/cpu/syscall.h \
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/fs/fs.h \
- /home/kbpoyo/code/cpp/MyOs/source/kernel/include/fs/file.h \
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/os_cfg.h \
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/tools/klib.h \
  /usr/lib/gcc/x86_64-linux-gnu/11/include/stdarg.h \

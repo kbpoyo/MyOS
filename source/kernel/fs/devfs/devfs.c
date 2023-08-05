@@ -12,6 +12,18 @@
 #include "fs/devfs/devfs.h"
 #include "dev/dev.h"
 #include "fs/file.h"
+#include "tools/klib.h"
+#include "tools/log.h"
+
+//定义设备文件系统管理的类型表
+static devfs_type_t devfs_type_list[] = {
+    {
+        .name = "tty",
+        .dev_type = DEV_TTY,
+        .file_type = FILE_TTY,
+    },  //tty设备类型
+};
+
 
 /**
  * @brief 挂载设备文件系统
@@ -35,6 +47,11 @@ void devfs_unmount(struct _fs_t *fs) {
 } 
 
 
+//TODO:
+static int path_to_num(const char * path, int *num) {
+
+}
+
 /**
  * @brief 打开设备文件系统
  * 
@@ -44,6 +61,33 @@ void devfs_unmount(struct _fs_t *fs) {
  * @return int 
  */
 int devfs_open(struct _fs_t *fs, const char *path, file_t *file) {
+    //遍历设备类型表，获取需要打开的设备的信息
+    for (int i = 0; i < sizeof(devfs_type_list) / sizeof(devfs_type_list[0]); ++i) {
+        devfs_type_t *type = devfs_type_list + i;
+
+        int type_name_len = kernel_strlen(type->name);
+        if (kernel_strncmp(path, type->name, type_name_len) == 0) {
+            int minor;
+            if (kernel_strlen(path) > type_name_len && path_to_num(path + type_name_len, &minor) < 0) {
+                log_printf("Get device num failed. %s", path);
+                break;
+            }
+
+            int dev_id = dev_open(type->dev_type, minor, (void*)0);
+            if (dev_id < 0) {
+                log_printf("open device failed: %s", path);
+                break;
+            }
+
+            file->dev_id = dev_id;
+            file->fs = fs;
+            file->pos = 0;
+            file->size = 0;
+            file->type = type->file_type;
+            return 0;
+        }
+    }
+
     return 0;
 };
 

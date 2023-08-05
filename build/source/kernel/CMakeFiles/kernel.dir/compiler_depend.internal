@@ -45,7 +45,6 @@ source/kernel/CMakeFiles/kernel.dir/core/task.c.o
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/cpu/mmu.h
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/cpu/syscall.h
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/fs/fs.h
- /home/kbpoyo/code/cpp/MyOs/source/kernel/include/fs/file.h
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/os_cfg.h
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/tools/klib.h
  /usr/lib/gcc/x86_64-linux-gnu/11/include/stdarg.h
@@ -107,7 +106,6 @@ source/kernel/CMakeFiles/kernel.dir/cpu/syscall.c.o
  /home/kbpoyo/code/cpp/MyOs/source/common/types.h
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/tools/log.h
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/fs/fs.h
- /home/kbpoyo/code/cpp/MyOs/source/kernel/include/fs/file.h
 
 source/kernel/CMakeFiles/kernel.dir/dev/console.c.o
  /home/kbpoyo/code/cpp/MyOs/source/kernel/dev/console.c
@@ -200,8 +198,10 @@ source/kernel/CMakeFiles/kernel.dir/fs/devfs/devfs.c.o
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/ipc/mutex.h
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/core/task.h
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/cpu/tss.h
- /home/kbpoyo/code/cpp/MyOs/source/kernel/include/fs/file.h
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/dev/dev.h
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/include/tools/klib.h
+ /usr/lib/gcc/x86_64-linux-gnu/11/include/stdarg.h
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/include/tools/log.h
 
 source/kernel/CMakeFiles/kernel.dir/fs/file.c.o
  /home/kbpoyo/code/cpp/MyOs/source/kernel/fs/file.c
@@ -227,7 +227,6 @@ source/kernel/CMakeFiles/kernel.dir/fs/fs.c.o
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/ipc/mutex.h
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/core/task.h
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/cpu/tss.h
- /home/kbpoyo/code/cpp/MyOs/source/kernel/include/fs/file.h
  /home/kbpoyo/code/cpp/MyOs/source/common/boot_info.h
  /home/kbpoyo/code/cpp/MyOs/source/common/types.h
  /home/kbpoyo/code/cpp/MyOs/source/common/cpu_instr.h
@@ -314,7 +313,6 @@ source/kernel/CMakeFiles/kernel.dir/init/init.c.o
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/dev/tty.h
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/dev/keyboard.h
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/fs/fs.h
- /home/kbpoyo/code/cpp/MyOs/source/kernel/include/fs/file.h
 
 source/kernel/CMakeFiles/kernel.dir/ipc/mutex.c.o
  /home/kbpoyo/code/cpp/MyOs/source/kernel/ipc/mutex.c
