@@ -23,6 +23,9 @@ typedef enum _file_type_t {
 
 }file_type_t;
 
+
+struct _fs_t;
+
 typedef struct  _file_t {
     char file_name[FILE_NAME_SIZE]; //文件名
     file_type_t type;   //文件类型

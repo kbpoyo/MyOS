@@ -47,10 +47,6 @@ void devfs_unmount(struct _fs_t *fs) {
 } 
 
 
-//TODO:
-static int path_to_num(const char * path, int *num) {
-
-}
 
 /**
  * @brief 打开设备文件系统
@@ -68,22 +64,26 @@ int devfs_open(struct _fs_t *fs, const char *path, file_t *file) {
         int type_name_len = kernel_strlen(type->name);
         if (kernel_strncmp(path, type->name, type_name_len) == 0) {
             int minor;
+            //判断路径是否正确并读取路径中的设备号
             if (kernel_strlen(path) > type_name_len && path_to_num(path + type_name_len, &minor) < 0) {
                 log_printf("Get device num failed. %s", path);
                 break;
             }
 
+            //打开设备
             int dev_id = dev_open(type->dev_type, minor, (void*)0);
             if (dev_id < 0) {
                 log_printf("open device failed: %s", path);
                 break;
             }
 
+            //打开成功，初始化file结构，用file记录文件信息
             file->dev_id = dev_id;
-            file->fs = fs;
             file->pos = 0;
             file->size = 0;
             file->type = type->file_type;
+            file->ref = 1;
+
             return 0;
         }
     }

@@ -18,8 +18,8 @@
 #include "dev/dev.h"
 #include "fs/file.h"
 #include "tools/klib.h"
-#include "tools/log.h"
 #include "tools/list.h"
+#include "tools/log.h"
 
 #define FS_TABLE_SIZE 10
 static list_t mounted_list;           // 文件系统挂载链表
@@ -86,6 +86,21 @@ static void read_disk(uint32_t sector, uint16_t sector_count, uint8_t *buf) {
   }
 }
 
+
+/**
+ * @brief 检验文件描述符fd是否有效
+ * 
+ * @param fd 
+ * @return int 
+ */
+static int is_fd_bad(int fd) {
+  if (fd < 0 && fd >= TASK_OFILE_SIZE) {
+    return 1;
+  }
+
+  return 0;
+}
+
 /**
  * @brief 判断文件路径是否有效
  *
@@ -100,9 +115,79 @@ static int is_path_valid(const char *path) {
   return 1;
 }
 
-//TODO:
-static const char *path_next_child(const char * path) {
+/**
+ * @brief 获取路径path下一级路径
+ *
+ * @param path
+ * @return const char*
+ */
+const char *path_next_child(const char *path) {
+  const char *c = path;
+  while (*c && (*(c++) == '/')) {
+  };  // 跳过第一个'/'
+  while (*c && (*(c++) != '/')) {
+  };  // 跳过一级目录到下一个'/'
 
+  return *c ? c : (const char *)0;  // 返回第二个'/'后的部分
+}
+
+/**
+ * @brief 从路径path中提取次设备号到num中
+ *
+ * @param path
+ * @param num
+ * @return int
+ */
+int path_to_num(const char *path, int *num) {
+  int n = 0;
+  const char *c = path;
+
+  while (*c) {
+    n = n * 10 + *c - '0';
+    c++;
+  }
+
+  *num = n;
+
+  return n;
+}
+
+/**
+ * @brief 判断路径path是否是以str开头
+ * 
+ * @param path 
+ * @param str 
+ * @return int 
+ */
+int path_begin_with(const char *path, const char *str) {
+  const char *s1 = path, *s2 = str;
+  while (*s1 && *s2 && (*s1 == *s2)) {
+    s1++;
+    s2++;
+  }
+
+  return *s2 == '\0';
+}
+/**
+ * @brief 对文件系统的操作进行保护
+ * 
+ * @param fs 
+ */
+static void fs_protect(fs_t *fs) {
+  if (fs->mutex) {
+    mutex_lock(fs->mutex);
+  }
+}
+
+/**
+ * @brief 对文件系统的操作进行保护
+ * 
+ * @param fs 
+ */
+static void fs_unprotect(fs_t *fs) {
+  if (fs->mutex) {
+    mutex_unlock(fs->mutex);
+  }
 }
 
 /**
@@ -114,65 +199,75 @@ static const char *path_next_child(const char * path) {
  * @return int 文件描述符
  */
 int sys_open(const char *name, int flags, ...) {
-  if (kernel_strncmp(name, "/dev", 3) == 0) {  // 打开tty设备文件
-
-    // 1.判断路径是否有效
-    if (!is_path_valid(name)) {  // 文件路径无效
-      log_printf("path is not valid\n");
-      return -1;
-    }
-
-    // 2.从系统file_table中分配一个文件结构
-    file_t *file = file_alloc();
-
-    // 3.将文件结构放入当前进程的打开文件表中并得到文件描述符
-    int fd = -1;
-    if (file) {  // 分配成功，放入调用该系统调用的任务进程的打开文件表中
-      fd = task_alloc_fd(file);
-      if (fd < 0) {  // 放入失败
-        goto sys_open_failed;
-      }
-    } else {  // 分配失败
-      goto sys_open_failed;
-    }
-
-    //获取下一级路径
-    name = path_next_child(name);
-
-    // 4.打开对应具体设备号的tty设备
-    // name的开头为"tty:0(设备号)"
-
-    // 5.将打开的tty设备与分配的文件结构绑定
-    file->dev_id = -1;
-    file->mode = 0;
-    file->pos = 0;
-    file->ref = 1;
-    file->type = FILE_TTY;
-    kernel_strncpy(file->file_name, name, FILE_NAME_SIZE);
-
-    int err = devfs_op.open((fs_t*)0, name, file);
-    if (err < 0)  {
-      goto sys_open_failed;
-    }
-
-    // 6.返回文件描述符
-    return fd;
-
-  // 打开失败，回收资源
-  sys_open_failed:
-    if (file) {  // 释放掉已分配的file
-      file_free(file);
-    }
-    if (fd >= 0) {  // 释放掉已分配的打开文件表的资源
-      task_remove_fd(fd);
-    }
-
+  // 1.判断路径是否有效
+  if (!is_path_valid(name)) {  // 文件路径无效
+    log_printf("path is not valid\n");
     return -1;
+  }
 
-  } else if (name[0] == '/') {  // 打开外部程序
+  if (kernel_strncmp(name, "/shell.elf", 10) == 0) {
+    // 打开外部程序
     read_disk(5000, 80, (uint8_t *)TEMP_ADDR);
     temp_pos = (uint8_t *)TEMP_ADDR;
     return TEMP_FILE_ID;
+  }
+
+  // 2.从系统file_table中分配一个文件结构
+  file_t *file = file_alloc();
+  if (!file) {
+    return -1;
+  }
+  // 3.将文件结构放入当前进程的打开文件表中并得到文件描述符
+  int fd = task_alloc_fd(file);
+  if (fd < 0) {  // 放入失败
+    goto sys_open_failed;
+  }
+
+  //遍历文件系统挂载链表mounted_list,寻找需要打开的文件对应的文件系统
+  fs_t *fs = (fs_t *)0;
+  list_node_t *node = list_get_first(&mounted_list);
+  while (node) {
+    fs_t *curr = list_node_parent(node, fs_t, node);
+    if (path_begin_with(name, curr->mount_point)) { //该文件属于curr这个文件系统
+      fs = curr;
+      break;
+    }
+
+    node = list_node_next(node);
+  }
+
+
+  if (fs) { //找到对应的文件系统
+    // 获取下一级路径
+    name = path_next_child(name);
+  } else {  //未找到对应文件系统，使用默认文件系统
+
+  }
+
+  //为文件绑定模式参数和文件系统  
+  file->mode = flags;
+  file->fs = fs;
+  kernel_strncpy(file->file_name, name, FILE_NAME_SIZE);
+
+  //使用该文件系统打开该文件
+  fs_protect(fs);
+  int err = fs->op->open(fs, name, file);
+  fs_unprotect(fs);
+
+  if (err < 0) {
+    log_printf("打开失败!");
+    goto sys_open_failed;
+  }
+
+  // 6.返回文件描述符
+  return fd;
+
+// 打开失败，回收资源
+sys_open_failed:
+  // 释放掉已分配的file
+  file_free(file);
+  if (fd >= 0) {  // 释放掉已分配的打开文件表的资源
+    task_remove_fd(fd);
   }
 
   return -1;
@@ -281,30 +376,30 @@ int sys_fstat(int file, struct stat *st) { return -1; }
 /**
  * @brief 在当前进程的打开文件表中分配新的一项指向该文件描述符对应的文件指针
  *
- * @param file 需要被多次引用的文件指针的文件描述符
+ * @param fd 需要被多次引用的文件指针的文件描述符
  * @return int 新的文件描述符
  */
-int sys_dup(int file) {
-  if (file < 0 || file >= TASK_OFILE_SIZE) {
-    log_printf("file %d is not valid.", file);
+int sys_dup(int fd) {
+  if (is_fd_bad(fd)) {
+    log_printf("fd %d is not valid.", fd);
     return -1;
   }
 
   // 1.获取需要重复引用的文件指针
-  file_t *p_file = task_file(file);
-  if (!p_file) {
+  file_t *file = task_file(fd);
+  if (!file) {
     log_printf("file not opend!\n");
     return -1;
   }
 
   // 2.在打开文件表中新分配一项给该文件指针
-  int fd = task_alloc_fd(p_file);
-  if (fd < 0) {
+  int new_fd = task_alloc_fd(file);
+  if (new_fd < 0) {
     log_printf("no task file avaliable\n");
     return -1;
   }
 
-  file_inc_ref(p_file);  // 分配成功，该文件引用次数加一
+  file_inc_ref(file);  // 分配成功，该文件引用次数加一
   return fd;
 }
 
@@ -322,23 +417,22 @@ static void mount_list_init(void) {
   list_init(&mounted_list);
 }
 
-
 /**
  * @brief 根据文件系统类型获取对应的操作函数表
- * 
- * @param type 
- * @param major 
- * @return fs_op_t* 
+ *
+ * @param type
+ * @param major
+ * @return fs_op_t*
  */
 static fs_op_t *get_fs_op(fs_type_t type, int major) {
-    switch (type) {
+  switch (type) {
     case FS_DEVFS:
-        return &devfs_op;
-        break;
+      return &devfs_op;
+      break;
     default:
-        return 0;
-        break;
-    }
+      return 0;
+      break;
+  }
 }
 
 /**
@@ -352,58 +446,58 @@ static fs_op_t *get_fs_op(fs_type_t type, int major) {
  */
 static fs_t *mount(fs_type_t type, const char *mount_point, int dev_major,
                    int dev_minor) {
-    fs_t *fs = (fs_t*)0;
-    log_printf("mount file system, name: %s, dev: %x", mount_point, dev_major);
+  fs_t *fs = (fs_t *)0;
+  log_printf("mount file system, name: %s, dev: %x", mount_point, dev_major);
 
-    //1.检查当前文件系统是否已被挂载
-    list_node_t *curr = list_get_first(&mounted_list);
-    while (curr) {
-        fs_t *fs = list_node_parent(curr, fs_t, node);
-        if (kernel_strncmp(fs->mount_point, mount_point, FS_MOUNT_POINT_SIZE) == 0) {
-            log_printf("fs already mounted!");
-            goto mount_failed;
-        }
-
-        curr = list_node_next(curr);
+  // 1.检查当前文件系统是否已被挂载
+  list_node_t *curr = list_get_first(&mounted_list);
+  while (curr) {
+    fs_t *fs = list_node_parent(curr, fs_t, node);
+    if (kernel_strncmp(fs->mount_point, mount_point, FS_MOUNT_POINT_SIZE) ==
+        0) {
+      log_printf("fs already mounted!");
+      goto mount_failed;
     }
 
-    //2.从空闲链表中取下一个待挂载的fs对象进行挂载
-    list_node_t *free_node = list_remove_first(&free_list);
-    if (!free_node) {
-        log_printf("no free fs, mount failed!");
-        goto mount_failed;
-    }
-    fs = list_node_parent(free_node, fs_t, node);
-    kernel_memset(fs, 0, sizeof(fs_t));
-    kernel_strncpy(fs->mount_point, mount_point, FS_MOUNT_POINT_SIZE);
+    curr = list_node_next(curr);
+  }
 
-    //3.获取该fs对象的操作函数表并交给该对象
-    fs_op_t *op = get_fs_op(type, dev_major);
-    if (!op) {
-        log_printf("unsupported fs type: %d", type);
-        goto mount_failed;
-    }
-    fs->op = op;
+  // 2.从空闲链表中取下一个待挂载的fs对象进行挂载
+  list_node_t *free_node = list_remove_first(&free_list);
+  if (!free_node) {
+    log_printf("no free fs, mount failed!");
+    goto mount_failed;
+  }
+  fs = list_node_parent(free_node, fs_t, node);
+  kernel_memset(fs, 0, sizeof(fs_t));
+  kernel_strncpy(fs->mount_point, mount_point, FS_MOUNT_POINT_SIZE);
 
-    //4.挂载该文件系统类型下具体的设备
-    if (op->mount(fs, dev_major, dev_minor) < 0) {
-        log_printf("mount fs %s failed!", mount_point);
-        goto mount_failed;
-    }
+  // 3.获取该fs对象的操作函数表并交给该对象
+  fs_op_t *op = get_fs_op(type, dev_major);
+  if (!op) {
+    log_printf("unsupported fs type: %d", type);
+    goto mount_failed;
+  }
+  fs->op = op;
 
-    //5.将该文件系统挂载到mounted_list上
-    list_insert_last(&mounted_list, &fs->node);
+  // 4.挂载该文件系统类型下具体的设备
+  if (op->mount(fs, dev_major, dev_minor) < 0) {
+    log_printf("mount fs %s failed!", mount_point);
+    goto mount_failed;
+  }
 
-    return fs;
+  // 5.将该文件系统挂载到mounted_list上
+  list_insert_last(&mounted_list, &fs->node);
 
-//挂载失败的异常处理
+  return fs;
+
+// 挂载失败的异常处理
 mount_failed:
-    //fs不为空，证明已从free_list上取下，需要将其插回去
-    if (fs) {
-        list_insert_last(&free_list, &fs->node);
-    }
-    return (fs_t*)0;
-
+  // fs不为空，证明已从free_list上取下，需要将其插回去
+  if (fs) {
+    list_insert_last(&free_list, &fs->node);
+  }
+  return (fs_t *)0;
 }
 
 /**
@@ -415,5 +509,5 @@ void fs_init(void) {
   file_table_init();
 
   fs_t *fs = mount(FS_DEVFS, "/dev", 0, 0);
-  ASSERT(fs != (fs_t*)0);
+  ASSERT(fs != (fs_t *)0);
 }
