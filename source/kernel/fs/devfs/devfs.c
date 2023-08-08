@@ -99,7 +99,7 @@ int devfs_open(struct _fs_t *fs, const char *path, file_t *file) {
  * @param file 
  * @return int 
  */
-int devfs_read(const char *buf, int size, file_t *file) {
+int devfs_read(char *buf, int size, file_t *file) {
     return dev_read(file->dev_id, file->pos, buf, size);
 }
 
@@ -111,7 +111,7 @@ int devfs_read(const char *buf, int size, file_t *file) {
  * @param file 
  * @return int 
  */
-int devfs_write(const char *buf, int size, file_t *file) {
+int devfs_write(char *buf, int size, file_t *file) {
     return dev_write(file->dev_id, file->pos, buf, size);
 }
 

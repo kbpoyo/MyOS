@@ -41,7 +41,7 @@ static inline uint8_t inb(uint16_t port) {
   uint8_t rv;  // 读取的8位数据
 
   __asm__ __volatile__(
-      "inb %[p], %[v]"  // in 表示从端口寄存器中读取数据，端口只能用dx表示
+      "inb %[p], %[v]"  // in 表示从端口寄存器中读取数据，端口只能用dx存放
                         // out
                         // 表示往端口寄存器中写入数据，端口只能用立即数或dx寄存器表示，
                         // b表示只读取一个字节(w, l 分别表示2，4字节)
@@ -61,6 +61,22 @@ static inline uint8_t inb(uint16_t port) {
 static inline void outb(uint16_t port, uint8_t data) {
   __asm__ __volatile__(
       "outb %[v], %[p]"
+      :  // 无输出参数
+      : [p] "d"(port),
+        [v] "a"(data));  // out 指令只能使用dx寄存器或立即数指定端口，
+                         // 只能用ax 或
+                         // al来作为数据输入，具体用哪个需要看端口寄存器是几位
+}
+
+/**
+ * @brief  往IO端口寄存器port中写入16位数据data
+ *
+ * @param port
+ * @param data
+ */
+static inline void outw(uint16_t port, uint8_t data) {
+  __asm__ __volatile__(
+      "out %[v], %[p]"
       :  // 无输出参数
       : [p] "d"(port),
         [v] "a"(data));  // out 指令只能使用dx寄存器或立即数指定端口，

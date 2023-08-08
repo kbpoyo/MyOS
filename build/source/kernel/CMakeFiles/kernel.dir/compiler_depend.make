@@ -130,9 +130,12 @@ source/kernel/CMakeFiles/kernel.dir/dev/disk.c.o: ../source/kernel/dev/disk.c \
   /usr/include/stdc-predef.h \
   ../source/kernel/include/dev/disk.h \
   ../source/common/types.h \
-  ../source/kernel/include/tools/log.h \
+  ../source/common/cpu_instr.h \
+  ../source/common/types.h \
   ../source/kernel/include/tools/klib.h \
-  /usr/lib/gcc/x86_64-linux-gnu/11/include/stdarg.h
+  /usr/lib/gcc/x86_64-linux-gnu/11/include/stdarg.h \
+  ../source/kernel/include/tools/log.h \
+  ../source/common/boot_info.h
 
 source/kernel/CMakeFiles/kernel.dir/dev/keyboard.c.o: ../source/kernel/dev/keyboard.c \
   /usr/include/stdc-predef.h \
