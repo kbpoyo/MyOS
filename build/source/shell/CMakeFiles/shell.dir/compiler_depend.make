@@ -41,13 +41,16 @@ source/shell/CMakeFiles/shell.dir/main.c.o: ../source/shell/main.c \
   ../source/newlib/i686-elf/include/sys/_locale.h \
   ../source/newlib/i686-elf/include/strings.h \
   ../source/newlib/i686-elf/include/sys/string.h \
+  ../source/newlib/i686-elf/include/sys/file.h \
+  ../source/newlib/i686-elf/include/sys/fcntl.h \
+  ../source/newlib/i686-elf/include/sys/_default_fcntl.h \
+  ../source/newlib/i686-elf/include/sys/stat.h \
+  ../source/newlib/i686-elf/include/time.h \
+  ../source/newlib/i686-elf/include/machine/time.h \
   ../source/applib/lib_syscall.h \
   ../source/common/types.h \
   ../source/kernel/include/cpu/syscall.h \
-  ../source/kernel/include/os_cfg.h \
-  ../source/newlib/i686-elf/include/sys/stat.h \
-  ../source/newlib/i686-elf/include/time.h \
-  ../source/newlib/i686-elf/include/machine/time.h
+  ../source/kernel/include/os_cfg.h
 
 
 ../source/kernel/include/os_cfg.h:
@@ -55,6 +58,8 @@ source/shell/CMakeFiles/shell.dir/main.c.o: ../source/shell/main.c \
 ../source/kernel/include/cpu/syscall.h:
 
 ../source/common/types.h:
+
+../source/newlib/i686-elf/include/sys/file.h:
 
 ../source/newlib/i686-elf/include/sys/string.h:
 
@@ -108,6 +113,8 @@ source/shell/CMakeFiles/shell.dir/main.c.o: ../source/shell/main.c \
 
 ../source/shell/main.h:
 
+../source/newlib/i686-elf/include/sys/fcntl.h:
+
 ../source/newlib/i686-elf/include/machine/stdlib.h:
 
 ../source/newlib/i686-elf/include/_newlib_version.h:
@@ -131,6 +138,8 @@ source/shell/CMakeFiles/shell.dir/main.c.o: ../source/shell/main.c \
 ../source/newlib/i686-elf/include/sys/select.h:
 
 ../source/newlib/i686-elf/include/machine/time.h:
+
+../source/newlib/i686-elf/include/sys/_default_fcntl.h:
 
 ../source/newlib/i686-elf/include/sys/cdefs.h:
 

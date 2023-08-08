@@ -389,7 +389,13 @@ int sys_lseek(int fd, int offset, int dir) {
  * @param fd
  * @return int
  */
-int sys_close(int fd) { \
+int sys_close(int fd) {
+
+  if (fd == TEMP_FILE_ID) {
+    return 0;
+  }
+
+
   if (is_fd_bad(fd)) {
     log_printf("file error");
     return -1;
