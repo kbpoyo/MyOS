@@ -26,7 +26,8 @@
         "console.h": "c",
         "tty.h": "c",
         "file.h": "c",
-        "list.h": "c"
+        "list.h": "c",
+        "disk.h": "c"
     },
     "todo-tree.tree.scanMode": "workspace only",
     "editor.fontSize": 16,

@@ -17,6 +17,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/kernel.dir/dev/console.c.o.d"
   "CMakeFiles/kernel.dir/dev/dev.c.o"
   "CMakeFiles/kernel.dir/dev/dev.c.o.d"
+  "CMakeFiles/kernel.dir/dev/disk.c.o"
+  "CMakeFiles/kernel.dir/dev/disk.c.o.d"
   "CMakeFiles/kernel.dir/dev/keyboard.c.o"
   "CMakeFiles/kernel.dir/dev/keyboard.c.o.d"
   "CMakeFiles/kernel.dir/dev/time.c.o"

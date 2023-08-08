@@ -19,6 +19,7 @@ source/kernel/CMakeFiles/kernel.dir/fs/fs.c.o: \
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/tools/klib.h \
  /usr/lib/gcc/x86_64-linux-gnu/11/include/stdarg.h \
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/tools/log.h \
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/include/dev/disk.h \
  /home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/include/sys/file.h \
  /home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/include/sys/fcntl.h \
  /home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/include/sys/_default_fcntl.h \

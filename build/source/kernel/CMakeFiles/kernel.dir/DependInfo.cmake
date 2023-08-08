@@ -31,6 +31,7 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/home/kbpoyo/code/cpp/MyOs/source/kernel/cpu/syscall.c" "source/kernel/CMakeFiles/kernel.dir/cpu/syscall.c.o" "gcc" "source/kernel/CMakeFiles/kernel.dir/cpu/syscall.c.o.d"
   "/home/kbpoyo/code/cpp/MyOs/source/kernel/dev/console.c" "source/kernel/CMakeFiles/kernel.dir/dev/console.c.o" "gcc" "source/kernel/CMakeFiles/kernel.dir/dev/console.c.o.d"
   "/home/kbpoyo/code/cpp/MyOs/source/kernel/dev/dev.c" "source/kernel/CMakeFiles/kernel.dir/dev/dev.c.o" "gcc" "source/kernel/CMakeFiles/kernel.dir/dev/dev.c.o.d"
+  "/home/kbpoyo/code/cpp/MyOs/source/kernel/dev/disk.c" "source/kernel/CMakeFiles/kernel.dir/dev/disk.c.o" "gcc" "source/kernel/CMakeFiles/kernel.dir/dev/disk.c.o.d"
   "/home/kbpoyo/code/cpp/MyOs/source/kernel/dev/keyboard.c" "source/kernel/CMakeFiles/kernel.dir/dev/keyboard.c.o" "gcc" "source/kernel/CMakeFiles/kernel.dir/dev/keyboard.c.o.d"
   "/home/kbpoyo/code/cpp/MyOs/source/kernel/dev/time.c" "source/kernel/CMakeFiles/kernel.dir/dev/time.c.o" "gcc" "source/kernel/CMakeFiles/kernel.dir/dev/time.c.o.d"
   "/home/kbpoyo/code/cpp/MyOs/source/kernel/dev/tty.c" "source/kernel/CMakeFiles/kernel.dir/dev/tty.c.o" "gcc" "source/kernel/CMakeFiles/kernel.dir/dev/tty.c.o.d"

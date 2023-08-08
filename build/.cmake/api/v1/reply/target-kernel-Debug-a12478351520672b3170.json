@@ -75,7 +75,7 @@
 			"sourceIndexes" : 
 			[
 				0,
-				42
+				44
 			]
 		},
 		{
@@ -118,16 +118,17 @@
 				13,
 				14,
 				15,
-				41,
+				16,
 				43,
 				45,
-				46,
 				47,
 				48,
 				49,
 				50,
 				51,
-				52
+				52,
+				53,
+				54
 			]
 		}
 	],
@@ -168,7 +169,7 @@
 			"sourceIndexes" : 
 			[
 				0,
-				42
+				44
 			]
 		},
 		{
@@ -190,23 +191,23 @@
 				13,
 				14,
 				15,
-				41,
+				16,
 				43,
 				45,
-				46,
 				47,
 				48,
 				49,
 				50,
 				51,
-				52
+				52,
+				53,
+				54
 			]
 		},
 		{
 			"name" : "Header Files",
 			"sourceIndexes" : 
 			[
-				16,
 				17,
 				18,
 				19,
@@ -231,7 +232,9 @@
 				38,
 				39,
 				40,
-				44
+				41,
+				42,
+				46
 			]
 		}
 	],
@@ -295,6 +298,12 @@
 			"backtrace" : 1,
 			"compileGroupIndex" : 1,
 			"path" : "source/kernel/dev/dev.c",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 1,
+			"path" : "source/kernel/dev/disk.c",
 			"sourceGroupIndex" : 1
 		},
 		{
@@ -381,6 +390,11 @@
 		{
 			"backtrace" : 1,
 			"path" : "source/kernel/include/dev/dev.h",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 1,
+			"path" : "source/kernel/include/dev/disk.h",
 			"sourceGroupIndex" : 2
 		},
 		{
