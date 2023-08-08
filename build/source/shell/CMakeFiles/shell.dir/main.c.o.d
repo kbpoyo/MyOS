@@ -39,10 +39,13 @@ source/shell/CMakeFiles/shell.dir/main.c.o: \
  /home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/include/sys/_locale.h \
  /home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/include/strings.h \
  /home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/include/sys/string.h \
+ /home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/include/sys/file.h \
+ /home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/include/sys/fcntl.h \
+ /home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/include/sys/_default_fcntl.h \
+ /home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/include/sys/stat.h \
+ /home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/include/time.h \
+ /home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/include/machine/time.h \
  /home/kbpoyo/code/cpp/MyOs/source/shell/../applib/lib_syscall.h \
  /home/kbpoyo/code/cpp/MyOs/source/common/types.h \
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/cpu/syscall.h \
- /home/kbpoyo/code/cpp/MyOs/source/kernel/include/os_cfg.h \
- /home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/include/sys/stat.h \
- /home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/include/time.h \
- /home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/include/machine/time.h
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/include/os_cfg.h

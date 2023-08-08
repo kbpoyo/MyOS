@@ -15,6 +15,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/file.h>
 
 #include "lib_syscall.h"
 
@@ -231,7 +232,7 @@ static void run_exec_file(const char *path, int argc, const char **argv) {
 
 int main(int argc, char **argv) {
   // 1.打开shell对应的tty设备绑定为stdin
-  open(argv[0], 0);
+  open(argv[0], O_RDWR);
   // 2.复用该0号描述符的文件，打开shell的stdout和stderr
   dup(0);
   dup(0);

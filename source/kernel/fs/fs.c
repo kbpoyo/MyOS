@@ -20,6 +20,7 @@
 #include "tools/klib.h"
 #include "tools/list.h"
 #include "tools/log.h"
+#include <sys/file.h>
 
 #define FS_TABLE_SIZE 10
 static list_t mounted_list;           // 文件系统挂载链表
@@ -86,12 +87,11 @@ static void read_disk(uint32_t sector, uint16_t sector_count, uint8_t *buf) {
   }
 }
 
-
 /**
  * @brief 检验文件描述符fd是否有效
- * 
- * @param fd 
- * @return int 
+ *
+ * @param fd
+ * @return int
  */
 static int is_fd_bad(int fd) {
   if (fd < 0 && fd >= TASK_OFILE_SIZE) {
@@ -154,10 +154,10 @@ int path_to_num(const char *path, int *num) {
 
 /**
  * @brief 判断路径path是否是以str开头
- * 
- * @param path 
- * @param str 
- * @return int 
+ *
+ * @param path
+ * @param str
+ * @return int
  */
 int path_begin_with(const char *path, const char *str) {
   const char *s1 = path, *s2 = str;
@@ -170,8 +170,8 @@ int path_begin_with(const char *path, const char *str) {
 }
 /**
  * @brief 对文件系统的操作进行保护
- * 
- * @param fs 
+ *
+ * @param fs
  */
 static void fs_protect(fs_t *fs) {
   if (fs->mutex) {
@@ -181,8 +181,8 @@ static void fs_protect(fs_t *fs) {
 
 /**
  * @brief 对文件系统的操作进行保护
- * 
- * @param fs 
+ *
+ * @param fs
  */
 static void fs_unprotect(fs_t *fs) {
   if (fs->mutex) {
@@ -223,12 +223,13 @@ int sys_open(const char *name, int flags, ...) {
     goto sys_open_failed;
   }
 
-  //遍历文件系统挂载链表mounted_list,寻找需要打开的文件对应的文件系统
+  // 遍历文件系统挂载链表mounted_list,寻找需要打开的文件对应的文件系统
   fs_t *fs = (fs_t *)0;
   list_node_t *node = list_get_first(&mounted_list);
   while (node) {
     fs_t *curr = list_node_parent(node, fs_t, node);
-    if (path_begin_with(name, curr->mount_point)) { //该文件属于curr这个文件系统
+    if (path_begin_with(name,
+                        curr->mount_point)) {  // 该文件属于curr这个文件系统
       fs = curr;
       break;
     }
@@ -236,26 +237,24 @@ int sys_open(const char *name, int flags, ...) {
     node = list_node_next(node);
   }
 
-
-  if (fs) { //找到对应的文件系统
+  if (fs) {  // 找到对应的文件系统
     // 获取下一级路径
     name = path_next_child(name);
-  } else {  //未找到对应文件系统，使用默认文件系统
-
+  } else {  // 未找到对应文件系统，使用默认文件系统
   }
 
-  //为文件绑定模式参数和文件系统  
+  // 为文件绑定模式参数和文件系统
   file->mode = flags;
   file->fs = fs;
   kernel_strncpy(file->file_name, name, FILE_NAME_SIZE);
 
-  //使用该文件系统打开该文件
+  // 使用该文件系统打开该文件
   fs_protect(fs);
   int err = fs->op->open(fs, name, file);
   fs_unprotect(fs);
 
   if (err < 0) {
-    log_printf("打开失败!");
+    log_printf("open failed!");
     goto sys_open_failed;
   }
 
@@ -275,103 +274,208 @@ sys_open_failed:
 /**
  * @brief 读文件
  *
- * @param file 文件描述符
- * @param ptr 缓冲区地址
+ * @param fd 文件描述符
+ * @param buf 缓冲区地址
  * @param len 读取字节数
  * @return int 成功读取字节数
  */
-int sys_read(int file, char *ptr, int len) {
-  if (file == TEMP_FILE_ID) {
-    kernel_memcpy(ptr, temp_pos, len);
+int sys_read(int fd, char *buf, int len) {
+  if (fd == TEMP_FILE_ID) {
+    kernel_memcpy(buf, temp_pos, len);
     temp_pos += len;
     return len;
-  } else {
-    // 根据文件描述符从当前进程的打开文件表中获取文件指针
-    file_t *p_file = task_file(file);
-    if (!p_file) {  // 获取失败
-      log_printf("file not opened!\n");
-      return -1;
-    }
-    // 2.对文件结构所对应的设备进行真实的读操作
-    return dev_read(p_file->dev_id, 0, ptr, len);
   }
-  return -1;
+
+  if (is_fd_bad(fd) || !buf || !len) {
+    return -1;
+  }
+
+  //1.根据文件描述符从当前进程的打开文件表中获取文件指针
+  file_t *file = task_file(fd);
+  if (!file) {  // 获取失败
+    log_printf("file not opened!\n");
+    return -1;
+  }
+
+  //2.判断文件的读写模式
+  if (file->mode == O_WRONLY) { //文件只写，不可读
+    log_printf("file is write only!\n");
+    return -1;
+  }
+
+  //3.获取文件对应的文件系统，并执行读操作
+  fs_t *fs = file->fs;
+  fs_protect(fs);
+  int err = fs->op->read(buf, len, file);
+  fs_unprotect(fs);
+
+  return err;
+
 }
 
 /**
  * @brief 写文件
  *
- * @param file 文件描述符
+ * @param fd 文件描述符
  * @param ptr 缓冲区地址
  * @param len 写入字节数
  * @return int 成功写入字节数
  */
-int sys_write(int file, char *ptr, int len) {
-  // 1.根据文件描述符从当前进程的打开文件表中获取文件结构指针
-  file_t *p_file = task_file(file);
+int sys_write(int fd, char *buf, int len) {
+   if (is_fd_bad(fd) || !buf || !len) {
+    return -1;
+  }
 
-  if (!p_file) {  // 获取失败
+  //1.根据文件描述符从当前进程的打开文件表中获取文件指针
+  file_t *file = task_file(fd);
+  if (!file) {  // 获取失败
     log_printf("file not opened!\n");
     return -1;
   }
 
-  // 2.对文件结构所对应的设备进行真实的写操作
-  return dev_write(p_file->dev_id, 0, ptr, len);
+  //2.判断文件的读写模式
+  if (file->mode == O_RDONLY) { //文件只读，不可写
+    log_printf("file is read only!\n");
+    return -1;
+  }
 
-  // if (file == 1) {
-  //     ptr[len] = '\0';
-  //     log_printf("%s", ptr);
-  //     //console_write(0, ptr, len);
-
-  //     // int dev_id = dev_open(DEV_TTY, 0, (void*)0);
-  //     // dev_write(dev_id, 0, ptr, len);
-  //     // dev_close(dev_id);
-
-  // }
-  // return -1;
+  //3.获取文件对应的文件系统，并执行写操作
+  fs_t *fs = file->fs;
+  fs_protect(fs);
+  int err = fs->op->write(buf, len, file);
+  fs_unprotect(fs);
+  
+  return err;
 }
 
 /**
  * @brief 使文件读取位置从文件头偏移offset个字节
  *
- * @param file
+ * @param fd
  * @param offset
  * @param pos
  * @return int
  */
-int sys_lseek(int file, int offset, int pos) {
-  if (file == TEMP_FILE_ID) {
+int sys_lseek(int fd, int offset, int dir) {
+  if (fd == TEMP_FILE_ID) {
     temp_pos = (uint8_t *)(TEMP_ADDR + offset);
     return 0;
   }
 
-  return -1;
+  if (is_fd_bad(fd)) {
+    return -1;
+  }
+
+  //1.根据文件描述符从当前进程的打开文件表中获取文件指针
+  file_t *file = task_file(fd);
+  if (!file) {  // 获取失败
+    log_printf("file not opened!\n");
+    return -1;
+  }
+
+
+  //2.获取文件对应的文件系统，并执行偏移操作
+  fs_t *fs = file->fs;
+  fs_protect(fs);
+  int err = fs->op->seek(file, offset, dir);
+  fs_unprotect(fs);
+  
+  return err;
 }
 
 /**
  * @brief 关闭文件
  *
- * @param file
+ * @param fd
  * @return int
  */
-int sys_close(int file) { return 0; }
+int sys_close(int fd) { \
+  if (is_fd_bad(fd)) {
+    log_printf("file error");
+    return -1;
+  }
+
+  //1.从打开文件表中获取文件结构
+  file_t *file = task_file(fd);
+  if (!file) {
+    log_printf("file not opened!\n");
+    return -1;
+  }
+
+  ASSERT(file->ref > 0);  //文件必须为打开状态
+
+  //2.若当前文件只被一个进程引用则获取对应文件系统并执行关闭操作
+  if (file->ref-- == 1) {
+    fs_t *fs = file->fs;
+    fs_protect(fs);
+    fs->op->close(file);
+    fs_protect(fs);
+
+    //关闭文件后释放文件结构
+    file_free(file);
+  }
+
+  //3.当前文件还被其它进程所引用，只在当前进程的打开文件表中释放该文件即可
+  task_remove_fd(fd);
+
+  return 0;
+}
+
 
 /**
  * @brief
  *
- * @param file
- * @return int
- */
-int sys_isatty(int file) { return -1; }
-
-/**
- * @brief
- *
- * @param file
+ * @param fd
  * @param st
  * @return int
  */
-int sys_fstat(int file, struct stat *st) { return -1; }
+int sys_fstat(int fd, struct stat *st) { 
+  
+   if (is_fd_bad(fd)) {
+    log_printf("file error");
+    return -1;
+  }
+
+  //1.从打开文件表中获取文件结构
+  file_t *file = task_file(fd);
+  if (!file) {
+    log_printf("file not opened!\n");
+    return -1;
+  }
+
+  //2.获取对应文件系统进行状态获取操作
+  fs_t *fs = file->fs;
+  kernel_memset(st, 0, sizeof(struct stat));
+  fs_protect(fs);
+  int err = fs->op->stat(file, st);
+  fs_unprotect(fs);
+
+
+  return err;
+}
+
+/**
+ * @brief
+ *
+ * @param fd
+ * @return int
+ */
+int sys_isatty(int fd) { 
+   if (is_fd_bad(fd)) {
+    log_printf("file error");
+    return -1;
+  }
+
+  //1.从打开文件表中获取文件结构
+  file_t *file = task_file(fd);
+  if (!file) {
+    log_printf("file not opened!\n");
+    return -1;
+  }
+
+  return file->type == FILE_TTY;
+}
+
 
 /**
  * @brief 在当前进程的打开文件表中分配新的一项指向该文件描述符对应的文件指针
