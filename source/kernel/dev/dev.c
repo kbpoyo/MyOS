@@ -16,12 +16,15 @@
 //定义设备表大小
 #define DEV_TABLE_SIZE  128
 
+//声明外部的disk设备描述结构
+extern dev_desc_t dev_disk_desc;
 //声明外部的tty设备描述结构
 extern dev_desc_t dev_tty_desc;
 
 //设备描述结构表，用来获取某一类型设备的操作方法
 static dev_desc_t *dev_des_table[] = {
     [DEV_TTY] = &dev_tty_desc,
+    [DEV_DISK] = &dev_disk_desc,
 };
 
 //设备表，用于获取特定设备
@@ -197,3 +200,4 @@ void dev_close(int dev_id) {
 
     idt_leave_protection(state);
 }
+

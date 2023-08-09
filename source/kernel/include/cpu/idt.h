@@ -43,8 +43,11 @@
 
 //可屏蔽中断，即外部中断
 //定义外部中断请求对应的处理程序在IDT中的下标
-#define IRQ0_TIMER      0x20    //定时器中断请求向量号
-#define IRQ1_KEYBOARD   0x21    //键盘中断请求向量号
+#define IRQ_BASE    0x20    //8259芯片的中断起始值
+#define IRQ0_TIMER              (IRQ_BASE + 0)    //定时器中断请求向量号
+#define IRQ1_KEYBOARD           (IRQ_BASE + 1)    //键盘中断请求向量号
+#define IRQ14_HARDDISK_PRIMARY  (IRQ_BASE + 14)    //磁盘中断请求向量号
+
 
 
 

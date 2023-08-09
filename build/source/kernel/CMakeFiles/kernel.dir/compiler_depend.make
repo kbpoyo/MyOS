@@ -130,12 +130,22 @@ source/kernel/CMakeFiles/kernel.dir/dev/disk.c.o: ../source/kernel/dev/disk.c \
   /usr/include/stdc-predef.h \
   ../source/kernel/include/dev/disk.h \
   ../source/common/types.h \
+  ../source/kernel/include/ipc/mutex.h \
+  ../source/kernel/include/tools/list.h \
+  ../source/kernel/include/tools/assert.h \
+  ../source/kernel/include/core/task.h \
+  ../source/kernel/include/cpu/tss.h \
+  ../source/kernel/include/fs/file.h \
+  ../source/kernel/include/ipc/sem.h \
   ../source/common/cpu_instr.h \
   ../source/common/types.h \
   ../source/kernel/include/tools/klib.h \
   /usr/lib/gcc/x86_64-linux-gnu/11/include/stdarg.h \
   ../source/kernel/include/tools/log.h \
-  ../source/common/boot_info.h
+  ../source/common/boot_info.h \
+  ../source/kernel/include/dev/dev.h \
+  ../source/kernel/include/cpu/idt.h \
+  ../source/common/exc_frame.h
 
 source/kernel/CMakeFiles/kernel.dir/dev/keyboard.c.o: ../source/kernel/dev/keyboard.c \
   /usr/include/stdc-predef.h \

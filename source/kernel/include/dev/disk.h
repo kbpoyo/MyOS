@@ -13,6 +13,8 @@
 #define DISK_H
 
 #include "common/types.h"
+#include "ipc/mutex.h"
+#include "ipc/sem.h"
 
 #define DISK_NAME_SIZE          32
 #define PART_NAME_SIZE          32 
@@ -115,8 +117,13 @@ typedef struct _disk_t {
     int sector_size;    //扇区大小
     int sector_count;   //扇区数量
     partinfo_t partinfo[DISK_PRIMARY_PART_CNT]; //分区结构数组
+
+    mutex_t *mutex;   //磁盘互斥锁，确保磁盘io操作的原子性
+    sem_t *op_sem;  //磁盘操作信号量，等待磁盘数据就绪，节省磁盘io时间
 }disk_t;
 
 void disk_init(void);
+
+void exception_handler_primary_disk(void);
 
 #endif

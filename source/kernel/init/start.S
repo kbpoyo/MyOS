@@ -156,7 +156,9 @@ exception_handler control_exception,    21, 1
 //定时器的中断处理函数
 exception_handler time,                 0x20, 0 
 //键盘的中断处理函数
-exception_handler kbd,                 0x21, 0 
+exception_handler kbd,                  0x21, 0 
+//磁盘的中断处理函数
+exception_handler primary_disk          0x2E, 0
 
 //TODO:该部分为另一种任务切换时cpu上下文环境的保存方法，并未被调用
     .text

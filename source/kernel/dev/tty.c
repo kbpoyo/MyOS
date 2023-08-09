@@ -315,7 +315,7 @@ void tty_select(int tty_index) {
     }
 }
 
-//描述一个tty设备类型
+//操作tty结构的函数表
 dev_desc_t dev_tty_desc = {
     .dev_name = "tty",
     .dev_type = DEV_TTY,
