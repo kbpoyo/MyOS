@@ -107,6 +107,46 @@ static int disk_wait_data(disk_t *disk) {
 }
 
 /**
+ * @brief 检测磁盘disk的分区表信息
+ * 
+ * @param disk 
+ * @return int 
+ */
+static int detect_part_info(disk_t *disk) {
+  mbr_t mbr;
+  //1.发送读取指令
+  disk_send_cmd(disk, 0, 1, DISK_CMD_READ);
+  //2.等待磁盘数据就绪
+  int err = disk_wait_data(disk);
+  if (err < 0) {
+    log_printf("read mbr failed!\n");
+    return err;
+  }
+
+  //3.读取0扇区的mbr,并将由bios检测并填充的分区表信息
+  //读取到disk的partinfo结构中
+  disk_read_data(disk, &mbr, sizeof(mbr));
+  part_item_t *item = mbr.part_item;
+  partinfo_t *part_info = disk->partinfo + 1;
+  for (int i = 0; i < MBR_PRIMARY_PART_NR; ++i, ++item, ++part_info) {
+    part_info->type = item->system_id;
+    if (part_info->type == FS_INVALID) {  //无效分区，不使用
+      part_info->total_sectors = 0;
+      part_info->start_sector = 0;
+      part_info->disk = (disk_t *)0;
+    } else {  //分区有效，记录分区信息
+      kernel_sprintf(part_info->name, "%s%d", disk->name, i);
+      part_info->disk = disk;
+      part_info->start_sector = item->relative_sector;
+      part_info->total_sectors = item->total_sectors;
+    }
+  }
+
+
+
+}
+
+/**
  * @brief 检测磁盘
  * 
  * @param disk 
@@ -138,6 +178,18 @@ static int identify_disk(disk_t *disk) {
     disk->sector_count = *(uint32_t *)(buf + 100);
     disk->sector_size = SECTOR_SIZE;
 
+    //初始化磁盘分区信息
+    //用partinfo将整个磁盘视为一个大分区
+    partinfo_t *part_info = disk->partinfo + 0;
+    part_info->disk = disk;
+    kernel_sprintf(part_info->name, "%s%d", disk->name, 0);
+    part_info->start_sector = 0;
+    part_info->total_sectors = disk->sector_count;
+    part_info->type = FS_INVALID;
+
+    //读取并检测磁盘的分区表信息
+    detect_part_info(disk);
+
     return 0;
 }
 
@@ -150,6 +202,15 @@ static void print_disk_info(disk_t *disk) {
     log_printf("%s\n", disk->name);
     log_printf("\tport base: %x\n", disk->port_base);
     log_printf("\ttotal size: %d m\n", disk->sector_count * disk->sector_size / (1024*1024));
+
+    for (int i = 0; i < DISK_PRIMARY_PART_CNT; ++i) {
+      partinfo_t *part_info = disk->partinfo + i;
+      if (part_info->type != FS_INVALID) {
+        log_printf("\t%s: type: %x, start sector: %d, sector count: %d\n",
+            part_info->name, part_info->type, part_info->start_sector, 
+            part_info->total_sectors);
+      }
+    }
 }
 
 /**

@@ -48,6 +48,35 @@
 #define DISK_STATUS_DF      (1 << 5)//驱动错误
 #define DISK_STATUS_BUSY    (1 << 7)//磁盘忙碌
 
+//primary信道上的磁盘分区表数量 
+#define MBR_PRIMARY_PART_NR 4
+
+
+#pragma pack(1)
+//分区表结构
+typedef struct _part_item_t {
+    uint8_t boot_active;    //扇区是否激活， 0 = no, 0x80 = active
+    uint8_t start_header;   //CHS模式下的起始磁头
+    uint16_t start_sector:6;    //CHS模式下的起始扇区
+    uint16_t start_cylinder:10; //CHS模式下的起始柱面
+    uint8_t system_id;
+    uint8_t end_header; //CHS模式下的结束磁头
+    uint16_t end_sector:6;   //CHS模式下的结束扇区
+    uint16_t end_cylinder:10;    //CHS模式下的结束面
+    uint32_t relative_sector;  //相对扇区号，也就是LBA模式下的起始扇区号
+    uint32_t total_sectors; //分区所拥有的扇区总数，供LBA模式使用
+}part_item_t;
+
+
+//磁盘0扇区mbr的结构
+typedef struct _mbr_t {
+    uint8_t code[446];  //446字节存放引导代码
+    part_item_t part_item[MBR_PRIMARY_PART_NR]; //64字节的分区表数组，数量为4
+    uint8_t boot_sig[2];//两字节的mbr标志，0x55,0xaa
+}mbr_t;
+
+#pragma pack()
+
 
 
 struct _disk_t;
@@ -66,7 +95,7 @@ typedef struct _partinfo_t {
     }type;
 
     int start_sector;   //分区起始扇区
-    int total_sector;   //分区所拥有的扇区数量
+    int total_sectors;   //分区所拥有的扇区数量
 }partinfo_t;
 
 
