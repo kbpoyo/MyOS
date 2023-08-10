@@ -9,6 +9,7 @@ source/kernel/CMakeFiles/kernel.dir/fs/fs.c.o: \
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/ipc/mutex.h \
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/core/task.h \
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/cpu/tss.h \
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/include/fs/fatfs/fatfs.h \
  /home/kbpoyo/code/cpp/MyOs/source/common/boot_info.h \
  /home/kbpoyo/code/cpp/MyOs/source/common/types.h \
  /home/kbpoyo/code/cpp/MyOs/source/common/cpu_instr.h \

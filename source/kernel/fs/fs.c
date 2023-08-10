@@ -520,7 +520,7 @@ static fs_op_t *get_fs_op(fs_type_t type, int major) {
 static fs_t *mount(fs_type_t type, const char *mount_point, int dev_major,
                    int dev_minor) {
   fs_t *fs = (fs_t *)0;
-  log_printf("mount file system, name: %s, dev: %x", mount_point, dev_major);
+  log_printf("mount file system, name: %s, dev: %x\n", mount_point, dev_major);
 
   // 1.检查当前文件系统是否已被挂载
   list_node_t *curr = list_get_first(&mounted_list);
@@ -528,7 +528,7 @@ static fs_t *mount(fs_type_t type, const char *mount_point, int dev_major,
     fs_t *fs = list_node_parent(curr, fs_t, node);
     if (kernel_strncmp(fs->mount_point, mount_point, FS_MOUNT_POINT_SIZE) ==
         0) {
-      log_printf("fs already mounted!");
+      log_printf("fs already mounted!\n");
       goto mount_failed;
     }
 
@@ -538,7 +538,7 @@ static fs_t *mount(fs_type_t type, const char *mount_point, int dev_major,
   // 2.从空闲链表中取下一个待挂载的fs对象进行挂载
   list_node_t *free_node = list_remove_first(&free_list);
   if (!free_node) {
-    log_printf("no free fs, mount failed!");
+    log_printf("no free fs, mount failed!\n");
     goto mount_failed;
   }
   fs = list_node_parent(free_node, fs_t, node);
@@ -548,14 +548,14 @@ static fs_t *mount(fs_type_t type, const char *mount_point, int dev_major,
   // 3.获取该fs对象的操作函数表并交给该对象
   fs_op_t *op = get_fs_op(type, dev_major);
   if (!op) {
-    log_printf("unsupported fs type: %d", type);
+    log_printf("unsupported fs type: %du\n", type);
     goto mount_failed;
   }
   fs->op = op;
 
   // 4.挂载该文件系统类型下具体的设备
   if (op->mount(fs, dev_major, dev_minor) < 0) {
-    log_printf("mount fs %s failed!", mount_point);
+    log_printf("mount fs %s failed!\n", mount_point);
     goto mount_failed;
   }
 

@@ -35,6 +35,10 @@ void mutex_lock(mutex_t *mutex) {
 
   // 1. 获取当前任务
   task_t *curr = task_current();
+  if (curr == 0) {  //内核单进程模式，不需要互斥
+    idt_leave_protection(state);  // TODO:解锁
+    return;
+  }
 
   // 2.判断该锁是否已被加锁
   if (mutex->locked_count == 0) {  
@@ -63,6 +67,10 @@ void mutex_unlock(mutex_t *mutex) {
   idt_state_t state = idt_enter_protection();  // TODO:加锁
 
   task_t *curr = task_current();
+  if (curr == 0) {  //内核单进程模式，不需要互斥
+    idt_leave_protection(state);  // TODO:解锁
+    return;
+  }
 
   // 1.判断当前任务是否是锁的拥有者
   if (mutex->owner == curr) {

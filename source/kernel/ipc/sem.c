@@ -37,12 +37,17 @@ void sem_init(sem_t *sem, int init_count) {
 void sem_wait(sem_t *sem) {
     
     idt_state_t state = idt_enter_protection();//TODO:加锁
+    
+    task_t *curr = task_current();
+    if (curr == 0) {  //内核单进程模式，不等待
+        idt_leave_protection(state);  // TODO:解锁
+        return;
+    }
 
     //1.判断信号量是否还有剩余
     if(sem->count > 0) {//有剩余，直接使用，任务获取信号量继续执行
         --sem->count;   
     } else {//没有剩余，任务进入延时队列等待信号量
-        task_t *curr = task_current();
         //2.将当前任务从就绪队列中取下
         task_set_unready(curr); 
         //3.将当前任务加入到信号量等待队列
@@ -64,6 +69,12 @@ void sem_wait(sem_t *sem) {
 void sem_notify(sem_t *sem) {
     idt_state_t state = idt_enter_protection();//TODO:加锁
     
+    task_t *curr = task_current();
+    if (curr == 0) {  //内核单进程模式，不等待
+        idt_leave_protection(state);  // TODO:解锁
+        return;
+    }
+
     if (!list_is_empty(&sem->wait_list)) {
         list_node_t *node = list_remove_first(&sem->wait_list);
         task_t *task = list_node_parent(node, task_t, wait_node);

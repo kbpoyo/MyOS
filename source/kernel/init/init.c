@@ -47,7 +47,7 @@ void kernel_init(boot_info_t* boot_info) {
 
     //5.初始化内存管理
     memory_init(boot_info);  
-
+    
     //6.初始化文件系统
     fs_init();
 
@@ -56,6 +56,7 @@ void kernel_init(boot_info_t* boot_info) {
     
     //7.初始化任务管理器
     task_manager_init();
+    
    
     //初始化完成后将在汇编里重新加载内核代码段与数据段的选择子，并为内核程序分配栈空间
 }

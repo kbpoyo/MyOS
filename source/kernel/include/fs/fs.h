@@ -15,6 +15,7 @@
 #include "fs/file.h"
 #include "tools/list.h"
 #include "ipc/mutex.h"
+#include "fatfs/fatfs.h"
 
 //类型声明，用以链接newlib库
 struct stat;
@@ -54,6 +55,11 @@ typedef struct _fs_t {
     int dev_id; //设备id
     list_node_t node;
     mutex_t *mutex;
+
+    union { //当是fat16文件系统时，存储fat表的数据
+        fat_t fat_data;
+    };
+    
 }fs_t;
 
 

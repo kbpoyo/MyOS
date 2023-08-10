@@ -327,7 +327,7 @@ int disk_read(device_t *dev, int addr, char *buf, int size) {
 
   //TODO:加锁
   mutex_lock(disk->mutex);  //确保磁盘io操作的原子性
-  task_on_op = 1; //将标志位置1，表示用户进程在执行磁盘操作
+  task_on_op = 1; //将标志位置1，表示内核在执行磁盘操作
 
   //发送读取指令
   disk_send_cmd(disk, part_info->start_sector + addr, size, DISK_CMD_READ);
@@ -396,6 +396,7 @@ int disk_write(device_t *dev, int addr, char *buf, int size) {
     disk_write_data(disk, buf, disk->sector_size);
     //等待磁盘的中断，代表写入完成
     sem_wait(disk->op_sem);
+    
 
     //检测是否发生错误
     int err = disk_wait_data(disk);

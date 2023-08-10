@@ -43,6 +43,7 @@ source/kernel/CMakeFiles/kernel.dir/core/task.c.o: ../source/kernel/core/task.c 
   ../source/kernel/include/cpu/mmu.h \
   ../source/kernel/include/cpu/syscall.h \
   ../source/kernel/include/fs/fs.h \
+  ../source/kernel/include/fs/fatfs/fatfs.h \
   ../source/kernel/include/os_cfg.h \
   ../source/kernel/include/tools/klib.h \
   /usr/lib/gcc/x86_64-linux-gnu/11/include/stdarg.h \
@@ -98,7 +99,8 @@ source/kernel/CMakeFiles/kernel.dir/cpu/syscall.c.o: ../source/kernel/cpu/syscal
   ../source/common/boot_info.h \
   ../source/common/types.h \
   ../source/kernel/include/tools/log.h \
-  ../source/kernel/include/fs/fs.h
+  ../source/kernel/include/fs/fs.h \
+  ../source/kernel/include/fs/fatfs/fatfs.h
 
 source/kernel/CMakeFiles/kernel.dir/dev/console.c.o: ../source/kernel/dev/console.c \
   /usr/include/stdc-predef.h \
@@ -206,6 +208,7 @@ source/kernel/CMakeFiles/kernel.dir/fs/devfs/devfs.c.o: ../source/kernel/fs/devf
   ../source/kernel/include/ipc/mutex.h \
   ../source/kernel/include/core/task.h \
   ../source/kernel/include/cpu/tss.h \
+  ../source/kernel/include/fs/fatfs/fatfs.h \
   ../source/kernel/include/dev/dev.h \
   ../source/kernel/include/tools/klib.h \
   /usr/lib/gcc/x86_64-linux-gnu/11/include/stdarg.h \
@@ -222,6 +225,15 @@ source/kernel/CMakeFiles/kernel.dir/fs/fatfs/fatfs.c.o: ../source/kernel/fs/fatf
   ../source/kernel/include/ipc/mutex.h \
   ../source/kernel/include/core/task.h \
   ../source/kernel/include/cpu/tss.h \
+  ../source/kernel/include/fs/fatfs/fatfs.h \
+  ../source/kernel/include/dev/dev.h \
+  ../source/kernel/include/tools/log.h \
+  ../source/kernel/include/core/memory.h \
+  ../source/kernel/include/tools/bitmap.h \
+  ../source/common/boot_info.h \
+  ../source/common/types.h \
+  ../source/kernel/include/tools/klib.h \
+  /usr/lib/gcc/x86_64-linux-gnu/11/include/stdarg.h \
   ../source/newlib/i686-elf/include/sys/fcntl.h \
   ../source/newlib/i686-elf/include/sys/_default_fcntl.h \
   ../source/newlib/i686-elf/include/_ansi.h \
@@ -277,6 +289,7 @@ source/kernel/CMakeFiles/kernel.dir/fs/fs.c.o: ../source/kernel/fs/fs.c \
   ../source/kernel/include/ipc/mutex.h \
   ../source/kernel/include/core/task.h \
   ../source/kernel/include/cpu/tss.h \
+  ../source/kernel/include/fs/fatfs/fatfs.h \
   ../source/common/boot_info.h \
   ../source/common/types.h \
   ../source/common/cpu_instr.h \
@@ -395,7 +408,8 @@ source/kernel/CMakeFiles/kernel.dir/init/init.c.o: ../source/kernel/init/init.c 
   ../source/kernel/include/dev/console.h \
   ../source/kernel/include/dev/tty.h \
   ../source/kernel/include/dev/keyboard.h \
-  ../source/kernel/include/fs/fs.h
+  ../source/kernel/include/fs/fs.h \
+  ../source/kernel/include/fs/fatfs/fatfs.h
 
 source/kernel/CMakeFiles/kernel.dir/ipc/mutex.c.o: ../source/kernel/ipc/mutex.c \
   /usr/include/stdc-predef.h \
@@ -503,6 +517,8 @@ source/kernel/CMakeFiles/kernel.dir/tools/log.c.o: ../source/kernel/tools/log.c 
 
 ../source/newlib/i686-elf/include/sys/types.h:
 
+/usr/lib/gcc/x86_64-linux-gnu/11/include/stdarg.h:
+
 ../source/kernel/include/cpu/idt.h:
 
 ../source/newlib/i686-elf/include/sys/_sigset.h:
@@ -527,8 +543,6 @@ source/kernel/CMakeFiles/kernel.dir/tools/log.c.o: ../source/kernel/tools/log.c 
 
 ../source/kernel/include/tools/assert.h:
 
-/usr/lib/gcc/x86_64-linux-gnu/11/include/stdarg.h:
-
 ../source/newlib/i686-elf/include/sys/stat.h:
 
 ../source/newlib/i686-elf/include/sys/_timeval.h:
@@ -546,18 +560,6 @@ source/kernel/CMakeFiles/kernel.dir/tools/log.c.o: ../source/kernel/tools/log.c 
 ../source/newlib/i686-elf/include/newlib.h:
 
 ../source/kernel/include/tools/bitmap.h:
-
-../source/kernel/include/cpu/gate.h:
-
-../source/newlib/i686-elf/include/sys/_timespec.h:
-
-../source/kernel/include/dev/disk.h:
-
-../source/kernel/fs/fs.c:
-
-../source/kernel/include/os_cfg.h:
-
-../source/newlib/i686-elf/include/_ansi.h:
 
 ../source/kernel/tools/bitmap.c:
 
@@ -608,6 +610,18 @@ source/kernel/CMakeFiles/kernel.dir/tools/log.c.o: ../source/kernel/tools/log.c 
 ../source/newlib/i686-elf/include/machine/time.h:
 
 ../source/kernel/dev/console.c:
+
+../source/kernel/include/cpu/gate.h:
+
+../source/newlib/i686-elf/include/sys/_timespec.h:
+
+../source/kernel/include/dev/disk.h:
+
+../source/kernel/fs/fs.c:
+
+../source/kernel/include/os_cfg.h:
+
+../source/newlib/i686-elf/include/_ansi.h:
 
 ../source/kernel/tools/list.c:
 
