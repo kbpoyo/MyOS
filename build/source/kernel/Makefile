@@ -31,6 +31,9 @@ default_target: all
 
 .SUFFIXES: .hpux_make_needs_suffix_list
 
+# Produce verbose output by default.
+VERBOSE = 1
+
 # Command-line flag to silence nested $(MAKE).
 $(VERBOSE)MAKESILENT = -s
 
@@ -466,6 +469,30 @@ fs/devfs/devfs.c.s:
 	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/fs/devfs/devfs.c.s
 .PHONY : fs/devfs/devfs.c.s
 
+fs/fatfs/fatfs.o: fs/fatfs/fatfs.c.o
+.PHONY : fs/fatfs/fatfs.o
+
+# target to build an object file
+fs/fatfs/fatfs.c.o:
+	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/fs/fatfs/fatfs.c.o
+.PHONY : fs/fatfs/fatfs.c.o
+
+fs/fatfs/fatfs.i: fs/fatfs/fatfs.c.i
+.PHONY : fs/fatfs/fatfs.i
+
+# target to preprocess a source file
+fs/fatfs/fatfs.c.i:
+	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/fs/fatfs/fatfs.c.i
+.PHONY : fs/fatfs/fatfs.c.i
+
+fs/fatfs/fatfs.s: fs/fatfs/fatfs.c.s
+.PHONY : fs/fatfs/fatfs.s
+
+# target to generate assembly for a file
+fs/fatfs/fatfs.c.s:
+	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/fs/fatfs/fatfs.c.s
+.PHONY : fs/fatfs/fatfs.c.s
+
 fs/file.o: fs/file.c.o
 .PHONY : fs/file.o
 
@@ -821,6 +848,9 @@ help:
 	@echo "... fs/devfs/devfs.o"
 	@echo "... fs/devfs/devfs.i"
 	@echo "... fs/devfs/devfs.s"
+	@echo "... fs/fatfs/fatfs.o"
+	@echo "... fs/fatfs/fatfs.i"
+	@echo "... fs/fatfs/fatfs.s"
 	@echo "... fs/file.o"
 	@echo "... fs/file.i"
 	@echo "... fs/file.s"

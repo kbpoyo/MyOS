@@ -1,27 +1,15 @@
-source/kernel/CMakeFiles/kernel.dir/fs/fs.c.o: \
- /home/kbpoyo/code/cpp/MyOs/source/kernel/fs/fs.c \
+source/kernel/CMakeFiles/kernel.dir/fs/fatfs/fatfs.c.o: \
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/fs/fatfs/fatfs.c \
  /usr/include/stdc-predef.h \
- /home/kbpoyo/code/cpp/MyOs/source/kernel/include/fs/fs.h \
- /home/kbpoyo/code/cpp/MyOs/source/kernel/include/fs/file.h \
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/include/fs/fatfs/fatfs.h \
  /home/kbpoyo/code/cpp/MyOs/source/common/types.h \
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/include/fs/file.h \
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/include/fs/fs.h \
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/tools/list.h \
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/tools/assert.h \
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/ipc/mutex.h \
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/core/task.h \
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/cpu/tss.h \
- /home/kbpoyo/code/cpp/MyOs/source/common/boot_info.h \
- /home/kbpoyo/code/cpp/MyOs/source/common/types.h \
- /home/kbpoyo/code/cpp/MyOs/source/common/cpu_instr.h \
- /home/kbpoyo/code/cpp/MyOs/source/kernel/include/dev/console.h \
- /home/kbpoyo/code/cpp/MyOs/source/kernel/include/dev/tty.h \
- /home/kbpoyo/code/cpp/MyOs/source/kernel/include/ipc/sem.h \
- /home/kbpoyo/code/cpp/MyOs/source/kernel/include/dev/dev.h \
- /home/kbpoyo/code/cpp/MyOs/source/kernel/include/tools/klib.h \
- /usr/lib/gcc/x86_64-linux-gnu/11/include/stdarg.h \
- /home/kbpoyo/code/cpp/MyOs/source/kernel/include/tools/log.h \
- /home/kbpoyo/code/cpp/MyOs/source/kernel/include/dev/disk.h \
- /home/kbpoyo/code/cpp/MyOs/source/kernel/include/os_cfg.h \
- /home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/include/sys/file.h \
  /home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/include/sys/fcntl.h \
  /home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/include/sys/_default_fcntl.h \
  /home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/include/_ansi.h \

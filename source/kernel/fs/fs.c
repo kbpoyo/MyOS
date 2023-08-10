@@ -21,13 +21,20 @@
 #include "tools/list.h"
 #include "tools/log.h"
 #include "dev/disk.h"
+#include "os_cfg.h"
 #include <sys/file.h>
 
 #define FS_TABLE_SIZE 10
 static list_t mounted_list;           // 文件系统挂载链表
 static fs_t fs_table[FS_TABLE_SIZE];  // 全局文件系统表
 static list_t free_list;              // 存放未挂载的文件系统
-extern fs_op_t devfs_op;
+
+//声明外部的文件系统类型的函数表
+extern fs_op_t devfs_op;  //设备文件类型
+extern fs_op_t fatfs_op;  //fat文件类型
+
+//根文件系统
+static fs_t *root_fs;
 
 // 定义缓冲区位置，用于暂存从磁盘中读取的文件内容
 #define TEMP_ADDR (120 * 1024 * 1024)
@@ -192,7 +199,8 @@ int sys_open(const char *name, int flags, ...) {
   if (fs) {  // 找到对应的文件系统
     // 获取下一级路径
     name = path_next_child(name);
-  } else {  // 未找到对应文件系统，使用默认文件系统
+  } else {  // 未找到对应文件系统，使用默认的根文件系统
+    fs = root_fs;
   }
 
   // 为文件绑定模式参数和文件系统
@@ -491,6 +499,9 @@ static fs_op_t *get_fs_op(fs_type_t type, int major) {
     case FS_DEVFS:
       return &devfs_op;
       break;
+    case FS_FAT16:
+      return &fatfs_op;
+      break;
     default:
       return 0;
       break;
@@ -574,4 +585,7 @@ void fs_init(void) {
 
   fs_t *fs = mount(FS_DEVFS, "/dev", 0, 0);
   ASSERT(fs != (fs_t *)0);
+
+  root_fs = mount(FS_FAT16, "/home", ROOT_DEV);
+  ASSERT(root_fs != (fs_t *)0);
 }

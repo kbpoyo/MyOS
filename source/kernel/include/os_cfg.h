@@ -30,4 +30,8 @@
 //定义操作系统版本
 #define OS_VERSION "1.0.0"
 
+
+//disk类型设备的0xb1分区作为系统的根目录分区
+#define ROOT_DEV    DEV_DISK, 0xb1
+
 #endif

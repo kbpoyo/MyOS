@@ -75,7 +75,7 @@
 			"sourceIndexes" : 
 			[
 				0,
-				44
+				46
 			]
 		},
 		{
@@ -119,16 +119,17 @@
 				14,
 				15,
 				16,
-				43,
+				17,
 				45,
 				47,
-				48,
 				49,
 				50,
 				51,
 				52,
 				53,
-				54
+				54,
+				55,
+				56
 			]
 		}
 	],
@@ -169,7 +170,7 @@
 			"sourceIndexes" : 
 			[
 				0,
-				44
+				46
 			]
 		},
 		{
@@ -192,23 +193,23 @@
 				14,
 				15,
 				16,
-				43,
+				17,
 				45,
 				47,
-				48,
 				49,
 				50,
 				51,
 				52,
 				53,
-				54
+				54,
+				55,
+				56
 			]
 		},
 		{
 			"name" : "Header Files",
 			"sourceIndexes" : 
 			[
-				17,
 				18,
 				19,
 				20,
@@ -234,7 +235,9 @@
 				40,
 				41,
 				42,
-				46
+				43,
+				44,
+				48
 			]
 		}
 	],
@@ -333,6 +336,12 @@
 		{
 			"backtrace" : 1,
 			"compileGroupIndex" : 1,
+			"path" : "source/kernel/fs/fatfs/fatfs.c",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 1,
 			"path" : "source/kernel/fs/file.c",
 			"sourceGroupIndex" : 1
 		},
@@ -415,6 +424,11 @@
 		{
 			"backtrace" : 1,
 			"path" : "source/kernel/include/fs/devfs/devfs.h",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 1,
+			"path" : "source/kernel/include/fs/fatfs/fatfs.h",
 			"sourceGroupIndex" : 2
 		},
 		{

@@ -36,6 +36,7 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/home/kbpoyo/code/cpp/MyOs/source/kernel/dev/time.c" "source/kernel/CMakeFiles/kernel.dir/dev/time.c.o" "gcc" "source/kernel/CMakeFiles/kernel.dir/dev/time.c.o.d"
   "/home/kbpoyo/code/cpp/MyOs/source/kernel/dev/tty.c" "source/kernel/CMakeFiles/kernel.dir/dev/tty.c.o" "gcc" "source/kernel/CMakeFiles/kernel.dir/dev/tty.c.o.d"
   "/home/kbpoyo/code/cpp/MyOs/source/kernel/fs/devfs/devfs.c" "source/kernel/CMakeFiles/kernel.dir/fs/devfs/devfs.c.o" "gcc" "source/kernel/CMakeFiles/kernel.dir/fs/devfs/devfs.c.o.d"
+  "/home/kbpoyo/code/cpp/MyOs/source/kernel/fs/fatfs/fatfs.c" "source/kernel/CMakeFiles/kernel.dir/fs/fatfs/fatfs.c.o" "gcc" "source/kernel/CMakeFiles/kernel.dir/fs/fatfs/fatfs.c.o.d"
   "/home/kbpoyo/code/cpp/MyOs/source/kernel/fs/file.c" "source/kernel/CMakeFiles/kernel.dir/fs/file.c.o" "gcc" "source/kernel/CMakeFiles/kernel.dir/fs/file.c.o.d"
   "/home/kbpoyo/code/cpp/MyOs/source/kernel/fs/fs.c" "source/kernel/CMakeFiles/kernel.dir/fs/fs.c.o" "gcc" "source/kernel/CMakeFiles/kernel.dir/fs/fs.c.o.d"
   "/home/kbpoyo/code/cpp/MyOs/source/kernel/init/first_task.c" "source/kernel/CMakeFiles/kernel.dir/init/first_task.c.o" "gcc" "source/kernel/CMakeFiles/kernel.dir/init/first_task.c.o.d"

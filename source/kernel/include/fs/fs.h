@@ -41,6 +41,7 @@ typedef struct _fs_op_t {
 //定义文件系统类型的枚举
 typedef enum _fs_type_t {
     FS_DEVFS,  //设备文件系统
+    FS_FAT16,   //fat文件系统
 }fs_type_t;
 
 //定义文件系统的顶层抽象类型
