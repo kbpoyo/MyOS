@@ -47,8 +47,9 @@ source/shell/CMakeFiles/shell.dir/main.c.o: ../source/shell/main.c \
   ../source/newlib/i686-elf/include/sys/stat.h \
   ../source/newlib/i686-elf/include/time.h \
   ../source/newlib/i686-elf/include/machine/time.h \
-  ../source/applib/lib_syscall.h \
+  ../source/kernel/include/fs/file.h \
   ../source/common/types.h \
+  ../source/applib/lib_syscall.h \
   ../source/kernel/include/cpu/syscall.h \
   ../source/kernel/include/os_cfg.h
 
@@ -118,6 +119,8 @@ source/shell/CMakeFiles/shell.dir/main.c.o: ../source/shell/main.c \
 ../source/newlib/i686-elf/include/machine/stdlib.h:
 
 ../source/newlib/i686-elf/include/_newlib_version.h:
+
+../source/kernel/include/fs/file.h:
 
 /usr/include/stdc-predef.h:
 

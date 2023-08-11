@@ -45,7 +45,8 @@ source/shell/CMakeFiles/shell.dir/main.c.o: \
  /home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/include/sys/stat.h \
  /home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/include/time.h \
  /home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/include/machine/time.h \
- /home/kbpoyo/code/cpp/MyOs/source/shell/../applib/lib_syscall.h \
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/include/fs/file.h \
  /home/kbpoyo/code/cpp/MyOs/source/common/types.h \
+ /home/kbpoyo/code/cpp/MyOs/source/shell/../applib/lib_syscall.h \
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/cpu/syscall.h \
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/os_cfg.h

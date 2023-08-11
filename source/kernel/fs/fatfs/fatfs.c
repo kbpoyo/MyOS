@@ -131,6 +131,48 @@ int fatfs_stat(file_t *file, struct stat *st) {
 
 }
 
+/**
+ * @brief 打开目录
+ * 
+ * @param fs 
+ * @param name 
+ * @param dir 
+ * @return int 
+ */
+int fatfs_opendir(struct _fs_t *fs, const char *name, DIR *dir) {
+    dir->index = 0;
+    return 0;
+}
+
+/**
+ * @brief 遍历目录
+ * 
+ * @param fs 
+ * @param dir 
+ * @param dirent 
+ * @return int 
+ */
+int fatfs_readdir(struct _fs_t *fs, DIR *dir, struct dirent *dirent) {
+    if (dir->index++ < 10) {
+        dirent->type = FILE_NORMAL;
+        dirent->size = 1000;
+        kernel_strncpy(dirent->name, "hello", sizeof(dirent->name));
+        return 0;
+    }
+
+    return -1;
+}
+
+/**
+ * @brief 关闭目录
+ * 
+ * @param fs 
+ * @param dir 
+ * @return int 
+ */
+int fatfs_closedir(struct _fs_t *fs, DIR *dir) {
+ return 0;
+}
 
 
 //将fat文件系统的操作函数抽象给顶层文件系统使用
@@ -144,4 +186,7 @@ fs_op_t fatfs_op = {
     .close = fatfs_close,
     .seek = fatfs_seek,
     .stat = fatfs_stat,
+    .opendir = fatfs_opendir,
+    .readdir = fatfs_readdir,
+    .closedir = fatfs_closedir,
 };

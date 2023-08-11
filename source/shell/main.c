@@ -16,6 +16,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/file.h>
+#include "fs/file.h"
 
 #include "lib_syscall.h"
 
@@ -129,6 +130,33 @@ static int do_exit(int argc, const char ** argv) {
   return 0;
 }
 
+/**
+ * @brief 列出当前目录下的文件和目录
+ * 
+ * @param argc 
+ * @param argv 
+ * @return int 
+ */
+static int do_ls(int argc, const char **argv) {
+  DIR *p_dir = opendir("temp");
+  if (p_dir == NULL) {
+    printf("open dir failed.\n");
+    return -1;
+  }
+
+  struct dirent *entry;
+  while ((entry = readdir(p_dir)) != NULL) {
+    printf("%c %s %d\n", 
+            entry->type = FILE_DIR ? 'd' : 'f',
+            entry->name,
+            entry->size
+          );
+  }
+  closedir(p_dir);
+  return 0;
+}
+
+
 // 终端命令表
 static const cli_cmd_t cmd_list[] = {
     {
@@ -145,6 +173,11 @@ static const cli_cmd_t cmd_list[] = {
         .name = "echo",
         .usage = "echo [-n count] msg\t--echo msg [count] times",
         .do_func = do_echo,
+    },
+    {
+      .name = "ls",
+      .usage = "ls\t--lsit director",
+      .do_func = do_ls,
     },
     {
       .name = "quit",

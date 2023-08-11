@@ -474,6 +474,51 @@ int sys_dup(int fd) {
 }
 
 /**
+ * @brief 根据path打开目录
+ * 
+ * @param path 
+ * @param dir 
+ * @return int 
+ */
+int sys_opendir(const char *path, DIR *dir) {
+   // 使用该文件系统打开该目录
+  fs_protect(root_fs);
+  int err = root_fs->op->opendir(root_fs, path, dir);
+  fs_unprotect(root_fs);
+  return err;
+}
+
+/**
+ * @brief 从目录dir中扫描读取目录项到dirent中
+ * 
+ * @param dir 
+ * @param dirent 
+ * @return int 
+ */
+int sys_readdir(DIR *dir, struct dirent *dirent) {
+   // 使用该文件系统遍历该目录
+  fs_protect(root_fs);
+  int err = root_fs->op->readdir(root_fs, dir, dirent);
+  fs_unprotect(root_fs);
+  return err;
+}
+
+/**
+ * @brief 关闭目录
+ * 
+ * @param dir 
+ * @return int 
+ */
+int sys_closedir(DIR *dir) {
+  // 使用该文件系统关闭该目录
+  fs_protect(root_fs);
+  int err = root_fs->op->closedir(root_fs, dir);
+  fs_unprotect(root_fs);
+  return err;
+
+}
+
+/**
  * @brief 初始化free_list和mount_list
  *
  */
@@ -591,36 +636,3 @@ void fs_init(void) {
 }
 
 
-/**
- * @brief 根据path打开目录
- * 
- * @param path 
- * @param dir 
- * @return int 
- */
-int sys_opendir(const char *path, DIR *dir) {
-
-  return -1;
-}
-
-/**
- * @brief 从目录dir中扫描读取目录项到dirent中
- * 
- * @param dir 
- * @param dirent 
- * @return int 
- */
-int sys_readdir(DIR *dir, struct dirent *dirent) {
-
-  return -1;
-}
-
-/**
- * @brief 关闭目录
- * 
- * @param dir 
- * @return int 
- */
-int sys_closedir(DIR *dir) {
-  return -1;
-}

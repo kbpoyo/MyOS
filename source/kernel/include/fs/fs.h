@@ -34,6 +34,10 @@ typedef struct _fs_op_t {
     int (*seek)(file_t *file, uint32_t offset, int dir);
     int (*stat)(file_t *file, struct stat *st);
 
+    int (*opendir)(struct _fs_t *fs, const char *name, DIR *dir);
+    int (*readdir)(struct _fs_t *fs, DIR *dir, struct dirent *dirent);
+    int (*closedir)(struct _fs_t *fs, DIR *dir);
+
 }fs_op_t;
 
 
