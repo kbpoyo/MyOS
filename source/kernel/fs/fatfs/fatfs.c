@@ -19,6 +19,114 @@
 #include <sys/fcntl.h>
 
 /**
+ * @brief 从当前目录项中获取文件名到dest中
+ * 
+ * @param diritem 
+ * @param dest
+ */
+void diritem_get_name(diritem_t *diritem, char *dest) {
+    //file.c 存储在目录项中的形式为 "FILE    C  "
+    //8字节的文件名，三字节的拓展名
+    char *c = dest;
+    char *ext = (char*)0;
+
+    //8字节文件名 + '.' + 3字节拓展名，一共最大12字节空间
+    kernel_memset(dest, 0, 12);
+    for (int i = 0; i < 11; ++i) {
+        if (diritem->DIR_Name[i] != ' ') {
+            *(c++) = diritem->DIR_Name[i];
+        }
+
+        //读完8字节的文件名，用ext记录".拓展名""
+        if (i == 7) {
+            ext = c;
+            *(c++) = '.';
+        }
+    }
+
+    //文件无拓展名，将之前写入的'.'设置为'\0'
+    if (ext && (ext[1] == '\0')) {
+        ext[0] = '\0';
+    }
+
+}
+
+/**
+ * @brief 以缓存的方式读取扇区
+ * 
+ * @param fat 
+ * @param sector 
+ * @return int 
+ */
+static int cache_read_sector(fat_t *fat, int sector) {
+    //要读扇区已被缓存，直接返回即可
+    if (sector == fat->curr_sector) {
+        return 0;
+    }
+
+    //读取信的扇区，并记录扇区号
+    int cnt = dev_read(fat->fs->dev_id, sector, fat->fat_buffer, 1);
+    if (cnt == 1) {
+        fat->curr_sector = sector;
+        return 0;
+    }
+
+    return -1;
+}
+
+/**
+ * @brief 从根目录区读取索引为dir_index的目录项
+ * 
+ * @param fat 
+ * @param dir_index 
+ * @return diritem_t* 
+ */
+static diritem_t * read_dir_entry(fat_t *fat, int dir_index) {
+    if (dir_index < 0 || dir_index >= fat->root_ent_cnt) {
+        return (diritem_t*)0;
+    }
+
+    //计算该目录项所在根目录区的扇区的扇区号
+    int offset = dir_index * sizeof(diritem_t);
+    int sector = fat->root_start_sector + offset / fat->bytes_per_sector;
+    int err = cache_read_sector(fat, sector);
+    if (err < 0) {
+        return (diritem_t*)0;
+    }
+
+    //计算出该目录项的起始地址并返回
+    return (diritem_t*)(fat->fat_buffer + offset % fat->bytes_per_sector);
+}
+
+/**
+ * @brief 从根目录项中获取该项的文件类型
+ * 
+ * @param diritem 
+ * @return file_type_t 
+ */
+file_type_t diritem_get_type(diritem_t *diritem) {
+    file_type_t type = FILE_UNKNOWN;
+
+    if (diritem->DIR_Attr & 
+    (DIRITEM_ATTR_VOLUME_ID 
+    | DIRITEM_ATTR_SYSTEM 
+    | DIRITEM_ATTR_HIDDEN)) {   //该项是卷标，隐藏或系统文件时直接跳过
+        return FILE_UNKNOWN;
+    }
+
+    //该项为LONG_NAME项时也跳过
+    if ((diritem->DIR_Attr & DIRITEM_ATTR_LONG_NAME) == DIRITEM_ATTR_LONG_NAME) {
+        return FILE_UNKNOWN;
+
+    }
+
+
+    return diritem->DIR_Attr & DIRITEM_ATTR_DIRECTORY ? FILE_DIR : FILE_NORMAL;
+}
+
+
+
+/**
  * @brief 挂载fat文件系统
  * 
  * @param fs 
@@ -63,8 +171,9 @@ int fatfs_mount(struct _fs_t *fs, int major, int minor) {
     fat->root_start_sector = fat->tbl_start_sector + fat->tbl_sectors * fat->tbl_cnt;
     fat->data_start_sector = fat->root_start_sector + fat->root_ent_cnt * 32 / dbr->BPB_BytsPerSec;
     fat->cluster_bytes_size = fat->sec_per_cluster * dbr->BPB_BytsPerSec;
-    fat->dbr_buffer = (uint8_t*)dbr;
+    fat->fat_buffer = (uint8_t*)dbr;
     fat->fs = fs;
+    fat->curr_sector = -1;
 
     if (fat->tbl_cnt != 2) {    //fat表数量一般为2， 不为2则出错
         log_printf("%s: fat table error: major: %x, minor: %x\n", major, minor);
@@ -104,7 +213,7 @@ void fatfs_unmount(struct _fs_t *fs) {
     fat_t * fat = (fat_t *)fs->data;
     dev_close(fs->dev_id);
 
-    memory_free_page((uint32_t)fat->dbr_buffer);
+    memory_free_page((uint32_t)fat->fat_buffer);
 }
 int fatfs_open(struct _fs_t *fs, const char *path, file_t *file) {
 
@@ -153,12 +262,38 @@ int fatfs_opendir(struct _fs_t *fs, const char *name, DIR *dir) {
  * @return int 
  */
 int fatfs_readdir(struct _fs_t *fs, DIR *dir, struct dirent *dirent) {
-    if (dir->index++ < 10) {
-        dirent->type = FILE_NORMAL;
-        dirent->size = 1000;
-        kernel_strncpy(dirent->name, "hello", sizeof(dirent->name));
-        return 0;
+    //获取当前fat文件系统的fat表信息
+    fat_t *fat = (fat_t*)fs->data;
+
+    while (dir->index < fat->root_ent_cnt) {
+        diritem_t *item = read_dir_entry(fat, dir->index);
+        if (item == (diritem_t *)0) {
+            return -1;
+        }
+
+        //已经遍历到末尾项
+        if (item->DIR_Name[0] == DIRITEM_NAME_END) {
+            break;
+        }
+
+        //该目录项有效,获取目录项信息到dirent中
+        if (item->DIR_Name[0] != DIRITEM_NAEM_FREE) {
+            file_type_t type = diritem_get_type(item);
+            if ((type == FILE_NORMAL) || (type == FILE_DIR)) {
+                dirent->size = item->DIR_FileSize;
+                dirent->type = type;
+                diritem_get_name(item, dirent->name);
+
+                //记录目录项在该目录中的索引
+                dirent->index = dir->index++;
+                return 0;
+            }
+        }
+
+        //该目录项无效，继续获取下一个目录项
+        dir->index++;
     }
+
 
     return -1;
 }

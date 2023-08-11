@@ -63,7 +63,7 @@ int dup(int file);
 typedef struct dirent {
     int index;
     int type;
-    char name[255];
+    char name[14];
     int size;
 }dirent;
 

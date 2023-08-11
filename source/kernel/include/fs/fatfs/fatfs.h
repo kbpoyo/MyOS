@@ -16,6 +16,34 @@
 
 #pragma pack(1)
 
+#define DIRITEM_NAEM_FREE       0xE5    //标志该root_entry是空闲的
+#define DIRITEM_NAME_END        0x00    //标志该root_entry末尾项
+
+#define DIRITEM_ATTR_READ_ONLY  0x1
+#define DIRITEM_ATTR_HIDDEN     0x2
+#define DIRITEM_ATTR_SYSTEM     0x4
+#define DIRITEM_ATTR_VOLUME_ID  0x8
+#define DIRITEM_ATTR_DIRECTORY  0x10
+#define DIRITEM_ATTR_ARCHIVE    0x20
+#define DIRITEM_ATTR_LONG_NAME  0xF //长文件名类型的文件会用两个目录项来记录
+                                    //我直接忽略这种文件
+
+typedef struct _diritem_t {
+        uint8_t DIR_Name[11];
+        uint8_t DIR_Attr;   //文件属性
+        uint8_t DIR_NTRes;
+        uint8_t DIR_CrtTimeTeenth;
+        uint16_t DIR_CrtTime;   //文件创建时间
+        uint16_t DIR_CrtDate;   //文件创建日期
+        uint16_t DIR_LastAccDate;   //文件最后访问日期
+        uint16_t DIR_FstClusHI; //目录项簇号的高位字，FAT12/16此位为0
+        uint16_t DIR_WrtTime;   //文件最后写的时间
+        uint16_t DIR_WrtDate;   //文件最后写的日期
+        uint16_t DIR_FstClusLo; //目录项簇号的低位字
+        uint32_t DIR_FileSize;  //文件大小
+        
+}diritem_t;
+
 //dbr区域结构，存储了fat16文件系统的配置信息
 typedef struct _dbr_t {
     //跳转代码 区域
@@ -65,8 +93,10 @@ typedef struct _fat_t {
     uint32_t root_ent_cnt;  //根目录区的项数,每一项占32个字节
     uint32_t data_start_sector;    //文件数据区域的起始地址
     uint32_t cluster_bytes_size;    //一簇的字节大小
+    uint32_t curr_sector;   //fat表当前索引的扇区号，用作扇区缓存的读取
 
-    uint8_t *dbr_buffer;    //执行读取到内存的dbr区域
+    uint8_t *fat_buffer;    //fat表结构的缓冲区，可用于存放读取到内存的dbr区域
+    
     struct _fs_t *fs;   //该分区所属的文件系统
 
         
