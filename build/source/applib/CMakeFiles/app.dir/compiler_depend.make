@@ -76,7 +76,10 @@ source/applib/CMakeFiles/app.dir/lib_syscall.c.o: ../source/applib/lib_syscall.c
   ../source/newlib/i686-elf/include/sys/_pthreadtypes.h \
   ../source/newlib/i686-elf/include/sys/sched.h \
   ../source/newlib/i686-elf/include/machine/types.h \
-  ../source/newlib/i686-elf/include/sys/_locale.h
+  ../source/newlib/i686-elf/include/sys/_locale.h \
+  ../source/newlib/i686-elf/include/stdlib.h \
+  ../source/newlib/i686-elf/include/machine/stdlib.h \
+  ../source/newlib/i686-elf/include/alloca.h
 
 
 ../source/applib/lib_syscall.c:

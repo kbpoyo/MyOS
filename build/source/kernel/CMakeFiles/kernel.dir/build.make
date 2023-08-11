@@ -27,9 +27,6 @@
 
 .SUFFIXES: .hpux_make_needs_suffix_list
 
-# Produce verbose output by default.
-VERBOSE = 1
-
 # Command-line flag to silence nested $(MAKE).
 $(VERBOSE)MAKESILENT = -s
 
@@ -364,10 +361,24 @@ source/kernel/CMakeFiles/kernel.dir/init/init.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/kernel.dir/init/init.c.s"
 	cd /home/kbpoyo/code/cpp/MyOs/build/source/kernel && /usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/kbpoyo/code/cpp/MyOs/source/kernel/init/init.c -o CMakeFiles/kernel.dir/init/init.c.s
 
+source/kernel/CMakeFiles/kernel.dir/init/lib_syscall.c.o: source/kernel/CMakeFiles/kernel.dir/flags.make
+source/kernel/CMakeFiles/kernel.dir/init/lib_syscall.c.o: ../source/kernel/init/lib_syscall.c
+source/kernel/CMakeFiles/kernel.dir/init/lib_syscall.c.o: source/kernel/CMakeFiles/kernel.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/kbpoyo/code/cpp/MyOs/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_22) "Building C object source/kernel/CMakeFiles/kernel.dir/init/lib_syscall.c.o"
+	cd /home/kbpoyo/code/cpp/MyOs/build/source/kernel && /usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT source/kernel/CMakeFiles/kernel.dir/init/lib_syscall.c.o -MF CMakeFiles/kernel.dir/init/lib_syscall.c.o.d -o CMakeFiles/kernel.dir/init/lib_syscall.c.o -c /home/kbpoyo/code/cpp/MyOs/source/kernel/init/lib_syscall.c
+
+source/kernel/CMakeFiles/kernel.dir/init/lib_syscall.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/kernel.dir/init/lib_syscall.c.i"
+	cd /home/kbpoyo/code/cpp/MyOs/build/source/kernel && /usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/kbpoyo/code/cpp/MyOs/source/kernel/init/lib_syscall.c > CMakeFiles/kernel.dir/init/lib_syscall.c.i
+
+source/kernel/CMakeFiles/kernel.dir/init/lib_syscall.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/kernel.dir/init/lib_syscall.c.s"
+	cd /home/kbpoyo/code/cpp/MyOs/build/source/kernel && /usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/kbpoyo/code/cpp/MyOs/source/kernel/init/lib_syscall.c -o CMakeFiles/kernel.dir/init/lib_syscall.c.s
+
 source/kernel/CMakeFiles/kernel.dir/ipc/mutex.c.o: source/kernel/CMakeFiles/kernel.dir/flags.make
 source/kernel/CMakeFiles/kernel.dir/ipc/mutex.c.o: ../source/kernel/ipc/mutex.c
 source/kernel/CMakeFiles/kernel.dir/ipc/mutex.c.o: source/kernel/CMakeFiles/kernel.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/kbpoyo/code/cpp/MyOs/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_22) "Building C object source/kernel/CMakeFiles/kernel.dir/ipc/mutex.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/kbpoyo/code/cpp/MyOs/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_23) "Building C object source/kernel/CMakeFiles/kernel.dir/ipc/mutex.c.o"
 	cd /home/kbpoyo/code/cpp/MyOs/build/source/kernel && /usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT source/kernel/CMakeFiles/kernel.dir/ipc/mutex.c.o -MF CMakeFiles/kernel.dir/ipc/mutex.c.o.d -o CMakeFiles/kernel.dir/ipc/mutex.c.o -c /home/kbpoyo/code/cpp/MyOs/source/kernel/ipc/mutex.c
 
 source/kernel/CMakeFiles/kernel.dir/ipc/mutex.c.i: cmake_force
@@ -381,7 +392,7 @@ source/kernel/CMakeFiles/kernel.dir/ipc/mutex.c.s: cmake_force
 source/kernel/CMakeFiles/kernel.dir/ipc/sem.c.o: source/kernel/CMakeFiles/kernel.dir/flags.make
 source/kernel/CMakeFiles/kernel.dir/ipc/sem.c.o: ../source/kernel/ipc/sem.c
 source/kernel/CMakeFiles/kernel.dir/ipc/sem.c.o: source/kernel/CMakeFiles/kernel.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/kbpoyo/code/cpp/MyOs/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_23) "Building C object source/kernel/CMakeFiles/kernel.dir/ipc/sem.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/kbpoyo/code/cpp/MyOs/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_24) "Building C object source/kernel/CMakeFiles/kernel.dir/ipc/sem.c.o"
 	cd /home/kbpoyo/code/cpp/MyOs/build/source/kernel && /usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT source/kernel/CMakeFiles/kernel.dir/ipc/sem.c.o -MF CMakeFiles/kernel.dir/ipc/sem.c.o.d -o CMakeFiles/kernel.dir/ipc/sem.c.o -c /home/kbpoyo/code/cpp/MyOs/source/kernel/ipc/sem.c
 
 source/kernel/CMakeFiles/kernel.dir/ipc/sem.c.i: cmake_force
@@ -395,7 +406,7 @@ source/kernel/CMakeFiles/kernel.dir/ipc/sem.c.s: cmake_force
 source/kernel/CMakeFiles/kernel.dir/test/test.c.o: source/kernel/CMakeFiles/kernel.dir/flags.make
 source/kernel/CMakeFiles/kernel.dir/test/test.c.o: ../source/kernel/test/test.c
 source/kernel/CMakeFiles/kernel.dir/test/test.c.o: source/kernel/CMakeFiles/kernel.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/kbpoyo/code/cpp/MyOs/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_24) "Building C object source/kernel/CMakeFiles/kernel.dir/test/test.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/kbpoyo/code/cpp/MyOs/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_25) "Building C object source/kernel/CMakeFiles/kernel.dir/test/test.c.o"
 	cd /home/kbpoyo/code/cpp/MyOs/build/source/kernel && /usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT source/kernel/CMakeFiles/kernel.dir/test/test.c.o -MF CMakeFiles/kernel.dir/test/test.c.o.d -o CMakeFiles/kernel.dir/test/test.c.o -c /home/kbpoyo/code/cpp/MyOs/source/kernel/test/test.c
 
 source/kernel/CMakeFiles/kernel.dir/test/test.c.i: cmake_force
@@ -409,7 +420,7 @@ source/kernel/CMakeFiles/kernel.dir/test/test.c.s: cmake_force
 source/kernel/CMakeFiles/kernel.dir/tools/assert.c.o: source/kernel/CMakeFiles/kernel.dir/flags.make
 source/kernel/CMakeFiles/kernel.dir/tools/assert.c.o: ../source/kernel/tools/assert.c
 source/kernel/CMakeFiles/kernel.dir/tools/assert.c.o: source/kernel/CMakeFiles/kernel.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/kbpoyo/code/cpp/MyOs/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_25) "Building C object source/kernel/CMakeFiles/kernel.dir/tools/assert.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/kbpoyo/code/cpp/MyOs/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_26) "Building C object source/kernel/CMakeFiles/kernel.dir/tools/assert.c.o"
 	cd /home/kbpoyo/code/cpp/MyOs/build/source/kernel && /usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT source/kernel/CMakeFiles/kernel.dir/tools/assert.c.o -MF CMakeFiles/kernel.dir/tools/assert.c.o.d -o CMakeFiles/kernel.dir/tools/assert.c.o -c /home/kbpoyo/code/cpp/MyOs/source/kernel/tools/assert.c
 
 source/kernel/CMakeFiles/kernel.dir/tools/assert.c.i: cmake_force
@@ -423,7 +434,7 @@ source/kernel/CMakeFiles/kernel.dir/tools/assert.c.s: cmake_force
 source/kernel/CMakeFiles/kernel.dir/tools/bitmap.c.o: source/kernel/CMakeFiles/kernel.dir/flags.make
 source/kernel/CMakeFiles/kernel.dir/tools/bitmap.c.o: ../source/kernel/tools/bitmap.c
 source/kernel/CMakeFiles/kernel.dir/tools/bitmap.c.o: source/kernel/CMakeFiles/kernel.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/kbpoyo/code/cpp/MyOs/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_26) "Building C object source/kernel/CMakeFiles/kernel.dir/tools/bitmap.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/kbpoyo/code/cpp/MyOs/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_27) "Building C object source/kernel/CMakeFiles/kernel.dir/tools/bitmap.c.o"
 	cd /home/kbpoyo/code/cpp/MyOs/build/source/kernel && /usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT source/kernel/CMakeFiles/kernel.dir/tools/bitmap.c.o -MF CMakeFiles/kernel.dir/tools/bitmap.c.o.d -o CMakeFiles/kernel.dir/tools/bitmap.c.o -c /home/kbpoyo/code/cpp/MyOs/source/kernel/tools/bitmap.c
 
 source/kernel/CMakeFiles/kernel.dir/tools/bitmap.c.i: cmake_force
@@ -437,7 +448,7 @@ source/kernel/CMakeFiles/kernel.dir/tools/bitmap.c.s: cmake_force
 source/kernel/CMakeFiles/kernel.dir/tools/klib.c.o: source/kernel/CMakeFiles/kernel.dir/flags.make
 source/kernel/CMakeFiles/kernel.dir/tools/klib.c.o: ../source/kernel/tools/klib.c
 source/kernel/CMakeFiles/kernel.dir/tools/klib.c.o: source/kernel/CMakeFiles/kernel.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/kbpoyo/code/cpp/MyOs/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_27) "Building C object source/kernel/CMakeFiles/kernel.dir/tools/klib.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/kbpoyo/code/cpp/MyOs/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_28) "Building C object source/kernel/CMakeFiles/kernel.dir/tools/klib.c.o"
 	cd /home/kbpoyo/code/cpp/MyOs/build/source/kernel && /usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT source/kernel/CMakeFiles/kernel.dir/tools/klib.c.o -MF CMakeFiles/kernel.dir/tools/klib.c.o.d -o CMakeFiles/kernel.dir/tools/klib.c.o -c /home/kbpoyo/code/cpp/MyOs/source/kernel/tools/klib.c
 
 source/kernel/CMakeFiles/kernel.dir/tools/klib.c.i: cmake_force
@@ -451,7 +462,7 @@ source/kernel/CMakeFiles/kernel.dir/tools/klib.c.s: cmake_force
 source/kernel/CMakeFiles/kernel.dir/tools/list.c.o: source/kernel/CMakeFiles/kernel.dir/flags.make
 source/kernel/CMakeFiles/kernel.dir/tools/list.c.o: ../source/kernel/tools/list.c
 source/kernel/CMakeFiles/kernel.dir/tools/list.c.o: source/kernel/CMakeFiles/kernel.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/kbpoyo/code/cpp/MyOs/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_28) "Building C object source/kernel/CMakeFiles/kernel.dir/tools/list.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/kbpoyo/code/cpp/MyOs/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_29) "Building C object source/kernel/CMakeFiles/kernel.dir/tools/list.c.o"
 	cd /home/kbpoyo/code/cpp/MyOs/build/source/kernel && /usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT source/kernel/CMakeFiles/kernel.dir/tools/list.c.o -MF CMakeFiles/kernel.dir/tools/list.c.o.d -o CMakeFiles/kernel.dir/tools/list.c.o -c /home/kbpoyo/code/cpp/MyOs/source/kernel/tools/list.c
 
 source/kernel/CMakeFiles/kernel.dir/tools/list.c.i: cmake_force
@@ -465,7 +476,7 @@ source/kernel/CMakeFiles/kernel.dir/tools/list.c.s: cmake_force
 source/kernel/CMakeFiles/kernel.dir/tools/log.c.o: source/kernel/CMakeFiles/kernel.dir/flags.make
 source/kernel/CMakeFiles/kernel.dir/tools/log.c.o: ../source/kernel/tools/log.c
 source/kernel/CMakeFiles/kernel.dir/tools/log.c.o: source/kernel/CMakeFiles/kernel.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/kbpoyo/code/cpp/MyOs/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_29) "Building C object source/kernel/CMakeFiles/kernel.dir/tools/log.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/kbpoyo/code/cpp/MyOs/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_30) "Building C object source/kernel/CMakeFiles/kernel.dir/tools/log.c.o"
 	cd /home/kbpoyo/code/cpp/MyOs/build/source/kernel && /usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT source/kernel/CMakeFiles/kernel.dir/tools/log.c.o -MF CMakeFiles/kernel.dir/tools/log.c.o.d -o CMakeFiles/kernel.dir/tools/log.c.o -c /home/kbpoyo/code/cpp/MyOs/source/kernel/tools/log.c
 
 source/kernel/CMakeFiles/kernel.dir/tools/log.c.i: cmake_force
@@ -499,6 +510,7 @@ kernel_OBJECTS = \
 "CMakeFiles/kernel.dir/init/first_task.c.o" \
 "CMakeFiles/kernel.dir/init/first_task_entry.S.o" \
 "CMakeFiles/kernel.dir/init/init.c.o" \
+"CMakeFiles/kernel.dir/init/lib_syscall.c.o" \
 "CMakeFiles/kernel.dir/ipc/mutex.c.o" \
 "CMakeFiles/kernel.dir/ipc/sem.c.o" \
 "CMakeFiles/kernel.dir/test/test.c.o" \
@@ -532,6 +544,7 @@ source/kernel/kernel: source/kernel/CMakeFiles/kernel.dir/fs/fs.c.o
 source/kernel/kernel: source/kernel/CMakeFiles/kernel.dir/init/first_task.c.o
 source/kernel/kernel: source/kernel/CMakeFiles/kernel.dir/init/first_task_entry.S.o
 source/kernel/kernel: source/kernel/CMakeFiles/kernel.dir/init/init.c.o
+source/kernel/kernel: source/kernel/CMakeFiles/kernel.dir/init/lib_syscall.c.o
 source/kernel/kernel: source/kernel/CMakeFiles/kernel.dir/ipc/mutex.c.o
 source/kernel/kernel: source/kernel/CMakeFiles/kernel.dir/ipc/sem.c.o
 source/kernel/kernel: source/kernel/CMakeFiles/kernel.dir/test/test.c.o
@@ -542,7 +555,7 @@ source/kernel/kernel: source/kernel/CMakeFiles/kernel.dir/tools/list.c.o
 source/kernel/kernel: source/kernel/CMakeFiles/kernel.dir/tools/log.c.o
 source/kernel/kernel: source/kernel/CMakeFiles/kernel.dir/build.make
 source/kernel/kernel: source/kernel/CMakeFiles/kernel.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/kbpoyo/code/cpp/MyOs/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_30) "Linking C executable kernel"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/kbpoyo/code/cpp/MyOs/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_31) "Linking C executable kernel"
 	cd /home/kbpoyo/code/cpp/MyOs/build/source/kernel && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/kernel.dir/link.txt --verbose=$(VERBOSE)
 	cd /home/kbpoyo/code/cpp/MyOs/build/source/kernel && objcopy -S kernel.elf /home/kbpoyo/code/cpp/MyOs/image/kernel.elf
 	cd /home/kbpoyo/code/cpp/MyOs/build/source/kernel && objdump -x -d -S -m i386 /home/kbpoyo/code/cpp/MyOs/build/source/kernel/kernel.elf > kernel_dis.txt

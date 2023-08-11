@@ -589,3 +589,38 @@ void fs_init(void) {
   root_fs = mount(FS_FAT16, "/home", ROOT_DEV);
   ASSERT(root_fs != (fs_t *)0);
 }
+
+
+/**
+ * @brief 根据path打开目录
+ * 
+ * @param path 
+ * @param dir 
+ * @return int 
+ */
+int sys_opendir(const char *path, DIR *dir) {
+
+  return -1;
+}
+
+/**
+ * @brief 从目录dir中扫描读取目录项到dirent中
+ * 
+ * @param dir 
+ * @param dirent 
+ * @return int 
+ */
+int sys_readdir(DIR *dir, struct dirent *dirent) {
+
+  return -1;
+}
+
+/**
+ * @brief 关闭目录
+ * 
+ * @param dir 
+ * @return int 
+ */
+int sys_closedir(DIR *dir) {
+  return -1;
+}

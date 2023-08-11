@@ -16,6 +16,7 @@
 #include "tools/list.h"
 #include "ipc/mutex.h"
 #include "fatfs/fatfs.h"
+#include "applib/lib_syscall.h"
 
 //类型声明，用以链接newlib库
 struct stat;
@@ -27,8 +28,8 @@ typedef struct _fs_op_t {
     int (*mount)(struct _fs_t *fs, int major, int minor);   //挂载文件
     void (*unmount)(struct _fs_t *fs); //卸载文件
     int (*open)(struct _fs_t *fs, const char *path, file_t *file);
-    int (*read)(const char *buf, int size, file_t *file);
-    int (*write)(const char *buf, int size, file_t *file);
+    int (*read)(char *buf, int size, file_t *file);
+    int (*write)(char *buf, int size, file_t *file);
     void (*close)(file_t *file);
     int (*seek)(file_t *file, uint32_t offset, int dir);
     int (*stat)(file_t *file, struct stat *st);
@@ -77,4 +78,9 @@ int sys_close(int file);
 int sys_isatty(int file);
 int sys_fstat(int file, struct stat *st);
 int sys_dup(int file);
+
+int sys_opendir(const char *path, DIR *dir);
+int sys_readdir(DIR *dir, struct dirent *dirent);
+int sys_closedir(DIR *dir);
+
 #endif

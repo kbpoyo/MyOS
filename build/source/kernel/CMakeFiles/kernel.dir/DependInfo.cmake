@@ -41,6 +41,7 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/home/kbpoyo/code/cpp/MyOs/source/kernel/fs/fs.c" "source/kernel/CMakeFiles/kernel.dir/fs/fs.c.o" "gcc" "source/kernel/CMakeFiles/kernel.dir/fs/fs.c.o.d"
   "/home/kbpoyo/code/cpp/MyOs/source/kernel/init/first_task.c" "source/kernel/CMakeFiles/kernel.dir/init/first_task.c.o" "gcc" "source/kernel/CMakeFiles/kernel.dir/init/first_task.c.o.d"
   "/home/kbpoyo/code/cpp/MyOs/source/kernel/init/init.c" "source/kernel/CMakeFiles/kernel.dir/init/init.c.o" "gcc" "source/kernel/CMakeFiles/kernel.dir/init/init.c.o.d"
+  "/home/kbpoyo/code/cpp/MyOs/source/kernel/init/lib_syscall.c" "source/kernel/CMakeFiles/kernel.dir/init/lib_syscall.c.o" "gcc" "source/kernel/CMakeFiles/kernel.dir/init/lib_syscall.c.o.d"
   "/home/kbpoyo/code/cpp/MyOs/source/kernel/ipc/mutex.c" "source/kernel/CMakeFiles/kernel.dir/ipc/mutex.c.o" "gcc" "source/kernel/CMakeFiles/kernel.dir/ipc/mutex.c.o.d"
   "/home/kbpoyo/code/cpp/MyOs/source/kernel/ipc/sem.c" "source/kernel/CMakeFiles/kernel.dir/ipc/sem.c.o" "gcc" "source/kernel/CMakeFiles/kernel.dir/ipc/sem.c.o.d"
   "/home/kbpoyo/code/cpp/MyOs/source/kernel/test/test.c" "source/kernel/CMakeFiles/kernel.dir/test/test.c.o" "gcc" "source/kernel/CMakeFiles/kernel.dir/test/test.c.o.d"

@@ -31,9 +31,6 @@ default_target: all
 
 .SUFFIXES: .hpux_make_needs_suffix_list
 
-# Produce verbose output by default.
-VERBOSE = 1
-
 # Command-line flag to silence nested $(MAKE).
 $(VERBOSE)MAKESILENT = -s
 
@@ -597,6 +594,30 @@ init/init.c.s:
 	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/init/init.c.s
 .PHONY : init/init.c.s
 
+init/lib_syscall.o: init/lib_syscall.c.o
+.PHONY : init/lib_syscall.o
+
+# target to build an object file
+init/lib_syscall.c.o:
+	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/init/lib_syscall.c.o
+.PHONY : init/lib_syscall.c.o
+
+init/lib_syscall.i: init/lib_syscall.c.i
+.PHONY : init/lib_syscall.i
+
+# target to preprocess a source file
+init/lib_syscall.c.i:
+	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/init/lib_syscall.c.i
+.PHONY : init/lib_syscall.c.i
+
+init/lib_syscall.s: init/lib_syscall.c.s
+.PHONY : init/lib_syscall.s
+
+# target to generate assembly for a file
+init/lib_syscall.c.s:
+	cd /home/kbpoyo/code/cpp/MyOs/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/init/lib_syscall.c.s
+.PHONY : init/lib_syscall.c.s
+
 init/start.o: init/start.S.o
 .PHONY : init/start.o
 
@@ -864,6 +885,9 @@ help:
 	@echo "... init/init.o"
 	@echo "... init/init.i"
 	@echo "... init/init.s"
+	@echo "... init/lib_syscall.o"
+	@echo "... init/lib_syscall.i"
+	@echo "... init/lib_syscall.s"
 	@echo "... init/start.o"
 	@echo "... ipc/mutex.o"
 	@echo "... ipc/mutex.i"

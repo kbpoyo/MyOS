@@ -33,9 +33,14 @@
 #define SYS_lseek       54
 #define SYS_isatty      55
 #define SYS_fstat       56
+#define SYS_dup         57
 //内存分配系统调用
-#define SYS_sbrk        57
-#define SYS_dup         58
+#define SYS_sbrk        58
+
+//目录分配系统调用
+#define SYS_opendir     60
+#define SYS_readdir     61
+#define SYS_closedir    62
 
 #define SYS_printmsg    10   //临时使用的打印函数
 

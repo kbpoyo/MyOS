@@ -44,6 +44,10 @@ static const sys_handler_t sys_table[] = {
     [SYS_dup] = (sys_handler_t)sys_dup,
     [SYS_exit] = (sys_handler_t)sys_exit,
     [SYS_wait] = (sys_handler_t)sys_wait,
+    [SYS_opendir] = (sys_handler_t)sys_opendir,
+    [SYS_readdir] = (sys_handler_t)sys_readdir,
+    [SYS_closedir] = (sys_handler_t)sys_closedir,
+
 };
 
 /**

@@ -58,4 +58,25 @@ char *sbrk(ptrdiff_t incr);
 
 int dup(int file);
 
+
+//文件目录项结构
+typedef struct dirent {
+    int index;
+    int type;
+    char name[255];
+    int size;
+}dirent;
+
+//文件目录对象结构
+typedef struct _DIR {
+    int index;
+    struct dirent dirent;
+}DIR;
+
+//目录操作的系统调用
+DIR *opendir(const char *path);
+struct dirent *readdir(DIR *dir);
+int closedir(DIR *dir);
+
+
 #endif

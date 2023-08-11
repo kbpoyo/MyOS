@@ -38,6 +38,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/kernel.dir/init/first_task_entry.S.o"
   "CMakeFiles/kernel.dir/init/init.c.o"
   "CMakeFiles/kernel.dir/init/init.c.o.d"
+  "CMakeFiles/kernel.dir/init/lib_syscall.c.o"
+  "CMakeFiles/kernel.dir/init/lib_syscall.c.o.d"
   "CMakeFiles/kernel.dir/init/start.S.o"
   "CMakeFiles/kernel.dir/ipc/mutex.c.o"
   "CMakeFiles/kernel.dir/ipc/mutex.c.o.d"

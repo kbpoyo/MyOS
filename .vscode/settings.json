@@ -27,7 +27,8 @@
         "tty.h": "c",
         "file.h": "c",
         "list.h": "c",
-        "disk.h": "c"
+        "disk.h": "c",
+        "stdlib.h": "c"
     },
     "todo-tree.tree.scanMode": "workspace only",
     "editor.fontSize": 16,

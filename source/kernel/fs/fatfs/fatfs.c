@@ -111,11 +111,11 @@ int fatfs_open(struct _fs_t *fs, const char *path, file_t *file) {
 
     return 0;
 }
-int fatfs_read(const char *buf, int size, file_t *file) {
+int fatfs_read(char *buf, int size, file_t *file) {
     return 0;
 
 }
-int fatfs_write(const char *buf, int size, file_t *file) {
+int fatfs_write(char *buf, int size, file_t *file) {
     return 0;
 
 }

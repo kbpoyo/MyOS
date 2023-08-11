@@ -79,4 +79,7 @@ source/applib/CMakeFiles/app.dir/lib_syscall.c.o
  /home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/include/sys/sched.h
  /home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/include/machine/types.h
  /home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/include/sys/_locale.h
+ /home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/include/stdlib.h
+ /home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/include/machine/stdlib.h
+ /home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/include/alloca.h
 
