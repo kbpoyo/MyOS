@@ -19,6 +19,29 @@
 #include <sys/fcntl.h>
 
 /**
+ * @brief 将文件的读取位置pos移动move_bytes个字节
+ * 
+ * @param file 
+ * @param fat 
+ * @param move_bytes 
+ * @param expand 
+ * @return int 
+ */
+static int move_file_pos(file_t *file, 
+    fat_t *fat, uint32_t move_bytes, int expand) {
+        //判断移动pos后是否当前读取簇号是否需要更改
+        uint32_t c_offset = file->pos % fat->cluster_bytes_size;
+        if (c_offset + move_bytes >= fat->cluster_bytes_size) {
+            //当前簇已读取完毕需更改当前簇号
+            //file->cblk = ?
+            return -1;
+        }
+
+        file->pos += move_bytes;
+        return 0;
+}
+
+/**
  * @brief 从根目录项中获取该项的文件类型
  * 
  * @param diritem 
@@ -54,11 +77,11 @@ file_type_t diritem_get_type(diritem_t *diritem) {
  * @param p_index 
  */
 static void read_from_diritem(fat_t *fat, 
-    file_t *file, diritem_t *item, int p_index) {
+    file_t *file, diritem_t *item, int index) {
         file->type = diritem_get_type(item);
         file->size = item->DIR_FileSize;
         file->pos = 0;
-        file->p_index = 0;
+        file->p_index = index;
         file->sblk = (item->DIR_FstClusHI << 16) | item->DIR_FstClusLo;
         file->cblk = file->sblk;
 }
@@ -292,17 +315,85 @@ int fatfs_open(struct _fs_t *fs, const char *path, file_t *file) {
         }
     }
 
+    //从目录项中读取文件信息到file结构中
     if (file_item) {
         read_from_diritem(fat, file, file_item, p_index);
         return 0;
     }
 
-    return 0;
+    return -1;
 }
-int fatfs_read(char *buf, int size, file_t *file) {
-    return 0;
 
+
+/**
+ * @brief fat文件系统读取文件
+ * 
+ * @param buf 
+ * @param size 
+ * @param file 
+ * @return int 
+ */
+int fatfs_read(char *buf, int size, file_t *file) {
+    fat_t *fat = (fat_t*)file->fs->data;
+
+    //修正读取字节数
+    uint32_t nbytes = size;
+    if (file->pos + nbytes > file->size) {
+        nbytes = file->size - file->pos;
+    }
+
+    uint32_t total_read = 0;
+  
+    //读取nbytes个字节到buf中
+    while (nbytes > 0) {
+        //记录每次循环读取的字节数
+        uint32_t curr_read = nbytes;
+        //计算当前读取位置pos在当前读取的簇中的偏移量
+        uint32_t cluster_offset = file->pos % fat->cluster_bytes_size;
+        //计算文件在该分区中的起始扇区号
+        //fat文件系统中，在分区的文件数据区中，簇号从2开始编号
+        //[2],[3],[4]
+        uint32_t start_sector = fat->data_start_sector + (file->cblk - 2) * fat->sec_per_cluster;
+
+        //当前读取位置刚好在簇的开头，且读取大小为一个簇，直接进行整簇读取即可
+        if (cluster_offset == 0 && nbytes == fat->cluster_bytes_size) {
+            int err = dev_read(fat->fs->dev_id, start_sector, buf, fat->sec_per_cluster);
+            if (err < 0) {
+                return total_read;
+            }
+
+            curr_read = fat->cluster_bytes_size;
+        } else {//当前读取内容需要进行跨簇读取
+            if (cluster_offset + curr_read > fat->cluster_bytes_size) {
+                curr_read = fat->cluster_bytes_size - cluster_offset;
+            }
+
+            //先将当前簇中的内容读取到fat_buffer中
+            fat->curr_sector = start_sector;
+            int err = dev_read(fat->fs->dev_id, start_sector, fat->fat_buffer, fat->sec_per_cluster);
+            if (err < 0) {
+                return total_read;
+            }
+            //再从fat_buffer中读取文件相关部分到buf中
+            kernel_memcpy(buf, fat->fat_buffer + cluster_offset, curr_read);
+        }
+        buf += curr_read;
+        nbytes -= curr_read;
+        total_read += curr_read;
+
+        //移动文件的读取位置file->pos
+        int err = move_file_pos(file, fat, curr_read, 0);
+        if (err < 0) {
+            return total_read;
+        }
+    
+    }
+    
+
+    return total_read;
 }
+
+
 int fatfs_write(char *buf, int size, file_t *file) {
     return 0;
 

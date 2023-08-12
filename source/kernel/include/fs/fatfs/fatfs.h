@@ -16,8 +16,10 @@
 
 #pragma pack(1)
 
-#define DIRITEM_NAEM_FREE       0xE5    //标志该root_entry是空闲的
-#define DIRITEM_NAME_END        0x00    //标志该root_entry末尾项
+//标志该root_entry是空闲的
+#define DIRITEM_NAEM_FREE       0xE5
+//标志该root_entry末尾项
+#define DIRITEM_NAME_END        0x00
 
 #define DIRITEM_ATTR_READ_ONLY  0x1
 #define DIRITEM_ATTR_HIDDEN     0x2
@@ -28,6 +30,7 @@
 #define DIRITEM_ATTR_LONG_NAME  0xF //长文件名类型的文件会用两个目录项来记录
                                     //我直接忽略这种文件
 
+//根目录区的目录项结构
 typedef struct _diritem_t {
         uint8_t DIR_Name[11];
         uint8_t DIR_Attr;   //文件属性
@@ -40,7 +43,7 @@ typedef struct _diritem_t {
         uint16_t DIR_WrtTime;   //文件最后写的时间
         uint16_t DIR_WrtDate;   //文件最后写的日期
         uint16_t DIR_FstClusLo; //文件起始簇号的低16位
-        uint32_t DIR_FileSize;  //文件大小
+        uint32_t DIR_FileSize;//文件大小
         
 }diritem_t;
 
