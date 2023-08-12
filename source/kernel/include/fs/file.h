@@ -29,15 +29,23 @@ typedef enum _file_type_t {
 struct _fs_t;
 
 typedef struct  _file_t {
+    //通用
     char file_name[FILE_NAME_SIZE]; //文件名
     file_type_t type;   //文件类型
-    uint32_t size;  //文件大小
-    int ref;    //文件打开次数
-    int dev_id; //文件对应的设备id
-    int pos;    //记录当前文件读取的位置
-    int mode;    //文件的读写模式
-    struct _fs_t *fs;    //文件所属文件系统
+    int ref;            //文件打开次数
+    struct _fs_t *fs;   //文件所属文件系统
+   
+    //供设备文件系统使用
+    int dev_id;     //文件对应的设备id
 
+    //供fat文件系统使用
+    int pos;        //记录当前文件读取的位置
+    int mode;       //文件的读写模式
+    uint32_t size;  //文件大小
+    int sblk;       //文件起始簇号或块号
+    int cblk;       //文件当前读取的簇号或块号
+    int p_index;    //文件所属目录项在根目录区的索引
+   
 }file_t;
 
 

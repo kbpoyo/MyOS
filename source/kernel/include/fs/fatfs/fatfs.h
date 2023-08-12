@@ -36,10 +36,10 @@ typedef struct _diritem_t {
         uint16_t DIR_CrtTime;   //文件创建时间
         uint16_t DIR_CrtDate;   //文件创建日期
         uint16_t DIR_LastAccDate;   //文件最后访问日期
-        uint16_t DIR_FstClusHI; //目录项簇号的高位字，FAT12/16此位为0
+        uint16_t DIR_FstClusHI; //文件起始簇号的高16位，FAT12/16此位为0
         uint16_t DIR_WrtTime;   //文件最后写的时间
         uint16_t DIR_WrtDate;   //文件最后写的日期
-        uint16_t DIR_FstClusLo; //目录项簇号的低位字
+        uint16_t DIR_FstClusLo; //文件起始簇号的低16位
         uint32_t DIR_FileSize;  //文件大小
         
 }diritem_t;

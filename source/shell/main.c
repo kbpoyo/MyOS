@@ -16,8 +16,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/file.h>
-#include "fs/file.h"
 
+#include "fs/file.h"
 #include "lib_syscall.h"
 
 static char cmd_buf[512];
@@ -98,18 +98,17 @@ static int do_echo(int argc, const char **argv) {
     }
   }
 
-    if (count == 0) {
+  if (count == 0) {
     fprintf(stderr, ESC_COLOR_ERROR
             "echo: argument required for option '-n'\n" ESC_COLOR_DEFAULT);
     return -1;
-    }
+  }
   if (optind >
       argc - 1) {  // argc - 1
                    // 为message的索引，optind>argc-1表示此次调用未携带message
     fprintf(stderr, ESC_COLOR_ERROR "message is empty\n" ESC_COLOR_DEFAULT);
     return -1;
   }
-  
 
   const char *msg = argv[optind];
   for (int i = 0; i < count; ++i) {
@@ -120,22 +119,22 @@ static int do_echo(int argc, const char **argv) {
 
 /**
  * @brief 退出shell程序
- * 
- * @param argc 
- * @param argv 
- * @return int 
+ *
+ * @param argc
+ * @param argv
+ * @return int
  */
-static int do_exit(int argc, const char ** argv) {
+static int do_exit(int argc, const char **argv) {
   exit(0);
   return 0;
 }
 
 /**
  * @brief 列出当前目录下的文件和目录
- * 
- * @param argc 
- * @param argv 
- * @return int 
+ *
+ * @param argc
+ * @param argv
+ * @return int
  */
 static int do_ls(int argc, const char **argv) {
   DIR *p_dir = opendir("temp");
@@ -146,16 +145,75 @@ static int do_ls(int argc, const char **argv) {
 
   struct dirent *entry;
   while ((entry = readdir(p_dir)) != NULL) {
-    printf("%c %s %d\n", 
-            entry->type == FILE_DIR ? 'd' : 'f',
-            entry->name,
-            entry->size
-          );
+    printf("%c %s %d\n", entry->type == FILE_DIR ? 'd' : 'f', entry->name,
+           entry->size);
   }
   closedir(p_dir);
   return 0;
 }
 
+/**
+ * @brief 展示文件内容
+ *
+ * @param argc
+ * @param argv
+ * @return int
+ */
+static int do_less(int argc, const char **argv) {
+  int ch;
+  // getopt函数解析参数列表，l:表示查找-l选项，且必须紧跟着参数，
+  // h表示查找-h选项，且不需要跟参数
+  while ((ch = getopt(argc, (char *const *)argv, "l:h")) != -1) {
+    switch (ch) {
+      case 'h':
+        puts("help:");
+        puts("\tshow file content");
+        puts("\tUsage: less [-l] file");
+        optind = 1;  // getopt每次查找都从optind处开始
+        return 0;
+      case 'l':
+        break;
+      case '?':  // 找到未指定选项
+        if (optarg) {
+          fprintf(stderr,
+                  ESC_COLOR_ERROR "unknown option: -%s\n" ESC_COLOR_DEFAULT,
+                  optarg);
+        }
+        optind = 1;  // getopt每次查找都从optind处开始
+        return -1;
+      default:
+        break;
+    }
+  }
+
+  if (optind >
+      argc - 1) {  // argc - 1
+                   // 为message的索引，optind>argc-1表示此次调用未携带message
+    fprintf(stderr, ESC_COLOR_ERROR "no file input\n"ESC_COLOR_DEFAULT);
+    return -1;
+  }
+
+  //打开文件
+  FILE *file = fopen(argv[optind], "r");
+  if (file == NULL) {
+    fprintf(stderr, ESC_COLOR_ERROR"open file failed. %s"ESC_COLOR_DEFAULT, argv[optind]);
+    optind = 1;
+    return -1;
+  }
+  
+
+  //读取文件
+  int buf_len = 255;
+  char *buf = (char *)malloc(buf_len);
+  while (fgets(buf, buf_len, file) != NULL) {
+    fputs(buf, stdout);
+  }
+
+  free(buf);
+  fclose(file);
+  optind = 1;
+  return 0;
+}
 
 // 终端命令表
 static const cli_cmd_t cmd_list[] = {
@@ -175,16 +233,20 @@ static const cli_cmd_t cmd_list[] = {
         .do_func = do_echo,
     },
     {
-      .name = "ls",
-      .usage = "ls\t--lsit director",
-      .do_func = do_ls,
+        .name = "ls",
+        .usage = "ls\t--lsit director",
+        .do_func = do_ls,
     },
     {
-      .name = "quit",
-      .usage = "quit\t--quit from shell",
-      .do_func = do_exit,
-    }
-};
+        .name = "less",
+        .usage = "quit from shell",
+        .do_func = do_less,
+    },
+    {
+        .name = "quit",
+        .usage = "quit\t--quit from shell",
+        .do_func = do_exit,
+    }};
 
 /**
  * @brief 初始化终端结构
@@ -233,33 +295,35 @@ static const cli_cmd_t *find_builtin(const char *name) {
 static void run_builtin(const cli_cmd_t *cmd, int argc, const char **argv) {
   int ret = cmd->do_func(argc, argv);
   if (ret < 0) {
-    fprintf(stderr, ESC_COLOR_ERROR"%s error: %d\n"ESC_COLOR_DEFAULT, cmd->name, ret);
+    fprintf(stderr, ESC_COLOR_ERROR "%s error: %d\n" ESC_COLOR_DEFAULT,
+            cmd->name, ret);
   }
 }
 
 /**
  * @brief 加载外部磁盘上的可执行程序运行
- * 
+ *
  * @param path 程序路径
  * @param argc 参数个数
  * @param argv 参数列表
  */
 static void run_exec_file(const char *path, int argc, const char **argv) {
-  //1.创建子进程
+  // 1.创建子进程
   int pid = fork();
   if (pid < 0) {
-    fprintf(stderr, ESC_COLOR_ERROR"fork failed: %s"ESC_COLOR_DEFAULT, path);
+    fprintf(stderr, ESC_COLOR_ERROR "fork failed: %s" ESC_COLOR_DEFAULT, path);
   } else if (pid == 0) {
-    //2.子进程加载外部程序
+    // 2.子进程加载外部程序
     for (int i = 0; i < argc; ++i) {
       printf("arg %d = %s\n", i, argv[i]);
     }
     exit(-1);
   } else {
     int status;
-    //3.父进程等待任意子进程结束，并回收其资源
+    // 3.父进程等待任意子进程结束，并回收其资源
     int cpid = wait(&status);
-    fprintf(stderr, "cmd %s result: %d, pid=%d, cpid=%d\n", path, status, pid, cpid);
+    fprintf(stderr, "cmd %s result: %d, pid=%d, cpid=%d\n", path, status, pid,
+            cpid);
   }
 }
 
@@ -314,7 +378,7 @@ int main(int argc, char **argv) {
       continue;
     }
 
-    //5.获取到的为磁盘上的可执行程序，需要进行加载运行
+    // 5.获取到的为磁盘上的可执行程序，需要进行加载运行
     run_exec_file("", argc, argv);
 
     fprintf(stderr, ESC_COLOR_ERROR "Unknown command: %s\n" ESC_COLOR_DEFAULT,

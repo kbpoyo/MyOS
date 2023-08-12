@@ -19,12 +19,57 @@
 #include <sys/fcntl.h>
 
 /**
+ * @brief 从根目录项中获取该项的文件类型
+ * 
+ * @param diritem 
+ * @return file_type_t 
+ */
+file_type_t diritem_get_type(diritem_t *diritem) {
+    file_type_t type = FILE_UNKNOWN;
+
+    if (diritem->DIR_Attr & 
+    (DIRITEM_ATTR_VOLUME_ID 
+    | DIRITEM_ATTR_SYSTEM 
+    | DIRITEM_ATTR_HIDDEN)) {   //该项是卷标，隐藏或系统文件时直接跳过
+        return FILE_UNKNOWN;
+    }
+
+    //该项为LONG_NAME项时也跳过
+    if ((diritem->DIR_Attr & DIRITEM_ATTR_LONG_NAME) == DIRITEM_ATTR_LONG_NAME) {
+        return FILE_UNKNOWN;
+
+    }
+
+
+    return diritem->DIR_Attr & DIRITEM_ATTR_DIRECTORY ? FILE_DIR : FILE_NORMAL;
+}
+
+
+/**
+ * @brief 从fat和file_item中读取文件信息到file当中
+ * 
+ * @param fat 
+ * @param file
+ * @param file_item 
+ * @param p_index 
+ */
+static void read_from_diritem(fat_t *fat, 
+    file_t *file, diritem_t *item, int p_index) {
+        file->type = diritem_get_type(item);
+        file->size = item->DIR_FileSize;
+        file->pos = 0;
+        file->p_index = 0;
+        file->sblk = (item->DIR_FstClusHI << 16) | item->DIR_FstClusLo;
+        file->cblk = file->sblk;
+}
+
+/**
  * @brief 从当前目录项中获取文件名到dest中
  * 
  * @param diritem 
  * @param dest
  */
-void diritem_get_name(diritem_t *diritem, char *dest) {
+static void diritem_get_name(diritem_t *diritem, char *dest) {
     //file.c 存储在目录项中的形式为 "FILE    C  "
     //8字节的文件名，三字节的拓展名
     char *c = dest;
@@ -34,7 +79,11 @@ void diritem_get_name(diritem_t *diritem, char *dest) {
     kernel_memset(dest, 0, 12);
     for (int i = 0; i < 11; ++i) {
         if (diritem->DIR_Name[i] != ' ') {
-            *(c++) = diritem->DIR_Name[i];
+            *c = diritem->DIR_Name[i];
+            if (*c >= 'A' && *c <= 'Z') {
+                *c -= ('A' - 'a');
+            }
+            c++;
         }
 
         //读完8字节的文件名，用ext记录".拓展名""
@@ -50,6 +99,21 @@ void diritem_get_name(diritem_t *diritem, char *dest) {
     }
 
 }
+
+/**
+ * @brief 根据根文件区的目录项匹配文件名
+ * 
+ * @param item 
+ * @param dest 
+ * @return int 
+ */
+static int diritem_name_match(diritem_t *item, const char *dest) {
+    char buf[12];
+    diritem_get_name(item, buf);
+    return kernel_strncmp(buf, dest, 11) == 0;
+}
+
+
 
 /**
  * @brief 以缓存的方式读取扇区
@@ -98,31 +162,6 @@ static diritem_t * read_dir_entry(fat_t *fat, int dir_index) {
     return (diritem_t*)(fat->fat_buffer + offset % fat->bytes_per_sector);
 }
 
-/**
- * @brief 从根目录项中获取该项的文件类型
- * 
- * @param diritem 
- * @return file_type_t 
- */
-file_type_t diritem_get_type(diritem_t *diritem) {
-    file_type_t type = FILE_UNKNOWN;
-
-    if (diritem->DIR_Attr & 
-    (DIRITEM_ATTR_VOLUME_ID 
-    | DIRITEM_ATTR_SYSTEM 
-    | DIRITEM_ATTR_HIDDEN)) {   //该项是卷标，隐藏或系统文件时直接跳过
-        return FILE_UNKNOWN;
-    }
-
-    //该项为LONG_NAME项时也跳过
-    if ((diritem->DIR_Attr & DIRITEM_ATTR_LONG_NAME) == DIRITEM_ATTR_LONG_NAME) {
-        return FILE_UNKNOWN;
-
-    }
-
-
-    return diritem->DIR_Attr & DIRITEM_ATTR_DIRECTORY ? FILE_DIR : FILE_NORMAL;
-}
 
 
 
@@ -215,8 +254,48 @@ void fatfs_unmount(struct _fs_t *fs) {
 
     memory_free_page((uint32_t)fat->fat_buffer);
 }
-int fatfs_open(struct _fs_t *fs, const char *path, file_t *file) {
 
+/**
+ * @brief fat文件系统打开对应文件
+ * 
+ * @param fs 
+ * @param path 
+ * @param file 
+ * @return int 
+ */
+int fatfs_open(struct _fs_t *fs, const char *path, file_t *file) {
+    //获取fat表信息
+    fat_t *fat = (fat_t*)fs->data;
+
+    //遍历读取根目录区的目录项,按路径path匹配对应目录项
+    diritem_t *file_item = (diritem_t*)0;
+    int p_index = -1;   //记录匹配到的目录项的索引
+    for (int i = 0; i < fat->root_ent_cnt; ++i) {
+        diritem_t * item = read_dir_entry(fat, i);
+        if (item == (diritem_t *)0) {
+            return -1;
+        }
+
+        if (item->DIR_Name[0] == DIRITEM_NAME_END) {
+            break;
+        }
+
+        if (item->DIR_Name[0] == DIRITEM_NAEM_FREE) {
+            continue;
+        }
+
+        //进行路径匹配
+        if (diritem_name_match(item, path)) {
+            file_item = item;
+            p_index = i;
+            break;
+        }
+    }
+
+    if (file_item) {
+        read_from_diritem(fat, file, file_item, p_index);
+        return 0;
+    }
 
     return 0;
 }
