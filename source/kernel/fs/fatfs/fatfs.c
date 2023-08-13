@@ -452,6 +452,7 @@ void fatfs_close(file_t *file) {
 
 }
 int fatfs_seek(file_t *file, uint32_t offset, int dir) {
+    
     return 0;
 
 }

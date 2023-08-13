@@ -150,6 +150,19 @@ int devfs_stat(file_t *file, struct stat *st) {
     return -1;
 }
 
+/**
+ * @brief 对设备文件进行控制
+ * 
+ * @param file 
+ * @param cmd 
+ * @param arg0 
+ * @param arg1 
+ * @return int 
+ */
+int devfs_ioctl(file_t *file, int cmd, int arg0, int arg1) {
+    dev_control(file->dev_id, cmd, arg0, arg1);
+}
+
 //将设备文件系统的操作函数抽象给顶层文件系统使用
 //类似于多态处理
 fs_op_t devfs_op = {
@@ -161,4 +174,5 @@ fs_op_t devfs_op = {
     .close = devfs_close,
     .seek = devfs_seek,
     .stat = devfs_stat,
+    .ioctl = devfs_ioctl,
 };

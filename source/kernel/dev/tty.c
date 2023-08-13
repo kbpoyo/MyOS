@@ -266,7 +266,18 @@ int tty_read(device_t *dev, int addr, char *buf, int size) {
  * 
  */
 int tty_control(device_t *dev, int cmd, int arg0, int arg1) {
-
+    tty_t *tty = get_tty(dev);
+    switch (cmd) {
+        case TTY_CMD_ECHO:  //对tty回显进行设置
+            if (arg0) {
+                tty->iflags |= TTY_IECHO;
+            } else {
+                tty->iflags &= ~TTY_IECHO;
+            }
+            break;
+        default :
+            break;
+    }
     return 0;
 }
 

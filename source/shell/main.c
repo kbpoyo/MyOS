@@ -18,6 +18,7 @@
 #include <sys/file.h>
 
 #include "fs/file.h"
+#include "dev/tty.h"
 #include "lib_syscall.h"
 
 static char cmd_buf[512];
@@ -213,6 +214,8 @@ static int do_less(int argc, const char **argv) {
   } else {
     //取消输入行缓存，使输入及时写入key中
     setvbuf(stdin, NULL, _IONBF, 0);
+    //关闭TTY设备回显
+    ioctl(0, TTY_CMD_ECHO, 0, 0);
     while (1) {
       char *b = fgets(buf, buf_len, file);
       if (b == NULL) {
@@ -222,7 +225,7 @@ static int do_less(int argc, const char **argv) {
       puts(buf);
       //用按键的方式进行下一行的读取
       char key;
-      while ((key = getchar()) != ' ') {
+      while ((key = getchar()) != 'n') {
         if (key == 'q') {
           goto less_quit;
         }
@@ -232,6 +235,8 @@ static int do_less(int argc, const char **argv) {
 less_quit:
     //恢复输入行缓存
     setvbuf(stdin, NULL, _IOLBF, BUFSIZ);
+    //打开TTY设备回显
+    ioctl(0, TTY_CMD_ECHO, 1, 0);
 
   }
 

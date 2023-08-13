@@ -34,8 +34,10 @@
 #define SYS_isatty      55
 #define SYS_fstat       56
 #define SYS_dup         57
+#define SYS_ioctl       58
 //内存分配系统调用
-#define SYS_sbrk        58
+#define SYS_sbrk        59
+
 
 //目录分配系统调用
 #define SYS_opendir     60

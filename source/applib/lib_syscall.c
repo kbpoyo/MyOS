@@ -375,3 +375,25 @@ int closedir(DIR *dir) {
 
     return err;   
 }
+
+/**
+ * @brief 进行io控制
+ * 
+ * @param file 
+ * @param cmd 
+ * @param arg0 
+ * @param arg1 
+ * @return int 
+ */
+int ioctl(int file, int cmd, int arg0, int arg1) {
+    syscall_args_t args;
+    args.id = SYS_ioctl;
+    args.arg0 = file;
+    args.arg1 = cmd;
+    args.arg2 = arg0;
+    args.arg3 = arg1;
+
+    int err = sys_call(&args);
+
+    return err;   
+}

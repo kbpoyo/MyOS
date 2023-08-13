@@ -49,14 +49,22 @@ source/shell/CMakeFiles/shell.dir/main.c.o: ../source/shell/main.c \
   ../source/newlib/i686-elf/include/machine/time.h \
   ../source/kernel/include/fs/file.h \
   ../source/common/types.h \
+  ../source/kernel/include/dev/tty.h \
+  ../source/kernel/include/ipc/sem.h \
+  ../source/kernel/include/tools/list.h \
+  ../source/kernel/include/tools/assert.h \
   ../source/applib/lib_syscall.h \
   ../source/kernel/include/cpu/syscall.h \
   ../source/kernel/include/os_cfg.h
 
 
+../source/kernel/include/cpu/syscall.h:
+
 ../source/kernel/include/os_cfg.h:
 
-../source/kernel/include/cpu/syscall.h:
+../source/kernel/include/dev/tty.h:
+
+../source/kernel/include/tools/assert.h:
 
 ../source/common/types.h:
 
@@ -65,6 +73,8 @@ source/shell/CMakeFiles/shell.dir/main.c.o: ../source/shell/main.c \
 ../source/newlib/i686-elf/include/sys/string.h:
 
 ../source/applib/lib_syscall.h:
+
+../source/kernel/include/tools/list.h:
 
 ../source/newlib/i686-elf/include/sys/_locale.h:
 
@@ -131,6 +141,8 @@ source/shell/CMakeFiles/shell.dir/main.c.o: ../source/shell/main.c \
 ../source/shell/main.c:
 
 ../source/newlib/i686-elf/include/sys/lock.h:
+
+../source/kernel/include/ipc/sem.h:
 
 ../source/newlib/i686-elf/include/sys/_timespec.h:
 

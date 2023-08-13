@@ -36,14 +36,6 @@ extern fs_op_t fatfs_op;  //fat文件类型
 //根文件系统
 static fs_t *root_fs;
 
-// 定义缓冲区位置，用于暂存从磁盘中读取的文件内容
-#define TEMP_ADDR (120 * 1024 * 1024)
-
-// 定义一个文件暂时的文件描述符值
-#define TEMP_FILE_ID 100
-
-// 定义文件读取的指针，记录当前读到哪一个字节
-static uint8_t *temp_pos;
 
 
 /**
@@ -164,13 +156,6 @@ int sys_open(const char *name, int flags, ...) {
     return -1;
   }
 
-  if (kernel_strncmp(name, "/shell.elf", 10) == 0) {
-    int dev_id = dev_open(DEV_DISK, 0xa0, (void*)0);
-    dev_read(dev_id, 5000, (uint8_t *)TEMP_ADDR, 80);
-    temp_pos = (uint8_t *)TEMP_ADDR;
-    return TEMP_FILE_ID;
-  }
-
   // 2.从系统file_table中分配一个文件结构
   file_t *file = file_alloc();
   if (!file) {
@@ -240,11 +225,6 @@ sys_open_failed:
  * @return int 成功读取字节数
  */
 int sys_read(int fd, char *buf, int len) {
-  if (fd == TEMP_FILE_ID) {
-    kernel_memcpy(buf, temp_pos, len);
-    temp_pos += len;
-    return len;
-  }
 
   if (is_fd_bad(fd) || !buf || !len) {
     return -1;
@@ -317,10 +297,6 @@ int sys_write(int fd, char *buf, int len) {
  * @return int
  */
 int sys_lseek(int fd, int offset, int dir) {
-  if (fd == TEMP_FILE_ID) {
-    temp_pos = (uint8_t *)(TEMP_ADDR + offset);
-    return 0;
-  }
 
   if (is_fd_bad(fd)) {
     return -1;
@@ -350,12 +326,6 @@ int sys_lseek(int fd, int offset, int dir) {
  * @return int
  */
 int sys_close(int fd) {
-
-  if (fd == TEMP_FILE_ID) {
-    return 0;
-  }
-
-
   if (is_fd_bad(fd)) {
     log_printf("file error");
     return -1;
@@ -516,6 +486,35 @@ int sys_closedir(DIR *dir) {
   fs_unprotect(root_fs);
   return err;
 
+}
+/**
+ * @brief 用指令cmd对io进行控制
+ * 
+ * @param fd 
+ * @param cmd 
+ * @param arg0 
+ * @param arg1 
+ * @return int 
+ */
+int sys_ioctl(int fd, int cmd, int arg0, int arg1) {
+   if (is_fd_bad(fd)) {
+    log_printf("fd %d is not valid.", fd);
+    return -1;
+  }
+
+  // 1.获取需要重复引用的文件指针
+  file_t *file = task_file(fd);
+  if (!file) {
+    log_printf("file not opend!\n");
+    return -1;
+  }
+
+  fs_t *fs = file->fs;
+  fs_protect(fs);
+  int err = fs->op->ioctl(file, cmd, arg0, arg1);
+  fs_unprotect(fs);
+
+  return err;
 }
 
 /**

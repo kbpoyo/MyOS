@@ -30,6 +30,11 @@ typedef struct _tty_fifo_t {
 #define TTY_OCRLF       (1 << 0)    //输出的换行符为"\r\n"
 #define TTY_INCLR       (1 << 0)    //输入的换行符是否转换
 #define TTY_IECHO       (1 << 1)    //输入的回显
+
+//外部程序输入的TTY控制指令宏
+//对tyy回显进行设置
+#define TTY_CMD_ECHO    0x1
+
 //tty设备结构
 typedef struct _tty_t {
     int oflags; //设备输出状态标志位
