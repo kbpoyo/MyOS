@@ -161,10 +161,11 @@ static int do_ls(int argc, const char **argv) {
  */
 static int do_less(int argc, const char **argv) {
   optind = 0;
+  int line_mode = 0;  //是否开启逐行读取
   int ch;
   // getopt函数解析参数列表，l:表示查找-l选项，且必须紧跟着参数，
   // h表示查找-h选项，且不需要跟参数
-  while ((ch = getopt(argc, (char *const *)argv, "l:h")) != -1) {
+  while ((ch = getopt(argc, (char *const *)argv, "lh")) != -1) {
     switch (ch) {
       case 'h':
         puts("help:");
@@ -172,6 +173,7 @@ static int do_less(int argc, const char **argv) {
         puts("\tUsage: less [-l] file");
         return 0;
       case 'l':
+        line_mode = 1;
         break;
       case '?':  // 找到未指定选项
         if (optarg) {
@@ -184,6 +186,8 @@ static int do_less(int argc, const char **argv) {
         break;
     }
   }
+
+
 
   if (optind >
       argc - 1) {  // argc - 1
@@ -199,13 +203,40 @@ static int do_less(int argc, const char **argv) {
     return -1;
   }
   
-
-  //读取文件
   int buf_len = 255;
   char *buf = (char *)malloc(buf_len);
-  while (fgets(buf, buf_len, file) != NULL) {
-    fputs(buf, stdout);
+  if (line_mode == 0) {
+    //一次性读取完文件
+    while (fgets(buf, buf_len, file) != NULL) {
+      puts(buf);
+    }
+  } else {
+    //取消输入行缓存，使输入及时写入key中
+    setvbuf(stdin, NULL, _IONBF, 0);
+    while (1) {
+      char *b = fgets(buf, buf_len, file);
+      if (b == NULL) {
+        break;
+      }
+
+      puts(buf);
+      //用按键的方式进行下一行的读取
+      char key;
+      while ((key = getchar()) != ' ') {
+        if (key == 'q') {
+          goto less_quit;
+        }
+      }
+      
+    }
+less_quit:
+    //恢复输入行缓存
+    setvbuf(stdin, NULL, _IOLBF, BUFSIZ);
+
   }
+
+
+  
 
   free(buf);
   fclose(file);

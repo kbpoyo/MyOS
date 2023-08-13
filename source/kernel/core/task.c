@@ -373,7 +373,7 @@ void task_first_init(void) {
   task_init(&task_manager.first_task, "first task", task_start_addr,
             task_start_addr + alloc_size, TASK_FLAGS_USER);
 
-  // 4.初始化进程的起始堆空间 TODO:不对，此处堆区还在低2gb的内核空间中
+  // 4.初始化进程的起始堆空间
   task_manager.first_task.heap_start =
       (uint32_t)e_first_task;  // 堆起始地址紧靠程序bss段之后
   task_manager.first_task.heap_end = (uint32_t)e_first_task;  // 堆大小初始为0

@@ -153,7 +153,7 @@ void cstart(int argc, char **argv) {
 			3a: R_386_PC32	exit
 
 lib_syscall.c.o:     file format elf32-i386
-rw-r--r-- 0/0  10396 Jan  1 08:00 1970 lib_syscall.c.o
+rw-r--r-- 0/0  10388 Jan  1 08:00 1970 lib_syscall.c.o
 architecture: i386, flags 0x00000011:
 HAS_RELOC, HAS_SYMS
 start address 0x00000000
@@ -166,23 +166,23 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, ALLOC, LOAD, DATA
   2 .bss          00000000  00000000  00000000  000003c9  2**0
                   ALLOC
-  3 .debug_info   0000091b  00000000  00000000  000003c9  2**0
+  3 .debug_info   00000912  00000000  00000000  000003c9  2**0
                   CONTENTS, RELOC, READONLY, DEBUGGING, OCTETS
-  4 .debug_abbrev 00000225  00000000  00000000  00000ce4  2**0
+  4 .debug_abbrev 00000226  00000000  00000000  00000cdb  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
-  5 .debug_aranges 00000020  00000000  00000000  00000f09  2**0
+  5 .debug_aranges 00000020  00000000  00000000  00000f01  2**0
                   CONTENTS, RELOC, READONLY, DEBUGGING, OCTETS
-  6 .debug_line   00000251  00000000  00000000  00000f29  2**0
+  6 .debug_line   00000251  00000000  00000000  00000f21  2**0
                   CONTENTS, RELOC, READONLY, DEBUGGING, OCTETS
-  7 .debug_str    000003ac  00000000  00000000  0000117a  2**0
+  7 .debug_str    000003ac  00000000  00000000  00001172  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
-  8 .debug_line_str 0000024e  00000000  00000000  00001526  2**0
+  8 .debug_line_str 0000024e  00000000  00000000  0000151e  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
-  9 .comment      0000002c  00000000  00000000  00001774  2**0
+  9 .comment      0000002c  00000000  00000000  0000176c  2**0
                   CONTENTS, READONLY
- 10 .note.GNU-stack 00000000  00000000  00000000  000017a0  2**0
+ 10 .note.GNU-stack 00000000  00000000  00000000  00001798  2**0
                   CONTENTS, READONLY
- 11 .debug_frame  000002c0  00000000  00000000  000017a0  2**2
+ 11 .debug_frame  000002c0  00000000  00000000  00001798  2**2
                   CONTENTS, RELOC, READONLY, DEBUGGING, OCTETS
 SYMBOL TABLE:
 00000000 l    df *ABS*	00000000 lib_syscall.c

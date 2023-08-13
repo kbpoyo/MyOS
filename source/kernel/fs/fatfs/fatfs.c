@@ -66,10 +66,10 @@ static int cluster_get_next(fat_t *fat, cluster_t cblk) {
     }
 
     //计算当前簇cblk在对应分区中的扇区号
-    //fat表的前两个表项未使用，
+    //fat表保存了簇链关系，
     int offset = cblk * sizeof(cluster_t);
     int sector = offset / fat->bytes_per_sector;
-    //计算该簇链的项在扇区中的偏移量
+    //计算该簇在扇区中的偏移量
     int off_in_sector = offset % fat->bytes_per_sector;
 
     if (sector >= fat->tbl_sectors) {

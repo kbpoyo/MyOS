@@ -145,6 +145,21 @@ int open(const char *name, int flags, ...) {
     return sys_call(&args);
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /**
  * @brief 读取文件
  * 

@@ -3110,8 +3110,8 @@ char *sys_sbrk(int incr) {
    11103:	8b 55 e4             	mov    -0x1c(%ebp),%edx
    11106:	89 50 14             	mov    %edx,0x14(%eax)
 
-  return (char*)end;
-   11109:	8b 45 e4             	mov    -0x1c(%ebp),%eax
+  return (char*)pre_heap_end;
+   11109:	8b 45 ec             	mov    -0x14(%ebp),%eax
    1110c:	c9                   	leave  
    1110d:	c3                   	ret    
 
@@ -4127,7 +4127,7 @@ void task_first_init(void) {
    11865:	83 c4 20             	add    $0x20,%esp
             task_start_addr + alloc_size, TASK_FLAGS_USER);
 
-  // 4.初始化进程的起始堆空间 TODO:不对，此处堆区还在低2gb的内核空间中
+  // 4.初始化进程的起始堆空间
   task_manager.first_task.heap_start =
       (uint32_t)e_first_task;  // 堆起始地址紧靠程序bss段之后
    11868:	b8 97 93 07 00       	mov    $0x79397,%eax
@@ -13075,7 +13075,7 @@ static int cluster_get_next(fat_t *fat, cluster_t cblk) {
     }
 
     //计算当前簇cblk在对应分区中的扇区号
-    //fat表的前两个表项未使用，
+    //fat表保存了簇链关系，
     int offset = cblk * sizeof(cluster_t);
    15a17:	0f b7 45 e4          	movzwl -0x1c(%ebp),%eax
    15a1b:	01 c0                	add    %eax,%eax
@@ -13087,7 +13087,7 @@ static int cluster_get_next(fat_t *fat, cluster_t cblk) {
    15a29:	ba 00 00 00 00       	mov    $0x0,%edx
    15a2e:	f7 f1                	div    %ecx
    15a30:	89 45 f0             	mov    %eax,-0x10(%ebp)
-    //计算该簇链的项在扇区中的偏移量
+    //计算该簇在扇区中的偏移量
     int off_in_sector = offset % fat->bytes_per_sector;
    15a33:	8b 45 f4             	mov    -0xc(%ebp),%eax
    15a36:	8b 55 08             	mov    0x8(%ebp),%edx
