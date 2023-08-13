@@ -16,6 +16,8 @@
 
 #pragma pack(1)
 
+//标志该簇对应的号码无效
+#define FAT_CLUSTER_INVALID     0xff8
 //标志该root_entry是空闲的
 #define DIRITEM_NAEM_FREE       0xE5
 //标志该root_entry末尾项
@@ -96,13 +98,15 @@ typedef struct _fat_t {
     uint32_t root_ent_cnt;  //根目录区的项数,每一项占32个字节
     uint32_t data_start_sector;    //文件数据区域的起始地址
     uint32_t cluster_bytes_size;    //一簇的字节大小
-    uint32_t curr_sector;   //fat表当前索引的扇区号，用作扇区缓存的读取
 
+    uint32_t curr_sector;   //fat_buffer当前缓存的扇区号
     uint8_t *fat_buffer;    //fat表结构的缓冲区，可用于存放读取到内存的dbr区域
     
     struct _fs_t *fs;   //该分区所属的文件系统
 
         
 }fat_t;
+
+typedef uint16_t cluster_t;
 
 #endif

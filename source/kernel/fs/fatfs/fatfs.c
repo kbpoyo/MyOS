@@ -19,6 +19,73 @@
 #include <sys/fcntl.h>
 
 /**
+ * @brief 判断簇号是否有效
+ * 
+ * @param cluster 
+ * @return int 
+ */
+static int cluster_is_valid(cluster_t cluster) {
+    return (cluster < FAT_CLUSTER_INVALID) && (cluster >= 0x2);
+} 
+
+/**
+ * @brief 以缓存的方式读取扇区
+ * 
+ * @param fat 
+ * @param sector 
+ * @return int 
+ */
+static int cache_read_sector(fat_t *fat, int sector) {
+    //要读扇区已被缓存，直接返回即可
+    if (sector == fat->curr_sector) {
+        return 0;
+    }
+
+    //读取信的扇区，并记录扇区号
+    int cnt = dev_read(fat->fs->dev_id, sector, fat->fat_buffer, 1);
+    if (cnt == 1) {
+        fat->curr_sector = sector;
+        return 0;
+    }
+
+    return -1;
+}
+
+/**
+ * @brief 根据fat表中记录的簇链信息，获取当前簇号
+ *          cblk的下一个簇的簇号
+ * 
+ * @param fat 
+ * @param cblk 
+ * @return int 
+ */
+static int cluster_get_next(fat_t *fat, cluster_t cblk) {
+    //簇号无效
+    if (!cluster_is_valid(cblk)) {
+        return FAT_CLUSTER_INVALID;
+    }
+
+    //计算当前簇cblk在对应分区中的扇区号
+    //fat表的前两个表项未使用，
+    int offset = cblk * sizeof(cluster_t);
+    int sector = offset / fat->bytes_per_sector;
+    //计算该簇链的项在扇区中的偏移量
+    int off_in_sector = offset % fat->bytes_per_sector;
+
+    if (sector >= fat->tbl_sectors) {
+        log_printf("cluster too big: %d\n", cblk);
+        return FAT_CLUSTER_INVALID;
+    }
+
+    int err = cache_read_sector(fat, fat->tbl_start_sector + sector);
+    if (err < 0) {
+        return FAT_CLUSTER_INVALID;
+    }
+
+    return *(cluster_t *)(fat->fat_buffer + off_in_sector);
+}
+
+/**
  * @brief 将文件的读取位置pos移动move_bytes个字节
  * 
  * @param file 
@@ -33,8 +100,12 @@ static int move_file_pos(file_t *file,
         uint32_t c_offset = file->pos % fat->cluster_bytes_size;
         if (c_offset + move_bytes >= fat->cluster_bytes_size) {
             //当前簇已读取完毕需更改当前簇号
-            //file->cblk = ?
-            return -1;
+            //通过fat的簇链获取当前簇的下一个簇
+            cluster_t next = cluster_get_next(fat, file->cblk);
+            if (next == FAT_CLUSTER_INVALID) {  //簇号无效
+                return -1;
+            }
+            file->cblk = next;
         }
 
         file->pos += move_bytes;
@@ -138,28 +209,7 @@ static int diritem_name_match(diritem_t *item, const char *dest) {
 
 
 
-/**
- * @brief 以缓存的方式读取扇区
- * 
- * @param fat 
- * @param sector 
- * @return int 
- */
-static int cache_read_sector(fat_t *fat, int sector) {
-    //要读扇区已被缓存，直接返回即可
-    if (sector == fat->curr_sector) {
-        return 0;
-    }
 
-    //读取信的扇区，并记录扇区号
-    int cnt = dev_read(fat->fs->dev_id, sector, fat->fat_buffer, 1);
-    if (cnt == 1) {
-        fat->curr_sector = sector;
-        return 0;
-    }
-
-    return -1;
-}
 
 /**
  * @brief 从根目录区读取索引为dir_index的目录项

@@ -71,7 +71,7 @@ static int do_echo(int argc, const char **argv) {
     return 0;
   }
 
-  optind = 1;  // getopt每次查找都从optind处开始
+  optind = 0;  // getopt每次查找都从optind处开始
   int count = 1;
   int ch;
   // getopt函数解析参数列表，n:表示查找-n选项，且必须紧跟着参数，
@@ -160,6 +160,7 @@ static int do_ls(int argc, const char **argv) {
  * @return int
  */
 static int do_less(int argc, const char **argv) {
+  optind = 0;
   int ch;
   // getopt函数解析参数列表，l:表示查找-l选项，且必须紧跟着参数，
   // h表示查找-h选项，且不需要跟参数
@@ -169,7 +170,6 @@ static int do_less(int argc, const char **argv) {
         puts("help:");
         puts("\tshow file content");
         puts("\tUsage: less [-l] file");
-        optind = 1;  // getopt每次查找都从optind处开始
         return 0;
       case 'l':
         break;
@@ -179,7 +179,6 @@ static int do_less(int argc, const char **argv) {
                   ESC_COLOR_ERROR "unknown option: -%s\n" ESC_COLOR_DEFAULT,
                   optarg);
         }
-        optind = 1;  // getopt每次查找都从optind处开始
         return -1;
       default:
         break;
@@ -197,7 +196,6 @@ static int do_less(int argc, const char **argv) {
   FILE *file = fopen(argv[optind], "r");
   if (file == NULL) {
     fprintf(stderr, ESC_COLOR_ERROR"open file failed. %s"ESC_COLOR_DEFAULT, argv[optind]);
-    optind = 1;
     return -1;
   }
   
@@ -211,7 +209,6 @@ static int do_less(int argc, const char **argv) {
 
   free(buf);
   fclose(file);
-  optind = 1;
   return 0;
 }
 
