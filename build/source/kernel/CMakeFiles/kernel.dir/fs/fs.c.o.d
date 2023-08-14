@@ -13,6 +13,8 @@ source/kernel/CMakeFiles/kernel.dir/fs/fs.c.o: \
  /home/kbpoyo/code/cpp/MyOs/source/applib/lib_syscall.h \
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/cpu/syscall.h \
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/os_cfg.h \
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/include/dev/tty.h \
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/include/ipc/sem.h \
  /home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/include/sys/stat.h \
  /home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/include/_ansi.h \
  /home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/include/newlib.h \
@@ -47,8 +49,6 @@ source/kernel/CMakeFiles/kernel.dir/fs/fs.c.o: \
  /home/kbpoyo/code/cpp/MyOs/source/common/types.h \
  /home/kbpoyo/code/cpp/MyOs/source/common/cpu_instr.h \
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/dev/console.h \
- /home/kbpoyo/code/cpp/MyOs/source/kernel/include/dev/tty.h \
- /home/kbpoyo/code/cpp/MyOs/source/kernel/include/ipc/sem.h \
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/dev/dev.h \
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/tools/klib.h \
  /usr/lib/gcc/x86_64-linux-gnu/11/include/stdarg.h \

@@ -275,6 +275,11 @@ int tty_control(device_t *dev, int cmd, int arg0, int arg1) {
                 tty->iflags &= ~TTY_IECHO;
             }
             break;
+        case TTY_CMD_IN_COUNT:  //获取tty输入缓冲区的字符个数
+		    if (arg0) {
+			    *(int *)arg0 = sem_count(&tty->in_sem); 
+		    }
+		    break;
         default :
             break;
     }

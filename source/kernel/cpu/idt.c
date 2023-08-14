@@ -15,6 +15,7 @@
 #include "os_cfg.h"
 #include "tools/log.h"
 #include  "cpu/gate.h"
+#include "core/task.h"
 
 //定义中断门描述符表
 static gate_desc_t idt_table[IDT_TABLE_SIZE];
@@ -36,7 +37,7 @@ static void print_exception_fram(const exception_frame_t *frame) {
 
   log_printf("------------------------stack frame info---------------------\n");
   log_printf("IRQ:\t\t%d\nerror code:\t%d\n", frame->num, frame->error_code);
-  log_printf("CS:\t\t%d\nDS:\t\t%d\nSS:\t\t%d\nES:\t\t%d\nFS:\t\t%d\nGS:\t\t%d\n", 
+  log_printf("CS:\t\t\t%d\nDS:\t\t\t%d\nSS:\t\t\t%d\nES:\t\t\t%d\nFS:\t\t\t%d\nGS:\t\t\t%d\n", 
     //TODO:SS暂时没法获取，先用ds替代，之后再进行获取
     frame->cs, frame->ds, ss, frame->es, frame->fs, frame->gs
   );
@@ -57,6 +58,20 @@ static void print_exception_fram(const exception_frame_t *frame) {
   log_printf("EIP:\t\t0x%x\nEFLAGS:\t\t0x%x\n", frame->eip, frame->eflags);
 }
 
+/**
+ * @brief 进程退出异常处理
+ * 
+ * @param frame 
+ */
+static void exit_excption_handler(const exception_frame_t *frame) {
+  if (frame->cs & 0x3) {  //用户进程异常，直接退出用户进程
+        sys_exit(frame->error_code);
+  } else {  //内核异常直接死机
+      for (;;) {
+          hlt();
+      }
+  }
+}
 
 /**
  * @brief  默认的异常处理函数
@@ -72,9 +87,7 @@ static void do_default_handler(const exception_frame_t *frame,
   print_exception_fram(frame);
                               
   
-  for (;;) {
-    hlt();
-  }
+  exit_excption_handler(frame);
 }
 
 //==============================真正进行异常处理的c程序==================================
@@ -151,6 +164,9 @@ void do_handler_general_protection(const exception_frame_t *frame) {
     
     log_printf("segment index: %d\n", frame->error_code & 0xFFF8);
     print_exception_fram(frame);
+
+    //进程退出异常
+    exit_excption_handler(frame);
 }
 /**
  * @brief page_fault异常处理函数
@@ -179,6 +195,9 @@ void do_handler_page_fault(const exception_frame_t *frame) {
     }
 
    print_exception_fram(frame);
+  
+    //进程退出异常
+    exit_excption_handler(frame);
 }
 
 void do_handler_fpu_error(const exception_frame_t *frame) {

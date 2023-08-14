@@ -347,18 +347,45 @@ static void run_exec_file(const char *path, int argc, const char **argv) {
     fprintf(stderr, ESC_COLOR_ERROR "fork failed: %s" ESC_COLOR_DEFAULT, path);
   } else if (pid == 0) {
     // 2.子进程加载外部程序
-    for (int i = 0; i < argc; ++i) {
-      printf("arg %d = %s\n", i, argv[i]);
+    int err = execve(path, (char * const *)argv, (char *const *) 0);
+    if (err < 0) {
+      fprintf(stderr, "exec failed: %s\n", path);
     }
-    execve(argv[0], argv, NULL);
     exit(-1);
   } else {
     int status;
     // 3.父进程等待任意子进程结束，并回收其资源
     int cpid = wait(&status);
-    fprintf(stderr, "cmd %s result: %d, pid=%d, cpid=%d\n", path, status, pid,
-            cpid);
+    if (status != 0) {
+      fprintf(stderr, ESC_COLOR_ERROR"process %s exception result: %d, pid=%d\n"ESC_COLOR_DEFAULT, path, status, pid);
+    } else {
+      fprintf(stderr, "process %s exit result: %d, pid=%d\n", path, status, pid);
+    }
   }
+}
+
+/**
+ * @brief 根据文件名判断文件是否存在
+ * 
+ * @param file_name 
+ * @return const char* 
+ */
+static const char* find_exec_path(const char *file_name) {
+    static char path[255];
+
+    int fd = open(file_name, 0);
+    if (fd < 0) {
+        sprintf(path, "%s.elf", file_name);
+        fd = open(path, 0);
+        if (fd < 0) {
+            return (const char * )0;
+        }
+        close(fd);
+        return path;
+    } else {
+        close(fd);
+        return file_name;
+    }
 }
 
 int main(int argc, char **argv) {
@@ -412,10 +439,19 @@ int main(int argc, char **argv) {
       continue;
     }
 
-    // 5.获取到的为磁盘上的可执行程序，需要进行加载运行
-    run_exec_file("", argc, argv);
 
-    fprintf(stderr, ESC_COLOR_ERROR "Unknown command: %s\n" ESC_COLOR_DEFAULT,
-            cli.curr_input);
+
+    // 5.获取到的为磁盘上的可执行程序，需要进行加载运行
+    const char *path = find_exec_path(argv[0]);
+    if (path) {
+      run_exec_file(path, argc, argv);
+      continue;
+    } else {
+
+      fprintf(stderr, ESC_COLOR_ERROR "Unknown command: %s\n" ESC_COLOR_DEFAULT,
+              cli.curr_input);
+    }
+    
+
   }
 }

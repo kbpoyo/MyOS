@@ -33,7 +33,9 @@ typedef struct _tty_fifo_t {
 
 //外部程序输入的TTY控制指令宏
 //对tyy回显进行设置
-#define TTY_CMD_ECHO    0x1
+#define TTY_CMD_ECHO        0x1
+//获取tty输入缓冲区的字符个数
+#define TTY_CMD_IN_COUNT    0x2
 
 //tty设备结构
 typedef struct _tty_t {

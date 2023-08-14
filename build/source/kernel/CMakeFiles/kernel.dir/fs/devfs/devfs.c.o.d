@@ -14,6 +14,8 @@ source/kernel/CMakeFiles/kernel.dir/fs/devfs/devfs.c.o: \
  /home/kbpoyo/code/cpp/MyOs/source/applib/lib_syscall.h \
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/cpu/syscall.h \
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/os_cfg.h \
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/include/dev/tty.h \
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/include/ipc/sem.h \
  /home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/include/sys/stat.h \
  /home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/include/_ansi.h \
  /home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/include/newlib.h \

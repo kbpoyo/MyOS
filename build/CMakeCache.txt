@@ -52,8 +52,8 @@ CMAKE_COLOR_MAKEFILE:BOOL=ON
 //No help, variable specified on the command line.
 CMAKE_CXX_COMPILER:FILEPATH=/usr/bin/g++
 
-//No help, variable specified on the command line.
-CMAKE_C_COMPILER:FILEPATH=/usr/bin/gcc
+//C compiler
+CMAKE_C_COMPILER:STRING=/usr/bin/gcc
 
 //A wrapper around 'ar' adding the appropriate '--plugin' option
 // for the GCC compiler
@@ -227,6 +227,15 @@ boot_IS_TOP_LEVEL:STATIC=OFF
 boot_SOURCE_DIR:STATIC=/home/kbpoyo/code/cpp/MyOs/source/boot
 
 //Value Computed by CMake
+init_BINARY_DIR:STATIC=/home/kbpoyo/code/cpp/MyOs/build/source/init
+
+//Value Computed by CMake
+init_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+init_SOURCE_DIR:STATIC=/home/kbpoyo/code/cpp/MyOs/source/init
+
+//Value Computed by CMake
 kernel_BINARY_DIR:STATIC=/home/kbpoyo/code/cpp/MyOs/build/source/kernel
 
 //Value Computed by CMake
@@ -243,6 +252,15 @@ loader_IS_TOP_LEVEL:STATIC=OFF
 
 //Value Computed by CMake
 loader_SOURCE_DIR:STATIC=/home/kbpoyo/code/cpp/MyOs/source/loader
+
+//Value Computed by CMake
+loop_BINARY_DIR:STATIC=/home/kbpoyo/code/cpp/MyOs/build/source/loop
+
+//Value Computed by CMake
+loop_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+loop_SOURCE_DIR:STATIC=/home/kbpoyo/code/cpp/MyOs/source/loop
 
 //Value Computed by CMake
 os_BINARY_DIR:STATIC=/home/kbpoyo/code/cpp/MyOs/build
@@ -373,7 +391,7 @@ CMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_NM
 CMAKE_NM-ADVANCED:INTERNAL=1
 //number of local generators
-CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=6
+CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=9
 //ADVANCED property for variable: CMAKE_OBJCOPY
 CMAKE_OBJCOPY-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_OBJDUMP

@@ -15,3 +15,12 @@
 /home/kbpoyo/code/cpp/MyOs/build/source/shell/CMakeFiles/shell.dir
 /home/kbpoyo/code/cpp/MyOs/build/source/shell/CMakeFiles/edit_cache.dir
 /home/kbpoyo/code/cpp/MyOs/build/source/shell/CMakeFiles/rebuild_cache.dir
+/home/kbpoyo/code/cpp/MyOs/build/source/snake/CMakeFiles/snake.dir
+/home/kbpoyo/code/cpp/MyOs/build/source/snake/CMakeFiles/edit_cache.dir
+/home/kbpoyo/code/cpp/MyOs/build/source/snake/CMakeFiles/rebuild_cache.dir
+/home/kbpoyo/code/cpp/MyOs/build/source/init/CMakeFiles/init.dir
+/home/kbpoyo/code/cpp/MyOs/build/source/init/CMakeFiles/edit_cache.dir
+/home/kbpoyo/code/cpp/MyOs/build/source/init/CMakeFiles/rebuild_cache.dir
+/home/kbpoyo/code/cpp/MyOs/build/source/loop/CMakeFiles/loop.dir
+/home/kbpoyo/code/cpp/MyOs/build/source/loop/CMakeFiles/edit_cache.dir
+/home/kbpoyo/code/cpp/MyOs/build/source/loop/CMakeFiles/rebuild_cache.dir

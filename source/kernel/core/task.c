@@ -902,26 +902,33 @@ static int copy_args(uint32_t to_page_dir, char *stack_top, char *const *argv,
   task_args.argv = (char **)(stack_top + sizeof(task_args_t));
 
   // 2.获取char*数组对应的虚拟空间关联的物理地址
-  char **to_argv_paddr =
+  char **dest_argv_tb =
       (char **)memory_get_paddr(to_page_dir, (uint32_t)task_args.argv);
 
   // 3.获取参数的存储地址, 偏移量为 task_args 加上
-  // argc个参数的字符串指针的大小，
-  char *dest_arg = stack_top + sizeof(task_args_t) + sizeof(char *) * argc;
+  // argc个参数的字符串指针的大小
+  //TODO:多给一个空指针位置，不然在解析参数的时候没有结束标志可能会访问异常
+  char *dest_arg = stack_top + sizeof(task_args_t) + sizeof(char *) * (argc + 1);
 
   // 3.将参数拷贝到dest_arg处，并将每个参数的地址记录到task.argv指向的char*数组中
   for (int i = 0; i < argc; ++i) {
     char *from = argv[i];
     int len = kernel_strlen(from) + 1;
+    //将每个字符串的内容陆续拷贝到dest_arg处，即task_arg以及指针数组的紧邻上方
     int err = memory_copy_uvm_data((uint32_t)dest_arg, to_page_dir,
                                    (uint32_t)from, len);
     ASSERT(err >= 0);
-    to_argv_paddr[i] = dest_arg;
+    dest_argv_tb[i] = dest_arg;
     dest_arg += len;
   }
 
+  //将字符串指针数组的最后一项
+  if (argc) {
+    dest_argv_tb[argc] = (char *)0; 
+  }
+
   // 4.将task_args拷贝到用户虚拟空间中,紧邻栈顶上方，作为入口函数的参数
-  memory_copy_uvm_data((uint32_t)stack_top, to_page_dir, (uint32_t)&task_args,
+  return memory_copy_uvm_data((uint32_t)stack_top, to_page_dir, (uint32_t)&task_args,
                        sizeof(task_args_t));
 }
 

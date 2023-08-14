@@ -22,6 +22,10 @@ source/snake/CMakeFiles/snake.dir/__/applib/cstart.c.o: \
  /home/kbpoyo/code/cpp/MyOs/source/common/types.h \
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/cpu/syscall.h \
  /home/kbpoyo/code/cpp/MyOs/source/kernel/include/os_cfg.h \
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/include/dev/tty.h \
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/include/ipc/sem.h \
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/include/tools/list.h \
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/include/tools/assert.h \
  /home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/include/sys/stat.h \
  /home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/include/time.h \
  /home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/include/machine/time.h \

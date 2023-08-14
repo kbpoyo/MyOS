@@ -193,5 +193,65 @@
   "directory": "/home/kbpoyo/code/cpp/MyOs/build/source/shell",
   "command": "/usr/bin/gcc  -I/home/kbpoyo/code/cpp/MyOs/source -I/home/kbpoyo/code/cpp/MyOs/source/kernel/include -I/home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/include -I/home/kbpoyo/code/cpp/MyOs/source/shell/../applib -g -c -O0 -m32 -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -g -o CMakeFiles/shell.dir/main.c.o -c /home/kbpoyo/code/cpp/MyOs/source/shell/main.c",
   "file": "/home/kbpoyo/code/cpp/MyOs/source/shell/main.c"
+},
+{
+  "directory": "/home/kbpoyo/code/cpp/MyOs/build/source/snake",
+  "command": "/usr/bin/gcc  -I/home/kbpoyo/code/cpp/MyOs/source -I/home/kbpoyo/code/cpp/MyOs/source/kernel/include -I/home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/include -I/home/kbpoyo/code/cpp/MyOs/source/snake/../applib -m32 -g -g -o CMakeFiles/snake.dir/__/applib/crt0.S.o -c /home/kbpoyo/code/cpp/MyOs/source/applib/crt0.S",
+  "file": "/home/kbpoyo/code/cpp/MyOs/source/applib/crt0.S"
+},
+{
+  "directory": "/home/kbpoyo/code/cpp/MyOs/build/source/snake",
+  "command": "/usr/bin/gcc  -I/home/kbpoyo/code/cpp/MyOs/source -I/home/kbpoyo/code/cpp/MyOs/source/kernel/include -I/home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/include -I/home/kbpoyo/code/cpp/MyOs/source/snake/../applib -g -c -O0 -m32 -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -g -o CMakeFiles/snake.dir/__/applib/cstart.c.o -c /home/kbpoyo/code/cpp/MyOs/source/applib/cstart.c",
+  "file": "/home/kbpoyo/code/cpp/MyOs/source/applib/cstart.c"
+},
+{
+  "directory": "/home/kbpoyo/code/cpp/MyOs/build/source/snake",
+  "command": "/usr/bin/gcc  -I/home/kbpoyo/code/cpp/MyOs/source -I/home/kbpoyo/code/cpp/MyOs/source/kernel/include -I/home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/include -I/home/kbpoyo/code/cpp/MyOs/source/snake/../applib -g -c -O0 -m32 -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -g -o CMakeFiles/snake.dir/__/applib/lib_syscall.c.o -c /home/kbpoyo/code/cpp/MyOs/source/applib/lib_syscall.c",
+  "file": "/home/kbpoyo/code/cpp/MyOs/source/applib/lib_syscall.c"
+},
+{
+  "directory": "/home/kbpoyo/code/cpp/MyOs/build/source/snake",
+  "command": "/usr/bin/gcc  -I/home/kbpoyo/code/cpp/MyOs/source -I/home/kbpoyo/code/cpp/MyOs/source/kernel/include -I/home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/include -I/home/kbpoyo/code/cpp/MyOs/source/snake/../applib -g -c -O0 -m32 -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -g -o CMakeFiles/snake.dir/main.c.o -c /home/kbpoyo/code/cpp/MyOs/source/snake/main.c",
+  "file": "/home/kbpoyo/code/cpp/MyOs/source/snake/main.c"
+},
+{
+  "directory": "/home/kbpoyo/code/cpp/MyOs/build/source/init",
+  "command": "/usr/bin/gcc  -I/home/kbpoyo/code/cpp/MyOs/source -I/home/kbpoyo/code/cpp/MyOs/source/kernel/include -I/home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/include -I/home/kbpoyo/code/cpp/MyOs/source/init/../applib -m32 -g -g -o CMakeFiles/init.dir/__/applib/crt0.S.o -c /home/kbpoyo/code/cpp/MyOs/source/applib/crt0.S",
+  "file": "/home/kbpoyo/code/cpp/MyOs/source/applib/crt0.S"
+},
+{
+  "directory": "/home/kbpoyo/code/cpp/MyOs/build/source/init",
+  "command": "/usr/bin/gcc  -I/home/kbpoyo/code/cpp/MyOs/source -I/home/kbpoyo/code/cpp/MyOs/source/kernel/include -I/home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/include -I/home/kbpoyo/code/cpp/MyOs/source/init/../applib -g -c -O0 -m32 -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -g -o CMakeFiles/init.dir/__/applib/cstart.c.o -c /home/kbpoyo/code/cpp/MyOs/source/applib/cstart.c",
+  "file": "/home/kbpoyo/code/cpp/MyOs/source/applib/cstart.c"
+},
+{
+  "directory": "/home/kbpoyo/code/cpp/MyOs/build/source/init",
+  "command": "/usr/bin/gcc  -I/home/kbpoyo/code/cpp/MyOs/source -I/home/kbpoyo/code/cpp/MyOs/source/kernel/include -I/home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/include -I/home/kbpoyo/code/cpp/MyOs/source/init/../applib -g -c -O0 -m32 -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -g -o CMakeFiles/init.dir/__/applib/lib_syscall.c.o -c /home/kbpoyo/code/cpp/MyOs/source/applib/lib_syscall.c",
+  "file": "/home/kbpoyo/code/cpp/MyOs/source/applib/lib_syscall.c"
+},
+{
+  "directory": "/home/kbpoyo/code/cpp/MyOs/build/source/init",
+  "command": "/usr/bin/gcc  -I/home/kbpoyo/code/cpp/MyOs/source -I/home/kbpoyo/code/cpp/MyOs/source/kernel/include -I/home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/include -I/home/kbpoyo/code/cpp/MyOs/source/init/../applib -g -c -O0 -m32 -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -g -o CMakeFiles/init.dir/main.c.o -c /home/kbpoyo/code/cpp/MyOs/source/init/main.c",
+  "file": "/home/kbpoyo/code/cpp/MyOs/source/init/main.c"
+},
+{
+  "directory": "/home/kbpoyo/code/cpp/MyOs/build/source/loop",
+  "command": "/usr/bin/gcc  -I/home/kbpoyo/code/cpp/MyOs/source -I/home/kbpoyo/code/cpp/MyOs/source/kernel/include -I/home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/include -I/home/kbpoyo/code/cpp/MyOs/source/loop/../applib -m32 -g -g -o CMakeFiles/loop.dir/__/applib/crt0.S.o -c /home/kbpoyo/code/cpp/MyOs/source/applib/crt0.S",
+  "file": "/home/kbpoyo/code/cpp/MyOs/source/applib/crt0.S"
+},
+{
+  "directory": "/home/kbpoyo/code/cpp/MyOs/build/source/loop",
+  "command": "/usr/bin/gcc  -I/home/kbpoyo/code/cpp/MyOs/source -I/home/kbpoyo/code/cpp/MyOs/source/kernel/include -I/home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/include -I/home/kbpoyo/code/cpp/MyOs/source/loop/../applib -g -c -O0 -m32 -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -g -o CMakeFiles/loop.dir/__/applib/cstart.c.o -c /home/kbpoyo/code/cpp/MyOs/source/applib/cstart.c",
+  "file": "/home/kbpoyo/code/cpp/MyOs/source/applib/cstart.c"
+},
+{
+  "directory": "/home/kbpoyo/code/cpp/MyOs/build/source/loop",
+  "command": "/usr/bin/gcc  -I/home/kbpoyo/code/cpp/MyOs/source -I/home/kbpoyo/code/cpp/MyOs/source/kernel/include -I/home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/include -I/home/kbpoyo/code/cpp/MyOs/source/loop/../applib -g -c -O0 -m32 -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -g -o CMakeFiles/loop.dir/__/applib/lib_syscall.c.o -c /home/kbpoyo/code/cpp/MyOs/source/applib/lib_syscall.c",
+  "file": "/home/kbpoyo/code/cpp/MyOs/source/applib/lib_syscall.c"
+},
+{
+  "directory": "/home/kbpoyo/code/cpp/MyOs/build/source/loop",
+  "command": "/usr/bin/gcc  -I/home/kbpoyo/code/cpp/MyOs/source -I/home/kbpoyo/code/cpp/MyOs/source/kernel/include -I/home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/include -I/home/kbpoyo/code/cpp/MyOs/source/loop/../applib -g -c -O0 -m32 -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -g -o CMakeFiles/loop.dir/main.c.o -c /home/kbpoyo/code/cpp/MyOs/source/loop/main.c",
+  "file": "/home/kbpoyo/code/cpp/MyOs/source/loop/main.c"
 }
 ]

@@ -1,0 +1,1 @@
+ld CMakeFiles/init.dir/__/applib/crt0.S.o CMakeFiles/init.dir/__/applib/cstart.c.o CMakeFiles/init.dir/__/applib/lib_syscall.c.o CMakeFiles/init.dir/main.c.o -m elf_i386 -T /home/kbpoyo/code/cpp/MyOs/source/init/link.lds -L /home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/lib -lm -lc -o /home/kbpoyo/code/cpp/MyOs/build/source/init/init.elf

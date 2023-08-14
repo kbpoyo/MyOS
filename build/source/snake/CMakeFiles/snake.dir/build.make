@@ -27,9 +27,6 @@
 
 .SUFFIXES: .hpux_make_needs_suffix_list
 
-# Produce verbose output by default.
-VERBOSE = 1
-
 # Command-line flag to silence nested $(MAKE).
 $(VERBOSE)MAKESILENT = -s
 
@@ -145,7 +142,7 @@ source/snake/snake: source/snake/CMakeFiles/snake.dir/build.make
 source/snake/snake: source/snake/CMakeFiles/snake.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/kbpoyo/code/cpp/MyOs/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Linking C executable snake"
 	cd /home/kbpoyo/code/cpp/MyOs/build/source/snake && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/snake.dir/link.txt --verbose=$(VERBOSE)
-	cd /home/kbpoyo/code/cpp/MyOs/build/source/snake && objcopy -S snake.elf /home/kbpoyo/code/cpp/MyOs/../../image/snake.elf
+	cd /home/kbpoyo/code/cpp/MyOs/build/source/snake && objcopy -S snake.elf /home/kbpoyo/code/cpp/MyOs/image/snake.elf
 	cd /home/kbpoyo/code/cpp/MyOs/build/source/snake && objdump -x -d -S -m i386 /home/kbpoyo/code/cpp/MyOs/build/source/snake/snake.elf > snake_dis.txt
 	cd /home/kbpoyo/code/cpp/MyOs/build/source/snake && readelf -a /home/kbpoyo/code/cpp/MyOs/build/source/snake/snake.elf > snake_elf.txt
 

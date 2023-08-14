@@ -39,7 +39,8 @@ export TARGET_PATH=mp
 rm -rf $TARGET_PATH
 mkdir $TARGET_PATH
 sudo mount -o offset=$[128*512],rw $DISK2_NAME $TARGET_PATH
-# sudo cp -v init.elf $TARGET_PATH/init
+sudo cp -v init.elf $TARGET_PATH/init
 sudo cp -v shell.elf $TARGET_PATH
-# sudo cp -v loop.elf $TARGET_PATH/loop
+sudo cp -v loop.elf $TARGET_PATH/loop
+sudo cp -v snake.elf $TARGET_PATH/snake
 sudo umount $TARGET_PATH

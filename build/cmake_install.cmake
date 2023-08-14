@@ -49,6 +49,9 @@ if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   include("/home/kbpoyo/code/cpp/MyOs/build/source/kernel/cmake_install.cmake")
   include("/home/kbpoyo/code/cpp/MyOs/build/source/applib/cmake_install.cmake")
   include("/home/kbpoyo/code/cpp/MyOs/build/source/shell/cmake_install.cmake")
+  include("/home/kbpoyo/code/cpp/MyOs/build/source/snake/cmake_install.cmake")
+  include("/home/kbpoyo/code/cpp/MyOs/build/source/init/cmake_install.cmake")
+  include("/home/kbpoyo/code/cpp/MyOs/build/source/loop/cmake_install.cmake")
 
 endif()
 

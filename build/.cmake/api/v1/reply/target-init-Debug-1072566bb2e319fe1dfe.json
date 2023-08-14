@@ -1,0 +1,220 @@
+{
+	"artifacts" : 
+	[
+		{
+			"path" : "source/init/init"
+		}
+	],
+	"backtrace" : 1,
+	"backtraceGraph" : 
+	{
+		"commands" : 
+		[
+			"add_executable",
+			"add_dependencies",
+			"include_directories"
+		],
+		"files" : 
+		[
+			"source/init/CMakeLists.txt",
+			"CMakeLists.txt"
+		],
+		"nodes" : 
+		[
+			{
+				"file" : 0
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 17,
+				"parent" : 0
+			},
+			{
+				"file" : 1
+			},
+			{
+				"command" : 1,
+				"file" : 1,
+				"line" : 58,
+				"parent" : 2
+			},
+			{
+				"command" : 2,
+				"file" : 1,
+				"line" : 40,
+				"parent" : 2
+			},
+			{
+				"command" : 2,
+				"file" : 0,
+				"line" : 10,
+				"parent" : 0
+			}
+		]
+	},
+	"compileGroups" : 
+	[
+		{
+			"compileCommandFragments" : 
+			[
+				{
+					"fragment" : "-m32 -g -g"
+				}
+			],
+			"includes" : 
+			[
+				{
+					"backtrace" : 4,
+					"path" : "/home/kbpoyo/code/cpp/MyOs/source"
+				},
+				{
+					"backtrace" : 4,
+					"path" : "/home/kbpoyo/code/cpp/MyOs/source/kernel/include"
+				},
+				{
+					"backtrace" : 4,
+					"path" : "/home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/include"
+				},
+				{
+					"backtrace" : 5,
+					"path" : "/home/kbpoyo/code/cpp/MyOs/source/init/../applib"
+				}
+			],
+			"language" : "ASM",
+			"sourceIndexes" : 
+			[
+				0
+			]
+		},
+		{
+			"compileCommandFragments" : 
+			[
+				{
+					"fragment" : "-g -c -O0 -m32 -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -g"
+				}
+			],
+			"includes" : 
+			[
+				{
+					"backtrace" : 4,
+					"path" : "/home/kbpoyo/code/cpp/MyOs/source"
+				},
+				{
+					"backtrace" : 4,
+					"path" : "/home/kbpoyo/code/cpp/MyOs/source/kernel/include"
+				},
+				{
+					"backtrace" : 4,
+					"path" : "/home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/include"
+				},
+				{
+					"backtrace" : 5,
+					"path" : "/home/kbpoyo/code/cpp/MyOs/source/init/../applib"
+				}
+			],
+			"language" : "C",
+			"sourceIndexes" : 
+			[
+				1,
+				2,
+				4
+			]
+		}
+	],
+	"dependencies" : 
+	[
+		{
+			"backtrace" : 3,
+			"id" : "app::@2ef8eb2e4770df38f87f"
+		}
+	],
+	"id" : "init::@fa7672a329b369120015",
+	"link" : 
+	{
+		"commandFragments" : 
+		[
+			{
+				"fragment" : "-g -c -O0 -m32 -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -g",
+				"role" : "flags"
+			},
+			{
+				"fragment" : "-m elf_i386 -T /home/kbpoyo/code/cpp/MyOs/source/init/link.lds -L /home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/lib -lm -lc   -rdynamic",
+				"role" : "flags"
+			}
+		],
+		"language" : "C"
+	},
+	"name" : "init",
+	"nameOnDisk" : "init",
+	"paths" : 
+	{
+		"build" : "source/init",
+		"source" : "source/init"
+	},
+	"sourceGroups" : 
+	[
+		{
+			"name" : "",
+			"sourceIndexes" : 
+			[
+				0
+			]
+		},
+		{
+			"name" : "Source Files",
+			"sourceIndexes" : 
+			[
+				1,
+				2,
+				4
+			]
+		},
+		{
+			"name" : "Header Files",
+			"sourceIndexes" : 
+			[
+				3,
+				5
+			]
+		}
+	],
+	"sources" : 
+	[
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "source/applib/crt0.S",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 1,
+			"path" : "source/applib/cstart.c",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 1,
+			"path" : "source/applib/lib_syscall.c",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"path" : "source/applib/lib_syscall.h",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 1,
+			"path" : "source/init/main.c",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"path" : "source/init/main.h",
+			"sourceGroupIndex" : 2
+		}
+	],
+	"type" : "EXECUTABLE"
+}
