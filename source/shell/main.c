@@ -248,6 +248,47 @@ less_quit:
   return 0;
 }
 
+/**
+ * @brief 进行文件拷贝操作
+ * 
+ * @param argc 
+ * @param argv 
+ * @return int 
+ */
+static int do_cp(int argc, const char **argv) {
+  if (argc < 3) {
+    fprintf(stderr, "no [from] or no [to]\n");
+    return -1;
+  }
+
+  FILE *from, *to;
+  from = fopen(argv[1], "rb");
+  from = fopen(argv[2], "wb");
+  if (!from || !to) {
+    fprintf(stderr, "open file failed\n");
+    goto  cp_failed;
+  }
+
+  char *buf = (char *)malloc(255);
+  int size;
+  while ((size = fread(buf, 1, 255, from)) > 0) {
+    fwrite(buf, 1, 255, to);
+  }
+  free(buf);
+
+cp_failed:
+  if (from) {
+    fclose(from);
+  }
+
+  if (to) {
+    fclose(to);
+  }
+
+  return 0;
+
+}
+
 // 终端命令表
 static const cli_cmd_t cmd_list[] = {
     {
@@ -274,6 +315,11 @@ static const cli_cmd_t cmd_list[] = {
         .name = "less",
         .usage = "quit from shell",
         .do_func = do_less,
+    },
+    {
+        .name = "cp",
+        .usage = "quit from shell",
+        .do_func = do_cp,
     },
     {
         .name = "quit",

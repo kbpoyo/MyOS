@@ -23,14 +23,16 @@
 //标志该root_entry末尾项
 #define DIRITEM_NAME_END        0x00
 
-#define DIRITEM_ATTR_READ_ONLY  0x1
-#define DIRITEM_ATTR_HIDDEN     0x2
-#define DIRITEM_ATTR_SYSTEM     0x4
+#define DIRITEM_ATTR_READ_ONLY  0x1     //此目录项对应一个只读文件
+#define DIRITEM_ATTR_HIDDEN     0x2     //此目录项对应一个隐藏文件
+#define DIRITEM_ATTR_SYSTEM     0x4     //此目录项对应一个系统文件
 #define DIRITEM_ATTR_VOLUME_ID  0x8
-#define DIRITEM_ATTR_DIRECTORY  0x10
+#define DIRITEM_ATTR_DIRECTORY  0x10    //此目录项对应一个目录文件
 #define DIRITEM_ATTR_ARCHIVE    0x20
 #define DIRITEM_ATTR_LONG_NAME  0xF //长文件名类型的文件会用两个目录项来记录
                                     //我直接忽略这种文件
+
+#define SFN_LEN                 11// sfn系统文件名长
 
 //根目录区的目录项结构
 typedef struct _diritem_t {

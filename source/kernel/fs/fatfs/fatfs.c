@@ -17,6 +17,62 @@
 #include "core/memory.h"
 #include "tools/klib.h"
 #include <sys/fcntl.h>
+/**
+ * @brief 将普通文件名src转换成系统文件名dest
+ *         系统文件名是8个字节文件名 + 3个字节拓展名
+ *         拓展名不为空，则8个字节的最后一个字节为'.'
+ * 
+ * @param dest 
+ * @param src 
+ */
+static void to_sfn(char* dest, const char* src) {
+    kernel_memset(dest, ' ', SFN_LEN);
+
+    // 不断生成直到遇到分隔符和写完缓存
+    char * curr = dest;
+    char * end = dest + SFN_LEN;
+    while (*src && (curr < end)) {
+        char c = *src++;
+
+        switch (c) {
+        case '.':       // 隔附，跳到扩展名区，不写字符
+            curr = dest + 8;
+            break;
+        default:
+            if ((c >= 'a') && (c <= 'z')) {
+                c = c - 'a' + 'A';
+            }
+            *curr++ = c;
+            break;
+        }
+    }
+}
+
+
+/**
+ * @brief 初始化一个根目录区的目录项
+ * 
+ * @param item 
+ * @param attr 
+ * @param path 
+ * @return int 
+ */
+static int diritem_init(diritem_t *item, uint8_t attr, const char *name) {
+    to_sfn((char *)item->DIR_Name, name);
+    item->DIR_FstClusHI = (uint16_t)(FAT_CLUSTER_INVALID >> 16);
+    item->DIR_FstClusLo = (uint16_t)(FAT_CLUSTER_INVALID 0xffff);
+    item->DIR_FileSize = 0;
+    item->DIR_Attr = attr;
+    item->DIR_NTRes = 0;
+
+    item->DIR_CrtDate = 0;
+    item->DIR_CrtTime = 0;
+    item->DIR_WrtDate = 0;
+    item->DIR_WrtTime = 0;
+    item->DIR_LastAccDate = 0;
+
+    return 0;
+}
 
 /**
  * @brief 判断簇号是否有效
@@ -349,6 +405,9 @@ int fatfs_open(struct _fs_t *fs, const char *path, file_t *file) {
             return -1;
         }
 
+        //记录所遍历到的目录项的索引
+        p_index = i;
+
         if (item->DIR_Name[0] == DIRITEM_NAME_END) {
             break;
         }
@@ -360,15 +419,29 @@ int fatfs_open(struct _fs_t *fs, const char *path, file_t *file) {
         //进行路径匹配
         if (diritem_name_match(item, path)) {
             file_item = item;
-            p_index = i;
             break;
         }
     }
 
-    //从目录项中读取文件信息到file结构中
-    if (file_item) {
+    
+    if (file_item) {//从目录项中读取文件信息到file结构中
         read_from_diritem(fat, file, file_item, p_index);
         return 0;
+    } else if ((file->mode & O_CREAT)){//创建文件模式下未找到对应的目录项，创建新一个文件
+        //初始化一个目录项信息
+        diritem_t item;
+        diritem_init(&item, 0, path);
+
+        //将目录项信息写入到根目录区
+        int err = write_dir_entry(fat, &item, p_index);
+        if (err < 0) {
+            log_printf("create file failed\n");
+            return -1;
+        }
+
+        //将目录项信息读到file结构中
+        read_from_diritem(fat, file, item, p_index);
+
     }
 
     return -1;
@@ -438,13 +511,12 @@ int fatfs_read(char *buf, int size, file_t *file) {
         }
     
     }
-    
-
     return total_read;
 }
 
 
 int fatfs_write(char *buf, int size, file_t *file) {
+
     return 0;
 
 }

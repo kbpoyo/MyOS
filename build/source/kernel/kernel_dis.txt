@@ -5503,7 +5503,7 @@ static int copy_args(uint32_t to_page_dir, char *stack_top, char *const *argv,
 
   // 3.获取参数的存储地址, 偏移量为 task_args 加上
   // argc个参数的字符串指针的大小
-  //多给一个空指针位置，供之后的程序使用
+  //TODO:多给一个空指针位置，不然在解析参数的时候没有结束标志可能会访问异常
   char *dest_arg = stack_top + sizeof(task_args_t) + sizeof(char *) * (argc + 1);
    12271:	8b 45 14             	mov    0x14(%ebp),%eax
    12274:	83 c0 04             	add    $0x4,%eax
