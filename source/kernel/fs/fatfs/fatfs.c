@@ -17,6 +17,10 @@
 #include "core/memory.h"
 #include "tools/klib.h"
 #include <sys/fcntl.h>
+
+
+
+
 /**
  * @brief 将普通文件名src转换成系统文件名dest
  *         系统文件名是8个字节文件名 + 3个字节拓展名
@@ -60,7 +64,7 @@ static void to_sfn(char* dest, const char* src) {
 static int diritem_init(diritem_t *item, uint8_t attr, const char *name) {
     to_sfn((char *)item->DIR_Name, name);
     item->DIR_FstClusHI = (uint16_t)(FAT_CLUSTER_INVALID >> 16);
-    item->DIR_FstClusLo = (uint16_t)(FAT_CLUSTER_INVALID 0xffff);
+    item->DIR_FstClusLo = (uint16_t)(FAT_CLUSTER_INVALID & 0xffff);
     item->DIR_FileSize = 0;
     item->DIR_Attr = attr;
     item->DIR_NTRes = 0;
@@ -85,13 +89,13 @@ static int cluster_is_valid(cluster_t cluster) {
 } 
 
 /**
- * @brief 以缓存的方式读取扇区
+ * @brief 以缓存的方式读取扇区sector到fat_buffer中
  * 
  * @param fat 
  * @param sector 
  * @return int 
  */
-static int cache_read_sector(fat_t *fat, int sector) {
+static int fat_read_sector(fat_t *fat, int sector) {
     //要读扇区已被缓存，直接返回即可
     if (sector == fat->curr_sector) {
         return 0;
@@ -105,6 +109,18 @@ static int cache_read_sector(fat_t *fat, int sector) {
     }
 
     return -1;
+}
+/**
+ * @brief 以将fat_buffer写回到扇区sector中
+ * 
+ * @param fat 
+ * @param sector 
+ * @return int 
+ */
+static int fat_write_sector(fat_t *fat, int sector) {
+    int cnt = dev_write(fat->fs->dev_id, sector, fat->fat_buffer, 1);
+
+    return (cnt == 1) ? 0 : -1;
 }
 
 /**
@@ -133,12 +149,77 @@ static int cluster_get_next(fat_t *fat, cluster_t cblk) {
         return FAT_CLUSTER_INVALID;
     }
 
-    int err = cache_read_sector(fat, fat->tbl_start_sector + sector);
+    int err = fat_read_sector(fat, fat->tbl_start_sector + sector);
     if (err < 0) {
         return FAT_CLUSTER_INVALID;
     }
 
     return *(cluster_t *)(fat->fat_buffer + off_in_sector);
+}
+
+
+/**
+ * @brief 设置fat表种簇号start对应的下一个簇号为next
+ * 
+ * @param fat 
+ * @param start 
+ * @param next 
+ */
+static int cluster_set_next(fat_t *fat, cluster_t start, cluster_t next) {
+     //簇号无效
+    if (!cluster_is_valid(start)) {
+        return FAT_CLUSTER_INVALID;
+    }
+
+    //计算当前簇cblk在对应分区中的扇区号
+    //fat表保存了簇链关系，
+    int offset = start * sizeof(cluster_t);
+    int sector = offset / fat->bytes_per_sector;
+    //计算该簇在扇区中的偏移量
+    int off_in_sector = offset % fat->bytes_per_sector;
+
+    if (sector >= fat->tbl_sectors) {
+        log_printf("cluster too big: %d\n", start);
+        return FAT_CLUSTER_INVALID;
+    }
+
+    //将该簇号所在的扇区读到缓冲区fat_buffer中
+    int err = fat_read_sector(fat, fat->tbl_start_sector + sector);
+    if (err < 0) {
+        return FAT_CLUSTER_INVALID;
+    }
+
+    //将缓冲区中该表项的值设未next
+    *(cluster_t *)(fat->fat_buffer + off_in_sector) = next;
+    //再将缓冲区覆盖到磁盘对应区域
+    for (int i = 0; i < fat->tbl_cnt; ++i) {
+        err = fat_write_sector(fat, fat->tbl_start_sector + sector);
+        if (err < 0) {
+            log_printf("write cluster failed.\n");
+            return -1;
+        }
+
+        //偏移一个fat表的大小，将相邻的第二个fat表的对应位置也清空
+        sector += fat->tbl_sectors;
+    }
+
+    return 0;
+
+}
+
+/**
+ * @brief 清除fat表中的簇链关系
+ * 
+ * @param fat 
+ * @param start 
+ */
+void cluster_free_chain(fat_t *fat, cluster_t start) {
+    //链式清空
+    while (cluster_is_valid(start)) {
+        cluster_t next = cluster_get_next(fat, start);
+        cluster_set_next(fat, start, CLUSTER_FAT_FREE);
+        start = next;
+    }
 }
 
 /**
@@ -263,6 +344,34 @@ static int diritem_name_match(diritem_t *item, const char *dest) {
     return kernel_strncmp(buf, dest, 11) == 0;
 }
 
+/**
+ * @brief 向根目录区写入索引为dir_index的目录项
+ * 
+ * @param fat 
+ * @param dir_index 
+ * @return diritem_t* 
+ */
+static int write_dir_entry(fat_t *fat, diritem_t *item, int dir_index) {
+    if (dir_index < 0 || dir_index >= fat->root_ent_cnt) {
+        return -1;
+    }
+
+    //计算该目录项所在根目录区的扇区的扇区号
+    int offset = dir_index * sizeof(diritem_t);
+    int sector = fat->root_start_sector + offset / fat->bytes_per_sector;
+    int err = fat_read_sector(fat, sector);
+    if (err < 0) {
+        return -1;
+    }
+
+    //将该目录项拷贝到扇区缓存的指定对应位置
+    kernel_memcpy(fat->fat_buffer + offset % fat->bytes_per_sector, item, sizeof(diritem_t));
+
+    //将扇区重新覆盖到磁盘上
+    fat_write_sector(fat, sector);
+    
+    return 0;
+}
 
 
 
@@ -282,7 +391,7 @@ static diritem_t * read_dir_entry(fat_t *fat, int dir_index) {
     //计算该目录项所在根目录区的扇区的扇区号
     int offset = dir_index * sizeof(diritem_t);
     int sector = fat->root_start_sector + offset / fat->bytes_per_sector;
-    int err = cache_read_sector(fat, sector);
+    int err = fat_read_sector(fat, sector);
     if (err < 0) {
         return (diritem_t*)0;
     }
@@ -440,7 +549,8 @@ int fatfs_open(struct _fs_t *fs, const char *path, file_t *file) {
         }
 
         //将目录项信息读到file结构中
-        read_from_diritem(fat, file, item, p_index);
+        read_from_diritem(fat, file, &item, p_index);
+        return 0;
 
     }
 
@@ -649,6 +759,47 @@ int fatfs_closedir(struct _fs_t *fs, DIR *dir) {
  return 0;
 }
 
+/**
+ * @brief fat文件系统删除文件
+ * 
+ * @param fs 
+ * @param path 
+ * @return int 
+ */
+int fatfs_unlink(struct _fs_t *fs, const char *path) {
+     //获取fat表信息
+    fat_t *fat = (fat_t*)fs->data;
+
+    for (int i = 0; i < fat->root_ent_cnt; ++i) {
+        diritem_t * item = read_dir_entry(fat, i);
+        if (item == (diritem_t *)0) {
+            return -1;
+        }
+
+        if (item->DIR_Name[0] == DIRITEM_NAME_END) {
+            break;
+        }
+
+        if (item->DIR_Name[0] == DIRITEM_NAEM_FREE) {
+            continue;
+        }
+
+        //进行路径匹配
+        if (diritem_name_match(item, path)) {
+            //找到文件，进行删除操作
+            //获取文件的起始簇号，并清除fat表中的簇链关系
+            int cluster = (item->DIR_FstClusHI << 16) | item->DIR_FstClusLo;
+            cluster_free_chain(fat, cluster);
+
+            //将磁盘上该目录项的位置清空
+            diritem_t file_item;
+            kernel_memset(&file_item, 0, sizeof(diritem_t));
+            return write_dir_entry(fat, &file_item, i);
+        }
+    }
+
+    return -1;
+}
 
 //将fat文件系统的操作函数抽象给顶层文件系统使用
 //类似于多态处理
@@ -664,4 +815,5 @@ fs_op_t fatfs_op = {
     .opendir = fatfs_opendir,
     .readdir = fatfs_readdir,
     .closedir = fatfs_closedir,
+    .unlink = fatfs_unlink,
 };

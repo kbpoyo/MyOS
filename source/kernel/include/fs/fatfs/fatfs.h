@@ -16,6 +16,8 @@
 
 #pragma pack(1)
 
+//清空簇链关系时,该簇号标志此FAT表项空闲
+#define CLUSTER_FAT_FREE        0
 //标志该簇对应的号码无效
 #define FAT_CLUSTER_INVALID     0xff8
 //标志该root_entry是空闲的

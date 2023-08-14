@@ -10,7 +10,7 @@ ELF Header:
   Version:                           0x1
   Entry point address:               0x82000000
   Start of program headers:          52 (bytes into file)
-  Start of section headers:          55196 (bytes into file)
+  Start of section headers:          55380 (bytes into file)
   Flags:                             0x0
   Size of this header:               52 (bytes)
   Size of program headers:           32 (bytes)
@@ -22,21 +22,21 @@ ELF Header:
 Section Headers:
   [Nr] Name              Type            Addr     Off    Size   ES Flg Lk Inf Al
   [ 0]                   NULL            00000000 000000 000000 00      0   0  0
-  [ 1] .text             PROGBITS        82000000 001000 0017a7 00  AX  0   0  4
-  [ 2] .rodata           PROGBITS        820017a8 0027a8 000004 00   A  0   0  4
-  [ 3] .data             PROGBITS        820017c0 0027c0 000850 00  WA  0   0 32
-  [ 4] .bss              NOBITS          82002020 003010 000054 00  WA  0   0 32
-  [ 5] .debug_line       PROGBITS        00000000 003010 000e97 00      0   0  1
-  [ 6] .debug_line_str   PROGBITS        00000000 003ea7 0005f0 01  MS  0   0  1
-  [ 7] .debug_info       PROGBITS        00000000 004497 006320 00      0   0  1
-  [ 8] .debug_abbrev     PROGBITS        00000000 00a7b7 001723 00      0   0  1
-  [ 9] .debug_aranges    PROGBITS        00000000 00bee0 000198 00      0   0  8
-  [10] .debug_str        PROGBITS        00000000 00c078 000a05 01  MS  0   0  1
-  [11] .comment          PROGBITS        00000000 00ca7d 00003d 01  MS  0   0  1
-  [12] .debug_frame      PROGBITS        00000000 00cabc 00058c 00      0   0  4
-  [13] .symtab           SYMTAB          00000000 00d048 000420 10     14  17  4
-  [14] .strtab           STRTAB          00000000 00d468 00029a 00      0   0  1
-  [15] .shstrtab         STRTAB          00000000 00d702 00009a 00      0   0  1
+  [ 1] .text             PROGBITS        82000000 001000 0017ce 00  AX  0   0  4
+  [ 2] .rodata           PROGBITS        820017d0 0027d0 000004 00   A  0   0  4
+  [ 3] .data             PROGBITS        820017e0 0027e0 000850 00  WA  0   0 32
+  [ 4] .bss              NOBITS          82002040 003030 000054 00  WA  0   0 32
+  [ 5] .debug_line       PROGBITS        00000000 003030 000ea7 00      0   0  1
+  [ 6] .debug_line_str   PROGBITS        00000000 003ed7 0005f0 01  MS  0   0  1
+  [ 7] .debug_info       PROGBITS        00000000 0044c7 006367 00      0   0  1
+  [ 8] .debug_abbrev     PROGBITS        00000000 00a82e 001723 00      0   0  1
+  [ 9] .debug_aranges    PROGBITS        00000000 00bf58 000198 00      0   0  8
+  [10] .debug_str        PROGBITS        00000000 00c0f0 000a0c 01  MS  0   0  1
+  [11] .comment          PROGBITS        00000000 00cafc 00003d 01  MS  0   0  1
+  [12] .debug_frame      PROGBITS        00000000 00cb3c 0005ac 00      0   0  4
+  [13] .symtab           SYMTAB          00000000 00d0e8 000430 10     14  17  4
+  [14] .strtab           STRTAB          00000000 00d518 0002a1 00      0   0  1
+  [15] .shstrtab         STRTAB          00000000 00d7b9 00009a 00      0   0  1
 Key to Flags:
   W (write), A (alloc), X (execute), M (merge), S (strings), I (info),
   L (link order), O (extra OS processing required), G (group), T (TLS),
@@ -47,7 +47,7 @@ There are no section groups in this file.
 
 Program Headers:
   Type           Offset   VirtAddr   PhysAddr   FileSiz MemSiz  Flg Align
-  LOAD           0x001000 0x82000000 0x82000000 0x02010 0x02074 RWE 0x1000
+  LOAD           0x001000 0x82000000 0x82000000 0x02030 0x02094 RWE 0x1000
   GNU_STACK      0x000000 0x00000000 0x00000000 0x00000 0x00000 RWE 0x10
 
  Section to Segment mapping:
@@ -60,7 +60,7 @@ There is no dynamic section in this file.
 There are no relocations in this file.
 No processor specific unwind information to decode
 
-Symbol table '.symtab' contains 66 entries:
+Symbol table '.symtab' contains 67 entries:
    Num:    Value  Size Type    Bind   Vis      Ndx Name
      0: 00000000     0 NOTYPE  LOCAL  DEFAULT  UND 
      1: 00000000     0 FILE    LOCAL  DEFAULT  ABS cstart.c
@@ -68,65 +68,66 @@ Symbol table '.symtab' contains 66 entries:
      3: 00000000     0 FILE    LOCAL  DEFAULT  ABS main.c
      4: 00000000     0 FILE    LOCAL  DEFAULT  ABS exit.c
      5: 00000000     0 FILE    LOCAL  DEFAULT  ABS impure.c
-     6: 820017c0  1060 OBJECT  LOCAL  DEFAULT    3 impure_data
+     6: 820017e0  1060 OBJECT  LOCAL  DEFAULT    3 impure_data
      7: 00000000     0 FILE    LOCAL  DEFAULT  ABS malloc.c
      8: 00000000     0 FILE    LOCAL  DEFAULT  ABS mallocr.c
-     9: 820004be   659 FUNC    LOCAL  DEFAULT    1 malloc_extend_top
+     9: 820004e5   659 FUNC    LOCAL  DEFAULT    1 malloc_extend_top
     10: 00000000     0 FILE    LOCAL  DEFAULT  ABS mlock.c
-    11: 82002068     4 OBJECT  LOCAL  DEFAULT    4 __malloc_recursi[...]
+    11: 82002088     4 OBJECT  LOCAL  DEFAULT    4 __malloc_recursi[...]
     12: 00000000     0 FILE    LOCAL  DEFAULT  ABS sbrkr.c
     13: 00000000     0 FILE    LOCAL  DEFAULT  ABS __call_atexit.c
-    14: 8200206c     4 OBJECT  LOCAL  DEFAULT    4 __atexit_recursi[...]
+    14: 8200208c     4 OBJECT  LOCAL  DEFAULT    4 __atexit_recursi[...]
     15: 00000000     0 FILE    LOCAL  DEFAULT  ABS mallocr.c
     16: 00000000     0 FILE    LOCAL  DEFAULT  ABS reent.c
-    17: 82001610    55 FUNC    GLOBAL DEFAULT    1 cleanup_glue
+    17: 82001637    55 FUNC    GLOBAL DEFAULT    1 cleanup_glue
     18: 8200014f    27 FUNC    GLOBAL DEFAULT    1 yield
     19: 820003e3    57 FUNC    GLOBAL DEFAULT    1 ioctl
-    20: 82000f79     6 FUNC    GLOBAL DEFAULT    1 __malloc_unlock
-    21: 82002070     4 OBJECT  GLOBAL DEFAULT    4 errno
+    20: 82000fa0     6 FUNC    GLOBAL DEFAULT    1 __malloc_unlock
+    21: 82002090     4 OBJECT  GLOBAL DEFAULT    4 errno
     22: 82000122    45 FUNC    GLOBAL DEFAULT    1 execve
     23: 820000c4    27 FUNC    GLOBAL DEFAULT    1 getpid
-    24: 82000485    28 FUNC    GLOBAL DEFAULT    1 malloc
+    24: 820004ac    28 FUNC    GLOBAL DEFAULT    1 malloc
     25: 82000239    33 FUNC    GLOBAL DEFAULT    1 isatty
-    26: 82002020     4 OBJECT  GLOBAL DEFAULT    4 __malloc_top_pad
-    27: 82002020     0 NOTYPE  GLOBAL DEFAULT    4 __bss_start__
-    28: 82000f7f    64 FUNC    GLOBAL DEFAULT    1 _sbrk_r
+    26: 82002040     4 OBJECT  GLOBAL DEFAULT    4 __malloc_top_pad
+    27: 82002040     0 NOTYPE  GLOBAL DEFAULT    4 __bss_start__
+    28: 82000fa6    64 FUNC    GLOBAL DEFAULT    1 _sbrk_r
     29: 8200036e    64 FUNC    GLOBAL DEFAULT    1 readdir
-    30: 82002024     4 OBJECT  GLOBAL DEFAULT    4 __malloc_max_sbr[...]
+    30: 82002044     4 OBJECT  GLOBAL DEFAULT    4 __malloc_max_sbr[...]
     31: 8200020c    45 FUNC    GLOBAL DEFAULT    1 lseek
-    32: 820017a8     4 OBJECT  GLOBAL DEFAULT    2 _global_impure_ptr
-    33: 82001647   352 FUNC    GLOBAL DEFAULT    1 _reclaim_reent
+    32: 820017d0     4 OBJECT  GLOBAL DEFAULT    2 _global_impure_ptr
+    33: 8200166e   352 FUNC    GLOBAL DEFAULT    1 _reclaim_reent
     34: 820001be    45 FUNC    GLOBAL DEFAULT    1 write
     35: 8200025a    39 FUNC    GLOBAL DEFAULT    1 fstat
     36: 8200004e    76 FUNC    GLOBAL DEFAULT    1 sys_call
-    37: 82002074     0 NOTYPE  GLOBAL DEFAULT    4 __bss_end__
-    38: 820010d4   987 FUNC    GLOBAL DEFAULT    1 _free_r
+    37: 82002094     0 NOTYPE  GLOBAL DEFAULT    4 __bss_end__
+    38: 820010fb   987 FUNC    GLOBAL DEFAULT    1 _free_r
     39: 820002e5    33 FUNC    GLOBAL DEFAULT    1 wait
-    40: 82000fbf   277 FUNC    GLOBAL DEFAULT    1 __call_exitprocs
-    41: 8200200c     4 OBJECT  GLOBAL DEFAULT    3 __malloc_sbrk_base
+    40: 82000fe6   277 FUNC    GLOBAL DEFAULT    1 __call_exitprocs
+    41: 8200202c     4 OBJECT  GLOBAL DEFAULT    3 __malloc_sbrk_base
     42: 82000000     0 NOTYPE  GLOBAL DEFAULT    1 _start
     43: 82000191    45 FUNC    GLOBAL DEFAULT    1 read
-    44: 82002040    40 OBJECT  GLOBAL DEFAULT    4 __malloc_current[...]
-    45: 82000107    27 FUNC    GLOBAL DEFAULT    1 fork
-    46: 82001c00  1032 OBJECT  GLOBAL DEFAULT    3 __malloc_av_
-    47: 82000f73     6 FUNC    GLOBAL DEFAULT    1 __malloc_lock
-    48: 82000281    33 FUNC    GLOBAL DEFAULT    1 sbrk
-    49: 82000010    62 FUNC    GLOBAL DEFAULT    1 cstart
-    50: 8200041c    37 FUNC    GLOBAL DEFAULT    1 main
-    51: 82002028     4 OBJECT  GLOBAL DEFAULT    4 __malloc_max_tot[...]
-    52: 82000751  2082 FUNC    GLOBAL DEFAULT    1 _malloc_r
-    53: 82000306   104 FUNC    GLOBAL DEFAULT    1 opendir
-    54: 820014af   353 FUNC    GLOBAL DEFAULT    1 _malloc_trim_r
-    55: 820002a2    33 FUNC    GLOBAL DEFAULT    1 dup
-    56: 82001be4     4 OBJECT  GLOBAL DEFAULT    3 _impure_ptr
-    57: 820000df    40 FUNC    GLOBAL DEFAULT    1 print_msg
-    58: 82002008     4 OBJECT  GLOBAL DEFAULT    3 __malloc_trim_th[...]
-    59: 82000441    68 FUNC    GLOBAL DEFAULT    1 exit
-    60: 820002c3    34 FUNC    GLOBAL DEFAULT    1 _exit
-    61: 8200016a    39 FUNC    GLOBAL DEFAULT    1 open
-    62: 820003ae    53 FUNC    GLOBAL DEFAULT    1 closedir
-    63: 8200009a    42 FUNC    GLOBAL DEFAULT    1 msleep
-    64: 820001eb    33 FUNC    GLOBAL DEFAULT    1 close
-    65: 820004a1    29 FUNC    GLOBAL DEFAULT    1 free
+    44: 82002060    40 OBJECT  GLOBAL DEFAULT    4 __malloc_current[...]
+    45: 8200041c    39 FUNC    GLOBAL DEFAULT    1 unlink
+    46: 82000107    27 FUNC    GLOBAL DEFAULT    1 fork
+    47: 82001c20  1032 OBJECT  GLOBAL DEFAULT    3 __malloc_av_
+    48: 82000f9a     6 FUNC    GLOBAL DEFAULT    1 __malloc_lock
+    49: 82000281    33 FUNC    GLOBAL DEFAULT    1 sbrk
+    50: 82000010    62 FUNC    GLOBAL DEFAULT    1 cstart
+    51: 82000443    37 FUNC    GLOBAL DEFAULT    1 main
+    52: 82002048     4 OBJECT  GLOBAL DEFAULT    4 __malloc_max_tot[...]
+    53: 82000778  2082 FUNC    GLOBAL DEFAULT    1 _malloc_r
+    54: 82000306   104 FUNC    GLOBAL DEFAULT    1 opendir
+    55: 820014d6   353 FUNC    GLOBAL DEFAULT    1 _malloc_trim_r
+    56: 820002a2    33 FUNC    GLOBAL DEFAULT    1 dup
+    57: 82001c04     4 OBJECT  GLOBAL DEFAULT    3 _impure_ptr
+    58: 820000df    40 FUNC    GLOBAL DEFAULT    1 print_msg
+    59: 82002028     4 OBJECT  GLOBAL DEFAULT    3 __malloc_trim_th[...]
+    60: 82000468    68 FUNC    GLOBAL DEFAULT    1 exit
+    61: 820002c3    34 FUNC    GLOBAL DEFAULT    1 _exit
+    62: 8200016a    39 FUNC    GLOBAL DEFAULT    1 open
+    63: 820003ae    53 FUNC    GLOBAL DEFAULT    1 closedir
+    64: 8200009a    42 FUNC    GLOBAL DEFAULT    1 msleep
+    65: 820001eb    33 FUNC    GLOBAL DEFAULT    1 close
+    66: 820004c8    29 FUNC    GLOBAL DEFAULT    1 free
 
 No version information found in this file.

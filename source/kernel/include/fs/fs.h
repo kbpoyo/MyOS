@@ -35,6 +35,7 @@ typedef struct _fs_op_t {
     int (*stat)(file_t *file, struct stat *st);
     int (*ioctl)(file_t *file, int cmd, int arg0, int arg1);
 
+    int (*unlink)(struct _fs_t *fs, const char *path);
     int (*opendir)(struct _fs_t *fs, const char *name, DIR *dir);
     int (*readdir)(struct _fs_t *fs, DIR *dir, struct dirent *dirent);
     int (*closedir)(struct _fs_t *fs, DIR *dir);
@@ -85,6 +86,7 @@ int sys_fstat(int file, struct stat *st);
 int sys_dup(int file);
 int sys_ioctl(int file, int cmd, int arg0, int arg1);
 
+int sys_unlink(const char *path);
 int sys_opendir(const char *path, DIR *dir);
 int sys_readdir(DIR *dir, struct dirent *dirent);
 int sys_closedir(DIR *dir);

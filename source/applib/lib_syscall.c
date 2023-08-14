@@ -397,3 +397,19 @@ int ioctl(int file, int cmd, int arg0, int arg1) {
 
     return err;   
 }
+
+/**
+ * @brief 删除一个文件
+ * 
+ * @param path 
+ * @return int 
+ */
+int unlink(const char *path) {
+    syscall_args_t args;
+    args.id = SYS_unlink;
+    args.arg0 = (path);
+
+    int err = sys_call(&args);
+
+    return err;   
+}

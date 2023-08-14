@@ -35,14 +35,15 @@
 #define SYS_fstat       56
 #define SYS_dup         57
 #define SYS_ioctl       58
-//内存分配系统调用
-#define SYS_sbrk        59
-
+#define SYS_unlink      59
 
 //目录分配系统调用
 #define SYS_opendir     60
 #define SYS_readdir     61
 #define SYS_closedir    62
+
+//内存分配系统调用
+#define SYS_sbrk        63
 
 #define SYS_printmsg    10   //临时使用的打印函数
 

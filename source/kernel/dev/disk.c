@@ -43,6 +43,7 @@ static uint8_t task_on_op = 0;
 static void disk_send_cmd(disk_t *disk, uint32_t start_sector,
                           uint32_t sector_count, int cmd) {
   // 1.LBA模式下指定磁盘的驱动器号，即master或者slave
+  // 将drive寄存器的对应位置为即可
   outb(DISK_DRIVE(disk), DISK_DRIVE_BASE | disk->drive);
 
   // 2.指定扇区数的高八位和起始扇区即LBA值的高24位
@@ -60,7 +61,7 @@ static void disk_send_cmd(disk_t *disk, uint32_t start_sector,
   outb(DISK_LBA_HI(disk), (uint8_t)(start_sector >> 16));  // LBA3
 
   // 4.对指定的区域执行cmd指令操作
-  outb(DISK_CMD(disk), cmd);
+  outb(DISK_CMD(disk), (uint8_t)cmd);
 }
 
 /**
@@ -390,7 +391,7 @@ int disk_write(device_t *dev, int addr, char *buf, int size) {
     task_on_op = 1; //将标志位置1，表示用户进程在执行磁盘操作
   }
 
-  //发送读取指令
+  //发送写入指令
   disk_send_cmd(disk, part_info->start_sector + addr, size, DISK_CMD_WRITE);
 
   //

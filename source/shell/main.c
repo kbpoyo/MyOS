@@ -289,6 +289,27 @@ cp_failed:
 
 }
 
+/**
+ * @brief 删除文件
+ * 
+ * @param argc 
+ * @param argv 
+ * @return int 
+ */
+static int do_rm(int argc, const char **argv) {
+  if (argc < 2) {
+    fprintf(stderr, "no file input\n");
+    return -1;
+  }
+
+  int err = unlink(argv[1]);
+  if (err < 0) {
+    fprintf(stderr, "rm file failed: %s\n", argv[1]);
+  }
+
+  return err;
+}
+
 // 终端命令表
 static const cli_cmd_t cmd_list[] = {
     {
@@ -318,8 +339,13 @@ static const cli_cmd_t cmd_list[] = {
     },
     {
         .name = "cp",
-        .usage = "quit from shell",
+        .usage = "cp src dest\t--copy file",
         .do_func = do_cp,
+    },
+    {
+        .name = "rm",
+        .usage = "rm file\tremove file",
+        .do_func = do_rm,
     },
     {
         .name = "quit",

@@ -53,6 +53,7 @@ int write(int file, char *ptr, int len);
 int close(int file);
 int lseek(int file, int offset, int dir);
 int ioctl(int file, int cmd, int arg0, int arg1);
+int unlink(const char *path);
 
 int isatty(int file);
 int fstat(int file, struct stat *st);

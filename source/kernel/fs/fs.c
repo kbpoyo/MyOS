@@ -518,6 +518,18 @@ int sys_ioctl(int fd, int cmd, int arg0, int arg1) {
 }
 
 /**
+ * @brief 根据文件路径删除文件
+ * 
+ * @param path_name 
+ * @return int 
+ */
+int sys_unlink(const char *path) {
+  fs_protect(root_fs);
+  int err = root_fs->op->unlink(root_fs, path);
+  fs_unprotect(root_fs);
+}
+
+/**
  * @brief 初始化free_list和mount_list
  *
  */

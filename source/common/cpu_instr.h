@@ -74,7 +74,9 @@ static inline void outb(uint16_t port, uint8_t data) {
  * @param port
  * @param data
  */
-static inline void outw(uint16_t port, uint8_t data) {
+//TODO:note-> outw只写入1字节数据，导致磁盘未接收到一个扇区的数据
+//从而一直未触发中断
+static inline void outw(uint16_t port, uint16_t data) {
   __asm__ __volatile__(
       "out %[v], %[p]"
       :  // 无输出参数
