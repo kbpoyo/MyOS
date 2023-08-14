@@ -350,6 +350,7 @@ static void run_exec_file(const char *path, int argc, const char **argv) {
     for (int i = 0; i < argc; ++i) {
       printf("arg %d = %s\n", i, argv[i]);
     }
+    execve(argv[0], argv, NULL);
     exit(-1);
   } else {
     int status;

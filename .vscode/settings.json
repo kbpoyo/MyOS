@@ -28,7 +28,8 @@
         "file.h": "c",
         "list.h": "c",
         "disk.h": "c",
-        "stdlib.h": "c"
+        "stdlib.h": "c",
+        "main.h": "c"
     },
     "todo-tree.tree.scanMode": "workspace only",
     "editor.fontSize": 16,

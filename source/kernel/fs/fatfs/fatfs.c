@@ -451,7 +451,54 @@ int fatfs_write(char *buf, int size, file_t *file) {
 void fatfs_close(file_t *file) {
 
 }
+
+/**
+ * @brief fat文件系统对文件file的读取位置pos按dir方向偏移offset字节
+ * 
+ * @param file 
+ * @param offset 
+ * @param dir 
+ * @return int 
+ */
 int fatfs_seek(file_t *file, uint32_t offset, int dir) {
+    if (dir != 0) {
+        return -1;
+    }
+
+    fat_t *fat = (fat_t *)file->fs->data;
+    cluster_t current_cluster = file->cblk;
+    uint32_t curr_pos = 0;
+    uint32_t offset_to_move = offset;
+
+    //进行偏移处理
+    while (offset_to_move) {
+        //计算文件pos在当前簇中的偏移量
+        uint32_t c_offset = curr_pos % fat->cluster_bytes_size;
+        //初始化此次循环预备移动的字节量
+        uint32_t curr_move = offset_to_move;
+
+        if (c_offset + curr_move < fat->cluster_bytes_size) {
+            //此处循环移动后，pos还在当前簇中
+            curr_pos += curr_move;
+            break;
+        }
+
+        //此次循环移动后pos将移动到下一个簇
+        //所以先将本簇中的剩余字节量偏移
+        curr_move = fat->cluster_bytes_size - c_offset;
+        curr_pos += curr_move;
+        offset_to_move -= curr_move;
+
+        //获取下一个簇号
+        current_cluster = cluster_get_next(fat, current_cluster);
+        if (!cluster_is_valid(current_cluster)) {
+            return -1;
+        }
+
+    }
+
+    file->cblk = current_cluster;
+    file->pos = curr_pos;
     
     return 0;
 

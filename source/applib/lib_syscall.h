@@ -17,6 +17,10 @@
 #include "os_cfg.h"
 #include <sys/stat.h>  
 
+//外部程序输入的TTY控制指令宏
+//对tyy回显进行设置
+#define TTY_CMD_ECHO    0x1
+
 /**
  * @brief 系统调用的参数结构体
  * 

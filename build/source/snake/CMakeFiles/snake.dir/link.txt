@@ -1,0 +1,1 @@
+ld CMakeFiles/snake.dir/__/applib/crt0.S.o CMakeFiles/snake.dir/__/applib/cstart.c.o CMakeFiles/snake.dir/__/applib/lib_syscall.c.o CMakeFiles/snake.dir/main.c.o -m elf_i386 -T /home/kbpoyo/code/cpp/MyOs/source/snake/link.lds -L /home/kbpoyo/code/cpp/MyOs/build/../../newlib/i686-elf/lib -lm -lc -o /home/kbpoyo/code/cpp/MyOs/build/source/snake/snake.elf

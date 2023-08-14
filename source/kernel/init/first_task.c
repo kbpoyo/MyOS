@@ -59,7 +59,7 @@ int first_main(void) {
             char tty_num[] = "/dev/tty?";
             tty_num[sizeof(tty_num) - 2] = i + '0';
             char * const argv[] = {tty_num, 0};
-            execve("/shell.elf", argv, 0);
+            execve("shell.elf", argv, 0);
             while (1)   {
                 msleep(1000);
             }
