@@ -1053,7 +1053,7 @@ static int do_cp(int argc, const char **argv) {
 81000590:	e8 41 14 00 00       	call   810019d6 <fopen>
 81000595:	83 c4 10             	add    $0x10,%esp
 81000598:	89 45 f4             	mov    %eax,-0xc(%ebp)
-  from = fopen(argv[2], "wb");
+  to = fopen(argv[2], "wb");
 8100059b:	8b 45 0c             	mov    0xc(%ebp),%eax
 8100059e:	83 c0 08             	add    $0x8,%eax
 810005a1:	8b 00                	mov    (%eax),%eax
@@ -1062,7 +1062,7 @@ static int do_cp(int argc, const char **argv) {
 810005ab:	50                   	push   %eax
 810005ac:	e8 25 14 00 00       	call   810019d6 <fopen>
 810005b1:	83 c4 10             	add    $0x10,%esp
-810005b4:	89 45 f4             	mov    %eax,-0xc(%ebp)
+810005b4:	89 45 f0             	mov    %eax,-0x10(%ebp)
   if (!from || !to) {
 810005b7:	83 7d f4 00          	cmpl   $0x0,-0xc(%ebp)
 810005bb:	74 06                	je     810005c3 <do_cp+0x74>

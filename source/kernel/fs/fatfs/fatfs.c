@@ -88,6 +88,8 @@ static int cluster_is_valid(cluster_t cluster) {
     return (cluster < FAT_CLUSTER_INVALID) && (cluster >= 0x2);
 } 
 
+
+
 /**
  * @brief 以缓存的方式读取扇区sector到fat_buffer中
  * 
@@ -207,6 +209,7 @@ static int cluster_set_next(fat_t *fat, cluster_t start, cluster_t next) {
 
 }
 
+
 /**
  * @brief 清除fat表中的簇链关系
  * 
@@ -220,6 +223,111 @@ void cluster_free_chain(fat_t *fat, cluster_t start) {
         cluster_set_next(fat, start, CLUSTER_FAT_FREE);
         start = next;
     }
+}
+
+
+/**
+ * @brief 在fat表中分配空闲簇，并建立簇链关系
+ * 
+ * @param fat 
+ * @param cnt 
+ * @return cluster_t 
+ */
+static cluster_t cluster_alloc_free(fat_t *fat, int cnt) {
+    cluster_t start = FAT_CLUSTER_INVALID;
+    cluster_t pre = FAT_CLUSTER_INVALID;
+    cluster_t curr;
+    
+    //计算一个fat表中有多少个簇号
+    int c_total = fat->tbl_sectors * fat->bytes_per_sector / sizeof(cluster_t);
+    //0,1簇号未使用
+    for (curr = 2; cnt && (curr < c_total); ++curr) {
+        cluster_t free = cluster_get_next(fat, curr);
+        //当前簇curr没有链接关系，可供分配
+        if (free == CLUSTER_FAT_FREE) {
+            if (!cluster_is_valid(start)) {
+                //链头还未分配，先分配链头
+                start = curr;
+            }
+
+            if (cluster_is_valid(pre)) {
+                //前驱簇号有效且刚分配，则设置curr为pre的后继
+                int err = cluster_set_next(fat, pre, curr);
+                if (err < 0) {
+                    cluster_free_chain(fat, start);
+                    return FAT_CLUSTER_INVALID;
+                }
+            }
+            
+            //分配成功一个簇，更新pre和cnt
+            pre = curr;
+            cnt--;
+        }
+    }
+
+    //设置最后一个簇的后继为无效簇标志
+    if (cnt == 0) {
+        int err = cluster_set_next(fat, pre, FAT_CLUSTER_INVALID);
+        if (err < 0) {
+            cluster_free_chain(fat, start);
+            return FAT_CLUSTER_INVALID;
+        }
+    }
+
+    return start;
+}
+
+
+
+/**
+ * @brief 拓展文件空间大小
+ * 
+ * @param file 
+ * @param inc_size 
+ * @return int 
+ */
+static int expand_file(file_t *file, int inc_bytes) {
+    fat_t *fat = (fat_t*)file->fs->data;
+    
+    //计算文件需要拓展多少个簇
+    int  cluster_cnt;
+    if (file->size % fat->cluster_bytes_size == 0) {
+        //文件原始大小刚好装满已分配的最后一簇
+        //以簇为单位，计算需要拓展的簇的数量
+        cluster_cnt = up2(inc_bytes, fat->cluster_bytes_size) / fat->cluster_bytes_size;
+    } else {
+        //文件原始分配的最后一个簇空间还未装满
+        //计算最后一个簇的空间余量
+        int cluster_free = fat->cluster_bytes_size - (file->size % fat->cluster_bytes_size);
+        if (cluster_free >= inc_bytes) {
+            //余量足够支持需要拓展的字节量，则不需要分配新簇
+            return 0;
+        }
+
+        //余量不足以支持拓展字节量，需要分配新簇
+        cluster_cnt = up2(inc_bytes - cluster_free, fat->cluster_bytes_size) / fat->cluster_bytes_size;
+    }
+
+    //分配空闲簇，即在fat表中建立簇链关系
+    cluster_t start = cluster_alloc_free(fat, cluster_cnt);
+    if (!cluster_is_valid(start)) {
+        log_printf("no cluster for file write.\n");
+        return -1;
+    }
+
+    //文件还没有原始数据，则直接用分配的簇链初始化文件
+    if (!cluster_is_valid(file->sblk)) {
+        file->sblk = file->cblk = start;
+    } else {
+        //文件已有原始数据，将新分配的簇链开头设为文件当前簇cblk的下一个簇
+        int err = cluster_set_next(fat, file->cblk, start);
+        if (err < 0) {
+            return -1;
+        }
+    }
+
+    return 0;
+
 }
 
 /**
@@ -239,9 +347,16 @@ static int move_file_pos(file_t *file,
             //当前簇已读取完毕需更改当前簇号
             //通过fat的簇链获取当前簇的下一个簇
             cluster_t next = cluster_get_next(fat, file->cblk);
-            if (next == FAT_CLUSTER_INVALID) {  //簇号无效
-                return -1;
+            if (next == FAT_CLUSTER_INVALID && expand) {  
+                //当前簇cblk为簇链的最后一个簇，需要分配一个新簇再移动pos
+                int err = expand_file(file, fat->cluster_bytes_size);
+                if (err < 0) {
+                    return -1;
+                }
+                //获取新分配的链尾簇
+                next = cluster_get_next(fat, file->cblk);
             }
+
             file->cblk = next;
         }
 
@@ -535,8 +650,14 @@ int fatfs_open(struct _fs_t *fs, const char *path, file_t *file) {
     
     if (file_item) {//从目录项中读取文件信息到file结构中
         read_from_diritem(fat, file, file_item, p_index);
+
+        if (file->mode & O_TRUNC) { //以截断模式打开文件，需清空文件
+            cluster_free_chain(fat, file->sblk);
+            file->cblk = file->sblk = FAT_CLUSTER_INVALID;
+            file->size = 0;
+        }
         return 0;
-    } else if ((file->mode & O_CREAT)){//创建文件模式下未找到对应的目录项，创建新一个文件
+    } else if ((file->mode & O_CREAT) && p_index >= 0){//创建文件模式下未找到对应的目录项，创建新一个文件
         //初始化一个目录项信息
         diritem_t item;
         diritem_init(&item, 0, path);
@@ -625,13 +746,109 @@ int fatfs_read(char *buf, int size, file_t *file) {
 }
 
 
+/**
+ * @brief fat文件系统写入文件
+ * 
+ * @param buf 
+ * @param size 
+ * @param file 
+ * @return int 
+ */
 int fatfs_write(char *buf, int size, file_t *file) {
 
-    return 0;
+    fat_t *fat = (fat_t*)file->fs->data;
+
+    //文件空间大小不足以写入，需要拓展空间
+    if (file->pos + size > file->size) {
+        //计算文件当前空间大小与待写入的大小的差值
+        int inc_size = file->pos + size - file->size;
+        //拓展文件大小
+        int err = expand_file(file, inc_size);
+        if (err < 0) {
+            return 0;
+        }
+    }
+
+    uint32_t nbytes = size;
+    uint32_t total_write = 0;
+    while (nbytes > 0) {
+        //记录每次循环读取的字节数
+        uint32_t curr_write = nbytes;
+        //计算当前读取位置pos在当前写入的簇中的偏移量
+        uint32_t cluster_offset = file->pos % fat->cluster_bytes_size;
+        //计算文件在该分区中的起始扇区号
+        //fat文件系统中，在分区的文件数据区中，簇号从2开始编号
+        //[2],[3],[4]
+        uint32_t start_sector = fat->data_start_sector + (file->cblk - 2) * fat->sec_per_cluster;
+
+        //当前写入位置刚好在簇的开头，且大小为一个簇，直接进行整簇写入即可
+        if (cluster_offset == 0 && nbytes == fat->cluster_bytes_size) {
+            int err = dev_write(fat->fs->dev_id, start_sector, buf, fat->sec_per_cluster);
+            if (err < 0) {
+                return total_write;
+            }
+
+            curr_write = fat->cluster_bytes_size;
+        } else {//当前写入内容需要进行跨簇写入
+            if (cluster_offset + curr_write > fat->cluster_bytes_size) {
+                curr_write = fat->cluster_bytes_size - cluster_offset;
+            }
+
+            //先将当前簇中的内容读取到fat_buffer中
+            fat->curr_sector = start_sector;
+            int err = dev_read(fat->fs->dev_id, start_sector, fat->fat_buffer, fat->sec_per_cluster);
+            if (err < 0) {
+                return total_write;
+            }
+            //再将需要写入的内容写入fat_buffer中对应位置
+            kernel_memcpy(fat->fat_buffer + cluster_offset, buf, curr_write);
+
+            //再将fat_buffer覆盖回磁盘
+            err = dev_write(fat->fs->dev_id, start_sector, fat->fat_buffer, fat->sec_per_cluster);
+            if (err < 0) {
+                return total_write;
+            }
+        }
+        buf += curr_write;
+        nbytes -= curr_write;
+        total_write += curr_write;
+        file->size += curr_write;
+
+        //移动文件的读取位置file->pos
+        int err = move_file_pos(file, fat, curr_write, 1);
+        if (err < 0) {
+            return total_write;
+        }
+    }
+
+    return total_write;
 
 }
-void fatfs_close(file_t *file) {
 
+/**
+ * @brief fat文件系统关闭文件
+ * 
+ * @param file 
+ */
+void fatfs_close(file_t *file) {
+    if (file->mode == O_RDONLY) {
+        //文件只进行读操作，不需要回写到磁盘上
+        return;
+    }
+
+    fat_t *fat = (fat_t*)file->fs->data;
+
+    //读取文件所属的根目录区的目录项
+    diritem_t *item = read_dir_entry(fat, file->p_index);
+    if (item == (diritem_t *)0) {
+        return;
+    }
+
+    //更新目录项信息,并回写到磁盘上
+    item->DIR_FileSize = file->size;
+    item->DIR_FstClusHI = (uint16_t)(file->sblk << 16);
+    item->DIR_FstClusLo = (uint16_t)(file->sblk & 0xffff);
+    write_dir_entry(fat, item, file->p_index);
 }
 
 /**

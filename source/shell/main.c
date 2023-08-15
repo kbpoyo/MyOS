@@ -263,7 +263,7 @@ static int do_cp(int argc, const char **argv) {
 
   FILE *from, *to;
   from = fopen(argv[1], "rb");
-  from = fopen(argv[2], "wb");
+  to = fopen(argv[2], "wb");
   if (!from || !to) {
     fprintf(stderr, "open file failed\n");
     goto  cp_failed;

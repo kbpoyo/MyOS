@@ -59,10 +59,12 @@ typedef struct _fs_t {
     fs_type_t type;
     fs_op_t *op;
     void *data; //调用设备或文件时传入的数据
-    int dev_id; //设备id
     list_node_t node;
     mutex_t *mutex;
 
+    
+    //供fat文件系统使用
+    int dev_id; //设备id
     union { //当是fat16文件系统时，存储fat表的数据
         fat_t fat_data;
     };
