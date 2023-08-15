@@ -119,7 +119,24 @@ source/init/CMakeFiles/init.dir/main.c.o: ../source/init/main.c \
   ../source/newlib/i686-elf/include/sys/_pthreadtypes.h \
   ../source/newlib/i686-elf/include/sys/sched.h \
   ../source/newlib/i686-elf/include/machine/types.h \
-  ../source/newlib/i686-elf/include/sys/stdio.h
+  ../source/newlib/i686-elf/include/sys/stdio.h \
+  ../source/newlib/i686-elf/include/stdlib.h \
+  ../source/newlib/i686-elf/include/machine/stdlib.h \
+  ../source/newlib/i686-elf/include/alloca.h \
+  ../source/newlib/i686-elf/include/sys/fcntl.h \
+  ../source/newlib/i686-elf/include/sys/_default_fcntl.h \
+  ../source/newlib/i686-elf/include/sys/stat.h \
+  ../source/newlib/i686-elf/include/time.h \
+  ../source/newlib/i686-elf/include/machine/time.h \
+  ../source/newlib/i686-elf/include/sys/_locale.h \
+  ../source/applib/lib_syscall.h \
+  ../source/common/types.h \
+  ../source/kernel/include/cpu/syscall.h \
+  ../source/kernel/include/os_cfg.h \
+  ../source/kernel/include/dev/tty.h \
+  ../source/kernel/include/ipc/sem.h \
+  ../source/kernel/include/tools/list.h \
+  ../source/kernel/include/tools/assert.h
 
 
 /usr/lib/gcc/x86_64-linux-gnu/11/include/stdarg.h:
@@ -170,6 +187,8 @@ source/init/CMakeFiles/init.dir/main.c.o: ../source/init/main.c \
 
 ../source/newlib/i686-elf/include/stdlib.h:
 
+../source/newlib/i686-elf/include/sys/fcntl.h:
+
 ../source/newlib/i686-elf/include/machine/stdlib.h:
 
 ../source/newlib/i686-elf/include/_newlib_version.h:
@@ -209,6 +228,8 @@ source/init/CMakeFiles/init.dir/main.c.o: ../source/init/main.c \
 ../source/newlib/i686-elf/include/alloca.h:
 
 ../source/newlib/i686-elf/include/time.h:
+
+../source/newlib/i686-elf/include/sys/_default_fcntl.h:
 
 ../source/newlib/i686-elf/include/sys/_sigset.h:
 

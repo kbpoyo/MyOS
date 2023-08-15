@@ -16,6 +16,7 @@
 #include "common/cpu_instr.h"
 #include "tools/klib.h"
 #include "dev/tty.h"
+#include "core/task.h"
 /**
  * 键盘映射表，分3类
  * normal是没有shift键按下，或者没有numlock按下时默认的键值
@@ -173,6 +174,19 @@ static void do_normal_key(uint8_t key_code) {
                         key = map_table[key].normal;
                     }
 
+
+                    //判断是否是进程退出指令
+                    if (kbd_state.lctrl_press) {
+                        if (key == 'c' || key == 'z') {
+                            task_t *curr = task_current();
+                            if (curr->state == TASK_RUNNING 
+                                && kernel_strncmp(curr->name, "empty_task", 10) != 0) {
+                                sys_exit(-9);
+                            }
+                            return;
+                        }
+                    }
+
                     if (kbd_state.caps_lock) {  //当前状态下大写锁定已开启
                         if ((key >= 'A' && key <= 'Z')) {
                             key = key - 'A' + 'a';
@@ -180,9 +194,8 @@ static void do_normal_key(uint8_t key_code) {
                             key = key -'a' + 'A';
                         }
                     }
-                // log_printf("key: %c\n", key);
-                // log_printf("sizeof(kbd_state_t) = %d\n", sizeof(kbd_state_t));
-                //将读取的键值放入tty设备的输入缓冲区
+
+        
                 tty_in(key);
             }
             break;

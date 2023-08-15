@@ -28,4 +28,21 @@ source/init/CMakeFiles/init.dir/main.c.o: \
  /home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/include/sys/_pthreadtypes.h \
  /home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/include/sys/sched.h \
  /home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/include/machine/types.h \
- /home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/include/sys/stdio.h
+ /home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/include/sys/stdio.h \
+ /home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/include/stdlib.h \
+ /home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/include/machine/stdlib.h \
+ /home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/include/alloca.h \
+ /home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/include/sys/fcntl.h \
+ /home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/include/sys/_default_fcntl.h \
+ /home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/include/sys/stat.h \
+ /home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/include/time.h \
+ /home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/include/machine/time.h \
+ /home/kbpoyo/code/cpp/MyOs/source/newlib/i686-elf/include/sys/_locale.h \
+ /home/kbpoyo/code/cpp/MyOs/source/applib/lib_syscall.h \
+ /home/kbpoyo/code/cpp/MyOs/source/common/types.h \
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/include/cpu/syscall.h \
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/include/os_cfg.h \
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/include/dev/tty.h \
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/include/ipc/sem.h \
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/include/tools/list.h \
+ /home/kbpoyo/code/cpp/MyOs/source/kernel/include/tools/assert.h

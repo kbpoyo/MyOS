@@ -67,13 +67,17 @@ static int diritem_init(diritem_t *item, uint8_t attr, const char *name) {
     item->DIR_FstClusLo = (uint16_t)(FAT_CLUSTER_INVALID & 0xffff);
     item->DIR_FileSize = 0;
     item->DIR_Attr = attr;
-    item->DIR_NTRes = 0;
 
-    item->DIR_CrtDate = 0;
-    item->DIR_CrtTime = 0;
-    item->DIR_WrtDate = 0;
-    item->DIR_WrtTime = 0;
-    item->DIR_LastAccDate = 0;
+    //以下数据本系统直接忽略
+    //由kbos完成当天在windows磁盘管理器
+    //创建的文件得到
+    item->DIR_NTRes = 0x18;
+    item->DIR_CrtDate = 0x570f;
+    item->DIR_CrtTime = 0x86d8;
+    item->DIR_WrtDate = 0x570f;
+    item->DIR_WrtTime = 0x86e9;
+    item->DIR_LastAccDate = 0x570f;
+    item->DIR_CrtTimeTeenth = 0x51;
 
     return 0;
 }
@@ -633,7 +637,7 @@ int fatfs_open(struct _fs_t *fs, const char *path, file_t *file) {
         p_index = i;
 
         if (item->DIR_Name[0] == DIRITEM_NAME_END) {
-            break;
+            continue;
         }
 
         if (item->DIR_Name[0] == DIRITEM_NAEM_FREE) {
@@ -660,7 +664,7 @@ int fatfs_open(struct _fs_t *fs, const char *path, file_t *file) {
     } else if ((file->mode & O_CREAT) && p_index >= 0){//创建文件模式下未找到对应的目录项，创建新一个文件
         //初始化一个目录项信息
         diritem_t item;
-        diritem_init(&item, 0, path);
+        diritem_init(&item, DIRITEM_ATTR_ARCHIVE, path);
 
         //将目录项信息写入到根目录区
         int err = write_dir_entry(fat, &item, p_index);
@@ -938,13 +942,9 @@ int fatfs_readdir(struct _fs_t *fs, DIR *dir, struct dirent *dirent) {
             return -1;
         }
 
-        //已经遍历到末尾项
-        if (item->DIR_Name[0] == DIRITEM_NAME_END) {
-            break;
-        }
 
         //该目录项有效,获取目录项信息到dirent中
-        if (item->DIR_Name[0] != DIRITEM_NAEM_FREE) {
+        if (item->DIR_Name[0] != DIRITEM_NAEM_FREE && item->DIR_Name[0] != DIRITEM_NAME_END) {
             file_type_t type = diritem_get_type(item);
             if ((type == FILE_NORMAL) || (type == FILE_DIR)) {
                 dirent->size = item->DIR_FileSize;
@@ -994,7 +994,7 @@ int fatfs_unlink(struct _fs_t *fs, const char *path) {
         }
 
         if (item->DIR_Name[0] == DIRITEM_NAME_END) {
-            break;
+            continue;
         }
 
         if (item->DIR_Name[0] == DIRITEM_NAEM_FREE) {

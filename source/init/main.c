@@ -6,10 +6,31 @@
  * 联系邮箱: 527676163@qq.com
  */
 #include <stdio.h>
+#include <stdlib.h>
+#include <sys/fcntl.h>
+#include "applib/lib_syscall.h"
 
-int main (int argc, char ** argv) {
-    *(char *)0 = 0x1234;
+int main(int argc, char **argv) {
+   int buf_len = 255;
+  char *buf = (char *)malloc(buf_len);
+  int len = 0;
 
-    int a = 3 / 0;
-    return 0;
+  for (int i = 0; i < 10000; ++i) {
+    FILE *from = fopen("file.c", "rb");
+    FILE *to = fopen("test.c", "wb");
+
+    while ((len = fread(buf, 1, buf_len, from)) > 0) {
+      len = fwrite(buf, 1, len, to);
+      if (len < 0) {
+        printf("write file error\n");
+      }
+    }
+
+    printf("copy cnt: %d\n", i + 1);
+    unlink("test.c");
+    fclose(from);
+    fclose(to);
+  }
+
+  return 0;
 }

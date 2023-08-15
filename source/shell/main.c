@@ -263,16 +263,17 @@ static int do_cp(int argc, const char **argv) {
 
   FILE *from, *to;
   from = fopen(argv[1], "rb");
-  to = fopen(argv[2], "wb");
+  to = fopen(argv[2], "wbt");
   if (!from || !to) {
     fprintf(stderr, "open file failed\n");
     goto  cp_failed;
   }
 
-  char *buf = (char *)malloc(255);
+  int buf_len = 255;
+  char *buf = (char *)malloc(buf_len);
   int size;
-  while ((size = fread(buf, 1, 255, from)) > 0) {
-    fwrite(buf, 1, 255, to);
+  while ((size = fread(buf, 1, buf_len, from)) > 0) {
+    fwrite(buf, 1, size, to);
   }
   free(buf);
 

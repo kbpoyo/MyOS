@@ -471,6 +471,9 @@ void task_switch(void) {
     }
     // 5.切换当前任务, 并将当前任务置为运行态
     to->state = TASK_RUNNING;
+    if (from->state == TASK_RUNNING) {
+      from->state = TASK_READY;
+    } 
     task_manager.curr_task = to;
 
     // 6.进行任务切换

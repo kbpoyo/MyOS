@@ -235,7 +235,10 @@ source/kernel/CMakeFiles/kernel.dir/dev/keyboard.c.o: ../source/kernel/dev/keybo
   ../source/kernel/include/dev/tty.h \
   ../source/kernel/include/ipc/sem.h \
   ../source/kernel/include/tools/list.h \
-  ../source/kernel/include/tools/assert.h
+  ../source/kernel/include/tools/assert.h \
+  ../source/kernel/include/core/task.h \
+  ../source/kernel/include/cpu/tss.h \
+  ../source/kernel/include/fs/file.h
 
 source/kernel/CMakeFiles/kernel.dir/dev/time.c.o: ../source/kernel/dev/time.c \
   /usr/include/stdc-predef.h \
