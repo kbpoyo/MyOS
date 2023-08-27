@@ -10,11 +10,11 @@ ELF Header:
   Version:                           0x1
   Entry point address:               0x7c00
   Start of program headers:          52 (bytes into file)
-  Start of section headers:          4864 (bytes into file)
+  Start of section headers:          4492 (bytes into file)
   Flags:                             0x0
   Size of this header:               52 (bytes)
   Size of program headers:           32 (bytes)
-  Number of program headers:         4
+  Number of program headers:         3
   Size of section headers:           40 (bytes)
   Number of section headers:         14
   Section header string table index: 13
@@ -22,19 +22,19 @@ ELF Header:
 Section Headers:
   [Nr] Name              Type            Addr     Off    Size   ES Flg Lk Inf Al
   [ 0]                   NULL            00000000 000000 000000 00      0   0  0
-  [ 1] .text             PROGBITS        00007c00 000c00 000051 00  AX  0   0  1
-  [ 2] boot_end          PROGBITS        00007dfe 000dfe 000002 00  AX  0   0  1
-  [ 3] .comment          PROGBITS        00000000 000e00 00002b 01  MS  0   0  1
-  [ 4] .debug_aranges    PROGBITS        00000000 000e30 000040 00      0   0  8
-  [ 5] .debug_info       PROGBITS        00000000 000e70 00005d 00      0   0  1
-  [ 6] .debug_abbrev     PROGBITS        00000000 000ecd 000041 00      0   0  1
-  [ 7] .debug_line       PROGBITS        00000000 000f0e 0000b2 00      0   0  1
-  [ 8] .debug_frame      PROGBITS        00000000 000fc0 000034 00      0   0  4
-  [ 9] .debug_str        PROGBITS        00000000 000ff4 000103 01  MS  0   0  1
-  [10] .debug_line_str   PROGBITS        00000000 0010f7 00008a 01  MS  0   0  1
-  [11] .symtab           SYMTAB          00000000 001184 0000a0 10     12   5  4
-  [12] .strtab           STRTAB          00000000 001224 00004a 00      0   0  1
-  [13] .shstrtab         STRTAB          00000000 00126e 000090 00      0   0  1
+  [ 1] .text             PROGBITS        00007c00 000c00 000079 00  AX  0   0  1
+  [ 2] boot_end          PROGBITS        00007dfe 000c79 000002 00      0   0  1
+  [ 3] .comment          PROGBITS        00000000 000c7b 00002b 01  MS  0   0  1
+  [ 4] .debug_aranges    PROGBITS        00000000 000ca8 000040 00      0   0  8
+  [ 5] .debug_info       PROGBITS        00000000 000ce8 00005d 00      0   0  1
+  [ 6] .debug_abbrev     PROGBITS        00000000 000d45 000041 00      0   0  1
+  [ 7] .debug_line       PROGBITS        00000000 000d86 0000c6 00      0   0  1
+  [ 8] .debug_frame      PROGBITS        00000000 000e4c 000034 00      0   0  4
+  [ 9] .debug_str        PROGBITS        00000000 000e80 000103 01  MS  0   0  1
+  [10] .debug_line_str   PROGBITS        00000000 000f83 00008a 01  MS  0   0  1
+  [11] .symtab           SYMTAB          00000000 001010 0000a0 10     12   5  4
+  [12] .strtab           STRTAB          00000000 0010b0 00004a 00      0   0  1
+  [13] .shstrtab         STRTAB          00000000 0010fa 000090 00      0   0  1
 Key to Flags:
   W (write), A (alloc), X (execute), M (merge), S (strings), I (info),
   L (link order), O (extra OS processing required), G (group), T (TLS),
@@ -45,17 +45,15 @@ There are no section groups in this file.
 
 Program Headers:
   Type           Offset   VirtAddr   PhysAddr   FileSiz MemSiz  Flg Align
-  LOAD           0x000000 0x00007000 0x00006000 0x000b4 0x000b4 R   0x1000
-  LOAD           0x000c00 0x00007c00 0x00007c00 0x00051 0x00051 R E 0x1000
-  LOAD           0x000dfe 0x00007dfe 0x00007dfe 0x00002 0x00002 R E 0x1000
+  LOAD           0x000000 0x00007000 0x00006000 0x00094 0x00094 R   0x1000
+  LOAD           0x000c00 0x00007c00 0x00007c00 0x00079 0x00079 R E 0x1000
   GNU_STACK      0x000000 0x00000000 0x00000000 0x00000 0x00000 RWE 0x10
 
  Section to Segment mapping:
   Segment Sections...
    00     
    01     .text 
-   02     boot_end 
-   03     
+   02     
 
 There is no dynamic section in this file.
 
@@ -66,10 +64,10 @@ Symbol table '.symtab' contains 10 entries:
    Num:    Value  Size Type    Bind   Vis      Ndx Name
      0: 00000000     0 NOTYPE  LOCAL  DEFAULT  UND 
      1: 00000000     0 FILE    LOCAL  DEFAULT  ABS start.S.o
-     2: 00007c25     0 NOTYPE  LOCAL  DEFAULT    1 read_loader
+     2: 00007c4d     0 NOTYPE  LOCAL  DEFAULT    1 read_loader
      3: 00007dfe     0 NOTYPE  LOCAL  DEFAULT    2 boot_sig
      4: 00000000     0 FILE    LOCAL  DEFAULT  ABS boot.c
-     5: 00007c3a    23 FUNC    GLOBAL DEFAULT    1 boot_entry
+     5: 00007c62    23 FUNC    GLOBAL DEFAULT    1 boot_entry
      6: 00007c00     0 NOTYPE  GLOBAL DEFAULT    1 _start
      7: 00008000     0 NOTYPE  GLOBAL DEFAULT    1 __bss_start
      8: 00008000     0 NOTYPE  GLOBAL DEFAULT    1 _edata

@@ -19,3 +19,22 @@ add_custom_command(TARGET ${PROJECT_NAME}
                    COMMAND ${OBJDUMP_TOOL} -x -d -S -m i8086 ${PROJECT_BINARY_DIR}/${PROJECT_NAME}.elf > ${PROJECT_NAME}_dis.txt
                    COMMAND ${READELF_TOOL} -a ${PROJECT_BINARY_DIR}/${PROJECT_NAME}.elf > ${PROJECT_NAME}_elf.txt
 )
+
+# objcopy: 将目标文件进行格式转换到另一种类型的文件 
+# 参数：-O指定文件类型 
+
+# objdump: 显示目标文件的信息
+# 参数： -x 显示所有program头和section头信息
+#        -d 显示代码段的反汇编信息
+#        -D 显示所有段的反汇编信息
+#        -S 将源代码和反汇编信息一起显示
+#       -m 指定机器的目标架构
+
+# readelf: 显示elf文件的信息
+# 参数 -a 显示全部信息
+
+#ld: 链接器
+#参数： -m <file_type>指定输出的可执行文件的类型，即可执行文件的指令架构
+#       -T <file.lds>指定链接脚本
+#       -Ttext = addr(-Tbss=addr，-Tdata=addr, -Trodata=addr), 指定段的起始地址   
+#       --section-start=<sectionname>=addr 指定名字为sectionname的段的起始地址

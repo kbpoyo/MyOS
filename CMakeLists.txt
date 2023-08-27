@@ -9,7 +9,7 @@ set(CMAKE_VERBOSE_MAKEFILE on)   # 开启输出编译详细过程的提示
 if (CMAKE_HOST_WIN32 OR CMAKE_HOST_APPLE)
     set(TOOL_PREFIX  "x86_64-elf-")
 elseif (CMAKE_HOST_WIN32)
-    set(TOOL_PREFIX  "x86_64-linux-gnu-")    # 待补充
+    set(TOOL_PREFIX  "x86_64-linux-gnu-")   
 endif ()
 
 # set(TOOL_PREFIX  "x86_64-elf-")
@@ -18,6 +18,14 @@ endif ()
 # C编译器与参数配置
 set(CMAKE_C_COMPILER "${TOOL_PREFIX}gcc") 
 set(CMAKE_C_FLAGS "-g -c -O0 -m32 -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables")
+
+#-g参数用于生成调试信息，-c参数表示只编译不链接
+#-O0参数表示关闭优化，-m32参数表示生成32位代码，
+#-fno-pie参数表示不生成位置无关代码，
+#位置无关代码是指代码无论被加载到哪个地址上都可以正常执行
+#-fno-stack-protector参数表示不生成栈保护代码，
+#栈保护代码是一种保护机制，用于检测和防止栈缓冲区溢出攻击。
+#-fno-asynchronous-unwind-tables参数表示不生成异步取消表.
 
 # 汇编器与参数配置
 set(CMAKE_ASM_COMPILER "${TOOL_PREFIX}gcc")

@@ -7,42 +7,40 @@ start address 0x00007c00
 
 Program Header:
     LOAD off    0x00000000 vaddr 0x00007000 paddr 0x00006000 align 2**12
-         filesz 0x000000b4 memsz 0x000000b4 flags r--
+         filesz 0x00000094 memsz 0x00000094 flags r--
     LOAD off    0x00000c00 vaddr 0x00007c00 paddr 0x00007c00 align 2**12
-         filesz 0x00000051 memsz 0x00000051 flags r-x
-    LOAD off    0x00000dfe vaddr 0x00007dfe paddr 0x00007dfe align 2**12
-         filesz 0x00000002 memsz 0x00000002 flags r-x
+         filesz 0x00000079 memsz 0x00000079 flags r-x
    STACK off    0x00000000 vaddr 0x00000000 paddr 0x00000000 align 2**4
          filesz 0x00000000 memsz 0x00000000 flags rwx
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .text         00000051  00007c00  00007c00  00000c00  2**0
+  0 .text         00000079  00007c00  00007c00  00000c00  2**0
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  1 boot_end      00000002  00007dfe  00007dfe  00000dfe  2**0
-                  CONTENTS, ALLOC, LOAD, READONLY, CODE
-  2 .comment      0000002b  00000000  00000000  00000e00  2**0
+  1 boot_end      00000002  00007dfe  00007dfe  00000c79  2**0
                   CONTENTS, READONLY
-  3 .debug_aranges 00000040  00000000  00000000  00000e30  2**3
+  2 .comment      0000002b  00000000  00000000  00000c7b  2**0
+                  CONTENTS, READONLY
+  3 .debug_aranges 00000040  00000000  00000000  00000ca8  2**3
                   CONTENTS, READONLY, DEBUGGING, OCTETS
-  4 .debug_info   0000005d  00000000  00000000  00000e70  2**0
+  4 .debug_info   0000005d  00000000  00000000  00000ce8  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
-  5 .debug_abbrev 00000041  00000000  00000000  00000ecd  2**0
+  5 .debug_abbrev 00000041  00000000  00000000  00000d45  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
-  6 .debug_line   000000b2  00000000  00000000  00000f0e  2**0
+  6 .debug_line   000000c6  00000000  00000000  00000d86  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
-  7 .debug_frame  00000034  00000000  00000000  00000fc0  2**2
+  7 .debug_frame  00000034  00000000  00000000  00000e4c  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
-  8 .debug_str    00000103  00000000  00000000  00000ff4  2**0
+  8 .debug_str    00000103  00000000  00000000  00000e80  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
-  9 .debug_line_str 0000008a  00000000  00000000  000010f7  2**0
+  9 .debug_line_str 0000008a  00000000  00000000  00000f83  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
 SYMBOL TABLE:
 00000000 l    df *ABS*	00000000 start.S.o
-00007c25 l       .text	00000000 read_loader
+00007c4d l       .text	00000000 read_loader
 00007dfe l       boot_end	00000000 boot_sig
 00000000 l    df *ABS*	00000000 boot.c
-00007c3a g     F .text	00000017 boot_entry
+00007c62 g     F .text	00000017 boot_entry
 00007c00 g       .text	00000000 _start
 00008000 g       .text	00000000 __bss_start
 00008000 g       .text	00000000 _edata
@@ -70,83 +68,122 @@ _start:
     7c09:	8e e0                	mov    %ax,%fs
 	mov %ax, %gs
     7c0b:	8e e8                	mov    %ax,%gs
-	mov $_start, %esp 	//初始化栈顶指针寄存器，即将0x7c00前面一段空间用做程序运行的栈空间
+	mov $_start, %esp 	//初始化栈顶指针寄存器
     7c0d:	66 bc 00 7c 00 00    	mov    $0x7c00,%esp
+						//即将0x7c00前面一段空间(约30kb的空闲区域)用做程序运行的栈空间
 						//此处用了esp,即16位模式下用了32位模式的资源，指令前缀为反转前缀66
 
 	//int 0x10 软中断调用显卡驱动，
-	mov $0xe, %ah 	//ah = 0xe 表示显示字符
+	mov $0xe, %ah 	
     7c13:	b4 0e                	mov    $0xe,%ah
-	mov $'S', %al 	// al 缓冲区记录显示内容
-    7c15:	b0 53                	mov    $0x53,%al
-	int $0x10 		//进入中断程序
+	mov $'\r', %al 	
+    7c15:	b0 0d                	mov    $0xd,%al
+	int $0x10 		
     7c17:	cd 10                	int    $0x10
 
 	mov $0xe, %ah 	
     7c19:	b4 0e                	mov    $0xe,%ah
-	mov $'\r', %al 	
-    7c1b:	b0 0d                	mov    $0xd,%al
-	int $0x10 		
+	mov $'\n', %al 	
+    7c1b:	b0 0a                	mov    $0xa,%al
+	int $0x10 	
     7c1d:	cd 10                	int    $0x10
 
-	mov $0xe, %ah 	
+	mov $0xe, %ah 	//ah = 0xe 表示显示字符
     7c1f:	b4 0e                	mov    $0xe,%ah
-	mov $'\n', %al 	
-    7c21:	b0 0a                	mov    $0xa,%al
-	int $0x10 		
+	mov $'K', %al 	// al 缓冲区记录显示内容
+    7c21:	b0 4b                	mov    $0x4b,%al
+	int $0x10 		//进入中断程序
     7c23:	cd 10                	int    $0x10
+	mov $'b', %al 	
+    7c25:	b0 62                	mov    $0x62,%al
+	int $0x10 		
+    7c27:	cd 10                	int    $0x10
+	mov $'p', %al 	
+    7c29:	b0 70                	mov    $0x70,%al
+	int $0x10 		
+    7c2b:	cd 10                	int    $0x10
+	mov $'o', %al 	
+    7c2d:	b0 6f                	mov    $0x6f,%al
+	int $0x10 	
+    7c2f:	cd 10                	int    $0x10
+	mov $'y', %al 	
+    7c31:	b0 79                	mov    $0x79,%al
+	int $0x10 		
+    7c33:	cd 10                	int    $0x10
+	mov $'o', %al 	
+    7c35:	b0 6f                	mov    $0x6f,%al
+	int $0x10 		
+    7c37:	cd 10                	int    $0x10
+	mov $'O', %al 	
+    7c39:	b0 4f                	mov    $0x4f,%al
+	int $0x10
+    7c3b:	cd 10                	int    $0x10
+	mov $'S', %al 	
+    7c3d:	b0 53                	mov    $0x53,%al
+	int $0x10
+    7c3f:	cd 10                	int    $0x10
 
-00007c25 <read_loader>:
+
+	mov $0xe, %ah 	
+    7c41:	b4 0e                	mov    $0xe,%ah
+	mov $'\r', %al 	
+    7c43:	b0 0d                	mov    $0xd,%al
+	int $0x10 		
+    7c45:	cd 10                	int    $0x10
+
+	mov $0xe, %ah 	
+    7c47:	b4 0e                	mov    $0xe,%ah
+	mov $'\n', %al 	
+    7c49:	b0 0a                	mov    $0xa,%al
+	int $0x10 		
+    7c4b:	cd 10                	int    $0x10
+
+00007c4d <read_loader>:
 
 
 
 //int 0x13 软中断调用磁盘驱动读取磁盘
 read_loader:
 	mov $0x8000, %bx	// es:bx = 加载到内存中的地址,此时es = 0， 即直接将读取的内容加载到内存0x8000处 
-    7c25:	bb 00 80             	mov    $0x8000,%bx
-	mov $0x2, %ah 		// ah = 0x2, al = 扇区数, 
-    7c28:	b4 02                	mov    $0x2,%ah
-	mov $64, %al		// 读取64个扇区, 即32kb
-    7c2a:	b0 40                	mov    $0x40,%al
+    7c4d:	bb 00 80             	mov    $0x8000,%bx
+	mov $0x2, %ah 		// ah = 0x2(读扇区), ah = 0x3(写扇区)
+    7c50:	b4 02                	mov    $0x2,%ah
+	mov $64, %al		// al = 扇区数, 读取64个扇区, 即32kb
+    7c52:	b0 40                	mov    $0x40,%al
 	mov $0x2, %cx 		// ch = 柱面，cl = 扇区编号， 在0柱面进行读取，bios从1开始为扇区编号，1扇区为mbr引导程序，所以从2扇区读取
-    7c2c:	b9 02 00             	mov    $0x2,%cx
+    7c54:	b9 02 00             	mov    $0x2,%cx
 	mov $0, %dh			// dh = 磁头，即盘面，当前从0盘面开始读取
-    7c2f:	b6 00                	mov    $0x0,%dh
-	mov $0x80, %dl 		// dl = 驱动器，0x00~0x7f:软盘， 0x80~0xff:硬盘
-    7c31:	b2 80                	mov    $0x80,%dl
+    7c57:	b6 00                	mov    $0x0,%dh
+	mov $0x80, %dl 		// dl = 驱动器，0x00:软盘A,0x01软盘B 
+    7c59:	b2 80                	mov    $0x80,%dl
+						//	0x80:硬盘A 0x81:硬盘B
 	int $0x13 			//执行中断程序
-    7c33:	cd 13                	int    $0x13
+    7c5b:	cd 13                	int    $0x13
 
 	//出口参数, cf = 0表示操作成功否则失败，若成功则ah=0x00,al=传输的扇区数，否则ah=状态代码(参见功能号0x01)
 	// cf为eflags寄存器的0号位，表示carry flag， 在运算过程中若最高位有进位或借位则置1
 	jc read_loader		// jc/jb/jna 跳转条件为 cf = 1,即当前失败时跳转重新读取
-    7c35:	72 ee                	jb     7c25 <read_loader>
+    7c5d:	72 ee                	jb     7c4d <read_loader>
 
 
 	//加载完loader后跳转到loader入口程序执行
 	jmp boot_entry
-    7c37:	e9 00 00             	jmp    7c3a <boot_entry>
+    7c5f:	e9 00 00             	jmp    7c62 <boot_entry>
 
-00007c3a <boot_entry>:
+00007c62 <boot_entry>:
 
 /**
  * Boot的C入口函数
  * 只完成一项功能，即从磁盘找到loader文件然后加载到内容中，并跳转过去
  */
 void boot_entry(void) {
-    7c3a:	66 55                	push   %ebp
-    7c3c:	66 89 e5             	mov    %esp,%ebp
-    7c3f:	66 83 ec 08          	sub    $0x8,%esp
+    7c62:	66 55                	push   %ebp
+    7c64:	66 89 e5             	mov    %esp,%ebp
+    7c67:	66 83 ec 08          	sub    $0x8,%esp
     ((void (*)(void))LOADER_START_ADDR)(); //用函数指针直接调用0x8000处的函数
-    7c43:	66 b8 00 80 00 00    	mov    $0x8000,%eax
-    7c49:	66 ff d0             	call   *%eax
+    7c6b:	66 b8 00 80 00 00    	mov    $0x8000,%eax
+    7c71:	66 ff d0             	call   *%eax
 } 
-    7c4c:	90                   	nop
-    7c4d:	66 c9                	leavel 
-    7c4f:	66 c3                	retl   
-
-Disassembly of section boot_end:
-
-00007dfe <boot_sig>:
-    7dfe:	55                   	push   %bp
-    7dff:	aa                   	stos   %al,%es:(%di)
+    7c74:	90                   	nop
+    7c75:	66 c9                	leavel 
+    7c77:	66 c3                	retl   
