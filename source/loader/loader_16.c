@@ -25,10 +25,10 @@ boot_info_t boot_info;
 static void show_msg(const char* msg) {
      char c;
      while ((c = *(msg++)) != '\0') {          
-          //asm()会对内联汇编进行优化，可能会导致不确定的结果，所以使用__asm__ __volatile__()
+          //asm()会对内联汇编进行优化，可能会导致不确定的结果，所以加上 __volatile__宏告诉编译器别优化
           __asm__ __volatile__(
                "mov $0xe, %%ah;"
-               " mov %[rgs], %%al;"
+               "mov %[rgs], %%al;"
                "int $0x10"::[rgs]"r"(c) //"r" 将rgs映射到任意寄存器, 
                                         //且有了输入参数后，真正的寄存器要用%%前缀进行访问
           );
@@ -112,7 +112,7 @@ static void enter_protect_mode(void){
      write_cr0(cr0 | 0x1);
 
      //5.远跳转到32位的loader程序，并清空原来的16位指令流水线
-     far_jump(8, (uint32_t)protect_mode_entry);
+     far_jump((1 << 3), (uint32_t)protect_mode_entry);
 }
 
 /**

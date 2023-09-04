@@ -28,6 +28,7 @@ typedef struct SMAP_entry {
 	uint32_t ACPI; // extended, bit0=0时表明此条目应当被忽略
  
 }__attribute__((packed)) SMAP_entry_t;
+//__attribute__((packed)) 取消对齐优化，按1字节对齐
 
 /**
  * @brief  进入保护模式

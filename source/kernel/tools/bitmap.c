@@ -114,7 +114,7 @@ int bitmap_alloc_nbits(bitmap_t *bitmap, int bit, int count) {
         }
 
         //记录可分配空间的起始索引
-        ok_index = search_index;
+        ok_index = search_index++;
 
         //判断该空间是否大小满足要求
         for (int i = 1; i < count && search_index < bitmap->bit_count; ++i) {

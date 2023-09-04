@@ -40,7 +40,7 @@ typedef struct _addr_alloc_t {
     uint32_t start;     //管理内存区域的起始地址
     uint32_t size;      //内存区域的大小
     uint32_t page_size; //页的大小
-    uint8_t  page_ref[(MEM_EXT_END - MEM_EBDA_START) / MEM_PAGE_SIZE];  //TODO,由于引用计数占用空间较大，经计算，在1mb一下加载内核，管理内存大小不能超过1gb
+    uint8_t  page_ref[(MEM_EXT_END - MEM_EXT_START) / MEM_PAGE_SIZE];  //TODO,由于引用计数占用空间较大，经计算，在1mb一下加载内核，管理内存大小不能超过1gb
 
 }addr_alloc_t;
 

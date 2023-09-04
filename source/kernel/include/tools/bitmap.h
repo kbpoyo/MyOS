@@ -20,8 +20,8 @@
  * @param bits 位图数组，记录某一页是否被分配
  */
 typedef struct  _bitmap_t {
-    int bit_count;  //内存分页数量
-    uint8_t *bits;  //位图的自己数组
+    int bit_count;  //位图管理的bit数量
+    uint8_t *bits;  //位图管理的内存空间起始地址
 }bitmap_t;
 
 void bitmap_init(bitmap_t *bitmap, uint8_t *bits, int count, int init_bit);

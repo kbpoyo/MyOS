@@ -135,6 +135,7 @@ static void addr_alloc_init(addr_alloc_t *alloc, uint8_t *bits, uint32_t start,
 static uint32_t addr_alloc_page(addr_alloc_t *alloc, int page_count) {
   uint32_t addr = 0;  // 记录分配的页的起始地址
 
+  //TODO：加锁
   mutex_lock(&alloc->mutex);
 
   // 在位图中取连续的page_count个页进行分配
@@ -144,6 +145,8 @@ static uint32_t addr_alloc_page(addr_alloc_t *alloc, int page_count) {
     addr = alloc->start + page_index * alloc->page_size;
   }
 
+
+  //TODO：解锁
   mutex_unlock(&alloc->mutex);
 
   return addr;
@@ -474,7 +477,7 @@ void memory_destroy_uvm(uint32_t page_dir) {
 void memory_init(boot_info_t *boot_info) {
 
   
-    //声明紧邻在内核bss段后面的空间地址，用于存储位图，该变量定义在kernel.lds中
+    //声明紧邻内核first_task段后面的空间地址，用于存储位图，该变量定义在kernel.lds中
     extern char mem_free_start;
 
     log_printf("memory init\n");

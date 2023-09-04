@@ -96,7 +96,7 @@ _start:
 	//已经进入了保护模式，所以cpu正在执行的16位模式的流水线失效
 	//重置各个段寄存器，存储选择子，0x10即指向第3个段描述符(数据段)
 	//第三个段描述符所指的段基址为0，所以继续平坦模式
-	//且第三个段描述符的属性位的G位设置为1，标志了该段为32位程序，其他位也设置了正确值
+	//且第三个段描述符的属性位的D位设置为1，标志了该段为32位程序，其他位也设置了正确值
 	//临时的内核数据段描述符:{0xffff, 0x0000, 0x9200, 0x00cf}
 	mov $0x10, %ax
     8003:	66 b8 10 00 8e d8    	mov    $0xd88e0010,%eax
@@ -111,7 +111,7 @@ _start:
     800f:	8e e8                	mov    %ax,%gs
 
 	//跳转到32位的loader程序中，jmp指令可以清空流水线
-	jmp $8, $load_kernel //直接跳转 cs:8， ip:load_kernel, 8为1000(b), 即选择此时GDT中的第2个段描述符(代码段)
+	jmp $8, $load_kernel //直接跳转 cs:ip, cs=8， ip=load_kernel, 8为1000(b), 即选择此时GDT中的第2个段描述符(代码段)
     8011:	ea 74 86 00 00       	ljmp   $0x0,$0x8674
     8016:	08 00                	or     %al,(%bx,%si)
 
@@ -304,7 +304,7 @@ static void show_msg(const char* msg) {
      char c;
      while ((c = *(msg++)) != '\0') {          
     8113:	eb 0c                	jmp    8121 <show_msg+0x17>
-          //asm()会对内联汇编进行优化，可能会导致不确定的结果，所以使用__asm__ __volatile__()
+          //asm()会对内联汇编进行优化，可能会导致不确定的结果，所以加上 __volatile__宏告诉编译器别优化
           __asm__ __volatile__(
     8115:	67 66 0f b6 45 ff    	movzbl -0x1(%ebp),%eax
     811b:	b4 0e                	mov    $0xe,%ah
@@ -512,7 +512,7 @@ static void enter_protect_mode(void){
     8305:	66 83 c4 04          	add    $0x4,%esp
 
      //5.远跳转到32位的loader程序，并清空原来的16位指令流水线
-     far_jump(8, (uint32_t)protect_mode_entry);
+     far_jump((1 << 3), (uint32_t)protect_mode_entry);
     8309:	66 b8 03 80 00 00    	mov    $0x8003,%eax
     830f:	66 50                	push   %eax
     8311:	66 6a 08             	pushl  $0x8

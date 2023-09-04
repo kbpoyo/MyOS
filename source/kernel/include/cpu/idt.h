@@ -81,7 +81,7 @@
 #define PIC_ICW1_ALWAYS_1   ((uint8_t)(1 << 4))
 
 //外部中断的第一个处理程序在IDT中的下标(由自己确定)，IDT[0x20 ~ 0x2e] 为处理外部中断的中断门,共15个中断
-#define PIC_ICW2_IDT_START    0x20
+#define PIC_ICW2_IDT_START    0x20 //起始中断代理号
 
 //初始化ICW3, 告诉主片，主片的哪个IRQ接口用作级联，此处用IRQ2(0000 0100), 即第2位 
 #define PIC_ICW3_MASTER_CASCADE ((uint8_t)(1 << 2))
