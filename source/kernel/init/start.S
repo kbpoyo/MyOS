@@ -60,7 +60,6 @@ gdt_reload:
     mov $(stack + KERNEL_STACK_SIZE), %esp
 
     //继续初始化内核
-    //TODO:后序再来说明该函数的作用
     jmp init_main 
 
 //定义bss段，未初始化的数据段，不占据编译后的文件空间，只指定运行时的内存空间

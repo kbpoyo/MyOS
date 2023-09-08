@@ -592,7 +592,6 @@ gdt_reload:
    10020:	bc 20 8e 07 00       	mov    $0x78e20,%esp
 
     //继续初始化内核
-    //TODO:后序再来说明该函数的作用
     jmp init_main 
    10025:	e9 3d 7f 00 00       	jmp    17f67 <init_main>
 
@@ -1662,6 +1661,7 @@ static uint32_t addr_alloc_page(addr_alloc_t *alloc, int page_count) {
   uint32_t addr = 0;  // 记录分配的页的起始地址
    105c9:	c7 45 f4 00 00 00 00 	movl   $0x0,-0xc(%ebp)
 
+  //TODO：加锁
   mutex_lock(&alloc->mutex);
    105d0:	8b 45 08             	mov    0x8(%ebp),%eax
    105d3:	83 ec 0c             	sub    $0xc,%esp
@@ -1695,6 +1695,8 @@ static uint32_t addr_alloc_page(addr_alloc_t *alloc, int page_count) {
    10613:	89 45 f4             	mov    %eax,-0xc(%ebp)
   }
 
+
+  //TODO：解锁
   mutex_unlock(&alloc->mutex);
    10616:	8b 45 08             	mov    0x8(%ebp),%eax
    10619:	83 ec 0c             	sub    $0xc,%esp
@@ -2019,7 +2021,7 @@ int  memory_creat_map(pde_t *page_dir, uint32_t vstart, uint32_t pstart, int pag
    10863:	74 1c                	je     10881 <memory_creat_map+0x6e>
    10865:	68 9d 95 01 00       	push   $0x1959d
    1086a:	68 fc 96 01 00       	push   $0x196fc
-   1086f:	68 1d 01 00 00       	push   $0x11d
+   1086f:	68 20 01 00 00       	push   $0x120
    10874:	68 b0 95 01 00       	push   $0x195b0
    10879:	e8 15 7f 00 00       	call   18793 <pannic>
    1087e:	83 c4 10             	add    $0x10,%esp
@@ -2062,7 +2064,10 @@ int  memory_creat_map(pde_t *page_dir, uint32_t vstart, uint32_t pstart, int pag
 
 000108c9 <create_kernal_table>:
 
-//TODO:编写函数注释
+/**
+ * @brief 创建内核的虚拟页表
+ * 
+ */
 void create_kernal_table(void) {
    108c9:	55                   	push   %ebp
    108ca:	89 e5                	mov    %esp,%ebp
@@ -2610,7 +2615,7 @@ void memory_init(boot_info_t *boot_info) {
    10d38:	76 1c                	jbe    10d56 <memory_init+0xe0>
    10d3a:	68 2c 96 01 00       	push   $0x1962c
    10d3f:	68 10 97 01 00       	push   $0x19710
-   10d44:	68 f8 01 00 00       	push   $0x1f8
+   10d44:	68 fe 01 00 00       	push   $0x1fe
    10d49:	68 b0 95 01 00       	push   $0x195b0
    10d4e:	e8 40 7a 00 00       	call   18793 <pannic>
    10d53:	83 c4 10             	add    $0x10,%esp
@@ -2834,7 +2839,7 @@ void memory_free_page(uint32_t addr) {
    10ec7:	75 1c                	jne    10ee5 <memory_free_page+0x6c>
    10ec9:	68 90 96 01 00       	push   $0x19690
    10ece:	68 1c 97 01 00       	push   $0x1971c
-   10ed3:	68 59 02 00 00       	push   $0x259
+   10ed3:	68 5f 02 00 00       	push   $0x25f
    10ed8:	68 b0 95 01 00       	push   $0x195b0
    10edd:	e8 b1 78 00 00       	call   18793 <pannic>
    10ee2:	83 c4 10             	add    $0x10,%esp
@@ -3006,7 +3011,7 @@ char *sys_sbrk(int incr) {
    10ff2:	79 1c                	jns    11010 <sys_sbrk+0x28>
    10ff4:	68 b1 96 01 00       	push   $0x196b1
    10ff9:	68 30 97 01 00       	push   $0x19730
-   10ffe:	68 a8 02 00 00       	push   $0x2a8
+   10ffe:	68 ae 02 00 00       	push   $0x2ae
    11003:	68 b0 95 01 00       	push   $0x195b0
    11008:	e8 86 77 00 00       	call   18793 <pannic>
    1100d:	83 c4 10             	add    $0x10,%esp
@@ -17995,7 +18000,7 @@ void init_main(void) {
    17f70:	68 fb a9 01 00       	push   $0x1a9fb
    17f75:	e8 35 15 00 00       	call   194af <log_printf>
    17f7a:	83 c4 10             	add    $0x10,%esp
-    log_printf("Name: kbOS, Version: %s\n", OS_VERSION);
+    log_printf("Name: KBOS, Version: %s\n", OS_VERSION);
    17f7d:	83 ec 08             	sub    $0x8,%esp
    17f80:	68 14 aa 01 00       	push   $0x1aa14
    17f85:	68 1a aa 01 00       	push   $0x1aa1a
