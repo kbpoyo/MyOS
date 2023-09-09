@@ -465,7 +465,6 @@ void disk_close(device_t *dev) {
 //操作disk结构的函数表
 dev_desc_t dev_disk_desc = {
     .dev_name = "disk",
-    .dev_type = DEV_DISK,
     .open = disk_open,
     .read = disk_read,
     .write = disk_write,

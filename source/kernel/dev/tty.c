@@ -334,7 +334,6 @@ void tty_select(int tty_index) {
 //操作tty结构的函数表
 dev_desc_t dev_tty_desc = {
     .dev_name = "tty",
-    .dev_type = DEV_TTY,
     .open = tty_open,
     .read = tty_read,
     .write = tty_write,

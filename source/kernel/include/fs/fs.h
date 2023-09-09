@@ -58,7 +58,7 @@ typedef struct _fs_t {
     char mount_point[FS_MOUNT_POINT_SIZE];  
     fs_type_t type;
     fs_op_t *op;
-    void *data; //调用设备或文件时传入的数据
+    void *data; //数据缓冲区
     list_node_t node;
     mutex_t *mutex;
 
