@@ -697,6 +697,10 @@ int sys_fork(void) {
   // 记录父进程地址
   child_task->parent = parent_task;
 
+  //记录父进程堆空间
+  child_task->heap_start = parent_task->heap_start;
+  child_task->heap_end = parent_task->heap_end;
+
   // 7.拷贝进程虚拟页目录表和页表，即拷贝其映射关系
   if (memory_copy_uvm(tss->cr3, parent_task->tss.cr3) < 0) goto fork_failed;
 

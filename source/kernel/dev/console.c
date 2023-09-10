@@ -263,7 +263,6 @@ int console_init(int index) {
     console->cursor_col = 0;
     console->cursor_row = 0;
     clear_display(console);
-    //update_cursor_pos(console);
   }
 
   // 初始化上一次光标位置
@@ -271,7 +270,7 @@ int console_init(int index) {
   console->old_cursor_row = console->cursor_row;
 
   // 初始化esc序列的参数数组
-  kernel_memset(console->esc_param, 0, sizeof(int) * ESC_PARAM_MAX);
+  kernel_memset(console->esc_param, 0, sizeof(console->esc_param[0]) * ESC_PARAM_MAX);
   console->curr_param_index = 0;
 
   // 初始化终端写入的状态
