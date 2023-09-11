@@ -36,7 +36,7 @@
 #define DISK_CMD(disk)              (disk->port_base + 7)   //控制指令寄存器
 
 //磁盘DIRVE寄存器的缺省值, LBA模式下不需要指定磁头
-//寄存器的7~5位恒为1
+//寄存器的7~5位恒为1, 第4位为驱动器位，1表示从驱动器，0表示主驱动器
 #define DISK_DRIVE_BASE     0xE0
 
 //磁盘操作指令

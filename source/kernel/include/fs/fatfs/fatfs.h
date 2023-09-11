@@ -14,7 +14,6 @@
 
 #include "common/types.h"
 
-#pragma pack(1)
 
 //清空簇链关系时,该簇号标志此FAT表项空闲
 #define CLUSTER_FAT_FREE        0x0
@@ -36,6 +35,7 @@
 
 #define SFN_LEN                 11// sfn系统文件名长
 
+#pragma pack(1)
 //根目录区的目录项结构
 typedef struct _diritem_t {
         uint8_t DIR_Name[11];

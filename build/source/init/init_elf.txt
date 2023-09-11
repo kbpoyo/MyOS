@@ -10,7 +10,7 @@ ELF Header:
   Version:                           0x1
   Entry point address:               0x82000000
   Start of program headers:          52 (bytes into file)
-  Start of section headers:          172836 (bytes into file)
+  Start of section headers:          172812 (bytes into file)
   Flags:                             0x0
   Size of this header:               52 (bytes)
   Size of program headers:           32 (bytes)
@@ -28,16 +28,16 @@ Section Headers:
   [ 4] .bss              NOBITS          820055e0 0065cc 000060 00  WA  0   0 32
   [ 5] .debug_line       PROGBITS        00000000 0065cc 003308 00      0   0  1
   [ 6] .debug_line_str   PROGBITS        00000000 0098d4 000f11 01  MS  0   0  1
-  [ 7] .debug_info       PROGBITS        00000000 00a7e5 016d8e 00      0   0  1
-  [ 8] .debug_abbrev     PROGBITS        00000000 021573 00517f 00      0   0  1
-  [ 9] .debug_aranges    PROGBITS        00000000 0266f8 000550 00      0   0  8
-  [10] .debug_str        PROGBITS        00000000 026c48 001193 01  MS  0   0  1
-  [11] .comment          PROGBITS        00000000 027ddb 00003d 01  MS  0   0  1
-  [12] .debug_frame      PROGBITS        00000000 027e18 001144 00      0   0  4
-  [13] .debug_rnglists   PROGBITS        00000000 028f5c 00004e 00      0   0  1
-  [14] .symtab           SYMTAB          00000000 028fac 000bb0 10     15  68  4
-  [15] .strtab           STRTAB          00000000 029b5c 00071d 00      0   0  1
-  [16] .shstrtab         STRTAB          00000000 02a279 0000aa 00      0   0  1
+  [ 7] .debug_info       PROGBITS        00000000 00a7e5 016d82 00      0   0  1
+  [ 8] .debug_abbrev     PROGBITS        00000000 021567 005177 00      0   0  1
+  [ 9] .debug_aranges    PROGBITS        00000000 0266e0 000550 00      0   0  8
+  [10] .debug_str        PROGBITS        00000000 026c30 001193 01  MS  0   0  1
+  [11] .comment          PROGBITS        00000000 027dc3 00003d 01  MS  0   0  1
+  [12] .debug_frame      PROGBITS        00000000 027e00 001144 00      0   0  4
+  [13] .debug_rnglists   PROGBITS        00000000 028f44 00004e 00      0   0  1
+  [14] .symtab           SYMTAB          00000000 028f94 000bb0 10     15  68  4
+  [15] .strtab           STRTAB          00000000 029b44 00071d 00      0   0  1
+  [16] .shstrtab         STRTAB          00000000 02a261 0000aa 00      0   0  1
 Key to Flags:
   W (write), A (alloc), X (execute), M (merge), S (strings), I (info),
   L (link order), O (extra OS processing required), G (group), T (TLS),
@@ -166,7 +166,7 @@ Symbol table '.symtab' contains 187 entries:
    100: 820028f8    57 FUNC    GLOBAL DEFAULT    1 fflush
    101: 820055e4     4 OBJECT  GLOBAL DEFAULT    4 __malloc_max_sbr[...]
    102: 8200020c    45 FUNC    GLOBAL DEFAULT    1 lseek
-   103: 82004880     4 OBJECT  GLOBAL DEFAULT    2 _global_impure_ptr
+   103: 82004884     4 OBJECT  GLOBAL DEFAULT    2 _global_impure_ptr
    104: 82003915  2266 FUNC    GLOBAL DEFAULT    1 _realloc_r
    105: 82002e49    87 FUNC    GLOBAL DEFAULT    1 _fputwc_r
    106: 82002ceb    36 FUNC    GLOBAL DEFAULT    1 __fp_lock_all
