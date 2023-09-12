@@ -591,6 +591,7 @@ static void free_task(task_t *task) {
   mutex_lock(&task_table_lock);
 
   task->pid = 0;
+  task->parent = (task_t*)0;
 
   //TODO:解锁
   mutex_unlock(&task_table_lock);
@@ -1064,6 +1065,7 @@ void sys_exit(int status) {
   if (parent->state ==
       TASK_WAITTING) {  // 父进程处于阻塞并等待回收子进程资源的状态，需要唤醒父进程
     task_set_ready(parent);
+    parent->state = TASK_READY;
   }
 
   // 3.设置进程状态标志为僵尸态并保存状态值
@@ -1097,7 +1099,7 @@ int sys_wait(int *status) {
     // 2.遍历任务表,寻找子进程
     for (int i = 0; i < TASK_COUNT; ++i) {
       task_t *task = task_table + i;
-      if (task->pid != 0 && task->parent != curr_task) {
+      if (task->pid == 0 || task->parent != curr_task) {
         continue;
       }
       // 3.找到一个子进程，判断是否为僵尸态
