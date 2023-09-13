@@ -145,7 +145,7 @@ static int detect_part_info(disk_t *disk) {
   disk_read_data(disk, &mbr, sizeof(mbr));
   part_item_t *item = mbr.part_item;
   partinfo_t *part_info = disk->partinfo + 1;
-  for (int i = 0; i < MBR_PRIMARY_PART_NR; ++i, ++item, ++part_info) {
+  for (int i = 1; i < MBR_PRIMARY_PART_NR; ++i, ++item, ++part_info) {
     part_info->type = item->system_id;
     if (part_info->type == FS_INVALID) {  //无效分区，不使用
       part_info->total_sectors = 0;
@@ -184,7 +184,8 @@ static int identify_disk(disk_t *disk) {
         return -1;
     }
 
-    //读取就绪的一个扇区的数据, 一共256个16位数据，其中包含了该磁盘的信息
+    //磁盘已准备好256个2字节的数据，其中包含了该磁盘的信息
+    //用来响应 DISK_CMD_IDENTIFY 指令
     uint16_t buf[256];
     disk_read_data(disk, buf, sizeof(buf));
 
@@ -329,7 +330,7 @@ int disk_read(device_t *dev, int addr, char *buf, int size) {
   //TODO:加锁
   mutex_lock(disk->mutex);  //确保磁盘io操作的原子性
   if (task_current()) {
-    task_on_op = 1; //将标志位置1，表示内核在执行磁盘操作
+    task_on_op = 1; //将标志位置1，表示用户在执行磁盘操作
   }
 
   //发送读取指令
@@ -465,7 +466,6 @@ void disk_close(device_t *dev) {
 //操作disk结构的函数表
 dev_desc_t dev_disk_desc = {
     .dev_name = "disk",
-    .dev_type = DEV_DISK,
     .open = disk_open,
     .read = disk_read,
     .write = disk_write,

@@ -33,6 +33,11 @@ static list_t free_list;              // 存放未挂载的文件系统
 extern fs_op_t devfs_op;  //设备文件类型
 extern fs_op_t fatfs_op;  //fat文件类型
 
+//文件系统锁
+static mutex_t devfs_mutex;
+static mutex_t fatfs_mutex;
+
+
 //根文件系统
 static fs_t *root_fs;
 
@@ -565,6 +570,28 @@ static fs_op_t *get_fs_op(fs_type_t type, int major) {
 }
 
 /**
+ * @brief 根据文件系统类型获取锁
+ * 
+ * @param type 
+ * @return mutex_t* 
+ */
+static mutex_t *get_fs_mutex(fs_type_t type) {
+  switch (type) {
+    case FS_DEVFS:
+      mutex_init(&devfs_mutex);
+      return &devfs_mutex;
+      break;
+    case FS_FAT16:
+      mutex_init(&fatfs_mutex);
+      return &fatfs_mutex;
+      break;
+    default:
+      return 0;
+      break;
+  }
+}
+
+/**
  * @brief 挂载文件系统
  *
  * @param type 文件系统类型
@@ -600,8 +627,16 @@ static fs_t *mount(fs_type_t type, const char *mount_point, int dev_major,
   fs = list_node_parent(free_node, fs_t, node);
   kernel_memset(fs, 0, sizeof(fs_t));
   kernel_strncpy(fs->mount_point, mount_point, FS_MOUNT_POINT_SIZE);
+  
+  //3.获取文件系统锁
+  mutex_t* mutex = get_fs_mutex(type);
+  if (!mutex) {
+    log_printf("unsupported fs type: %du\n", type);
+    goto mount_failed;
+  }
+  // fs->mutex = mutex;
 
-  // 3.获取该fs对象的操作函数表并交给该对象
+  // 4.获取该fs对象的操作函数表并交给该对象
   fs_op_t *op = get_fs_op(type, dev_major);
   if (!op) {
     log_printf("unsupported fs type: %du\n", type);
@@ -609,13 +644,13 @@ static fs_t *mount(fs_type_t type, const char *mount_point, int dev_major,
   }
   fs->op = op;
 
-  // 4.挂载该文件系统类型下具体的设备
+  // 5.挂载该文件系统类型下具体的设备
   if (op->mount(fs, dev_major, dev_minor) < 0) {
     log_printf("mount fs %s failed!\n", mount_point);
     goto mount_failed;
   }
 
-  // 5.将该文件系统挂载到mounted_list上
+  // 6.将该文件系统挂载到mounted_list上
   list_insert_last(&mounted_list, &fs->node);
 
   return fs;

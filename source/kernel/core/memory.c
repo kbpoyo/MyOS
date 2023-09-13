@@ -302,7 +302,10 @@ int  memory_creat_map(pde_t *page_dir, uint32_t vstart, uint32_t pstart, int pag
   return 1;
  }
 
-//TODO:编写函数注释
+/**
+ * @brief 创建内核的虚拟页表
+ * 
+ */
 void create_kernal_table(void) {
   
   //声明内核只读段的起始与结束地址和数据段的起始地址

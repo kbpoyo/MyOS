@@ -463,10 +463,12 @@ static const char* find_exec_path(const char *file_name) {
 
 int main(int argc, char **argv) {
   // 1.打开shell对应的tty设备绑定为stdin
-  open(argv[0], O_RDWR);
+  int err = open(argv[0], O_RDWR);
   // 2.复用该0号描述符的文件，打开shell的stdout和stderr
-  dup(0);
-  dup(0);
+  if (err != -1) {
+    dup(0);
+    dup(0);
+  }
 
   // 3.初始化终端结构
   cli_init();

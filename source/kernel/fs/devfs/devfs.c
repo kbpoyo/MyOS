@@ -88,7 +88,7 @@ int devfs_open(struct _fs_t *fs, const char *path, file_t *file) {
         }
     }
 
-    return 0;
+    return -1;
 };
 
 /**

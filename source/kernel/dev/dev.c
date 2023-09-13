@@ -61,7 +61,7 @@ static int is_dev_exist(int dev_id) {
  * @return int 返回dev_id，该设备的描述符
  */
 int dev_open(int dev_type, int dev_index, void *data) {
-    //1.关中断，确保线程成功获取到设备描述符
+    //TODO:加锁 1.关中断，确保线程成功获取到设备描述符
     idt_state_t state = idt_enter_protection();
     
     //2.遍历dev_table，若该设备打开过则记录打开次数再返回描述符
@@ -73,42 +73,36 @@ int dev_open(int dev_type, int dev_index, void *data) {
             //需要打开的设备未打开过，为该设备分配空间
             free_dev = dev;
             break;
-        } else if (dev->desc->dev_type == dev_type && dev->dev_index == dev_index) {
+        } else if (dev->dev_type == dev_type && dev->dev_index == dev_index) {
             //设备已打开过,增加打开次数
             dev->open_count++;
+            //TODO:解锁
             idt_leave_protection(state);
             //返回设备描述符
             return i;
         }
     }
 
-    //3.设备未打开过，遍历设备类型描述表，寻找对应的设备类型用于初始化该设备
-    dev_desc_t *desc = (dev_desc_t*)0;
-    for (int i = 0; i < sizeof(dev_des_table) / sizeof(dev_des_table[0]); ++i) {
-        dev_desc_t *d = dev_des_table[i];
-        if (d->dev_type == dev_type) {
-            desc = d;
-            break;
-        }
-    }
-
-    //4.设备描述结构存在，设备空间分配成功，进行设备的初始化
-    if (desc && free_dev) {
-        free_dev->desc = desc;
+    //3.设备描述结构存在，设备空间分配成功，进行设备的初始化
+    if (free_dev && dev_type > DEV_UNKNOWN && dev_type < sizeof(dev_des_table) / sizeof(dev_des_table[0])) {
+        free_dev->dev_type = dev_type;
+        free_dev->desc = dev_des_table[dev_type];
         free_dev->data = data;
         free_dev->dev_index = dev_index;
 
         //用该设备描述结构打开该设备
-        int err = desc->open(free_dev);
+        int err = free_dev->desc->open(free_dev);
         if (err == 0) { //打开成功
             free_dev->open_count = 1;
+            //TODO:解锁
             idt_leave_protection(state);
             //返回设备描述符
             return free_dev - dev_table;
 
         }
     }
-
+  
+    //TODO:解锁
     idt_leave_protection(state);
     return -1;
 }

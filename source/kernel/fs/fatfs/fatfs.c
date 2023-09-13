@@ -711,6 +711,7 @@ int fatfs_read(char *buf, int size, file_t *file) {
         //计算文件在该分区中的起始扇区号
         //fat文件系统中，在分区的文件数据区中，簇号从2开始编号
         //[2],[3],[4]
+        //[0] = 0xfff8, [1] = 0xffff 固定值
         uint32_t start_sector = fat->data_start_sector + (file->cblk - 2) * fat->sec_per_cluster;
 
         //当前读取位置刚好在簇的开头，且读取大小为一个簇，直接进行整簇读取即可
