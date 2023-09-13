@@ -35,10 +35,22 @@ int main(int argc, char **argv) {
 
   int pid = -1;
   int i;
-  for (i = 0; i < 50; ++i) {
+  for (i = 0; i < 10; ++i) {
     pid = fork();
     if (pid == 0) {
       break;
+    }
+  }
+
+  while (1) {
+    if (pid > 0) {
+      printf("==================== this is parent pid = %d \t================\n",
+             getpid());
+      msleep(500);
+    } else {
+      printf("==================== this is child %d, pid = %d \t================\n",
+             i, getpid());
+      msleep(100);
     }
   }
 
